@@ -16,7 +16,7 @@
  */
 package org.jboss.webbeans.environment.se;
 
-import org.jboss.webbeans.context.beanmap.SimpleBeanMap;
+import org.jboss.webbeans.context.beanstore.SimpleBeanStore;
 import org.jboss.webbeans.environment.se.boot.WebBeansBootstrap;
 import org.jboss.webbeans.lifecycle.ApplicationLifecycle;
 
@@ -46,12 +46,12 @@ public class StartMain
 
         ApplicationLifecycle lifecycle = ApplicationLifecycle.instance();
         lifecycle.initialize();
-        final SimpleBeanMap appBeanMap = new SimpleBeanMap();
-        lifecycle.beginApplication( "TODO: application id?", appBeanMap );
+        final SimpleBeanStore appBeanStore = new SimpleBeanStore();
+        lifecycle.beginApplication( "TODO: application id?", appBeanStore );
 
         webBeansBootstrap.boot();
 
-        lifecycle.endApplication( "TODO: application id?", appBeanMap );
+        lifecycle.endApplication( "TODO: application id?", appBeanStore );
 
     }
 

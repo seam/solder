@@ -20,7 +20,7 @@ import org.jboss.webbeans.CurrentManager;
 import org.jboss.webbeans.ManagerImpl;
 import org.jboss.webbeans.context.ApplicationContext;
 import org.jboss.webbeans.context.DependentContext;
-import org.jboss.webbeans.context.beanmap.BeanMap;
+import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.environment.se.events.Shutdown;
 import org.jboss.webbeans.log.Log;
 import org.jboss.webbeans.log.Logging;
@@ -58,10 +58,10 @@ public class ApplicationLifecycle
         manager.addContext( ApplicationContext.create() );
     }
 
-    public void beginApplication( String id, BeanMap applicationBeanMap )
+    public void beginApplication( String id, BeanStore applicationBeanStore )
     {
         log.trace( "Starting application " + id );
-        ApplicationContext.INSTANCE.setBeanMap( applicationBeanMap );
+        ApplicationContext.INSTANCE.setBeanStore( applicationBeanStore );
         ApplicationContext.INSTANCE.setActive( true );
         // TODO (PR): I have no idea if this is OK??? The WB spec says that the
         // dependant scoe is only active when the manager is doing its work.
@@ -70,7 +70,7 @@ public class ApplicationLifecycle
         DependentContext.INSTANCE.setActive( true );
     }
 
-    public void endApplication( String id, BeanMap applicationBeanMap )
+    public void endApplication( String id, BeanStore applicationBeanStore )
     {
         log.trace( "Ending application " + id );
 
@@ -79,7 +79,7 @@ public class ApplicationLifecycle
 
         ApplicationContext.INSTANCE.destroy();
         ApplicationContext.INSTANCE.setActive( false );
-        ApplicationContext.INSTANCE.setBeanMap( null );
+        ApplicationContext.INSTANCE.setBeanStore( null );
 
     }
 }
