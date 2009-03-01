@@ -43,8 +43,6 @@ public interface DeploymentHandler
      */
     public DeploymentMetadata getMetadata(  );
 
-    public void postProcess( ClassLoader classLoader );
-
     public Set<FileDescriptor> getResources(  );
 
     public void setResources( Set<FileDescriptor> resources );

@@ -102,7 +102,6 @@ public class StandardDeploymentStrategy
     {
         getScanner(  ).scanResources( RESOURCE_NAMES );
         getScanner(  ).scanDirectories( getFiles(  ).toArray( new File[0] ) );
-        postScan(  );
     }
 
     // TODO (PR): what's the equivalent for Web Beans?

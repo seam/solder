@@ -82,4 +82,5 @@ public class ApplicationLifecycle
         ApplicationContext.INSTANCE.setBeanStore( null );
 
     }
+
 }

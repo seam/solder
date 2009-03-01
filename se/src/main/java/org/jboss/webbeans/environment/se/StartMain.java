@@ -16,9 +16,8 @@
  */
 package org.jboss.webbeans.environment.se;
 
-import org.jboss.webbeans.context.beanstore.SimpleBeanStore;
+import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.boot.WebBeansBootstrap;
-import org.jboss.webbeans.lifecycle.ApplicationLifecycle;
 
 /**
  * This is the main class that should always be called from the command
@@ -44,14 +43,9 @@ public class StartMain
 
         webBeansBootstrap.initialize();
 
-        ApplicationLifecycle lifecycle = ApplicationLifecycle.instance();
-        lifecycle.initialize();
-        final SimpleBeanStore appBeanStore = new SimpleBeanStore();
-        lifecycle.beginApplication( "TODO: application id?", appBeanStore );
-
         webBeansBootstrap.boot();
 
-        lifecycle.endApplication( "TODO: application id?", appBeanStore );
+        webBeansBootstrap.shutdown();
 
     }
 

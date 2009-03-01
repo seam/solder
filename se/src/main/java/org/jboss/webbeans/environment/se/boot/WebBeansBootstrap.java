@@ -28,9 +28,12 @@ import org.jboss.webbeans.bean.standard.ManagerBean;
 import org.jboss.webbeans.bootstrap.BeanDeployer;
 import org.jboss.webbeans.bootstrap.BeansXmlParser;
 import org.jboss.webbeans.bootstrap.api.helpers.AbstractBootstrap;
+import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
+import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.environment.se.beans.ParametersFactory;
 import org.jboss.webbeans.environment.se.discovery.WebBeanDiscoveryImpl;
 import org.jboss.webbeans.environment.se.resources.DefaultResourceLoader;
+import org.jboss.webbeans.lifecycle.ApplicationLifecycle;
 import org.jboss.webbeans.literal.DeployedLiteral;
 import org.jboss.webbeans.literal.InitializedLiteral;
 import org.jboss.webbeans.log.Log;
@@ -47,6 +50,8 @@ public class WebBeansBootstrap extends AbstractBootstrap
     Log log = Logging.getLog( WebBeansBootstrap.class );
     String[] commandLineArgs;
     private ManagerImpl manager;
+    ApplicationLifecycle lifecycle = ApplicationLifecycle.instance();
+    final BeanStore appBeanStore = new ConcurrentHashMapBeanStore();
 
     public WebBeansBootstrap( String[] commandLineArgs )
     {
@@ -77,6 +82,7 @@ public class WebBeansBootstrap extends AbstractBootstrap
         }
         this.manager = new ManagerImpl( getNamingContext(), getEjbResolver(), getResourceLoader() );
         CurrentManager.setRootManager( manager );
+        lifecycle.initialize();
 
     }
 
@@ -108,6 +114,9 @@ public class WebBeansBootstrap extends AbstractBootstrap
             {
                 throw new IllegalStateException( "ResourceLoader not set" );
             }
+
+            lifecycle.beginApplication( "TODO: application id?", appBeanStore );
+
             BeansXmlParser parser = new BeansXmlParser( getResourceLoader(), getWebBeanDiscovery().discoverWebBeansXml() );
             parser.parse();
             List<Class<? extends Annotation>> enabledDeploymentTypes = parser.getEnabledDeploymentTypes();
@@ -145,4 +154,10 @@ public class WebBeansBootstrap extends AbstractBootstrap
         beanDeployer.addClass( Transaction.class );
         beanDeployer.deploy();
     }
+
+   public void shutdown()
+   {
+        lifecycle.endApplication( "TODO: application id?", appBeanStore );
+   }
+
 }

@@ -232,11 +232,4 @@ public abstract class DeploymentStrategy
         return getScanner(  ).getTimestamp(  );
     }
 
-    protected void postScan(  )
-    {
-        for ( Entry<String, DeploymentHandler> entry : getDeploymentHandlers(  ).entrySet(  ) )
-        {
-            entry.getValue(  ).postProcess( getClassLoader(  ) );
-        }
-    }
 }

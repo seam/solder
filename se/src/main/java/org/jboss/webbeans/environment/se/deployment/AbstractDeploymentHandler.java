@@ -51,7 +51,4 @@ public abstract class AbstractDeploymentHandler
         return resources;
     }
 
-    public void postProcess( ClassLoader classLoader )
-    {
-    }
 }

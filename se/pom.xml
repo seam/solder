@@ -8,6 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jboss.webbeans</groupId>
     <artifactId>se-module</artifactId>
+    <packaging>jar</packaging>
     <name>Web Beans SE Module</name>
     <url>http://maven.apache.org</url>
     <build>
@@ -99,14 +100,12 @@
         <dependency>
             <groupId>org.jboss.webbeans</groupId>
             <artifactId>webbeans-ri-spi</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <!-- TODO (PR): remove this dependency -->
         <dependency>
             <groupId>org.jboss.webbeans</groupId>
             <artifactId>webbeans-ri</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.el</groupId>
@@ -125,7 +124,6 @@
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
-            <version>1.0.1B</version>
         </dependency>
     </dependencies>
 
