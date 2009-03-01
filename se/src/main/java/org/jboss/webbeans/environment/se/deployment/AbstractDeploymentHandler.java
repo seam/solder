@@ -35,12 +35,6 @@ public abstract class AbstractDeploymentHandler
         resources = new HashSet<FileDescriptor>(  );
     }
 
-    @Override
-    public String toString(  )
-    {
-        return getName(  );
-    }
-
     public void setResources( Set<FileDescriptor> resources )
     {
         this.resources = resources;

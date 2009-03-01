@@ -16,10 +16,6 @@
  */
 package org.jboss.webbeans.environment.se.deployment;
 
-import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.Set;
-
 /**
  * The {@link SimpleWebBeansDeploymentHandler} processes all classes found in a
  * Web Beans archive/folder.
@@ -31,32 +27,4 @@ import java.util.Set;
 public class SimpleWebBeansDeploymentHandler
     extends AbstractClassDeploymentHandler
 {
-    public static ClassDeploymentMetadata NAME_ANNOTATED_CLASS_METADATA =
-        new ClassDeploymentMetadata(  )
-        {
-            public Set<Class<?extends Annotation>> getClassAnnotatedWith(  )
-            {
-                return Collections.EMPTY_SET;
-            }
-
-            public String getFileNameSuffix(  )
-            {
-                return null;
-            }
-        };
-
-    /**
-     * Name under which this {@link DeploymentHandler} is registered
-     */
-    public static final String NAME = "org.jboss.webbeans.environment.se.deployment.SimpleWebBeansDeploymentHandler";
-
-    public String getName(  )
-    {
-        return NAME;
-    }
-
-    public ClassDeploymentMetadata getMetadata(  )
-    {
-        return NAME_ANNOTATED_CLASS_METADATA;
-    }
 }

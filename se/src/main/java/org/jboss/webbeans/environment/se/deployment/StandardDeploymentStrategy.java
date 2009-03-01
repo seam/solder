@@ -38,19 +38,6 @@ public class StandardDeploymentStrategy
      */
     public static final String[] RESOURCE_NAMES = { "beans.xml" };
 
-    /**
-     * The contextual variable name this deployment strategy is made available at
-     * during Seam startup.
-     */
-    public static final String NAME = "deploymentStrategy";
-
-    /**
-     * The key under which to list extra deployment handlers.
-     *
-     * This can be specified as a System property or in
-     * /META-INF/seam-deployment.properties
-     */
-    public static final String HANDLERS_KEY = "org.jboss.webbeans.environment.se.deployment.deploymentHandlers";
     private SimpleWebBeansDeploymentHandler simpleWebBeansDeploymentHandler;
     private WebBeansXmlDeploymentHandler webBeansXmlDeploymentHandler;
 
@@ -61,21 +48,15 @@ public class StandardDeploymentStrategy
     {
         this.classLoader = Thread.currentThread(  ).getContextClassLoader(  );
         simpleWebBeansDeploymentHandler = new SimpleWebBeansDeploymentHandler(  );
-        getDeploymentHandlers(  ).put( SimpleWebBeansDeploymentHandler.NAME, simpleWebBeansDeploymentHandler );
+        getDeploymentHandlers(  ).add( simpleWebBeansDeploymentHandler );
         webBeansXmlDeploymentHandler = new WebBeansXmlDeploymentHandler(  );
-        getDeploymentHandlers(  ).put( WebBeansXmlDeploymentHandler.NAME, webBeansXmlDeploymentHandler );
+        getDeploymentHandlers(  ).add( webBeansXmlDeploymentHandler );
     }
 
     @Override
     public ClassLoader getClassLoader(  )
     {
         return classLoader;
-    }
-
-    @Override
-    protected String getDeploymentHandlersKey(  )
-    {
-        return HANDLERS_KEY;
     }
 
     /**
@@ -104,13 +85,4 @@ public class StandardDeploymentStrategy
         getScanner(  ).scanDirectories( getFiles(  ).toArray( new File[0] ) );
     }
 
-    // TODO (PR): what's the equivalent for Web Beans?
-//   public static StandardDeploymentStrategy instance()
-//   {
-//      if (Contexts.getEventContext().isSet(NAME))
-//      {
-//         return (StandardDeploymentStrategy) Contexts.getEventContext().get(NAME);
-//      }
-//      return null;
-//   }
 }

@@ -33,7 +33,7 @@ import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.environment.se.beans.ParametersFactory;
 import org.jboss.webbeans.environment.se.discovery.WebBeanDiscoveryImpl;
 import org.jboss.webbeans.environment.se.resources.DefaultResourceLoader;
-import org.jboss.webbeans.lifecycle.ApplicationLifecycle;
+import org.jboss.webbeans.environment.se.lifecycle.ApplicationLifecycle;
 import org.jboss.webbeans.literal.DeployedLiteral;
 import org.jboss.webbeans.literal.InitializedLiteral;
 import org.jboss.webbeans.log.Log;

@@ -20,18 +20,12 @@ import org.jboss.webbeans.environment.se.discovery.WebBeanDiscoveryException;
 import org.jboss.webbeans.log.LogProvider;
 import org.jboss.webbeans.log.Logging;
 
-import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 
-import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 
 /**
@@ -47,16 +41,13 @@ public abstract class AbstractScanner
 {
     private static class Handler
     {
-        // Cache descriptors for performance
-        private ClassFile classFile;
         private ClassDescriptor classDescriptor;
-        private FileDescriptor fileDescriptor;
         private Set<FileDescriptor> fileDescriptors;
-        private Set<Entry<String, DeploymentHandler>> deploymentHandlers;
+        private Set<DeploymentHandler> deploymentHandlers;
         private ClassLoader classLoader;
         private String name;
 
-        public Handler( String name, Set<Entry<String, DeploymentHandler>> deploymentHandlers, ClassLoader classLoader )
+        public Handler( String name, Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader )
         {
             this.deploymentHandlers = deploymentHandlers;
             this.name = name;
@@ -76,25 +67,21 @@ public abstract class AbstractScanner
                 {
                     ClassDeploymentHandler classDeploymentHandler = (ClassDeploymentHandler) deploymentHandler;
 
-                    if ( hasAnnotations( getClassFile(  ),
-                                             classDeploymentHandler.getMetadata(  ).getClassAnnotatedWith(  ) ) )
+                    if ( getClassDescriptor(  ).getClazz(  ) != null )
                     {
-                        if ( getClassDescriptor(  ).getClazz(  ) != null )
-                        {
-                            log.trace( "adding class to deployable list " + name + " for deployment handler " +
-                                       deploymentHandler.getName(  ) );
-                            classDeploymentHandler.getClasses(  ).add( getClassDescriptor(  ) );
-                            handled = true;
-                        } else
-                        {
-                            log.info( "skipping class " + name +
-                                      " because it cannot be loaded (may reference a type which is not available on the classpath)" );
-                        }
+                        log.trace( "adding class to deployable list " + name + " for deployment handler " +
+                                   deploymentHandler.toString() );
+                        classDeploymentHandler.getClasses(  ).add( getClassDescriptor(  ) );
+                        handled = true;
+                    } else
+                    {
+                        log.info( "skipping class " + name +
+                                  " because it cannot be loaded (may reference a type which is not available on the classpath)" );
                     }
                 }
             } else
             {
-                if ( name.endsWith( deploymentHandler.getMetadata(  ).getFileNameSuffix(  ) ) )
+                if ( name.equals ("beans.xml" ) )
                 {
                     deploymentHandler.getResources(  ).addAll( getAllFileDescriptors(  ) );
                     handled = true;
@@ -110,31 +97,15 @@ public abstract class AbstractScanner
 
             boolean handled = false;
 
-            for ( Entry<String, DeploymentHandler> entry : deploymentHandlers )
+            for ( DeploymentHandler entry : deploymentHandlers )
             {
-                if ( handle( entry.getValue(  ) ) )
+                if ( handle( entry ) )
                 {
                     handled = true;
                 }
             }
 
             return handled;
-        }
-
-        private ClassFile getClassFile(  )
-        {
-            if ( classFile == null )
-            {
-                try
-                {
-                    classFile = loadClassFile( name, classLoader );
-                } catch ( IOException e )
-                {
-                    throw new RuntimeException( "Error loading class file " + name, e );
-                }
-            }
-
-            return classFile;
         }
 
         private ClassDescriptor getClassDescriptor(  )
@@ -145,16 +116,6 @@ public abstract class AbstractScanner
             }
 
             return classDescriptor;
-        }
-
-        private FileDescriptor getFileDescriptor(  )
-        {
-            if ( fileDescriptor == null )
-            {
-                fileDescriptor = new FileDescriptor( name, classLoader );
-            }
-
-            return fileDescriptor;
         }
 
         private Set<FileDescriptor> getAllFileDescriptors(  )
@@ -193,92 +154,16 @@ public abstract class AbstractScanner
         ClassFile.class.getPackage(  ); //to force loading of javassist, throwing an exception if it is missing
     }
 
-    protected AbstractScanner(  )
-    {
-    }
-
-    protected static boolean hasAnnotations( ClassFile classFile, Set<Class<?extends Annotation>> annotationTypes )
-    {
-        if ( annotationTypes.size(  ) > 0 )
-        {
-            AnnotationsAttribute visible =
-                (AnnotationsAttribute) classFile.getAttribute( AnnotationsAttribute.visibleTag );
-
-            if ( visible != null )
-            {
-                for ( Class<?extends Annotation> annotationType : annotationTypes )
-                {
-                    if ( visible.getAnnotation( annotationType.getName(  ) ) != null )
-                    {
-                        return true;
-                    }
-                }
-            }
-        } else
-        {
-            // If no annotations were specified, don't filter on annotations
-            // (note that this differs to the semantics used in Seam, where nothing would be matched)
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get a Javassist {@link ClassFile} for a given class name from the classLoader
-     */
-    protected static ClassFile loadClassFile( String name, ClassLoader classLoader )
-                                      throws IOException
-    {
-        if ( name == null )
-        {
-            throw new NullPointerException( "name cannot be null" );
-        }
-
-        InputStream stream = classLoader.getResourceAsStream( name );
-
-        if ( stream == null )
-        {
-            throw new IllegalStateException( "Cannot load " + name + " from " + classLoader +
-                                             " (using getResourceAsStream() returned null)" );
-        }
-
-        DataInputStream dstream = new DataInputStream( stream );
-
-        try
-        {
-            return new ClassFile( dstream );
-        } finally
-        {
-            dstream.close(  );
-            stream.close(  );
-        }
-    }
-
     public DeploymentStrategy getDeploymentStrategy(  )
     {
         return deploymentStrategy;
     }
 
-    public long getTimestamp(  )
-    {
-        return Long.MAX_VALUE;
-    }
-
-    protected void handleItem( String name )
-    {
-        handle( name );
-    }
-
     protected boolean handle( String name )
     {
         return new Handler( name,
-                            deploymentStrategy.getDeploymentHandlers(  ).entrySet(  ),
+                            deploymentStrategy.getDeploymentHandlers(  ),
                             deploymentStrategy.getClassLoader(  ) ).handle(  );
     }
 
-    public void scanDirectories( File[] directories, File[] excludedDirectories )
-    {
-        scanDirectories( directories );
-    }
 }

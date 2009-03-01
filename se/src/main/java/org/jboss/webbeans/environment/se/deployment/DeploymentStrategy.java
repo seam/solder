@@ -23,10 +23,9 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * A {@link DeploymentStrategy} coordinates the deployment of resources for a
@@ -40,7 +39,7 @@ public abstract class DeploymentStrategy
     private static final LogProvider log = Logging.getLogProvider( DeploymentStrategy.class );
     private Scanner scanner;
     private List<File> files = new ArrayList<File>(  );
-    private Map<String, DeploymentHandler> deploymentHandlers;
+    private Set<DeploymentHandler> deploymentHandlers;
 
     /**
      * The key under which to list possible scanners. System properties take
@@ -85,7 +84,7 @@ public abstract class DeploymentStrategy
      * Implementations of {@link DeploymentStrategy} may add default
      * {@link DeploymentHandler}s
      */
-    public Map<String, DeploymentHandler> getDeploymentHandlers(  )
+    public Set<DeploymentHandler> getDeploymentHandlers(  )
     {
         if ( deploymentHandlers == null )
         {
@@ -97,14 +96,9 @@ public abstract class DeploymentStrategy
 
     private void initDeploymentHandlers(  )
     {
-        this.deploymentHandlers = new HashMap<String, DeploymentHandler>(  );
+        this.deploymentHandlers = new HashSet<DeploymentHandler>(  );
 
-        List<String> deploymentHandlersClassNames =
-            new WebBeansDeploymentProperties( getClassLoader(  ) ).getPropertyValues( getDeploymentHandlersKey(  ) );
-        addHandlers( deploymentHandlersClassNames );
     }
-
-    protected abstract String getDeploymentHandlersKey(  );
 
     protected void initScanner(  )
     {
@@ -173,50 +167,6 @@ public abstract class DeploymentStrategy
         return null;
     }
 
-    private void addHandlers( List<String> handlers )
-    {
-        for ( String handler : handlers )
-        {
-            addHandler( handler );
-        }
-    }
-
-    private void addHandler( String className )
-    {
-        DeploymentHandler deploymentHandler = instantiateDeploymentHandler( className );
-
-        if ( deploymentHandler != null )
-        {
-            log.debug( "Adding " + deploymentHandler + " as a deployment handler" );
-            deploymentHandlers.put( deploymentHandler.getName(  ),
-                                    deploymentHandler );
-        }
-    }
-
-    private DeploymentHandler instantiateDeploymentHandler( String className )
-    {
-        try
-        {
-            Class<DeploymentHandler> clazz = (Class<DeploymentHandler>) getClassLoader(  ).loadClass( className );
-
-            return clazz.newInstance(  );
-        } catch ( ClassNotFoundException e )
-        {
-            log.trace( "Unable to use " + className + " as a deployment handler (class not found)", e );
-        } catch ( NoClassDefFoundError e )
-        {
-            log.trace( "Unable to use " + className + " as a deployment handler (dependency not found)", e );
-        } catch ( InstantiationException e )
-        {
-            log.trace( "Unable to instantiate deployment handler " + className, e );
-        } catch ( IllegalAccessException e )
-        {
-            log.trace( "Unable to instantiate deployment handler " + className, e );
-        }
-
-        return null;
-    }
-
     public List<File> getFiles(  )
     {
         return files;
@@ -225,11 +175,6 @@ public abstract class DeploymentStrategy
     public void setFiles( List<File> files )
     {
         this.files = files;
-    }
-
-    public long getTimestamp(  )
-    {
-        return getScanner(  ).getTimestamp(  );
     }
 
 }

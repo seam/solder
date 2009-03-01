@@ -29,19 +29,6 @@ import java.util.Set;
  */
 public interface DeploymentHandler
 {
-    /**
-     * A key used to identify the deployment handler
-     */
-    public String getName(  );
-
-    /**
-     * Get DeploymentHandlerMetadata for resources this deployment handler is
-     * interested in processing.
-     *
-     * If a deployment handler is interested in a number of files it should
-     * define multiple pieces of metadata
-     */
-    public DeploymentMetadata getMetadata(  );
 
     public Set<FileDescriptor> getResources(  );
 

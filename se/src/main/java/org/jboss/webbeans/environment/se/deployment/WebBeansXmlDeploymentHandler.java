@@ -26,27 +26,5 @@ package org.jboss.webbeans.environment.se.deployment;
 public class WebBeansXmlDeploymentHandler
     extends AbstractDeploymentHandler
 {
-    private static DeploymentMetadata WEBBEANSXML_SUFFIX_FILE_METADATA =
-        new DeploymentMetadata(  )
-        {
-            public String getFileNameSuffix(  )
-            {
-                return "beans.xml";
-            }
-        };
 
-    /**
-     * Name under which this {@link DeploymentHandler} is registered
-     */
-    public static final String NAME = "org.jboss.webbeans.environment.se.deployment.WebBeansXmlDeploymentHandler";
-
-    public String getName(  )
-    {
-        return NAME;
-    }
-
-    public DeploymentMetadata getMetadata(  )
-    {
-        return WEBBEANSXML_SUFFIX_FILE_METADATA;
-    }
 }

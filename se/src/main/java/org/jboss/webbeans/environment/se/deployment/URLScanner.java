@@ -44,25 +44,18 @@ public class URLScanner
     extends AbstractScanner
 {
     private static final LogProvider log = Logging.getLogProvider( URLScanner.class );
-    private long timestamp;
 
     public URLScanner( DeploymentStrategy deploymentStrategy )
     {
         super( deploymentStrategy );
     }
 
-    public void scanDirectories( File[] directories )
-    {
-        scanDirectories( directories,
-                         new File[0] );
-    }
-
     @Override
-    public void scanDirectories( File[] directories, File[] excludedDirectories )
+    public void scanDirectories( File[] directories )
     {
         for ( File directory : directories )
         {
-            handleDirectory( directory, null, excludedDirectories );
+            handleDirectory( directory, null );
         }
     }
 
@@ -145,7 +138,6 @@ public class URLScanner
         try
         {
             log.trace( "archive: " + file );
-            touchTimestamp( file );
 
             ZipFile zip = new ZipFile( file );
             Enumeration<?extends ZipEntry> entries = zip.entries(  );
@@ -192,26 +184,10 @@ public class URLScanner
                 handleDirectory( child, newPath, excludedDirectories );
             } else
             {
-                if ( handle( newPath ) )
-                {
-                    // only try to update the timestamp on this scanner if the file was actually handled
-                    touchTimestamp( child );
-                }
+                handle( newPath );
             }
         }
     }
 
-    private void touchTimestamp( File file )
-    {
-        if ( file.lastModified(  ) > timestamp )
-        {
-            timestamp = file.lastModified(  );
-        }
-    }
 
-    @Override
-    public long getTimestamp(  )
-    {
-        return timestamp;
-    }
 }
