@@ -45,9 +45,9 @@ public class URLScanner
 {
     private static final LogProvider log = Logging.getLogProvider( URLScanner.class );
 
-    public URLScanner( DeploymentStrategy deploymentStrategy )
+    public URLScanner( Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader )
     {
-        super( deploymentStrategy );
+        super( deploymentHandlers, classLoader );
     }
 
     @Override
@@ -67,7 +67,7 @@ public class URLScanner
         {
             try
             {
-                Enumeration<URL> urlEnum = getDeploymentStrategy(  ).getClassLoader(  ).getResources( resourceName );
+                Enumeration<URL> urlEnum = getClassLoader(  ).getResources( resourceName );
 
                 while ( urlEnum.hasMoreElements(  ) )
                 {

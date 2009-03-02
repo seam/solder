@@ -146,24 +146,27 @@ public abstract class AbstractScanner
     }
 
     private static final LogProvider log = Logging.getLogProvider( Scanner.class );
-    private DeploymentStrategy deploymentStrategy;
+    private Set<DeploymentHandler> deploymentHandlers;
+    private ClassLoader classLoader;
 
-    public AbstractScanner( DeploymentStrategy deploymentStrategy )
+
+    public AbstractScanner( Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader )
     {
-        this.deploymentStrategy = deploymentStrategy;
+        this.deploymentHandlers = deploymentHandlers;
+        this.classLoader = classLoader;
         ClassFile.class.getPackage(  ); //to force loading of javassist, throwing an exception if it is missing
-    }
-
-    public DeploymentStrategy getDeploymentStrategy(  )
-    {
-        return deploymentStrategy;
     }
 
     protected boolean handle( String name )
     {
         return new Handler( name,
-                            deploymentStrategy.getDeploymentHandlers(  ),
-                            deploymentStrategy.getClassLoader(  ) ).handle(  );
+                            deploymentHandlers,
+                            classLoader ).handle(  );
+    }
+
+    public ClassLoader getClassLoader()
+    {
+        return classLoader;
     }
 
 }

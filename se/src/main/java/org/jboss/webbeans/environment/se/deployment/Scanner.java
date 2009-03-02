@@ -42,9 +42,4 @@ public interface Scanner
      */
     public void scanResources( String[] resources );
 
-    /**
-     * Get the deployment strategy this scanner is used by
-     */
-    public DeploymentStrategy getDeploymentStrategy(  );
-
 }

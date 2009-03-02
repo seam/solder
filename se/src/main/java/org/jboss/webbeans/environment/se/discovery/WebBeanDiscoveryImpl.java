@@ -16,17 +16,21 @@
  */
 package org.jboss.webbeans.environment.se.discovery;
 
+import java.io.File;
 import org.apache.log4j.Logger;
 
 import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
 import org.jboss.webbeans.ejb.spi.EjbDescriptor;
 import org.jboss.webbeans.environment.se.deployment.ClassDescriptor;
 import org.jboss.webbeans.environment.se.deployment.FileDescriptor;
-import org.jboss.webbeans.environment.se.deployment.StandardDeploymentStrategy;
 
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
+import org.jboss.webbeans.environment.se.deployment.DeploymentHandler;
+import org.jboss.webbeans.environment.se.deployment.SimpleWebBeansDeploymentHandler;
+import org.jboss.webbeans.environment.se.deployment.URLScanner;
+import org.jboss.webbeans.environment.se.deployment.WebBeansXmlDeploymentHandler;
 
 /**
  * The means by which Web Beans are discovered on the classpath. This will only
@@ -39,15 +43,25 @@ public class WebBeanDiscoveryImpl
 {
     private Set<Class<?>> wbClasses = new HashSet<Class<?>>(  );
     private Set<URL> wbUrls = new HashSet<URL>(  );
-    private StandardDeploymentStrategy deploymentStrategy;
+//    private StandardDeploymentStrategy deploymentStrategy;
+    private SimpleWebBeansDeploymentHandler simpleWebBeansDeploymentHandler = new SimpleWebBeansDeploymentHandler();
+    private WebBeansXmlDeploymentHandler webBeansXmlDeploymentHandler = new WebBeansXmlDeploymentHandler();
+    URLScanner urlScanner;
+
 
     // The log provider
     private static Logger log = Logger.getLogger( WebBeanDiscoveryImpl.class.getName(  ) );
 
     public WebBeanDiscoveryImpl(  )
     {
-        deploymentStrategy = new StandardDeploymentStrategy( Thread.currentThread(  ).getContextClassLoader(  ) );
-        deploymentStrategy.scan(  );
+        final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        Set<DeploymentHandler> deploymentHandlers = new HashSet<DeploymentHandler>();
+        deploymentHandlers.add( simpleWebBeansDeploymentHandler );
+        deploymentHandlers.add( webBeansXmlDeploymentHandler );
+
+        urlScanner = new URLScanner( deploymentHandlers, contextClassLoader );
+        urlScanner.scanResources( new String[] { "beans.xml"} );
+        urlScanner.scanDirectories( new File[]{} );
 
         findWebBeansXmlUrls(  );
         findWebBeansAnnotatedClasses(  );
@@ -71,7 +85,7 @@ public class WebBeanDiscoveryImpl
     private void findWebBeansAnnotatedClasses(  )
                                        throws WebBeanDiscoveryException
     {
-        for ( ClassDescriptor classDesc : deploymentStrategy.getSimpleWebBeans(  ) )
+        for ( ClassDescriptor classDesc : simpleWebBeansDeploymentHandler.getClasses() )
         {
             final Class<?> clazz = classDesc.getClazz(  );
             wbClasses.add( clazz );
@@ -80,7 +94,7 @@ public class WebBeanDiscoveryImpl
 
     private void findWebBeansXmlUrls(  )
     {
-        for ( FileDescriptor fileDesc : deploymentStrategy.getWebBeansXMLs(  ) )
+        for ( FileDescriptor fileDesc : webBeansXmlDeploymentHandler.getResources() )
         {
             wbUrls.add( fileDesc.getUrl(  ) );
         }

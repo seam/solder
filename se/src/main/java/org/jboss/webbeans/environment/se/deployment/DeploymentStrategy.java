@@ -119,7 +119,7 @@ public abstract class DeploymentStrategy
         }
 
         log.debug( "Using default URLScanner" );
-        this.scanner = new URLScanner( this );
+        ////this.scanner = new URLScanner( this );
     }
 
     private Scanner instantiateScanner( String className )

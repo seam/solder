@@ -16,7 +16,6 @@
  */
 package org.jboss.webbeans.environment.se;
 
-import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.boot.WebBeansBootstrap;
 
 /**
