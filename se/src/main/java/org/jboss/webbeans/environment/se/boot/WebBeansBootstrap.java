@@ -18,7 +18,6 @@ package org.jboss.webbeans.environment.se.boot;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.inject.manager.Manager;
 import javax.transaction.Transaction;
 import org.jboss.webbeans.BeanValidator;
 import org.jboss.webbeans.CurrentManager;
@@ -38,6 +37,7 @@ import org.jboss.webbeans.literal.DeployedLiteral;
 import org.jboss.webbeans.literal.InitializedLiteral;
 import org.jboss.webbeans.log.Log;
 import org.jboss.webbeans.log.Logging;
+import org.jboss.webbeans.manager.api.WebBeansManager;
 
 /**
  * Bootstrap class for for WebBeans in SE environment. Provides no JNDI binding.
@@ -80,14 +80,14 @@ public class WebBeansBootstrap extends AbstractBootstrap
         {
             throw new IllegalStateException( "EjbResolver is not set" );
         }
-        this.manager = new ManagerImpl( getNamingContext(), getEjbResolver(), getResourceLoader() );
+        this.manager = new ManagerImpl( getNamingContext(), getEjbResolver(), getResourceLoader(), getTransactionServices() );
         CurrentManager.setRootManager( manager );
         lifecycle.initialize();
 
     }
 
     @Override
-    public Manager getManager()
+    public WebBeansManager getManager()
     {
         return manager;
     }

@@ -41,6 +41,7 @@ public abstract class AbstractScanner
 {
     private static class Handler
     {
+        public static final String BEANS_XML = "beans.xml";
         private ClassDescriptor classDescriptor;
         private Set<FileDescriptor> fileDescriptors;
         private Set<DeploymentHandler> deploymentHandlers;
@@ -81,7 +82,7 @@ public abstract class AbstractScanner
                 }
             } else
             {
-                if ( name.equals ("beans.xml" ) )
+                if ( name.equals (BEANS_XML) )
                 {
                     deploymentHandler.getResources(  ).addAll( getAllFileDescriptors(  ) );
                     handled = true;

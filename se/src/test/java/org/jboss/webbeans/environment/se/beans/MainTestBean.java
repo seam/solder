@@ -14,15 +14,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se.events;
+package org.jboss.webbeans.environment.se.beans;
 
+import javax.inject.Current;
+import javax.inject.Initializer;
 
 /**
- * The event which is fired after the manager initialises and is ready for the
- * application to start. Applications should provide a method which observes
- * this event as a means of starting the application.
+ *
  * @author Peter Royle
  */
-public class Start
+public class MainTestBean
 {
+
+    boolean initialised = false;
+    ParametersTestBean parametersTestBean;
+
+    @Initializer
+    public void init(@Current ParametersTestBean paramsTestBean)
+    {
+        this.initialised = true;
+        this.parametersTestBean = paramsTestBean;
+    }
+
+    public ParametersTestBean getParametersTestBean()
+    {
+        return parametersTestBean;
+    }
+
+    public boolean isInitialised()
+    {
+        return initialised;
+    }
+
+    
 }

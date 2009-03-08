@@ -16,7 +16,12 @@
  */
 package org.jboss.webbeans.environment.se;
 
+import javax.event.Observes;
 import org.jboss.webbeans.environment.se.boot.WebBeansBootstrap;
+import org.jboss.webbeans.environment.se.events.Shutdown;
+import org.jboss.webbeans.environment.se.events.ShutdownRequest;
+import org.jboss.webbeans.log.Log;
+import org.jboss.webbeans.log.Logging;
 
 /**
  * This is the main class that should always be called from the command
@@ -29,22 +34,23 @@ import org.jboss.webbeans.environment.se.boot.WebBeansBootstrap;
 public class StartMain
 {
 
-    String[] args;
+    private WebBeansBootstrap webBeansBootstrap;
+    private String[] args;
+    private boolean hasShutdownBeenCalled = false;
+    Log log = Logging.getLog( StartMain.class );
 
     public StartMain( String[] commandLineArgs )
     {
         this.args = commandLineArgs;
     }
 
-    public void go()
+    private void go()
     {
-        WebBeansBootstrap webBeansBootstrap = new WebBeansBootstrap( args );
+        webBeansBootstrap = new WebBeansBootstrap( args );
 
         webBeansBootstrap.initialize();
 
         webBeansBootstrap.boot();
-
-        webBeansBootstrap.shutdown();
 
     }
 
@@ -57,39 +63,27 @@ public class StartMain
     {
         new StartMain( args ).go();
     }
+
     /**
-     * When an exception happens in your main app, you don't want
-     * the manager to come down in a screaming heap. Well, not all the time.
-     * Sometimes you just want to exit gently. This method will detect such
-     * times and behave appropriately.
-     * @param e
+     * The observer of the optional shutdown request which will in turn fire the
+     * Shutdown event.
+     * @param shutdownRequest
      */
-//    private void handleException( Throwable e )
-//    {
-//        // check for a 'special' root cause
-//        boolean dealtWith = false;
-//        Throwable cause = e.getCause();
-//
-//        while (cause != null)
-//        {
-//            if (cause instanceof CleanShutdownException)
-//            {
-//                // This is a request to shut down silently, so swollow it.
-//                // Hoewver, if there's a message, then print it to stdout
-//                if (cause.getMessage() != null)
-//                {
-//                    System.out.println( cause.getMessage() );
-//                }
-//
-//                dealtWith = true;
-//            }
-//
-//            cause = cause.getCause();
-//        }
-//
-//        if (!dealtWith)
-//        {
-//            e.printStackTrace();
-//        }
-//    }
+    public void shutdown( @Observes ShutdownRequest shutdownRequest )
+    {
+        synchronized (this)
+        {
+
+            if (!hasShutdownBeenCalled)
+            {
+                hasShutdownBeenCalled = true;
+                webBeansBootstrap.shutdown();
+            } else
+            {
+                log.debug( "Skipping spurious call to shutdown");
+                log.trace( Thread.currentThread().getStackTrace() );
+            }
+        }
+    }
+
 }

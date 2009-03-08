@@ -100,7 +100,6 @@
             <groupId>org.jboss.webbeans</groupId>
             <artifactId>webbeans-ri-spi</artifactId>
         </dependency>
-
         <!-- TODO (PR): remove this dependency -->
         <dependency>
             <groupId>org.jboss.webbeans</groupId>
@@ -120,9 +119,15 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- TODO: these have to go or be replaced with mocks -->
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
         </dependency>
     </dependencies>
 

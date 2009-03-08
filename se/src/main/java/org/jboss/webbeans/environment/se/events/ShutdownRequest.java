@@ -14,13 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se.deployment;
+package org.jboss.webbeans.environment.se.events;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-
-public interface ClassDeploymentMetadata
-    extends DeploymentMetadata
+/**
+* Should be fired by application to trigger shutting down of the WebBEans SE
+ * manager. This will in turn fire the Shutdown
+ * @author Peter Royle
+ */
+public class ShutdownRequest
 {
 
+    public ShutdownRequest()
+    {
+    }
 }

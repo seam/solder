@@ -14,19 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se.deployment;
 
+package org.jboss.webbeans.environment.se.boot;
+
+import org.omg.IOP.TransactionService;
 
 /**
- * Metadata about resources the deployment handler is interested in
  *
- * @author pmuir
- *
+ * @author Peter Royle
  */
-public interface DeploymentMetadata
-{
-    /**
-     * A file name suffixes that this deployment handler is interested in
-     */
-    public String getFileNameSuffix(  );
+public class NoopTransactionService implements TransactionService {
+
 }
