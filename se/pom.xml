@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
-        <artifactId>parent</artifactId>
+        <artifactId>webbeans-parent</artifactId>
         <groupId>org.jboss.webbeans</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jboss.webbeans</groupId>
     <artifactId>se-module</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Web Beans SE Module</name>
     <url>http://maven.apache.org</url>
@@ -98,12 +99,12 @@
 
         <dependency>
             <groupId>org.jboss.webbeans</groupId>
-            <artifactId>webbeans-ri-spi</artifactId>
+            <artifactId>webbeans-spi</artifactId>
         </dependency>
         <!-- TODO (PR): remove this dependency -->
         <dependency>
             <groupId>org.jboss.webbeans</groupId>
-            <artifactId>webbeans-ri</artifactId>
+            <artifactId>webbeans-core</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>javax.el</groupId>
