@@ -16,7 +16,6 @@
  */
 package org.jboss.webbeans.environment.se;
 
-import javax.event.Observes;
 import javax.inject.manager.Manager;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
@@ -27,11 +26,9 @@ import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.beans.ParametersFactory;
 import org.jboss.webbeans.environment.se.discovery.SEWebBeanDiscovery;
-import org.jboss.webbeans.environment.se.events.Shutdown;
 import org.jboss.webbeans.environment.se.resources.NoNamingContext;
 import org.jboss.webbeans.environment.se.util.Reflections;
-import org.jboss.webbeans.log.Log;
-import org.jboss.webbeans.log.Logging;
+import org.jboss.webbeans.manager.api.WebBeansManager;
 import org.jboss.webbeans.resources.spi.NamingContext;
 
 /**
@@ -51,8 +48,9 @@ public class StartMain
    private final Bootstrap bootstrap;
    private final BeanStore applicationBeanStore;
    private String[] args;
-   private boolean hasShutdownBeenCalled = false;
-   Log log = Logging.getLog(StartMain.class);
+   
+   private WebBeansManager manager;
+   
    
    public StartMain(String[] commandLineArgs)
    {
@@ -76,8 +74,10 @@ public class StartMain
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
       bootstrap.boot();
+      this.manager = bootstrap.getManager();
       bootstrap.getManager().getInstanceByType(ParametersFactory.class).setArgs(args);
       DependentContext.INSTANCE.setActive(true);
+      bootstrap.getManager().getInstanceByType(ShutdownManager.class).setBootstrap(bootstrap);
    }
    
    /**
@@ -89,31 +89,13 @@ public class StartMain
     */
    public static void main(String[] args)
    {
-      new StartMain(args).go();
+      new StartMain(args).main();
    }
    
-   /**
-    * The observer of the optional shutdown request which will in turn fire the
-    * Shutdown event.
-    * 
-    * @param shutdownRequest
-    */
-   public void shutdown(@Observes @Shutdown Manager shutdownRequest)
+   public Manager main()
    {
-      synchronized (this)
-      {
-         
-         if (!hasShutdownBeenCalled)
-         {
-            hasShutdownBeenCalled = true;
-            bootstrap.shutdown();
-         }
-         else
-         {
-            log.debug("Skipping spurious call to shutdown");
-            log.trace(Thread.currentThread().getStackTrace());
-         }
-      }
+      go();
+      return manager;
    }
    
 }

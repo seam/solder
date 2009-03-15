@@ -29,8 +29,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import org.jboss.webbeans.log.LogProvider;
-import org.jboss.webbeans.log.Logging;
+import org.apache.log4j.Logger;
 
 /**
  * Implementation of {@link Scanner} which can scan a {@link URLClassLoader}
@@ -43,7 +42,7 @@ import org.jboss.webbeans.log.Logging;
  */
 public class URLScanner extends AbstractScanner
 {
-   private static final LogProvider log = Logging.getLogProvider(URLScanner.class);
+   private static final Logger log = Logger.getLogger(URLScanner.class);
    
    public URLScanner(ClassLoader classLoader, SEWebBeanDiscovery webBeanDiscovery)
    {

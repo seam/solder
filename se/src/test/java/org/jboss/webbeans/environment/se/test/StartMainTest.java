@@ -19,7 +19,6 @@ package org.jboss.webbeans.environment.se.test;
 import javax.inject.AnnotationLiteral;
 import javax.inject.manager.Manager;
 
-import org.jboss.webbeans.CurrentManager;
 import org.jboss.webbeans.environment.se.StartMain;
 import org.jboss.webbeans.environment.se.events.Shutdown;
 import org.jboss.webbeans.environment.se.test.beans.MainTestBean;
@@ -45,9 +44,8 @@ public class StartMainTest {
     public void testMain()
     {
         String[] args = ARGS ;
-        StartMain.main( args );
+        Manager manager = new StartMain(args).main();
 
-        Manager manager = CurrentManager.rootManager();
         MainTestBean mainTestBean = manager.getInstanceByType( MainTestBean.class );
         Assert.assertNotNull( mainTestBean );
 
@@ -61,6 +59,16 @@ public class StartMainTest {
         Assert.assertEquals( ARGS[2], paramsBean.getParam3() );
 
         manager.fireEvent( manager, new AnnotationLiteral<Shutdown>() {} );
+        boolean contextNotActive = false;
+        try
+        {
+           assert manager.getInstanceByType(MainTestBean.class) == null;
+        }
+        catch (Exception e) 
+        {
+           contextNotActive = true;
+        }
+        assert contextNotActive;
     }
 
 }
