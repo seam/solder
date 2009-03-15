@@ -19,23 +19,24 @@ package org.jboss.webbeans.environment.se.resources;
 import org.jboss.webbeans.resources.spi.NamingContext;
 
 /**
- *
+ * 
  * @author Peter Royle
  */
-public class NoNamingContext
-        implements NamingContext
+public class NoNamingContext implements NamingContext
 {
-
-    public NoNamingContext() {}
    
-    public void bind( String name, Object value )
-    {
-        // No-op
-    }
-
-    public <T> T lookup( String name, Class<? extends T> expectedType )
-    {
-        return null;
-    }
-
+   public NoNamingContext()
+   {
+   }
+   
+   public void bind(String name, Object value)
+   {
+      // No-op
+   }
+   
+   public <T> T lookup(String name, Class<? extends T> expectedType)
+   {
+      return null;
+   }
+   
 }

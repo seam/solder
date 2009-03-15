@@ -20,17 +20,17 @@ import java.util.Set;
 
 /**
  * A deployment handler is responsible for processing found resources
- *
- * All deployment handlers should specify a unique name under which they
- * will be registered with the {@link DeploymentStrategy}
- *
+ * 
+ * All deployment handlers should specify a unique name under which they will be
+ * registered with the {@link DeploymentStrategy}
+ * 
  * @author Pete Muir
- *
+ * 
  */
 public interface DeploymentHandler
 {
-
-    public Set<FileDescriptor> getResources(  );
-
-    public void setResources( Set<FileDescriptor> resources );
+   
+   public Set<FileDescriptor> getResources();
+   
+   public void setResources(Set<FileDescriptor> resources);
 }

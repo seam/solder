@@ -24,15 +24,10 @@ import java.lang.annotation.Target;
 import javax.inject.BindingType;
 
 /**
- *
+ * 
  * @author Peter Royle
  */
 @BindingType
-@Retention( RetentionPolicy.RUNTIME )
-@Target( {ElementType.PARAMETER,
-    ElementType.METHOD,
-    ElementType.FIELD
-} )
-public @interface Parameters
-{
-}
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD })
+public @interface Parameters {}

@@ -18,10 +18,9 @@ package org.jboss.webbeans.environment.se.deployment;
 
 import java.util.Set;
 
-public interface ClassDeploymentHandler
-    extends DeploymentHandler
+public interface ClassDeploymentHandler extends DeploymentHandler
 {
-    public Set<ClassDescriptor> getClasses(  );
-
-    public void setClasses( Set<ClassDescriptor> classes );
+   public Set<ClassDescriptor> getClasses();
+   
+   public void setClasses(Set<ClassDescriptor> classes);
 }

@@ -35,81 +35,85 @@ import org.jboss.webbeans.log.Logging;
 import org.jboss.webbeans.resources.spi.NamingContext;
 
 /**
- * This is the main class that should always be called from the command
- * line for a WebBEans SE app. Something like:
- * <code>
+ * This is the main class that should always be called from the command line for
+ * a WebBEans SE app. Something like: <code>
  * java -jar MyApp.jar org.jboss.webbeans.environment.se.StarMain arguments
  * </code>
+ * 
  * @author Peter Royle
  * @author Pete Muir
  */
 public class StartMain
 {
-
-    private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
    
-    private final Bootstrap bootstrap;
-    private final BeanStore applicationBeanStore;
-    private String[] args;
-    private boolean hasShutdownBeenCalled = false;
-    Log log = Logging.getLog( StartMain.class );
-
-    public StartMain( String[] commandLineArgs )
-    {
-        this.args = commandLineArgs;
-        try
-        {
-            bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME, Bootstrap.class);
-        }
-        catch (Exception e)
-        {
-            throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
-        }
-        this.applicationBeanStore = new ConcurrentHashMapBeanStore();
-    }
-
-    private void go()
-    { 
-        bootstrap.setEnvironment(Environments.SE);
-        bootstrap.getServices().add(WebBeanDiscovery.class, new WebBeanDiscoveryImpl());
-        bootstrap.getServices().add(NamingContext.class, new NoNamingContext());
-        bootstrap.setApplicationContext(applicationBeanStore);
-        bootstrap.initialize();
-        bootstrap.boot();
-        bootstrap.getManager().getInstanceByType(ParametersFactory.class).setArgs(args);
-        DependentContext.INSTANCE.setActive(true);
-    }
-
-    /**
-     * The main method called from the command line. This little puppy
-     * will get the ball rolling.
-     * @param args the command line arguments
-     */
-    public static void main( String[] args )
-    {
-        new StartMain( args ).go();
-    }
-
-    /**
-     * The observer of the optional shutdown request which will in turn fire the
-     * Shutdown event.
-     * @param shutdownRequest
-     */
-    public void shutdown( @Observes @Shutdown Manager shutdownRequest )
-    {
-        synchronized (this)
-        {
-
-            if (!hasShutdownBeenCalled)
-            {
-                hasShutdownBeenCalled = true;
-                bootstrap.shutdown();
-            } else
-            {
-                log.debug( "Skipping spurious call to shutdown");
-                log.trace( Thread.currentThread().getStackTrace() );
-            }
-        }
-    }
-
+   private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
+   
+   private final Bootstrap bootstrap;
+   private final BeanStore applicationBeanStore;
+   private String[] args;
+   private boolean hasShutdownBeenCalled = false;
+   Log log = Logging.getLog(StartMain.class);
+   
+   public StartMain(String[] commandLineArgs)
+   {
+      this.args = commandLineArgs;
+      try
+      {
+         bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME, Bootstrap.class);
+      }
+      catch (Exception e)
+      {
+         throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
+      }
+      this.applicationBeanStore = new ConcurrentHashMapBeanStore();
+   }
+   
+   private void go()
+   {
+      bootstrap.setEnvironment(Environments.SE);
+      bootstrap.getServices().add(WebBeanDiscovery.class, new WebBeanDiscoveryImpl());
+      bootstrap.getServices().add(NamingContext.class, new NoNamingContext());
+      bootstrap.setApplicationContext(applicationBeanStore);
+      bootstrap.initialize();
+      bootstrap.boot();
+      bootstrap.getManager().getInstanceByType(ParametersFactory.class).setArgs(args);
+      DependentContext.INSTANCE.setActive(true);
+   }
+   
+   /**
+    * The main method called from the command line. This little puppy will get
+    * the ball rolling.
+    * 
+    * @param args
+    *           the command line arguments
+    */
+   public static void main(String[] args)
+   {
+      new StartMain(args).go();
+   }
+   
+   /**
+    * The observer of the optional shutdown request which will in turn fire the
+    * Shutdown event.
+    * 
+    * @param shutdownRequest
+    */
+   public void shutdown(@Observes @Shutdown Manager shutdownRequest)
+   {
+      synchronized (this)
+      {
+         
+         if (!hasShutdownBeenCalled)
+         {
+            hasShutdownBeenCalled = true;
+            bootstrap.shutdown();
+         }
+         else
+         {
+            log.debug("Skipping spurious call to shutdown");
+            log.trace(Thread.currentThread().getStackTrace());
+         }
+      }
+   }
+   
 }

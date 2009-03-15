@@ -30,144 +30,140 @@ import javassist.bytecode.ClassFile;
 
 /**
  * Abstract base class for {@link Scanner} providing common functionality
- *
+ * 
  * This class provides file-system orientated scanning
- *
+ * 
  * @author Pete Muir
- *
+ * 
  */
-public abstract class AbstractScanner
-    implements Scanner
+public abstract class AbstractScanner implements Scanner
 {
-    private static class Handler
-    {
-        public static final String BEANS_XML = "beans.xml";
-        private ClassDescriptor classDescriptor;
-        private Set<FileDescriptor> fileDescriptors;
-        private Set<DeploymentHandler> deploymentHandlers;
-        private ClassLoader classLoader;
-        private String name;
-
-        public Handler( String name, Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader )
-        {
-            this.deploymentHandlers = deploymentHandlers;
-            this.name = name;
-            this.classLoader = classLoader;
-        }
-
-        /**
-         * Return true if the file was handled (false if it was ignored)
-         */
-        protected boolean handle( DeploymentHandler deploymentHandler )
-        {
-            boolean handled = false;
-
-            if ( deploymentHandler instanceof ClassDeploymentHandler )
+   private static class Handler
+   {
+      public static final String BEANS_XML = "beans.xml";
+      private ClassDescriptor classDescriptor;
+      private Set<FileDescriptor> fileDescriptors;
+      private Set<DeploymentHandler> deploymentHandlers;
+      private ClassLoader classLoader;
+      private String name;
+      
+      public Handler(String name, Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader)
+      {
+         this.deploymentHandlers = deploymentHandlers;
+         this.name = name;
+         this.classLoader = classLoader;
+      }
+      
+      /**
+       * Return true if the file was handled (false if it was ignored)
+       */
+      protected boolean handle(DeploymentHandler deploymentHandler)
+      {
+         boolean handled = false;
+         
+         if (deploymentHandler instanceof ClassDeploymentHandler)
+         {
+            if (name.endsWith(".class"))
             {
-                if ( name.endsWith( ".class" ) )
-                {
-                    ClassDeploymentHandler classDeploymentHandler = (ClassDeploymentHandler) deploymentHandler;
-
-                    if ( getClassDescriptor(  ).getClazz(  ) != null )
-                    {
-                        log.trace( "adding class to deployable list " + name + " for deployment handler " +
-                                   deploymentHandler.toString() );
-                        classDeploymentHandler.getClasses(  ).add( getClassDescriptor(  ) );
-                        handled = true;
-                    } else
-                    {
-                        log.info( "skipping class " + name +
-                                  " because it cannot be loaded (may reference a type which is not available on the classpath)" );
-                    }
-                }
-            } else
-            {
-                if ( name.equals (BEANS_XML) )
-                {
-                    deploymentHandler.getResources(  ).addAll( getAllFileDescriptors(  ) );
-                    handled = true;
-                }
+               ClassDeploymentHandler classDeploymentHandler = (ClassDeploymentHandler) deploymentHandler;
+               
+               if (getClassDescriptor().getClazz() != null)
+               {
+                  log.trace("adding class to deployable list " + name + " for deployment handler " + deploymentHandler.toString());
+                  classDeploymentHandler.getClasses().add(getClassDescriptor());
+                  handled = true;
+               }
+               else
+               {
+                  log.info("skipping class " + name + " because it cannot be loaded (may reference a type which is not available on the classpath)");
+               }
             }
-
-            return handled;
-        }
-
-        protected boolean handle(  )
-        {
-            log.trace( "found " + name );
-
-            boolean handled = false;
-
-            for ( DeploymentHandler entry : deploymentHandlers )
+         }
+         else
+         {
+            if (name.equals(BEANS_XML))
             {
-                if ( handle( entry ) )
-                {
-                    handled = true;
-                }
+               deploymentHandler.getResources().addAll(getAllFileDescriptors());
+               handled = true;
             }
-
-            return handled;
-        }
-
-        private ClassDescriptor getClassDescriptor(  )
-        {
-            if ( classDescriptor == null )
+         }
+         
+         return handled;
+      }
+      
+      protected boolean handle()
+      {
+         log.trace("found " + name);
+         
+         boolean handled = false;
+         
+         for (DeploymentHandler entry : deploymentHandlers)
+         {
+            if (handle(entry))
             {
-                classDescriptor = new ClassDescriptor( name, classLoader );
+               handled = true;
             }
-
-            return classDescriptor;
-        }
-
-        private Set<FileDescriptor> getAllFileDescriptors(  )
-        {
-            if ( fileDescriptors == null )
+         }
+         
+         return handled;
+      }
+      
+      private ClassDescriptor getClassDescriptor()
+      {
+         if (classDescriptor == null)
+         {
+            classDescriptor = new ClassDescriptor(name, classLoader);
+         }
+         
+         return classDescriptor;
+      }
+      
+      private Set<FileDescriptor> getAllFileDescriptors()
+      {
+         if (fileDescriptors == null)
+         {
+            try
             {
-                try
-                {
-                    Enumeration<URL> allUrls = classLoader.getResources( name );
-                    Set<FileDescriptor> fileDescSet = new HashSet<FileDescriptor>(  );
-
-                    while ( allUrls.hasMoreElements(  ) )
-                    {
-                        fileDescSet.add( new FileDescriptor( 
-                                                             name,
-                                                             allUrls.nextElement(  ) ) );
-                    }
-
-                    this.fileDescriptors = fileDescSet;
-                } catch ( IOException ex )
-                {
-                    throw new WebBeanDiscoveryException( "Error loading all classpath urls for file " + name, ex );
-                }
+               Enumeration<URL> allUrls = classLoader.getResources(name);
+               Set<FileDescriptor> fileDescSet = new HashSet<FileDescriptor>();
+               
+               while (allUrls.hasMoreElements())
+               {
+                  fileDescSet.add(new FileDescriptor(name, allUrls.nextElement()));
+               }
+               
+               this.fileDescriptors = fileDescSet;
             }
-
-            return fileDescriptors;
-        }
-    }
-
-    private static final LogProvider log = Logging.getLogProvider( Scanner.class );
-    private Set<DeploymentHandler> deploymentHandlers;
-    private ClassLoader classLoader;
-
-
-    public AbstractScanner( Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader )
-    {
-        this.deploymentHandlers = deploymentHandlers;
-        this.classLoader = classLoader;
-        ClassFile.class.getPackage(  ); //to force loading of javassist, throwing an exception if it is missing
-    }
-
-    protected boolean handle( String name )
-    {
-        return new Handler( name,
-                            deploymentHandlers,
-                            classLoader ).handle(  );
-    }
-
-    public ClassLoader getClassLoader()
-    {
-        return classLoader;
-    }
-
+            catch (IOException ex)
+            {
+               throw new WebBeanDiscoveryException("Error loading all classpath urls for file " + name, ex);
+            }
+         }
+         
+         return fileDescriptors;
+      }
+   }
+   
+   private static final LogProvider log = Logging.getLogProvider(Scanner.class);
+   private Set<DeploymentHandler> deploymentHandlers;
+   private ClassLoader classLoader;
+   
+   public AbstractScanner(Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader)
+   {
+      this.deploymentHandlers = deploymentHandlers;
+      this.classLoader = classLoader;
+      ClassFile.class.getPackage(); // to force loading of javassist, throwing
+                                    // an exception if it is missing
+   }
+   
+   protected boolean handle(String name)
+   {
+      return new Handler(name, deploymentHandlers, classLoader).handle();
+   }
+   
+   public ClassLoader getClassLoader()
+   {
+      return classLoader;
+   }
+   
 }

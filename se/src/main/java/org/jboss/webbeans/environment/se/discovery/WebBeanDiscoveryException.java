@@ -16,27 +16,26 @@
  */
 package org.jboss.webbeans.environment.se.discovery;
 
-
 /**
  * Thrown if there's an error during Web Bean discoery that will stop the
  * manager from starting up.
+ * 
  * @author Peter Royle
  */
-public class WebBeanDiscoveryException
-    extends RuntimeException
+public class WebBeanDiscoveryException extends RuntimeException
 {
-    public WebBeanDiscoveryException( Throwable cause )
-    {
-        super( cause );
-    }
-
-    public WebBeanDiscoveryException( String message, Throwable cause )
-    {
-        super( message, cause );
-    }
-
-    public WebBeanDiscoveryException( String message )
-    {
-        super( message );
-    }
+   public WebBeanDiscoveryException(Throwable cause)
+   {
+      super(cause);
+   }
+   
+   public WebBeanDiscoveryException(String message, Throwable cause)
+   {
+      super(message, cause);
+   }
+   
+   public WebBeanDiscoveryException(String message)
+   {
+      super(message);
+   }
 }

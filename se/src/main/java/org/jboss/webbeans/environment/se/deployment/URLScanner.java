@@ -33,160 +33,159 @@ import org.jboss.webbeans.log.Logging;
 
 /**
  * Implementation of {@link Scanner} which can scan a {@link URLClassLoader}
- *
+ * 
  * @author Thomas Heute
  * @author Gavin King
  * @author Norman Richards
  * @author Pete Muir
- *
+ * 
  */
-public class URLScanner
-    extends AbstractScanner
+public class URLScanner extends AbstractScanner
 {
-    private static final LogProvider log = Logging.getLogProvider( URLScanner.class );
-
-    public URLScanner( Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader )
-    {
-        super( deploymentHandlers, classLoader );
-    }
-
-    public void scanDirectories( File[] directories )
-    {
-        for ( File directory : directories )
-        {
-            handleDirectory( directory, null );
-        }
-    }
-
-    public void scanResources( String[] resources )
-    {
-        Set<String> paths = new HashSet<String>(  );
-
-        for ( String resourceName : resources )
-        {
-            try
+   private static final LogProvider log = Logging.getLogProvider(URLScanner.class);
+   
+   public URLScanner(Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader)
+   {
+      super(deploymentHandlers, classLoader);
+   }
+   
+   public void scanDirectories(File[] directories)
+   {
+      for (File directory : directories)
+      {
+         handleDirectory(directory, null);
+      }
+   }
+   
+   public void scanResources(String[] resources)
+   {
+      Set<String> paths = new HashSet<String>();
+      
+      for (String resourceName : resources)
+      {
+         try
+         {
+            Enumeration<URL> urlEnum = getClassLoader().getResources(resourceName);
+            
+            while (urlEnum.hasMoreElements())
             {
-                Enumeration<URL> urlEnum = getClassLoader(  ).getResources( resourceName );
-
-                while ( urlEnum.hasMoreElements(  ) )
-                {
-                    String urlPath = urlEnum.nextElement(  ).getFile(  );
-                    urlPath = URLDecoder.decode( urlPath, "UTF-8" );
-
-                    if ( urlPath.startsWith( "file:" ) )
-                    {
-                        urlPath = urlPath.substring( 5 );
-                    }
-
-                    if ( urlPath.indexOf( '!' ) > 0 )
-                    {
-                        urlPath =
-                            urlPath.substring( 0,
-                                               urlPath.indexOf( '!' ) );
-                    } else
-                    {
-                        File dirOrArchive = new File( urlPath );
-
-                        if ( ( resourceName != null ) && ( resourceName.lastIndexOf( '/' ) > 0 ) )
-                        {
-                            //for META-INF/components.xml
-                            dirOrArchive = dirOrArchive.getParentFile(  );
-                        }
-
-                        urlPath = dirOrArchive.getParent(  );
-                    }
-
-                    paths.add( urlPath );
-                }
-            } catch ( IOException ioe )
-            {
-                log.warn( "could not read: " + resourceName, ioe );
+               String urlPath = urlEnum.nextElement().getFile();
+               urlPath = URLDecoder.decode(urlPath, "UTF-8");
+               
+               if (urlPath.startsWith("file:"))
+               {
+                  urlPath = urlPath.substring(5);
+               }
+               
+               if (urlPath.indexOf('!') > 0)
+               {
+                  urlPath = urlPath.substring(0, urlPath.indexOf('!'));
+               }
+               else
+               {
+                  File dirOrArchive = new File(urlPath);
+                  
+                  if ((resourceName != null) && (resourceName.lastIndexOf('/') > 0))
+                  {
+                     // for META-INF/components.xml
+                     dirOrArchive = dirOrArchive.getParentFile();
+                  }
+                  
+                  urlPath = dirOrArchive.getParent();
+               }
+               
+               paths.add(urlPath);
             }
-        }
-
-        handle( paths );
-    }
-
-    protected void handle( Set<String> paths )
-    {
-        for ( String urlPath : paths )
-        {
-            try
+         }
+         catch (IOException ioe)
+         {
+            log.warn("could not read: " + resourceName, ioe);
+         }
+      }
+      
+      handle(paths);
+   }
+   
+   protected void handle(Set<String> paths)
+   {
+      for (String urlPath : paths)
+      {
+         try
+         {
+            log.trace("scanning: " + urlPath);
+            
+            File file = new File(urlPath);
+            
+            if (file.isDirectory())
             {
-                log.trace( "scanning: " + urlPath );
-
-                File file = new File( urlPath );
-
-                if ( file.isDirectory(  ) )
-                {
-                    handleDirectory( file, null );
-                } else
-                {
-                    handleArchiveByFile( file );
-                }
-            } catch ( IOException ioe )
-            {
-                log.warn( "could not read entries", ioe );
+               handleDirectory(file, null);
             }
-        }
-    }
-
-    private void handleArchiveByFile( File file )
-                              throws IOException
-    {
-        try
-        {
-            log.trace( "archive: " + file );
-
-            ZipFile zip = new ZipFile( file );
-            Enumeration<?extends ZipEntry> entries = zip.entries(  );
-
-            while ( entries.hasMoreElements(  ) )
+            else
             {
-                ZipEntry entry = entries.nextElement(  );
-                String name = entry.getName(  );
-                handle( name );
+               handleArchiveByFile(file);
             }
-        } catch ( ZipException e )
-        {
-            throw new RuntimeException( "Error handling file " + file, e );
-        }
-    }
-
-    private void handleDirectory( File file, String path )
-    {
-        handleDirectory( file,
-                         path,
-                         new File[0] );
-    }
-
-    private void handleDirectory( File file, String path, File[] excludedDirectories )
-    {
-        for ( File excludedDirectory : excludedDirectories )
-        {
-            if ( file.equals( excludedDirectory ) )
-            {
-                log.trace( "skipping excluded directory: " + file );
-
-                return;
-            }
-        }
-
-        log.trace( "handling directory: " + file );
-
-        for ( File child : file.listFiles(  ) )
-        {
-            String newPath = ( path == null ) ? child.getName(  ) : ( path + '/' + child.getName(  ) );
-
-            if ( child.isDirectory(  ) )
-            {
-                handleDirectory( child, newPath, excludedDirectories );
-            } else
-            {
-                handle( newPath );
-            }
-        }
-    }
-
-
+         }
+         catch (IOException ioe)
+         {
+            log.warn("could not read entries", ioe);
+         }
+      }
+   }
+   
+   private void handleArchiveByFile(File file) throws IOException
+   {
+      try
+      {
+         log.trace("archive: " + file);
+         
+         ZipFile zip = new ZipFile(file);
+         Enumeration<? extends ZipEntry> entries = zip.entries();
+         
+         while (entries.hasMoreElements())
+         {
+            ZipEntry entry = entries.nextElement();
+            String name = entry.getName();
+            handle(name);
+         }
+      }
+      catch (ZipException e)
+      {
+         throw new RuntimeException("Error handling file " + file, e);
+      }
+   }
+   
+   private void handleDirectory(File file, String path)
+   {
+      handleDirectory(file, path, new File[0]);
+   }
+   
+   private void handleDirectory(File file, String path, File[] excludedDirectories)
+   {
+      for (File excludedDirectory : excludedDirectories)
+      {
+         if (file.equals(excludedDirectory))
+         {
+            log.trace("skipping excluded directory: " + file);
+            
+            return;
+         }
+      }
+      
+      log.trace("handling directory: " + file);
+      
+      for (File child : file.listFiles())
+      {
+         String newPath = (path == null) ? child.getName() : (path + '/' + child.getName());
+         
+         if (child.isDirectory())
+         {
+            handleDirectory(child, newPath, excludedDirectories);
+         }
+         else
+         {
+            handle(newPath);
+         }
+      }
+   }
+   
 }

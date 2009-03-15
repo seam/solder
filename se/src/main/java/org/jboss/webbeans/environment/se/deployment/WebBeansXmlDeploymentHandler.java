@@ -16,15 +16,13 @@
  */
 package org.jboss.webbeans.environment.se.deployment;
 
-
 /**
  * The {@link WebBeansXmlDeploymentHandler} beans.xml files
- *
+ * 
  * @author Pete Muir
- *
+ * 
  */
-public class WebBeansXmlDeploymentHandler
-    extends AbstractDeploymentHandler
+public class WebBeansXmlDeploymentHandler extends AbstractDeploymentHandler
 {
-
+   
 }

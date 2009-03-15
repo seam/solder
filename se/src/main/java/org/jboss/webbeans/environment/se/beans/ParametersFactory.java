@@ -27,35 +27,38 @@ import javax.inject.Produces;
 import org.jboss.webbeans.environment.se.bindings.Parameters;
 
 /**
- * The simple bean that will hold the command line arguments
- * and make them available by injection (using the @Parameters binding).
- * It's initialised by the StartMain class before your main app is
- * initialised.
+ * The simple bean that will hold the command line arguments and make them
+ * available by injection (using the @Parameters binding). It's initialised by
+ * the StartMain class before your main app is initialised.
+ * 
  * @author Peter Royle
  */
 @ApplicationScoped
 public class ParametersFactory
 {
-    private String[] args;
-
-    /**
-     * Producer method for the injectible command line args.
-     * @return The command line arguments.
-     */
-    @Produces
-    @Parameters
-    // TODO Give generic type - WBRI-186
-    public List getArgs(  )
-    {
-        return Collections.unmodifiableList(new ArrayList<String>( Arrays.asList( this.args ) ));
-    }
-
-    /**
-     * StartMain passes in the command line args here.
-     * @param args The command line arguments.
-     */
-    public void setArgs( String[] args )
-    {
-        this.args = args;
-    }
+   private String[] args;
+   
+   /**
+    * Producer method for the injectible command line args.
+    * 
+    * @return The command line arguments.
+    */
+   @Produces
+   @Parameters
+   // TODO Give generic type - WBRI-186
+   public List getArgs()
+   {
+      return Collections.unmodifiableList(new ArrayList<String>(Arrays.asList(this.args)));
+   }
+   
+   /**
+    * StartMain passes in the command line args here.
+    * 
+    * @param args
+    *           The command line arguments.
+    */
+   public void setArgs(String[] args)
+   {
+      this.args = args;
+   }
 }

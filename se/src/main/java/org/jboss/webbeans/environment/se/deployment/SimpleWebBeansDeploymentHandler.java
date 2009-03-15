@@ -19,12 +19,11 @@ package org.jboss.webbeans.environment.se.deployment;
 /**
  * The {@link SimpleWebBeansDeploymentHandler} processes all classes found in a
  * Web Beans archive/folder.
- *
+ * 
  * @author Pete Muir
  * @author Peter Royle
- *
+ * 
  */
-public class SimpleWebBeansDeploymentHandler
-    extends AbstractClassDeploymentHandler
+public class SimpleWebBeansDeploymentHandler extends AbstractClassDeploymentHandler
 {
 }

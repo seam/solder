@@ -20,12 +20,14 @@ package org.jboss.webbeans.environment.se.util;
  * Reflection utilities
  * 
  * @author Pete Muir
- *
+ * 
  */
 public class Reflections
 {
    
-   private Reflections(String name) {}
+   private Reflections(String name)
+   {
+   }
    
    public static <T> T newInstance(String className, Class<T> expectedType) throws InstantiationException, IllegalAccessException, ClassNotFoundException
    {

@@ -26,15 +26,10 @@ import javax.inject.BindingType;
 /**
  * Fired by webbeans SE before shutting down. Applications and modules should
  * release resources cleanly in response to this event.
+ * 
  * @author Peter Royle
  */
 @BindingType
-@Retention( RetentionPolicy.RUNTIME )
-@Target( {ElementType.PARAMETER,
-    ElementType.METHOD,
-    ElementType.FIELD
-} )
-public @interface Shutdown
-{
-
-}
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD })
+public @interface Shutdown{}
