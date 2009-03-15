@@ -14,43 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se;
+package org.jboss.webbeans.environment.se.test;
 
+import javax.inject.AnnotationLiteral;
 import javax.inject.manager.Manager;
-import junit.framework.Assert;
-import junit.framework.TestCase;
+
 import org.jboss.webbeans.CurrentManager;
-import org.jboss.webbeans.environment.se.beans.MainTestBean;
-import org.jboss.webbeans.environment.se.beans.ParametersTestBean;
-import org.jboss.webbeans.environment.se.events.ShutdownRequest;
+import org.jboss.webbeans.environment.se.StartMain;
+import org.jboss.webbeans.environment.se.events.Shutdown;
+import org.jboss.webbeans.environment.se.test.beans.MainTestBean;
+import org.jboss.webbeans.environment.se.test.beans.ParametersTestBean;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  *
  * @author Peter Royle
  */
-public class StartMainTest extends TestCase {
+public class StartMainTest {
 
     public static String[] ARGS = new String[] { "arg1", "arg2", "arg 3"};
 
-    public StartMainTest(String testName) {
-        super(testName);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
 
     /**
      * Test of main method, of class StartMain. Checks that the beans
      * found in the org.jboss.webbeans.environment.se.beans package are
      * initialised as expected.
      */
+    @Test
     public void testMain()
     {
         String[] args = ARGS ;
@@ -69,7 +60,7 @@ public class StartMainTest extends TestCase {
         Assert.assertNotNull( paramsBean.getParam3() );
         Assert.assertEquals( ARGS[2], paramsBean.getParam3() );
 
-        manager.fireEvent( new ShutdownRequest() );
+        manager.fireEvent( manager, new AnnotationLiteral<Shutdown>() {} );
     }
 
 }

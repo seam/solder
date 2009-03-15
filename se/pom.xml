@@ -22,79 +22,21 @@
                     <target>1.5</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jalopy-maven-plugin</artifactId>
-                <version>1.0-alpha-1</version>
-                <!-- This wipes out UNDO in IDEs. Run manually instead.
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                -->
-            </plugin>
-            <plugin>
-                <groupId>com.google.code.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <version>1.4.0</version>
-                <configuration>
-                    <basedir>${basedir}</basedir>
-                    <header>${basedir}/src/etc/header.txt</header>
-                    <quiet>false</quiet>
-                    <failIfMissing>true</failIfMissing>
-                    <aggregate>false</aggregate>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>repository.jboss.org</id>
-            <name>JBoss Repository</name>
-            <url>http://repository.jboss.org/maven2</url>
-            <releases>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>snapshots.jboss.org</id>
-            <name>JBoss Snapshots Repository</name>
-            <url>http://snapshots.jboss.org/maven2</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>repository.codehaus.org</id>
-            <name>Codehaus Repository</name>
-            <url>http://repository.codehaus.org</url>
-        </repository>
-    </repositories>
+    
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
             <scope>test</scope>
+            <classifier>jdk15</classifier>
+            <exclusions>
+               <exclusion>
+                  <artifactId>junit</artifactId>
+                  <groupId>junit</groupId>
+               </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -120,16 +62,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- TODO: these have to go or be replaced with mocks -->
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
+        
     </dependencies>
 
 </project>

@@ -17,11 +17,22 @@
 package org.jboss.webbeans.environment.se;
 
 import javax.event.Observes;
-import org.jboss.webbeans.environment.se.boot.WebBeansBootstrap;
+import javax.inject.manager.Manager;
+
+import org.jboss.webbeans.bootstrap.api.Bootstrap;
+import org.jboss.webbeans.bootstrap.api.Environments;
+import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
+import org.jboss.webbeans.context.DependentContext;
+import org.jboss.webbeans.context.api.BeanStore;
+import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
+import org.jboss.webbeans.environment.se.beans.ParametersFactory;
+import org.jboss.webbeans.environment.se.discovery.WebBeanDiscoveryImpl;
 import org.jboss.webbeans.environment.se.events.Shutdown;
-import org.jboss.webbeans.environment.se.events.ShutdownRequest;
+import org.jboss.webbeans.environment.se.resources.NoNamingContext;
+import org.jboss.webbeans.environment.se.util.Reflections;
 import org.jboss.webbeans.log.Log;
 import org.jboss.webbeans.log.Logging;
+import org.jboss.webbeans.resources.spi.NamingContext;
 
 /**
  * This is the main class that should always be called from the command
@@ -30,11 +41,15 @@ import org.jboss.webbeans.log.Logging;
  * java -jar MyApp.jar org.jboss.webbeans.environment.se.StarMain arguments
  * </code>
  * @author Peter Royle
+ * @author Pete Muir
  */
 public class StartMain
 {
 
-    private WebBeansBootstrap webBeansBootstrap;
+    private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
+   
+    private final Bootstrap bootstrap;
+    private final BeanStore applicationBeanStore;
     private String[] args;
     private boolean hasShutdownBeenCalled = false;
     Log log = Logging.getLog( StartMain.class );
@@ -42,16 +57,27 @@ public class StartMain
     public StartMain( String[] commandLineArgs )
     {
         this.args = commandLineArgs;
+        try
+        {
+            bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME, Bootstrap.class);
+        }
+        catch (Exception e)
+        {
+            throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
+        }
+        this.applicationBeanStore = new ConcurrentHashMapBeanStore();
     }
 
     private void go()
-    {
-        webBeansBootstrap = new WebBeansBootstrap( args );
-
-        webBeansBootstrap.initialize();
-
-        webBeansBootstrap.boot();
-
+    { 
+        bootstrap.setEnvironment(Environments.SE);
+        bootstrap.getServices().add(WebBeanDiscovery.class, new WebBeanDiscoveryImpl());
+        bootstrap.getServices().add(NamingContext.class, new NoNamingContext());
+        bootstrap.setApplicationContext(applicationBeanStore);
+        bootstrap.initialize();
+        bootstrap.boot();
+        bootstrap.getManager().getInstanceByType(ParametersFactory.class).setArgs(args);
+        DependentContext.INSTANCE.setActive(true);
     }
 
     /**
@@ -69,7 +95,7 @@ public class StartMain
      * Shutdown event.
      * @param shutdownRequest
      */
-    public void shutdown( @Observes ShutdownRequest shutdownRequest )
+    public void shutdown( @Observes @Shutdown Manager shutdownRequest )
     {
         synchronized (this)
         {
@@ -77,7 +103,7 @@ public class StartMain
             if (!hasShutdownBeenCalled)
             {
                 hasShutdownBeenCalled = true;
-                webBeansBootstrap.shutdown();
+                bootstrap.shutdown();
             } else
             {
                 log.debug( "Skipping spurious call to shutdown");

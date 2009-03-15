@@ -14,28 +14,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se.boot;
+package org.jboss.webbeans.environment.se.test.beans;
 
-import org.jboss.webbeans.bootstrap.spi.EjbDiscovery;
-import org.jboss.webbeans.ejb.spi.EjbDescriptor;
-
-import java.util.Collections;
+import javax.inject.Current;
+import javax.inject.Initializer;
 
 /**
  *
- * @author JBoss.org, modifications by Peter Royle
+ * @author Peter Royle
  */
-public class EmptyEjbDiscovery
-        implements EjbDiscovery
+public class MainTestBean
 {
 
-    public Iterable<EjbDescriptor<?>> discoverEjbs()
+    boolean initialised = false;
+    ParametersTestBean parametersTestBean;
+
+    @Initializer
+    public void init(@Current ParametersTestBean paramsTestBean)
     {
-        return Collections.EMPTY_SET;
+        this.initialised = true;
+        this.parametersTestBean = paramsTestBean;
     }
 
-    protected static Iterable<Class<?>> discoverEjbs( Iterable<Class<?>> webBeanClasses )
+    public ParametersTestBean getParametersTestBean()
     {
-        return Collections.EMPTY_SET;
+        return parametersTestBean;
     }
+
+    public boolean isInitialised()
+    {
+        return initialised;
+    }
+
+    
 }

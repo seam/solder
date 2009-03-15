@@ -16,9 +16,6 @@
  */
 package org.jboss.webbeans.environment.se.deployment;
 
-import org.jboss.webbeans.log.LogProvider;
-import org.jboss.webbeans.log.Logging;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +27,9 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
+import org.jboss.webbeans.log.LogProvider;
+import org.jboss.webbeans.log.Logging;
 
 /**
  * Implementation of {@link Scanner} which can scan a {@link URLClassLoader}
@@ -50,7 +50,6 @@ public class URLScanner
         super( deploymentHandlers, classLoader );
     }
 
-    @Override
     public void scanDirectories( File[] directories )
     {
         for ( File directory : directories )

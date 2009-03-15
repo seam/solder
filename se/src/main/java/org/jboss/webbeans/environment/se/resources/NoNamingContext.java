@@ -14,17 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se.events;
+package org.jboss.webbeans.environment.se.resources;
+
+import org.jboss.webbeans.resources.spi.NamingContext;
 
 /**
-* Should be fired by application to trigger shutting down of the WebBEans SE
- * manager. This will in turn fire the Shutdown
+ *
  * @author Peter Royle
  */
-public class ShutdownRequest
+public class NoNamingContext
+        implements NamingContext
 {
 
-    public ShutdownRequest()
+    public NoNamingContext() {}
+   
+    public void bind( String name, Object value )
     {
+        // No-op
     }
+
+    public <T> T lookup( String name, Class<? extends T> expectedType )
+    {
+        return null;
+    }
+
 }

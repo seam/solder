@@ -16,13 +16,15 @@
  */
 package org.jboss.webbeans.environment.se.beans;
 
-import org.jboss.webbeans.environment.se.bindings.Parameters;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.context.ApplicationScoped;
 import javax.inject.Produces;
+
+import org.jboss.webbeans.environment.se.bindings.Parameters;
 
 /**
  * The simple bean that will hold the command line arguments
@@ -42,10 +44,10 @@ public class ParametersFactory
      */
     @Produces
     @Parameters
-    public ArrayList<String> getArgs(  )
+    // TODO Give generic type - WBRI-186
+    public List getArgs(  )
     {
-        // TODO (PR): is there an unmodifiable, serializable List?
-        return new ArrayList( Arrays.asList( this.args ) );
+        return Collections.unmodifiableList(new ArrayList<String>( Arrays.asList( this.args ) ));
     }
 
     /**

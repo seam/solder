@@ -14,37 +14,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se.beans;
 
-import javax.inject.Current;
+
+package org.jboss.webbeans.environment.se.test.beans;
+
+import java.util.List;
+
 import javax.inject.Initializer;
+
+import org.jboss.webbeans.environment.se.bindings.Parameters;
+import org.jboss.webbeans.environment.se.test.StartMainTest;
+import org.testng.Assert;
 
 /**
  *
  * @author Peter Royle
  */
-public class MainTestBean
-{
+public class ParametersTestBean {
 
-    boolean initialised = false;
-    ParametersTestBean parametersTestBean;
+    String param1;
+    String param2;
+    String param3;
 
     @Initializer
-    public void init(@Current ParametersTestBean paramsTestBean)
-    {
-        this.initialised = true;
-        this.parametersTestBean = paramsTestBean;
+    public void init(@Parameters List<String> params) {
+        Assert.assertNotNull( params );
+        Assert.assertEquals( StartMainTest.ARGS.length, params.size(), "Unexpected number of arguments");
+        param1 = params.get( 0 );
+        param2 = params.get( 1 );
+        param3 = params.get( 2 );
     }
 
-    public ParametersTestBean getParametersTestBean()
+    public String getParam1()
     {
-        return parametersTestBean;
+        return param1;
     }
 
-    public boolean isInitialised()
+    public String getParam2()
     {
-        return initialised;
+        return param2;
     }
 
-    
+    public String getParam3()
+    {
+        return param3;
+    }
+
 }

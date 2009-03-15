@@ -1,4 +1,4 @@
-/**
+/*
  * JBoss, Home of Professional Open Source
  * Copyright 2008, Red Hat Middleware LLC, and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
@@ -16,15 +16,25 @@
  */
 package org.jboss.webbeans.environment.se.events;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import javax.inject.BindingType;
+
 /**
  * Fired by webbeans SE before shutting down. Applications and modules should
  * release resources cleanly in response to this event.
  * @author Peter Royle
  */
-public class Shutdown
+@BindingType
+@Retention( RetentionPolicy.RUNTIME )
+@Target( {ElementType.PARAMETER,
+    ElementType.METHOD,
+    ElementType.FIELD
+} )
+public @interface Shutdown
 {
 
-    public Shutdown()
-    {
-    }
 }
