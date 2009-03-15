@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.jboss.webbeans.environment.se.test.StartMainTest" failures="0" tests="1" time="6.376" errors="0">
+  <properties/>
+  <testcase name="testMain" time="6.334" classname="org.jboss.webbeans.environment.se.test.StartMainTest"/>
+</testsuite>

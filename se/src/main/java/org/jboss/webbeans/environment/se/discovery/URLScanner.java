@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se.deployment;
+package org.jboss.webbeans.environment.se.discovery;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
@@ -44,11 +45,11 @@ public class URLScanner extends AbstractScanner
 {
    private static final LogProvider log = Logging.getLogProvider(URLScanner.class);
    
-   public URLScanner(Set<DeploymentHandler> deploymentHandlers, ClassLoader classLoader)
+   public URLScanner(ClassLoader classLoader, SEWebBeanDiscovery webBeanDiscovery)
    {
-      super(deploymentHandlers, classLoader);
+      super(classLoader, webBeanDiscovery);
    }
-   
+
    public void scanDirectories(File[] directories)
    {
       for (File directory : directories)
@@ -145,7 +146,7 @@ public class URLScanner extends AbstractScanner
          {
             ZipEntry entry = entries.nextElement();
             String name = entry.getName();
-            handle(name);
+            handle(name, getClassLoader().getResource(name));
          }
       }
       catch (ZipException e)
@@ -183,7 +184,14 @@ public class URLScanner extends AbstractScanner
          }
          else
          {
-            handle(newPath);
+            try
+            {
+               handle(newPath, child.toURI().toURL());
+            }
+            catch (MalformedURLException e)
+            {
+               log.error("Error loading file " + newPath);
+            }
          }
       }
    }

@@ -22,7 +22,7 @@ import org.jboss.webbeans.resources.spi.NamingContext;
  * 
  * @author Peter Royle
  */
-public class NoNamingContext implements NamingContext
+public abstract class NoNamingContext implements NamingContext
 {
    
    public NoNamingContext()

@@ -46,4 +46,16 @@ public class Reflections
       }
    }
    
+   public static ClassLoader getClassLoader()
+   {
+      if (Thread.currentThread().getContextClassLoader() != null)
+      {
+         return Thread.currentThread().getContextClassLoader();
+      }
+      else
+      {
+         return Reflections.class.getClassLoader();
+      }
+   }
+   
 }

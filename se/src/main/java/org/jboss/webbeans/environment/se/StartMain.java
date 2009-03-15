@@ -26,7 +26,7 @@ import org.jboss.webbeans.context.DependentContext;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.beans.ParametersFactory;
-import org.jboss.webbeans.environment.se.discovery.WebBeanDiscoveryImpl;
+import org.jboss.webbeans.environment.se.discovery.SEWebBeanDiscovery;
 import org.jboss.webbeans.environment.se.events.Shutdown;
 import org.jboss.webbeans.environment.se.resources.NoNamingContext;
 import org.jboss.webbeans.environment.se.util.Reflections;
@@ -71,8 +71,8 @@ public class StartMain
    private void go()
    {
       bootstrap.setEnvironment(Environments.SE);
-      bootstrap.getServices().add(WebBeanDiscovery.class, new WebBeanDiscoveryImpl());
-      bootstrap.getServices().add(NamingContext.class, new NoNamingContext());
+      bootstrap.getServices().add(WebBeanDiscovery.class, new SEWebBeanDiscovery() {});
+      bootstrap.getServices().add(NamingContext.class, new NoNamingContext() {});
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
       bootstrap.boot();

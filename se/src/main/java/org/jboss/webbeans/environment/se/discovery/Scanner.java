@@ -14,35 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.se.deployment;
+package org.jboss.webbeans.environment.se.discovery;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.File;
 
 /**
- * Abstract base class for {@link DeploymentHandler} providing common
- * functionality
+ * The Scanner is used to find resources to be processed by Seam
+ * 
+ * The processing is done by {@link DeploymentHandler}s
  * 
  * @author Pete Muir
  * 
  */
-public abstract class AbstractDeploymentHandler implements DeploymentHandler
+public interface Scanner
 {
-   private Set<FileDescriptor> resources;
+   /**
+    * Recursively scan directories.
+    * 
+    * @param directories
+    *           An array of the roots of the directory trees to scan
+    */
+   public void scanDirectories(File[] directories);
    
-   public AbstractDeploymentHandler()
-   {
-      resources = new HashSet<FileDescriptor>();
-   }
-   
-   public void setResources(Set<FileDescriptor> resources)
-   {
-      this.resources = resources;
-   }
-   
-   public Set<FileDescriptor> getResources()
-   {
-      return resources;
-   }
+   /**
+    * Scan for structures which contain any of the given resources in their root
+    * 
+    * @param resources
+    *           The resources to scan for
+    */
+   public void scanResources(String[] resources);
    
 }
