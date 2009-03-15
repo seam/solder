@@ -22,11 +22,12 @@ package org.jboss.webbeans.environment.se.util;
  * @author Pete Muir
  * 
  */
-public class Reflections
+public abstract class Reflections
 {
    
-   private Reflections(String name)
+   private Reflections()
    {
+      // TODO Auto-generated constructor stub
    }
    
    public static <T> T newInstance(String className, Class<T> expectedType) throws InstantiationException, IllegalAccessException, ClassNotFoundException
