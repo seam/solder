@@ -31,9 +31,9 @@ public class MethodModel extends NamedModel
    private String returnType;
    private List<ParameterModel> parameters = new ArrayList<ParameterModel>();
 
-   public MethodModel(String name, String returnType)
+   public MethodModel(String name, String returnType, List<String> annotations)
    {
-      super(name);
+      super(name, annotations);
       this.returnType = returnType;
    }
 
@@ -68,7 +68,8 @@ public class MethodModel extends NamedModel
    @Override
    public String toString()
    {
-      return returnType + " " + name + "(" + (parameters.isEmpty() ? "" : parameters) + ")";
+      String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
+      return "\n  " + annotationString + returnType + " " + name + "(" + (parameters.isEmpty() ? "" : parameters) + ")";
    }
 
 }

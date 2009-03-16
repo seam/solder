@@ -81,10 +81,11 @@ public class ClassModel extends NamedModel
    public String toString()
    {
       StringBuilder buffer = new StringBuilder();
-      buffer.append("Name: " + name + "\n");
-      buffer.append("Constructors: " + getMergedConstructors() + "\n");
-      buffer.append("Methods: " + getMergedMethods() + "\n");
-      buffer.append("Fields: " + getMergedFields() + "\n");
+      String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
+      buffer.append("----------------------------------\n" + annotationString + name + "\n");
+      buffer.append("Constructors:\n " + getMergedConstructors() + "\n");
+      buffer.append("Methods:\n" + getMergedMethods() + "\n");
+      buffer.append("Fields:\n" + getMergedFields() + "\n");
       return buffer.toString();
    }
 

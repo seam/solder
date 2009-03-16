@@ -17,23 +17,39 @@
 
 package org.jboss.webbeans.xsd.model;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * A superclass for named models
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
 public class NamedModel
 {
    protected String name;
+   protected Set<String> annotations = new HashSet<String>();
 
    public NamedModel()
    {
    }
 
-   public NamedModel(String name)
+   public NamedModel(String name, List<String> annotations)
    {
       this.name = name;
+      this.annotations.addAll(annotations);
+   }
+
+   public void setAnnotations(List<String> annotations)
+   {
+      this.annotations.addAll(annotations);
+   }
+
+   public Set<String> getAnnotations()
+   {
+      return annotations;
    }
 
    public String getName()

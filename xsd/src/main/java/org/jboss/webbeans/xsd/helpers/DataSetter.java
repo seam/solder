@@ -17,6 +17,10 @@
 
 package org.jboss.webbeans.xsd.helpers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -32,7 +36,7 @@ import org.jboss.webbeans.xsd.model.ParameterModel;
  * Helper for examining classes and members and populating the model
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
 public class DataSetter
 {
@@ -50,16 +54,18 @@ public class DataSetter
 
    /**
     * Inspects a type element and populates a class model
-    *  
+    * 
     * @param classModel The class model to populate
     * @param element The element to inspect
     * @param parent The parent of the class
     */
    public static void populateClassModel(ClassModel classModel, Element element, ClassModel parent)
    {
+      List<String> annotations = getAnnotations(element);
       TypeElement typeElement = (TypeElement) element;
       classModel.setName(typeElement.getQualifiedName().toString());
       classModel.setParent(parent);
+      classModel.setAnnotations(annotations);
    }
 
    /**
@@ -76,7 +82,8 @@ public class DataSetter
       }
       String name = element.getSimpleName().toString();
       String type = element.asType().toString();
-      classModel.addField(new FieldModel(name, type));
+      List<String> annotations = getAnnotations(element);
+      classModel.addField(new FieldModel(name, type, annotations));
    }
 
    /**
@@ -95,16 +102,18 @@ public class DataSetter
 
       String name = element.getSimpleName().toString();
       String returnType = executableElement.getReturnType().toString();
-      MethodModel method = new MethodModel(name, returnType);
+      List<String> annotations = getAnnotations(element);
+      MethodModel method = new MethodModel(name, returnType, annotations);
 
       for (VariableElement parameterElement : executableElement.getParameters())
       {
          String paramName = parameterElement.getSimpleName().toString();
          String paramType = parameterElement.asType().toString();
-         ParameterModel parameter = new ParameterModel(paramName, paramType);
+         List<String> paramAnotations = getAnnotations(parameterElement);
+         ParameterModel parameter = new ParameterModel(paramName, paramType, paramAnotations);
          method.addParameter(parameter);
       }
-      // OK, checting a little with a common model for methods and constructors
+      // OK, cheating a little with a common model for methods and constructors
       if ("<init>".equals(name))
       {
          classModel.addConstructor(method);
@@ -113,6 +122,16 @@ public class DataSetter
       {
          classModel.addMethod(method);
       }
+   }
+
+   public static List<String> getAnnotations(Element element)
+   {
+      List<String> annotations = new ArrayList<String>();
+      for (AnnotationMirror annotation : element.getAnnotationMirrors())
+      {
+         annotations.add(annotation.getAnnotationType().toString());
+      }
+      return annotations;
    }
 
 }

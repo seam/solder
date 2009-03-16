@@ -17,6 +17,8 @@
 
 package org.jboss.webbeans.xsd.model;
 
+import java.util.List;
+
 /**
  * A model of a field
  * 
@@ -27,9 +29,9 @@ public class FieldModel extends NamedModel
 {
    protected String type;
 
-   public FieldModel(String name, String type)
+   public FieldModel(String name, String type, List<String> annotations)
    {
-      super(name);
+      super(name, annotations);
       this.type = type;
    }
 
@@ -54,7 +56,8 @@ public class FieldModel extends NamedModel
    @Override
    public String toString()
    {
-      return type + " " + name;
+      String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
+      return "\n  " + annotationString + type + " " + name;
    }
 
 }

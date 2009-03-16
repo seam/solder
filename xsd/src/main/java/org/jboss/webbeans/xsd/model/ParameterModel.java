@@ -17,6 +17,8 @@
 
 package org.jboss.webbeans.xsd.model;
 
+import java.util.List;
+
 /**
  * The model of a method or constrcutor parameter
  * 
@@ -26,9 +28,9 @@ package org.jboss.webbeans.xsd.model;
 public class ParameterModel extends FieldModel
 {
 
-   public ParameterModel(String name, String type)
+   public ParameterModel(String name, String type, List<String> annotations)
    {
-      super(name, type);
+      super(name, type, annotations);
    }
    
    @Override
@@ -42,6 +44,13 @@ public class ParameterModel extends FieldModel
    public int hashCode()
    {
       return type.hashCode();
+   }   
+   
+   @Override
+   public String toString()
+   {
+      String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
+      return "\n    " + annotationString + type + " " + name;
    }   
 
 }
