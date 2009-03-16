@@ -41,13 +41,6 @@ public class ClassModel extends NamedModel
    private List<MethodModel> constructors = new ArrayList<MethodModel>();
 
    /**
-    * Creates a new class model
-    */
-   public ClassModel()
-   {
-   }
-
-   /**
     * Adds a field to the class model
     * 
     * @param fieldModel The field to add
@@ -107,28 +100,6 @@ public class ClassModel extends NamedModel
    public void setParent(ClassModel parent)
    {
       this.parent = parent;
-   }
-
-   /**
-    * Gets the package of the file
-    * 
-    * @return The package
-    */
-   public String getPackage()
-   {
-      int lastDot = name.lastIndexOf(".");
-      return lastDot < 0 ? name : name.substring(0, lastDot);
-   }
-
-   /**
-    * Gets the simple name of the class
-    * 
-    * @return The simple name
-    */
-   public String getSimpleName()
-   {
-      int lastDot = name.lastIndexOf(".");
-      return lastDot < 0 ? name : name.substring(lastDot + 1);
    }
 
    /**
@@ -196,29 +167,41 @@ public class ClassModel extends NamedModel
       return mergedMethods;
    }
 
-   public Set<String> getReferencedTypes()
+   public Set<TypedModel> getTypeReferences()
    {
-      Set<String> types = new HashSet<String>();
+      Set<TypedModel> typeReferences = new HashSet<TypedModel>();
       for (FieldModel field : getMergedFields())
       {
-         types.add(field.getType());
+         typeReferences.add(field);
       }
       for (MethodModel method : getMergedMethods())
       {
-         types.add(method.getReturnType());
+         typeReferences.add(method.getReturnType());
          for (ParameterModel parameter : method.getParameters())
          {
-            types.add(parameter.getType());
+            typeReferences.add(parameter);
          }
       }
       for (MethodModel constructor : getMergedConstructors())
       {
          for (ParameterModel parameter : constructor.getParameters())
          {
-            types.add(parameter.getType());
+            typeReferences.add(parameter);
          }
       }
-      return types;
+      return typeReferences;
+   }
+
+   public String getPackage()
+   {
+      int lastDot = name.lastIndexOf(".");
+      return lastDot < 0 ? "nopak" : name.substring(0, lastDot);
+   }
+
+   public String getSimpleName()
+   {
+      int lastDot = name.lastIndexOf(".");
+      return lastDot < 0 ? name : name.substring(lastDot + 1);
    }
 
 }

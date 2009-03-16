@@ -19,8 +19,6 @@ package org.jboss.webbeans.xsd.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * The model of a method
@@ -30,18 +28,17 @@ import java.util.Set;
  */
 public class MethodModel extends NamedModel
 {
-   private String returnType;
+   private TypedModel returnType;
    private List<ParameterModel> parameters = new ArrayList<ParameterModel>();
 
-   public MethodModel(String name, String returnType, Map<String, Set<String>> annotations)
+   public TypedModel getReturnType()
    {
-      super(name, annotations);
-      this.returnType = returnType;
+      return returnType;
    }
 
-   public void addParameter(ParameterModel parameter)
+   public void setReturnType(TypedModel returnType)
    {
-      parameters.add(parameter);
+      this.returnType = returnType;
    }
 
    public List<ParameterModel> getParameters()
@@ -49,9 +46,14 @@ public class MethodModel extends NamedModel
       return parameters;
    }
 
-   public String getReturnType()
+   public void setParameters(List<ParameterModel> parameters)
    {
-      return returnType;
+      this.parameters = parameters;
+   }
+   
+   public void addParameter(ParameterModel parameter)
+   {
+      parameters.add(parameter);
    }
 
    @Override
@@ -71,7 +73,7 @@ public class MethodModel extends NamedModel
    public String toString()
    {
       String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
-      return "\n  " + annotationString + returnType + " " + name + "(" + (parameters.isEmpty() ? "" : parameters) + ")";
+      return "\n  " + annotationString + returnType.getType() + " " + name + "(" + (parameters.isEmpty() ? "" : parameters) + ")";
    }
 
 }

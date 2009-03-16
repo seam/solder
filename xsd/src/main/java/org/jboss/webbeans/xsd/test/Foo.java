@@ -8,6 +8,8 @@ public class Foo
 {
    @Current
    public String foo;
+   public int poo;
+   public Bar bar;
 
    @Initializer
    public Foo(String foo)

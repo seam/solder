@@ -64,6 +64,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
       List<ClassModel> workingSet = new ArrayList<ClassModel>();
       // Iterates over the classes compiled, creates a model of the classes and
       // add them to a working set
+
       for (Element element : roundEnv.getRootElements())
       {
          workingSet.add(inspectClass(element));
@@ -87,8 +88,9 @@ public class PackageSchemaGenerator extends AbstractProcessor
    private ClassModel inspectClass(Element element)
    {
       TypeElement typeElement = (TypeElement) element;
+      
       ClassModel classModel = new ClassModel();
-
+      
       // If the class has superclass's, scan them recursively
       if (typeElement.getSuperclass().getKind() != TypeKind.NONE)
       {

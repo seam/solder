@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.annotation.processing.Filer;
 import javax.tools.StandardLocation;
@@ -222,7 +223,11 @@ public class XSDHelper
             }
             packageInfoMap.put(packageName, packageInfo);
          }
-         updateClassInSchema(classModel, packageInfo.getSchema());
+         updateClassInSchema(classModel, packageInfo);
+         System.out.println("-------------");
+         for (Entry<String, Set<String>> e : packageInfo.getTypeReferences().entrySet()) {
+            System.out.println(e.getKey() + "=>" + e.getValue());
+         }
       }
    }
 
@@ -239,11 +244,12 @@ public class XSDHelper
    /**
     * Updates a schema with XSD from a file model
     * 
-    * @param schema The schema
+    * @param packageInfo The schema
     * @param classModel The class model
     */
-   private void updateClassInSchema(ClassModel classModel, Document schema)
+   private void updateClassInSchema(ClassModel classModel, PackageInfo packageInfo)
    {
+      Document schema = packageInfo.getSchema();
       Node oldClassModel = schema.selectSingleNode("//" + classModel.getSimpleName());
       if (oldClassModel != null)
       {
@@ -252,6 +258,7 @@ public class XSDHelper
       }
       // Create a new one
       schema.getRootElement().addElement(classModel.getSimpleName());
+      packageInfo.addTypeReferences(classModel.getTypeReferences());
    }
 
    /**

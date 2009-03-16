@@ -17,9 +17,6 @@
 
 package org.jboss.webbeans.xsd.model;
 
-import java.util.Map;
-import java.util.Set;
-
 /**
  * A model of a field
  * 
@@ -28,18 +25,6 @@ import java.util.Set;
  */
 public class FieldModel extends NamedModel
 {
-   protected String type;
-
-   public FieldModel(String name, String type, Map<String, Set<String>> annotations)
-   {
-      super(name, annotations);
-      this.type = type;
-   }
-
-   public String getType()
-   {
-      return type;
-   }
 
    @Override
    public boolean equals(Object other)

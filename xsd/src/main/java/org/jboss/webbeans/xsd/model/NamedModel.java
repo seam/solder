@@ -27,20 +27,10 @@ import java.util.Set;
  * @author Nicklas Karlsson
  * 
  */
-public class NamedModel
+public class NamedModel extends TypedModel
 {
    protected String name;
    protected Map<String, Set<String>> annotations = new HashMap<String, Set<String>>();
-
-   public NamedModel()
-   {
-   }
-
-   public NamedModel(String name, Map<String, Set<String>> annotations)
-   {
-      this.name = name;
-      this.annotations.putAll(annotations);
-   }
 
    public String getName()
    {
@@ -61,4 +51,17 @@ public class NamedModel
    {
       this.annotations = annotations;
    }
+
+   @Override
+   public boolean equals(Object other)
+   {
+      return name.equals(other);
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return name.hashCode();
+   }
+
 }

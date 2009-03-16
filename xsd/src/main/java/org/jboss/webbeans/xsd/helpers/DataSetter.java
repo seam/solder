@@ -28,11 +28,13 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
 
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.FieldModel;
 import org.jboss.webbeans.xsd.model.MethodModel;
 import org.jboss.webbeans.xsd.model.ParameterModel;
+import org.jboss.webbeans.xsd.model.TypedModel;
 
 /**
  * Helper for examining classes and members and populating the model
@@ -84,8 +86,14 @@ public class DataSetter
       }
       String name = element.getSimpleName().toString();
       String type = element.asType().toString();
+      boolean primitive = element.asType().getKind().isPrimitive();
       Map<String, Set<String>> annotations = getAnnotations(element);
-      classModel.addField(new FieldModel(name, type, annotations));
+      FieldModel field = new FieldModel();
+      field.setName(name);
+      field.setType(type);
+      field.setPrimitive(primitive);
+      field.setAnnotations(annotations);
+      classModel.addField(field);
    }
 
    /**
@@ -103,16 +111,27 @@ public class DataSetter
       ExecutableElement executableElement = (ExecutableElement) element;
 
       String name = element.getSimpleName().toString();
-      String returnType = executableElement.getReturnType().toString();
-      Map<String, Set<String>> annotations = getAnnotations(element);
-      MethodModel method = new MethodModel(name, returnType, annotations);
+      
+      TypedModel returnType = new TypedModel();
+      returnType.setType(executableElement.getReturnType().toString());
+      returnType.setPrimitive(executableElement.getReturnType().getKind().isPrimitive() || executableElement.getReturnType().getKind() == TypeKind.VOID);
+      
+      MethodModel method = new MethodModel();
+      method.setName(name);
+      method.setAnnotations(getAnnotations(executableElement));
+      method.setReturnType(returnType);
 
       for (VariableElement parameterElement : executableElement.getParameters())
       {
          String paramName = parameterElement.getSimpleName().toString();
          String paramType = parameterElement.asType().toString();
-         Map<String, Set<String>> paramAnnotations = getAnnotations(element);
-         ParameterModel parameter = new ParameterModel(paramName, paramType, paramAnnotations);
+         boolean paramPrimitive = parameterElement.asType().getKind().isPrimitive();
+         Map<String, Set<String>> paramAnnotations = getAnnotations(parameterElement);
+         ParameterModel parameter = new ParameterModel();
+         parameter.setName(paramName);
+         parameter.setType(paramType);
+         parameter.setPrimitive(paramPrimitive);
+         parameter.setAnnotations(paramAnnotations);
          method.addParameter(parameter);
       }
       // OK, cheating a little with a common model for methods and constructors
