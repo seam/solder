@@ -15,6 +15,7 @@ public class PackageInfo
    private Document schema;
    private String packageName;
    private Map<String, Set<String>> typeReferences;
+   private String namespace;
 
    public PackageInfo(String packageName)
    {
@@ -26,8 +27,7 @@ public class PackageInfo
    {
       for (TypedModel reference : references)
       {
-         String key = reference.isPrimitive() ? "" : reference.getTypePackage();
-         Set<String> typeNames = typeReferences.get(key);
+         Set<String> typeNames = typeReferences.get(reference.getTypePackage());
          if (typeNames == null)
          {
             typeNames = new HashSet<String>();
@@ -70,5 +70,15 @@ public class PackageInfo
    public Map<String, Set<String>> getTypeReferences()
    {
       return typeReferences;
+   }
+
+   public String getNamespace()
+   {
+      return namespace;
+   }
+
+   public void setNamespace(String namespace)
+   {
+      this.namespace = namespace;
    }
 }

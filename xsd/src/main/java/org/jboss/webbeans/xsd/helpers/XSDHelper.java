@@ -50,7 +50,6 @@ import org.jboss.webbeans.xsd.model.ClassModel;
  */
 public class XSDHelper
 {
-   public static final Set<String> URN_JAVA_EE = new HashSet<String>(Arrays.asList("java.lang", "java.util", "javax.annotation", "javax.inject", "javax.context", "javax.interceptor", "javax.decorator", "javax.event", "javax.ejb", "javax.persistence", "javax.xml.ws", "javax.jms", "javax.sql"));
 
    // The filed of the annotation processing environment
    private Filer filer;
@@ -58,6 +57,7 @@ public class XSDHelper
    private Map<String, ClassModel> classModelCache = new HashMap<String, ClassModel>();
    // The XSD documents of the affected packages
    private Map<String, PackageInfo> packageInfoMap = new HashMap<String, PackageInfo>();
+   private NamespaceGenerator namespaceGenerator = new NamespaceGenerator();
 
    /**
     * Creates a new helper
@@ -72,7 +72,7 @@ public class XSDHelper
    /**
     * Reads package info
     * 
-    * @param packageName The package name 
+    * @param packageName The package name
     * @return The package info of the package
     * @throws DocumentException If the schema could not be parsed
     * @throws IOException If the schema could not be read
@@ -174,7 +174,7 @@ public class XSDHelper
     * 
     * @param packageName The package name
     * @param schema The schema
-    * @throws IOException If the file could not be written 
+    * @throws IOException If the file could not be written
     */
    private void writeSchema(String packageName, Document schema) throws IOException
    {
@@ -208,7 +208,8 @@ public class XSDHelper
       {
          String packageName = classModel.getPackage();
          PackageInfo packageInfo = packageInfoMap.get(packageName);
-         if (packageInfo == null) {
+         if (packageInfo == null)
+         {
             try
             {
                packageInfo = readPackageInfo(packageName);
@@ -224,10 +225,6 @@ public class XSDHelper
             packageInfoMap.put(packageName, packageInfo);
          }
          updateClassInSchema(classModel, packageInfo);
-         System.out.println("-------------");
-         for (Entry<String, Set<String>> e : packageInfo.getTypeReferences().entrySet()) {
-            System.out.println(e.getKey() + "=>" + e.getValue());
-         }
       }
    }
 
@@ -236,7 +233,11 @@ public class XSDHelper
     */
    public void writeSchemas()
    {
-      for (PackageInfo packageInfo : packageInfoMap.values()) {
+      for (PackageInfo packageInfo : packageInfoMap.values())
+      {
+         packageInfo.setNamespace(namespaceGenerator.getNamespace(packageInfo.getPackageName()));
+         System.out.println(packageInfo.getPackageName() + " (" + packageInfo.getNamespace() + ")");
+         System.out.println(packageInfo.getTypeReferences());
          writePackageInfo(packageInfo);
       }
    }
@@ -259,18 +260,6 @@ public class XSDHelper
       // Create a new one
       schema.getRootElement().addElement(classModel.getSimpleName());
       packageInfo.addTypeReferences(classModel.getTypeReferences());
-   }
-
-   /**
-    * Gets the short name of a package (the last part)
-    * 
-    * @param packageName The package name
-    * @return A short name
-    */
-   private String getShortName(String packageName)
-   {
-      int lastDot = packageName.lastIndexOf(".");
-      return lastDot < 0 ? packageName : packageName.substring(lastDot + 1);
    }
 
    /**
