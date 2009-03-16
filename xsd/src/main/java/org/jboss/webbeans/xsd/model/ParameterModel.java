@@ -17,7 +17,8 @@
 
 package org.jboss.webbeans.xsd.model;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The model of a method or constrcutor parameter
@@ -28,7 +29,7 @@ import java.util.List;
 public class ParameterModel extends FieldModel
 {
 
-   public ParameterModel(String name, String type, List<String> annotations)
+   public ParameterModel(String name, String type, Map<String, Set<String>> annotations)
    {
       super(name, type, annotations);
    }

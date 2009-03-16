@@ -17,19 +17,20 @@
 
 package org.jboss.webbeans.xsd.model;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A model of a field
  * 
- * @author Nicklas Karlsosn
+ * @author Nicklas Karlsson
  *
  */
 public class FieldModel extends NamedModel
 {
    protected String type;
 
-   public FieldModel(String name, String type, List<String> annotations)
+   public FieldModel(String name, String type, Map<String, Set<String>> annotations)
    {
       super(name, annotations);
       this.type = type;

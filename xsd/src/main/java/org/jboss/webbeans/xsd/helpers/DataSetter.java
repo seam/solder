@@ -17,8 +17,10 @@
 
 package org.jboss.webbeans.xsd.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
@@ -61,7 +63,7 @@ public class DataSetter
     */
    public static void populateClassModel(ClassModel classModel, Element element, ClassModel parent)
    {
-      List<String> annotations = getAnnotations(element);
+      Map<String, Set<String>> annotations = getAnnotations(element);
       TypeElement typeElement = (TypeElement) element;
       classModel.setName(typeElement.getQualifiedName().toString());
       classModel.setParent(parent);
@@ -82,7 +84,7 @@ public class DataSetter
       }
       String name = element.getSimpleName().toString();
       String type = element.asType().toString();
-      List<String> annotations = getAnnotations(element);
+      Map<String, Set<String>> annotations = getAnnotations(element);
       classModel.addField(new FieldModel(name, type, annotations));
    }
 
@@ -102,15 +104,15 @@ public class DataSetter
 
       String name = element.getSimpleName().toString();
       String returnType = executableElement.getReturnType().toString();
-      List<String> annotations = getAnnotations(element);
+      Map<String, Set<String>> annotations = getAnnotations(element);
       MethodModel method = new MethodModel(name, returnType, annotations);
 
       for (VariableElement parameterElement : executableElement.getParameters())
       {
          String paramName = parameterElement.getSimpleName().toString();
          String paramType = parameterElement.asType().toString();
-         List<String> paramAnotations = getAnnotations(parameterElement);
-         ParameterModel parameter = new ParameterModel(paramName, paramType, paramAnotations);
+         Map<String, Set<String>> paramAnnotations = getAnnotations(element);
+         ParameterModel parameter = new ParameterModel(paramName, paramType, paramAnnotations);
          method.addParameter(parameter);
       }
       // OK, cheating a little with a common model for methods and constructors
@@ -124,12 +126,17 @@ public class DataSetter
       }
    }
 
-   public static List<String> getAnnotations(Element element)
+   private static Map<String, Set<String>> getAnnotations(Element element)
    {
-      List<String> annotations = new ArrayList<String>();
+      Map<String, Set<String>> annotations = new HashMap<String, Set<String>>();
       for (AnnotationMirror annotation : element.getAnnotationMirrors())
       {
-         annotations.add(annotation.getAnnotationType().toString());
+         Set<String> metaAnnotations = new HashSet<String>();
+         for (AnnotationMirror metaAnnotation : annotation.getAnnotationType().asElement().getAnnotationMirrors())
+         {
+            metaAnnotations.add(metaAnnotation.getAnnotationType().toString());
+         }
+         annotations.put(annotation.getAnnotationType().toString(), metaAnnotations);
       }
       return annotations;
    }

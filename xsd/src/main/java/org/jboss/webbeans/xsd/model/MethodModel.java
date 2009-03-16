@@ -19,6 +19,8 @@ package org.jboss.webbeans.xsd.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The model of a method
@@ -31,7 +33,7 @@ public class MethodModel extends NamedModel
    private String returnType;
    private List<ParameterModel> parameters = new ArrayList<ParameterModel>();
 
-   public MethodModel(String name, String returnType, List<String> annotations)
+   public MethodModel(String name, String returnType, Map<String, Set<String>> annotations)
    {
       super(name, annotations);
       this.returnType = returnType;

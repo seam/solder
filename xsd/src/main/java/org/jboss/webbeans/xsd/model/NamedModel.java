@@ -17,8 +17,8 @@
 
 package org.jboss.webbeans.xsd.model;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,26 +30,16 @@ import java.util.Set;
 public class NamedModel
 {
    protected String name;
-   protected Set<String> annotations = new HashSet<String>();
+   protected Map<String, Set<String>> annotations = new HashMap<String, Set<String>>();
 
    public NamedModel()
    {
    }
 
-   public NamedModel(String name, List<String> annotations)
+   public NamedModel(String name, Map<String, Set<String>> annotations)
    {
       this.name = name;
-      this.annotations.addAll(annotations);
-   }
-
-   public void setAnnotations(List<String> annotations)
-   {
-      this.annotations.addAll(annotations);
-   }
-
-   public Set<String> getAnnotations()
-   {
-      return annotations;
+      this.annotations.putAll(annotations);
    }
 
    public String getName()
@@ -60,5 +50,15 @@ public class NamedModel
    public void setName(String name)
    {
       this.name = name;
+   }
+
+   public Map<String, Set<String>> getAnnotations()
+   {
+      return annotations;
+   }
+
+   public void setAnnotations(Map<String, Set<String>> annotations)
+   {
+      this.annotations = annotations;
    }
 }
