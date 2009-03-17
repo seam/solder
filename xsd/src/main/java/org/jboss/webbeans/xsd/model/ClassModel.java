@@ -165,21 +165,34 @@ public class ClassModel extends NamedModel
       Set<TypedModel> typeReferences = new HashSet<TypedModel>();
       for (FieldModel field : getMergedFields())
       {
-         typeReferences.add(field);
+         if (!field.isPrimitive())
+         {
+            typeReferences.add(field);
+         }
       }
       for (MethodModel method : getMergedMethods())
       {
-         typeReferences.add(method.getReturnType());
+         TypedModel returnValue = method.getReturnType();
+         if (!returnValue.isPrimitive())
+         {
+            typeReferences.add(returnValue);
+         }
          for (ParameterModel parameter : method.getParameters())
          {
-            typeReferences.add(parameter);
+            if (!parameter.isPrimitive())
+            {
+               typeReferences.add(parameter);
+            }
          }
       }
       for (MethodModel constructor : getMergedConstructors())
       {
          for (ParameterModel parameter : constructor.getParameters())
          {
-            typeReferences.add(parameter);
+            if (!parameter.isPrimitive())
+            {
+               typeReferences.add(parameter);
+            }
          }
       }
       return typeReferences;

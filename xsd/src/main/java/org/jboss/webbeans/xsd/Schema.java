@@ -17,9 +17,14 @@
 
 package org.jboss.webbeans.xsd;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.lang.model.element.Element;
+import javax.lang.model.element.PackageElement;
+
 import org.dom4j.Document;
+import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.TypedModel;
 
 /**
@@ -33,21 +38,21 @@ public class Schema
    private String packageName;
    private Document document;
    private NamespaceHandler namespaceHandler;
+   private Set<ClassModel> classModels;
 
    public Schema(String packageName)
    {
       this.packageName = packageName;
       namespaceHandler = new NamespaceHandler(packageName);
+      classModels = new HashSet<ClassModel>();
    }
 
-   public void addTypeReferences(Set<TypedModel> references)
+   public void addClass(ClassModel classModel)
    {
-      for (TypedModel reference : references)
+      classModels.add(classModel);
+      for (TypedModel reference : classModel.getTypeReferences())
       {
-         if (!reference.isPrimitive())
-         {
-            namespaceHandler.addPackage(reference.getTypePackage());
-         }
+         namespaceHandler.addPackage(reference.getTypePackage());
       }
    }
 
@@ -74,6 +79,15 @@ public class Schema
    public Set<String> getNamespaces()
    {
       return namespaceHandler.getUsedNamespaces();
+   }
+
+   public void rebuild(PackageElement packageElement)
+   {
+      System.out.println("Stuff in " + packageName);
+      for (Element e : packageElement.getEnclosedElements())
+      {
+         System.out.println(e.asType().toString());
+      }
    }
 
 }

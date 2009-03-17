@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.Filer;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.PackageElement;
 import javax.tools.StandardLocation;
 
 import org.dom4j.Document;
@@ -46,8 +48,8 @@ import org.jboss.webbeans.xsd.model.ClassModel;
 public class XSDHelper
 {
 
-   // The filed of the annotation processing environment
-   private Filer filer;
+   // The annotation processing environment
+   private ProcessingEnvironment processingEnvironment;
    // The cache of already processed classes
    private Map<String, ClassModel> classModelCache = new HashMap<String, ClassModel>();
    // The XSD documents of the affected packages
@@ -58,9 +60,9 @@ public class XSDHelper
     * 
     * @param filer The filer of the processing environment
     */
-   public XSDHelper(Filer filer)
+   public XSDHelper(ProcessingEnvironment processingEnvironment)
    {
-      this.filer = filer;
+      this.processingEnvironment = processingEnvironment;
    }
 
    /**
@@ -105,7 +107,7 @@ public class XSDHelper
       InputStream in = null;
       try
       {
-         in = filer.getResource(StandardLocation.CLASS_OUTPUT, packageName, "schema.xsd").openInputStream();
+         in = processingEnvironment.getFiler().getResource(StandardLocation.CLASS_OUTPUT, packageName, "schema.xsd").openInputStream();
          return new SAXReader().read(in);
       }
       catch (IOException e)
@@ -151,7 +153,7 @@ public class XSDHelper
       try
       {
          OutputFormat format = OutputFormat.createPrettyPrint();
-         out = filer.createResource(StandardLocation.CLASS_OUTPUT, packageName, "schema.xsd").openOutputStream();
+         out = processingEnvironment.getFiler().createResource(StandardLocation.CLASS_OUTPUT, packageName, "schema.xsd").openOutputStream();
          XMLWriter writer = new XMLWriter(out, format);
          writer.write(schema);
          writer.flush();
@@ -193,40 +195,22 @@ public class XSDHelper
             }
             schemaMap.put(packageName, schema);
          }
-         updateClassInSchema(classModel, schema);
+         schema.addClass(classModel);
       }
    }
 
    /**
     * Writes the schemas back to disk
+    * @param packageModels 
     */
-   public void writeSchemas()
+   public void writeSchemas(Map<String, PackageElement> packageModels)
    {
       for (Schema schema : schemaMap.values())
       {
+         schema.rebuild(packageModels.get(schema.getPackageName()));
          System.out.println(schema.getPackageName() + " (" + schema.getNamespaces() + ")");
          writePackageInfo(schema);
       }
-   }
-
-   /**
-    * Updates a schema with XSD from a file model
-    * 
-    * @param schema The schema
-    * @param classModel The class model
-    */
-   private void updateClassInSchema(ClassModel classModel, Schema schema)
-   {
-      Document document = schema.getDocument();
-      Node oldClassModel = document.selectSingleNode("//" + classModel.getSimpleName());
-      if (oldClassModel != null)
-      {
-         // Remove the old class definition
-         document.getRootElement().remove(oldClassModel);
-      }
-      // Create a new one
-      document.getRootElement().addElement(classModel.getSimpleName());
-      schema.addTypeReferences(classModel.getTypeReferences());
    }
 
    /**

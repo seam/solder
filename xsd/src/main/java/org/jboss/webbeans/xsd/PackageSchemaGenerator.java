@@ -18,7 +18,9 @@
 package org.jboss.webbeans.xsd;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -28,10 +30,12 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
 
 import org.jboss.webbeans.xsd.helpers.DataSetter;
 import org.jboss.webbeans.xsd.helpers.XSDHelper;
@@ -52,29 +56,32 @@ public class PackageSchemaGenerator extends AbstractProcessor
    XSDHelper helper;
 
    @Override
-   public synchronized void init(ProcessingEnvironment processingEnv)
+   public synchronized void init(ProcessingEnvironment processingEnvironment)
    {
-      super.init(processingEnv);
-      helper = new XSDHelper(processingEnv.getFiler());
+      super.init(processingEnvironment);
+      helper = new XSDHelper(processingEnvironment);
    }
 
    @Override
-   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
+   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment)
    {
+      Map<String, PackageElement> packageModels = new HashMap<String, PackageElement>();
       List<ClassModel> workingSet = new ArrayList<ClassModel>();
+
       // Iterates over the classes compiled, creates a model of the classes and
       // add them to a working set
-
-      for (Element element : roundEnv.getRootElements())
+      for (Element element : roundEnvironment.getRootElements())
       {
-         workingSet.add(inspectClass(element));
+         ClassModel classModel = inspectClass(element);
+         workingSet.add(classModel);
+         packageModels.put(classModel.getPackage(), processingEnv.getElementUtils().getPackageOf(element));
       }
-      if (!roundEnv.processingOver())
+      if (!roundEnvironment.processingOver())
       {
          // Update the package XSDs for the files changed
          helper.updateSchemas(workingSet);
          // And flush the changes to disk
-         helper.writeSchemas();
+         helper.writeSchemas(packageModels);
       }
       return false;
    }
