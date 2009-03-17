@@ -34,7 +34,7 @@ public class ClassModel extends NamedModel
    private ClassModel parent;
 
    // The fields of the class
-   private List<FieldModel> fields = new ArrayList<FieldModel>();
+   private List<NamedModel> fields = new ArrayList<NamedModel>();
    // The methods of the class
    private List<MethodModel> methods = new ArrayList<MethodModel>();
    // The constructors of the class
@@ -43,31 +43,31 @@ public class ClassModel extends NamedModel
    /**
     * Adds a field to the class model
     * 
-    * @param fieldModel The field to add
+    * @param field The field to add
     */
-   public void addField(FieldModel fieldModel)
+   public void addField(NamedModel field)
    {
-      fields.add(fieldModel);
+      fields.add(field);
    }
 
    /**
     * Adds a constructor to the model
     * 
-    * @param constructorModel The constructor to add
+    * @param constructor The constructor to add
     */
-   public void addConstructor(MethodModel constructorModel)
+   public void addConstructor(MethodModel constructor)
    {
-      constructors.add(constructorModel);
+      constructors.add(constructor);
    }
 
    /**
     * Adds a method to the model
     * 
-    * @param methodModel The method to add
+    * @param method The method to add
     */
-   public void addMethod(MethodModel methodModel)
+   public void addMethod(MethodModel method)
    {
-      methods.add(methodModel);
+      methods.add(method);
    }
 
    /**
@@ -106,7 +106,7 @@ public class ClassModel extends NamedModel
     * 
     * @return The public fields
     */
-   public List<FieldModel> getFields()
+   public List<NamedModel> getFields()
    {
       return fields;
    }
@@ -116,9 +116,9 @@ public class ClassModel extends NamedModel
     * 
     * @return The set of public fields available
     */
-   public Set<FieldModel> getMergedFields()
+   public Set<NamedModel> getMergedFields()
    {
-      Set<FieldModel> mergedFields = new HashSet<FieldModel>(fields);
+      Set<NamedModel> mergedFields = new HashSet<NamedModel>(fields);
       ClassModel currentParent = parent;
       while (currentParent != null)
       {
@@ -163,21 +163,9 @@ public class ClassModel extends NamedModel
    public Set<TypedModel> getTypeReferences()
    {
       Set<TypedModel> typeReferences = new HashSet<TypedModel>();
-      for (FieldModel field : getMergedFields())
-      {
-         if (!field.isPrimitive())
-         {
-            typeReferences.add(field);
-         }
-      }
       for (MethodModel method : getMergedMethods())
       {
-         TypedModel returnValue = method.getReturnType();
-         if (!returnValue.isPrimitive())
-         {
-            typeReferences.add(returnValue);
-         }
-         for (ParameterModel parameter : method.getParameters())
+         for (TypedModel parameter : method.getParameters())
          {
             if (!parameter.isPrimitive())
             {
@@ -187,7 +175,7 @@ public class ClassModel extends NamedModel
       }
       for (MethodModel constructor : getMergedConstructors())
       {
-         for (ParameterModel parameter : constructor.getParameters())
+         for (TypedModel parameter : constructor.getParameters())
          {
             if (!parameter.isPrimitive())
             {
@@ -224,8 +212,7 @@ public class ClassModel extends NamedModel
    public String toString()
    {
       StringBuilder buffer = new StringBuilder();
-      String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
-      buffer.append("----------------------------------\n" + annotationString + name + "\n");
+      buffer.append("----------------------------------\n" + name + "\n");
       buffer.append("Constructors:\n " + getMergedConstructors() + "\n");
       buffer.append("Methods:\n" + getMergedMethods() + "\n");
       buffer.append("Fields:\n" + getMergedFields() + "\n");

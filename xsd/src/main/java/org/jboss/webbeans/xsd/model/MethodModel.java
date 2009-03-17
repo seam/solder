@@ -28,30 +28,14 @@ import java.util.List;
  */
 public class MethodModel extends NamedModel
 {
-   private TypedModel returnType;
-   private List<ParameterModel> parameters = new ArrayList<ParameterModel>();
+   private List<TypedModel> parameters = new ArrayList<TypedModel>();
 
-   public TypedModel getReturnType()
-   {
-      return returnType;
-   }
-
-   public void setReturnType(TypedModel returnType)
-   {
-      this.returnType = returnType;
-   }
-
-   public List<ParameterModel> getParameters()
+   public List<TypedModel> getParameters()
    {
       return parameters;
    }
 
-   public void setParameters(List<ParameterModel> parameters)
-   {
-      this.parameters = parameters;
-   }
-   
-   public void addParameter(ParameterModel parameter)
+   public void addParameter(TypedModel parameter)
    {
       parameters.add(parameter);
    }
@@ -60,20 +44,19 @@ public class MethodModel extends NamedModel
    public boolean equals(Object other)
    {
       MethodModel otherModel = (MethodModel) other;
-      return name.equals(otherModel.getName()) && returnType.equals(otherModel.getReturnType()) && parameters.equals(otherModel.getParameters());
+      return name.equals(otherModel.getName()) && parameters.equals(otherModel.getParameters());
    }
 
    @Override
    public int hashCode()
    {
-      return name.hashCode() + returnType.hashCode() + parameters.hashCode();
+      return name.hashCode() + parameters.hashCode();
    }
    
    @Override
    public String toString()
    {
-      String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
-      return "\n  " + annotationString + returnType.getType() + " " + name + "(" + (parameters.isEmpty() ? "" : parameters) + ")";
+      return "\n  " + name + "(" + (parameters.isEmpty() ? "" : parameters) + ")";
    }
 
 }

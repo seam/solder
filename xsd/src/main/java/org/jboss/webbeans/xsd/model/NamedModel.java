@@ -17,20 +17,15 @@
 
 package org.jboss.webbeans.xsd.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * A superclass for named models
  * 
  * @author Nicklas Karlsson
  * 
  */
-public class NamedModel extends TypedModel
+public class NamedModel
 {
    protected String name;
-   protected Map<String, Set<String>> annotations = new HashMap<String, Set<String>>();
 
    public String getName()
    {
@@ -42,20 +37,17 @@ public class NamedModel extends TypedModel
       this.name = name;
    }
 
-   public Map<String, Set<String>> getAnnotations()
+   @Override
+   public String toString()
    {
-      return annotations;
-   }
-
-   public void setAnnotations(Map<String, Set<String>> annotations)
-   {
-      this.annotations = annotations;
+      return name;
    }
 
    @Override
    public boolean equals(Object other)
    {
-      return name.equals(other);
+      NamedModel otherNamed = (NamedModel) other;
+      return name.equals(otherNamed.getName());
    }
 
    @Override
@@ -63,5 +55,4 @@ public class NamedModel extends TypedModel
    {
       return name.hashCode();
    }
-
 }

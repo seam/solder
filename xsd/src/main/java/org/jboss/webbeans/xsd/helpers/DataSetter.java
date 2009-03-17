@@ -17,12 +17,6 @@
 
 package org.jboss.webbeans.xsd.helpers;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -31,9 +25,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 
 import org.jboss.webbeans.xsd.model.ClassModel;
-import org.jboss.webbeans.xsd.model.FieldModel;
 import org.jboss.webbeans.xsd.model.MethodModel;
-import org.jboss.webbeans.xsd.model.ParameterModel;
+import org.jboss.webbeans.xsd.model.NamedModel;
 import org.jboss.webbeans.xsd.model.TypedModel;
 
 /**
@@ -65,11 +58,9 @@ public class DataSetter
     */
    public static void populateClassModel(ClassModel classModel, Element element, ClassModel parent)
    {
-      Map<String, Set<String>> annotations = getAnnotations(element);
       TypeElement typeElement = (TypeElement) element;
       classModel.setName(typeElement.getQualifiedName().toString());
       classModel.setParent(parent);
-      classModel.setAnnotations(annotations);
    }
 
    /**
@@ -85,14 +76,8 @@ public class DataSetter
          return;
       }
       String name = element.getSimpleName().toString();
-      String type = element.asType().toString();
-      boolean primitive = element.asType().getKind().isPrimitive();
-      Map<String, Set<String>> annotations = getAnnotations(element);
-      FieldModel field = new FieldModel();
+      NamedModel field = new NamedModel();
       field.setName(name);
-      field.setType(type);
-      field.setPrimitive(primitive);
-      field.setAnnotations(annotations);
       classModel.addField(field);
    }
 
@@ -118,20 +103,14 @@ public class DataSetter
       
       MethodModel method = new MethodModel();
       method.setName(name);
-      method.setAnnotations(getAnnotations(executableElement));
-      method.setReturnType(returnType);
-
+   
       for (VariableElement parameterElement : executableElement.getParameters())
       {
-         String paramName = parameterElement.getSimpleName().toString();
          String paramType = parameterElement.asType().toString();
          boolean paramPrimitive = parameterElement.asType().getKind().isPrimitive();
-         Map<String, Set<String>> paramAnnotations = getAnnotations(parameterElement);
-         ParameterModel parameter = new ParameterModel();
-         parameter.setName(paramName);
+         TypedModel parameter = new TypedModel();
          parameter.setType(paramType);
          parameter.setPrimitive(paramPrimitive);
-         parameter.setAnnotations(paramAnnotations);
          method.addParameter(parameter);
       }
       // OK, cheating a little with a common model for methods and constructors
@@ -144,20 +123,5 @@ public class DataSetter
          classModel.addMethod(method);
       }
    }
-
-   private static Map<String, Set<String>> getAnnotations(Element element)
-   {
-      Map<String, Set<String>> annotations = new HashMap<String, Set<String>>();
-      for (AnnotationMirror annotation : element.getAnnotationMirrors())
-      {
-         Set<String> metaAnnotations = new HashSet<String>();
-         for (AnnotationMirror metaAnnotation : annotation.getAnnotationType().asElement().getAnnotationMirrors())
-         {
-            metaAnnotations.add(metaAnnotation.getAnnotationType().toString());
-         }
-         annotations.put(annotation.getAnnotationType().toString(), metaAnnotations);
-      }
-      return annotations;
-   }
-
+   
 }

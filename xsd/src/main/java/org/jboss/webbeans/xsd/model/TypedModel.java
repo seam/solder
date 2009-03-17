@@ -21,7 +21,7 @@ package org.jboss.webbeans.xsd.model;
  * The model of a typed member
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
 public class TypedModel
 {
@@ -46,6 +46,12 @@ public class TypedModel
    public void setPrimitive(boolean primitive)
    {
       this.primitive = primitive;
+   }
+
+   @Override
+   public String toString()
+   {
+      return type;
    }
 
    public String getTypePackage()

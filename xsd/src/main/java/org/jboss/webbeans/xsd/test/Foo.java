@@ -6,7 +6,7 @@ import javax.inject.Initializer;
 import org.jboss.webbeans.xsd.test.test.test.Tar;
 
 @Current
-public class Foo
+public class Foo extends Bar
 {
    @Current
    public String foo;
@@ -26,4 +26,8 @@ public class Foo
       return foo;
    }
 
+   public void testy() {
+      
+   }
+   
 }

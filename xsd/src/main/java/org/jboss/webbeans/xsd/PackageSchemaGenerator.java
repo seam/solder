@@ -126,6 +126,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
       }
       // Place the new class model in the cache
       helper.cacheClassModel(classModel);
+      System.out.println(classModel);
       return classModel;
    }
 
