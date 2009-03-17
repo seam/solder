@@ -204,10 +204,7 @@ public class XSDHelper
    {
       for (Schema schema : schemaMap.values())
       {
-         // TODO: dummy, remove
-         schema.refreshNamespaces();
          System.out.println(schema.getPackageName() + " (" + schema.getNamespaces() + ")");
-         System.out.println(schema.getTypeReferences());
          writePackageInfo(schema);
       }
    }

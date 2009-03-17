@@ -17,9 +17,6 @@
 
 package org.jboss.webbeans.xsd;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.dom4j.Document;
@@ -33,15 +30,13 @@ import org.jboss.webbeans.xsd.model.TypedModel;
  */
 public class Schema
 {
-   private Document document;
    private String packageName;
-   private Map<String, Set<String>> typeReferences;
+   private Document document;
    private NamespaceHandler namespaceHandler;
 
    public Schema(String packageName)
    {
       this.packageName = packageName;
-      typeReferences = new HashMap<String, Set<String>>();
       namespaceHandler = new NamespaceHandler(packageName);
    }
 
@@ -49,13 +44,10 @@ public class Schema
    {
       for (TypedModel reference : references)
       {
-         Set<String> typeNames = typeReferences.get(reference.getTypePackage());
-         if (typeNames == null)
+         if (!reference.isPrimitive())
          {
-            typeNames = new HashSet<String>();
-            typeReferences.put(reference.getTypePackage(), typeNames);
+            namespaceHandler.addPackage(reference.getTypePackage());
          }
-         typeNames.add(reference.getType());
       }
    }
 
@@ -77,23 +69,6 @@ public class Schema
    public void setPackageName(String packageName)
    {
       this.packageName = packageName;
-   }
-
-   public Map<String, Set<String>> getTypeReferences()
-   {
-      return typeReferences;
-   }
-
-   // TODO: dummy, remove
-   public void refreshNamespaces()
-   {
-      for (String p : typeReferences.keySet())
-      {
-         if (!"".equals(p))
-         {
-            String dummy = namespaceHandler.getShortNamespace(p);
-         }
-      }
    }
 
    public Set<String> getNamespaces()

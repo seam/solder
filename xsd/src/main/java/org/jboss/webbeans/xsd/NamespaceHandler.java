@@ -50,6 +50,7 @@ public class NamespaceHandler
    public NamespaceHandler(String localPackage)
    {
       this.localPackage = localPackage;
+      addPackage(localPackage);
    }
 
    /**
@@ -109,6 +110,44 @@ public class NamespaceHandler
       {
          return schemaNamespaces.get(packageName).shortNamespace;
       }
+      else
+      {
+         throw new IllegalArgumentException("Package name " + packageName + " is not known to namespace handler of package " + localPackage);
+      }
+   }
+
+   /**
+    * Gets the short name (last part) of a package
+    * 
+    * @param packageName The package name to parse
+    * @return The short name
+    */
+   private String getShortName(String packageName)
+   {
+      int lastDot = packageName.lastIndexOf(".");
+      return lastDot < 0 ? packageName : packageName.substring(lastDot + 1);
+   }
+
+   // TODO testing, remove
+   public static void main(String[] params)
+   {
+      NamespaceHandler ng = new NamespaceHandler("com.acme.foo");
+      System.out.println(ng.getShortNamespace("com.acme.foo"));
+      System.out.println(ng.getShortNamespace("com.acme.foo.foo"));
+      System.out.println(ng.getShortNamespace("com.acme.foo.foo.foo"));
+      System.out.println(ng.getShortNamespace("java.util"));
+      for (String ns : ng.getUsedNamespaces())
+      {
+         System.out.println(ns);
+      }
+   }
+
+   public void addPackage(String packageName)
+   {
+      if (schemaNamespaces.containsKey(packageName))
+      {
+         return;
+      }
       String shortNamespace = "";
       boolean ee = false;
       if (localPackage.equals(packageName))
@@ -138,33 +177,6 @@ public class NamespaceHandler
          shortNamespace = getShortName(packageName) + countString;
       }
       schemaNamespaces.put(packageName, new SchemaNamespace(packageName, shortNamespace, ee));
-      return shortNamespace;
-   }
-
-   /**
-    * Gets the short name (last part) of a package
-    * 
-    * @param packageName The package name to parse
-    * @return The short name
-    */
-   private String getShortName(String packageName)
-   {
-      int lastDot = packageName.lastIndexOf(".");
-      return lastDot < 0 ? packageName : packageName.substring(lastDot + 1);
-   }
-   
-   // TODO testing, remove
-   public static void main(String[] params)
-   {
-      NamespaceHandler ng = new NamespaceHandler("com.acme.foo");
-      System.out.println(ng.getShortNamespace("com.acme.foo"));
-      System.out.println(ng.getShortNamespace("com.acme.foo.foo"));
-      System.out.println(ng.getShortNamespace("com.acme.foo.foo.foo"));
-      System.out.println(ng.getShortNamespace("java.util"));
-      for (String ns : ng.getUsedNamespaces())
-      {
-         System.out.println(ns);
-      }
    }
 
 }
