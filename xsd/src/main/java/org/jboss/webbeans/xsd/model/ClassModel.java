@@ -70,18 +70,6 @@ public class ClassModel extends NamedModel
       methods.add(methodModel);
    }
 
-   @Override
-   public String toString()
-   {
-      StringBuilder buffer = new StringBuilder();
-      String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
-      buffer.append("----------------------------------\n" + annotationString + name + "\n");
-      buffer.append("Constructors:\n " + getMergedConstructors() + "\n");
-      buffer.append("Methods:\n" + getMergedMethods() + "\n");
-      buffer.append("Fields:\n" + getMergedFields() + "\n");
-      return buffer.toString();
-   }
-
    /**
     * Gets the parent class model of the class
     * 
@@ -167,6 +155,11 @@ public class ClassModel extends NamedModel
       return mergedMethods;
    }
 
+   /**
+    * Gets the type references used in the package and its contained members
+    * 
+    * @return The set of types
+    */
    public Set<TypedModel> getTypeReferences()
    {
       Set<TypedModel> typeReferences = new HashSet<TypedModel>();
@@ -192,16 +185,38 @@ public class ClassModel extends NamedModel
       return typeReferences;
    }
 
+   /**
+    * Gets the package of the class
+    * 
+    * @return The package (or "nopak" if root package)
+    */
    public String getPackage()
    {
       int lastDot = name.lastIndexOf(".");
       return lastDot < 0 ? "nopak" : name.substring(0, lastDot);
    }
 
+   /**
+    * Gets the simple name of a class
+    * 
+    * @return The simple name
+    */
    public String getSimpleName()
    {
       int lastDot = name.lastIndexOf(".");
       return lastDot < 0 ? name : name.substring(lastDot + 1);
+   }
+
+   @Override
+   public String toString()
+   {
+      StringBuilder buffer = new StringBuilder();
+      String annotationString = (annotations.isEmpty()) ? "" : "@" + annotations + ": ";
+      buffer.append("----------------------------------\n" + annotationString + name + "\n");
+      buffer.append("Constructors:\n " + getMergedConstructors() + "\n");
+      buffer.append("Methods:\n" + getMergedMethods() + "\n");
+      buffer.append("Fields:\n" + getMergedFields() + "\n");
+      return buffer.toString();
    }
 
 }

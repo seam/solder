@@ -20,14 +20,9 @@ package org.jboss.webbeans.xsd.helpers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.annotation.processing.Filer;
 import javax.tools.StandardLocation;
@@ -57,7 +52,6 @@ public class XSDHelper
    private Map<String, ClassModel> classModelCache = new HashMap<String, ClassModel>();
    // The XSD documents of the affected packages
    private Map<String, PackageInfo> packageInfoMap = new HashMap<String, PackageInfo>();
-   private NamespaceGenerator namespaceGenerator = new NamespaceGenerator();
 
    /**
     * Creates a new helper
@@ -80,22 +74,9 @@ public class XSDHelper
    private PackageInfo readPackageInfo(String packageName) throws DocumentException, IOException
    {
       PackageInfo packageInfo = new PackageInfo(packageName);
-      packageInfo.setNamespaces(readNamespaces(packageName));
       Document schema = readSchema(packageName);
       packageInfo.setSchema(schema != null ? schema : createSchema(packageName));
       return packageInfo;
-   }
-
-   /**
-    * Reads the namespaces for a package
-    * 
-    * @param packageName The name of the package
-    * @return The namespaces
-    */
-   private List<String> readNamespaces(String packageName)
-   {
-      // TODO dummy
-      return new ArrayList<String>();
    }
 
    /**
@@ -155,18 +136,6 @@ public class XSDHelper
       {
          throw new RuntimeException("Could not write schema for " + packageInfo.getPackageName());
       }
-      writeNamespaces(packageInfo.getPackageName(), packageInfo.getNamespaces());
-   }
-
-   /**
-    * Writes the namespaces to disk
-    * 
-    * @param packageName The package name
-    * @param namespaces The namespaces
-    */
-   private void writeNamespaces(String packageName, List<String> namespaces)
-   {
-      // TODO dummy
    }
 
    /**
@@ -235,8 +204,9 @@ public class XSDHelper
    {
       for (PackageInfo packageInfo : packageInfoMap.values())
       {
-         packageInfo.setNamespace(namespaceGenerator.getNamespace(packageInfo.getPackageName()));
-         System.out.println(packageInfo.getPackageName() + " (" + packageInfo.getNamespace() + ")");
+         // TODO: dummy, remove
+         packageInfo.refreshNamespaces();
+         System.out.println(packageInfo.getPackageName() + " (" + packageInfo.getNamespaces() + ")");
          System.out.println(packageInfo.getTypeReferences());
          writePackageInfo(packageInfo);
       }
