@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.PackageElement;
 import javax.tools.StandardLocation;
@@ -32,7 +31,6 @@ import javax.tools.StandardLocation;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
-import org.dom4j.Node;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -47,7 +45,6 @@ import org.jboss.webbeans.xsd.model.ClassModel;
  */
 public class XSDHelper
 {
-
    // The annotation processing environment
    private ProcessingEnvironment processingEnvironment;
    // The cache of already processed classes
@@ -90,7 +87,7 @@ public class XSDHelper
    private Document createSchema(String packageName)
    {
       Document packageXSD = DocumentHelper.createDocument();
-      packageXSD.addElement("Package");
+      packageXSD.addElement("schema");
       return packageXSD;
    }
 
@@ -123,39 +120,15 @@ public class XSDHelper
       }
    }
 
-   /**
-    * Writes package info to the disk
-    * 
-    * @param schema The package info to store
-    */
-   private void writePackageInfo(Schema schema)
-   {
-      try
-      {
-         writeSchema(schema.getPackageName(), schema.getDocument());
-      }
-      catch (IOException e)
-      {
-         throw new RuntimeException("Could not write schema for " + schema.getPackageName());
-      }
-   }
-
-   /**
-    * Writes a schema to disk
-    * 
-    * @param packageName The package name
-    * @param schema The schema
-    * @throws IOException If the file could not be written
-    */
-   private void writeSchema(String packageName, Document schema) throws IOException
+   private void writeSchema(Schema schema) throws IOException
    {
       OutputStream out = null;
       try
       {
          OutputFormat format = OutputFormat.createPrettyPrint();
-         out = processingEnvironment.getFiler().createResource(StandardLocation.CLASS_OUTPUT, packageName, "schema.xsd").openOutputStream();
+         out = processingEnvironment.getFiler().createResource(StandardLocation.CLASS_OUTPUT, schema.getPackageName(), "schema.xsd").openOutputStream();
          XMLWriter writer = new XMLWriter(out, format);
-         writer.write(schema);
+         writer.write(schema.getDocument());
          writer.flush();
          writer.close();
       }
@@ -209,7 +182,14 @@ public class XSDHelper
       {
          schema.rebuild(packageModels.get(schema.getPackageName()));
          System.out.println(schema.getPackageName() + " (" + schema.getNamespaces() + ")");
-         writePackageInfo(schema);
+         try
+         {
+            writeSchema(schema);
+         }
+         catch (IOException e)
+         {
+            throw new RuntimeException("Could not write schema for " + schema.getPackageName());
+         }
       }
    }
 

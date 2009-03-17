@@ -35,7 +35,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.Elements;
 
 import org.jboss.webbeans.xsd.helpers.DataSetter;
 import org.jboss.webbeans.xsd.helpers.XSDHelper;
