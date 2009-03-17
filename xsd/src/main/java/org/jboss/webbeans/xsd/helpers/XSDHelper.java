@@ -34,7 +34,7 @@ import org.dom4j.Node;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.jboss.webbeans.xsd.PackageInfo;
+import org.jboss.webbeans.xsd.Schema;
 import org.jboss.webbeans.xsd.model.ClassModel;
 
 /**
@@ -51,7 +51,7 @@ public class XSDHelper
    // The cache of already processed classes
    private Map<String, ClassModel> classModelCache = new HashMap<String, ClassModel>();
    // The XSD documents of the affected packages
-   private Map<String, PackageInfo> packageInfoMap = new HashMap<String, PackageInfo>();
+   private Map<String, Schema> schemaMap = new HashMap<String, Schema>();
 
    /**
     * Creates a new helper
@@ -71,12 +71,12 @@ public class XSDHelper
     * @throws DocumentException If the schema could not be parsed
     * @throws IOException If the schema could not be read
     */
-   private PackageInfo readPackageInfo(String packageName) throws DocumentException, IOException
+   private Schema getSchema(String packageName) throws DocumentException, IOException
    {
-      PackageInfo packageInfo = new PackageInfo(packageName);
-      Document schema = readSchema(packageName);
-      packageInfo.setSchema(schema != null ? schema : createSchema(packageName));
-      return packageInfo;
+      Schema schema = new Schema(packageName);
+      Document document = readSchema(packageName);
+      schema.setDocument(document != null ? document : createSchema(packageName));
+      return schema;
    }
 
    /**
@@ -124,17 +124,17 @@ public class XSDHelper
    /**
     * Writes package info to the disk
     * 
-    * @param packageInfo The package info to store
+    * @param schema The package info to store
     */
-   private void writePackageInfo(PackageInfo packageInfo)
+   private void writePackageInfo(Schema schema)
    {
       try
       {
-         writeSchema(packageInfo.getPackageName(), packageInfo.getSchema());
+         writeSchema(schema.getPackageName(), schema.getDocument());
       }
       catch (IOException e)
       {
-         throw new RuntimeException("Could not write schema for " + packageInfo.getPackageName());
+         throw new RuntimeException("Could not write schema for " + schema.getPackageName());
       }
    }
 
@@ -176,12 +176,12 @@ public class XSDHelper
       for (ClassModel classModel : classModels)
       {
          String packageName = classModel.getPackage();
-         PackageInfo packageInfo = packageInfoMap.get(packageName);
-         if (packageInfo == null)
+         Schema schema = schemaMap.get(packageName);
+         if (schema == null)
          {
             try
             {
-               packageInfo = readPackageInfo(packageName);
+               schema = getSchema(packageName);
             }
             catch (DocumentException e)
             {
@@ -191,9 +191,9 @@ public class XSDHelper
             {
                throw new RuntimeException("Could not read schema for package " + packageName);
             }
-            packageInfoMap.put(packageName, packageInfo);
+            schemaMap.put(packageName, schema);
          }
-         updateClassInSchema(classModel, packageInfo);
+         updateClassInSchema(classModel, schema);
       }
    }
 
@@ -202,34 +202,34 @@ public class XSDHelper
     */
    public void writeSchemas()
    {
-      for (PackageInfo packageInfo : packageInfoMap.values())
+      for (Schema schema : schemaMap.values())
       {
          // TODO: dummy, remove
-         packageInfo.refreshNamespaces();
-         System.out.println(packageInfo.getPackageName() + " (" + packageInfo.getNamespaces() + ")");
-         System.out.println(packageInfo.getTypeReferences());
-         writePackageInfo(packageInfo);
+         schema.refreshNamespaces();
+         System.out.println(schema.getPackageName() + " (" + schema.getNamespaces() + ")");
+         System.out.println(schema.getTypeReferences());
+         writePackageInfo(schema);
       }
    }
 
    /**
     * Updates a schema with XSD from a file model
     * 
-    * @param packageInfo The schema
+    * @param schema The schema
     * @param classModel The class model
     */
-   private void updateClassInSchema(ClassModel classModel, PackageInfo packageInfo)
+   private void updateClassInSchema(ClassModel classModel, Schema schema)
    {
-      Document schema = packageInfo.getSchema();
-      Node oldClassModel = schema.selectSingleNode("//" + classModel.getSimpleName());
+      Document document = schema.getDocument();
+      Node oldClassModel = document.selectSingleNode("//" + classModel.getSimpleName());
       if (oldClassModel != null)
       {
          // Remove the old class definition
-         schema.getRootElement().remove(oldClassModel);
+         document.getRootElement().remove(oldClassModel);
       }
       // Create a new one
-      schema.getRootElement().addElement(classModel.getSimpleName());
-      packageInfo.addTypeReferences(classModel.getTypeReferences());
+      document.getRootElement().addElement(classModel.getSimpleName());
+      schema.addTypeReferences(classModel.getTypeReferences());
    }
 
    /**

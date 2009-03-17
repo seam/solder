@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.dom4j.Document;
-import org.jboss.webbeans.xsd.helpers.NamespaceGenerator;
 import org.jboss.webbeans.xsd.model.TypedModel;
 
 /**
@@ -32,18 +31,18 @@ import org.jboss.webbeans.xsd.model.TypedModel;
  * @author Nicklas Karlsson
  * 
  */
-public class PackageInfo
+public class Schema
 {
-   private Document schema;
+   private Document document;
    private String packageName;
    private Map<String, Set<String>> typeReferences;
-   private NamespaceGenerator namespaceGenerator;
+   private NamespaceHandler namespaceHandler;
 
-   public PackageInfo(String packageName)
+   public Schema(String packageName)
    {
       this.packageName = packageName;
       typeReferences = new HashMap<String, Set<String>>();
-      namespaceGenerator = new NamespaceGenerator(packageName);
+      namespaceHandler = new NamespaceHandler(packageName);
    }
 
    public void addTypeReferences(Set<TypedModel> references)
@@ -60,14 +59,14 @@ public class PackageInfo
       }
    }
 
-   public Document getSchema()
+   public Document getDocument()
    {
-      return schema;
+      return document;
    }
 
-   public void setSchema(Document schema)
+   public void setDocument(Document document)
    {
-      this.schema = schema;
+      this.document = document;
    }
 
    public String getPackageName()
@@ -92,14 +91,14 @@ public class PackageInfo
       {
          if (!"".equals(p))
          {
-            String dummy = namespaceGenerator.getShortNamespace(p);
+            String dummy = namespaceHandler.getShortNamespace(p);
          }
       }
    }
 
    public Set<String> getNamespaces()
    {
-      return namespaceGenerator.getUsedNamespaces();
+      return namespaceHandler.getUsedNamespaces();
    }
 
 }

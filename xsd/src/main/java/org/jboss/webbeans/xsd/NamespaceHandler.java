@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.webbeans.xsd.helpers;
+package org.jboss.webbeans.xsd;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import java.util.Set;
  * @author Nicklas Karlsson
  * 
  */
-public class NamespaceGenerator
+public class NamespaceHandler
 {
    // The set of reserved EE packages
    private static final Set<String> URN_JAVA_EE = new HashSet<String>(Arrays.asList("java.lang", "java.util", "javax.annotation", "javax.inject", "javax.context", "javax.interceptor", "javax.decorator", "javax.event", "javax.ejb", "javax.persistence", "javax.xml.ws", "javax.jms", "javax.sql"));
@@ -40,14 +40,14 @@ public class NamespaceGenerator
    // Duplicate shortname counters
    private Map<String, Integer> counters = new HashMap<String, Integer>();
    // Namespace infos
-   private Map<String, NamespaceInfo> packageNamespaceInfo = new HashMap<String, NamespaceInfo>();
+   private Map<String, SchemaNamespace> schemaNamespaces = new HashMap<String, SchemaNamespace>();
 
    /**
     * Creats a new namespace generator
     * 
     * @param localPackage The local package
     */
-   public NamespaceGenerator(String localPackage)
+   public NamespaceHandler(String localPackage)
    {
       this.localPackage = localPackage;
    }
@@ -58,7 +58,7 @@ public class NamespaceGenerator
     * @author Nicklas Karlsson
     * 
     */
-   private class NamespaceInfo
+   private class SchemaNamespace
    {
       // The package name
       String packageName;
@@ -69,7 +69,7 @@ public class NamespaceGenerator
       // Is this a EE reserved package?
       boolean ee;
 
-      public NamespaceInfo(String packageName, String shortNamespace, boolean ee)
+      public SchemaNamespace(String packageName, String shortNamespace, boolean ee)
       {
          this.packageName = packageName;
          this.shortNamespace = shortNamespace;
@@ -90,9 +90,9 @@ public class NamespaceGenerator
    public Set<String> getUsedNamespaces()
    {
       Set<String> usedNamespaces = new HashSet<String>();
-      for (NamespaceInfo namespaceInfo : packageNamespaceInfo.values())
+      for (SchemaNamespace schemaNamespace : schemaNamespaces.values())
       {
-         usedNamespaces.add(namespaceInfo.namespace);
+         usedNamespaces.add(schemaNamespace.namespace);
       }
       return usedNamespaces;
    }
@@ -105,9 +105,9 @@ public class NamespaceGenerator
     */
    public String getShortNamespace(String packageName)
    {
-      if (packageNamespaceInfo.containsKey(packageName))
+      if (schemaNamespaces.containsKey(packageName))
       {
-         return packageNamespaceInfo.get(packageName).shortNamespace;
+         return schemaNamespaces.get(packageName).shortNamespace;
       }
       String shortNamespace = "";
       boolean ee = false;
@@ -137,7 +137,7 @@ public class NamespaceGenerator
          }
          shortNamespace = getShortName(packageName) + countString;
       }
-      packageNamespaceInfo.put(packageName, new NamespaceInfo(packageName, shortNamespace, ee));
+      schemaNamespaces.put(packageName, new SchemaNamespace(packageName, shortNamespace, ee));
       return shortNamespace;
    }
 
@@ -156,7 +156,7 @@ public class NamespaceGenerator
    // TODO testing, remove
    public static void main(String[] params)
    {
-      NamespaceGenerator ng = new NamespaceGenerator("com.acme.foo");
+      NamespaceHandler ng = new NamespaceHandler("com.acme.foo");
       System.out.println(ng.getShortNamespace("com.acme.foo"));
       System.out.println(ng.getShortNamespace("com.acme.foo.foo"));
       System.out.println(ng.getShortNamespace("com.acme.foo.foo.foo"));
