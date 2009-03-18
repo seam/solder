@@ -32,7 +32,7 @@ public class TypedModel
    protected String type;
    protected boolean primitive;
 
-   public TypedModel(String type, boolean primitive)
+   protected TypedModel(String type, boolean primitive)
    {
       this.type = type;
       this.primitive = primitive;

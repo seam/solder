@@ -18,7 +18,12 @@
 package org.jboss.webbeans.xsd.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 
 import org.dom4j.Element;
 import org.jboss.webbeans.xsd.NamespaceHandler;
@@ -31,11 +36,31 @@ import org.jboss.webbeans.xsd.NamespaceHandler;
  */
 public class MethodModel extends NamedModel
 {
+   private static Map<TypedModel, TypedModel> typeSubstitutions = new HashMap<TypedModel, TypedModel>()
+   {
+      private static final long serialVersionUID = 8092480390430415094L;
+      {
+         put(TypedModel.of("java.lang.String", false), TypedModel.of("string", true));
+      }
+   };
+
    private List<TypedModel> parameters = new ArrayList<TypedModel>();
 
-   public MethodModel(String name)
+   protected MethodModel(ExecutableElement executableElement)
    {
-      super(name);
+      super(executableElement.getSimpleName().toString());
+      for (VariableElement parameterElement : executableElement.getParameters())
+      {
+         boolean primitive = parameterElement.asType().getKind().isPrimitive();
+         TypedModel parameter = TypedModel.of(parameterElement.asType().toString(), primitive);
+         parameter = typeSubstitutions.containsKey(parameter) ? typeSubstitutions.get(parameter) : parameter;
+         addParameter(parameter);
+      }
+   }
+
+   public static MethodModel of(ExecutableElement executableElement)
+   {
+      return new MethodModel(executableElement);
    }
 
    public List<TypedModel> getParameters()

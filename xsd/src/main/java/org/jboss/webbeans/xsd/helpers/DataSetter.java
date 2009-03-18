@@ -17,18 +17,13 @@
 
 package org.jboss.webbeans.xsd.helpers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.VariableElement;
 
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.MethodModel;
 import org.jboss.webbeans.xsd.model.NamedModel;
-import org.jboss.webbeans.xsd.model.TypedModel;
 
 /**
  * Helper for examining classes and members and populating the model
@@ -38,13 +33,7 @@ import org.jboss.webbeans.xsd.model.TypedModel;
  */
 public class DataSetter
 {
-   private static Map<TypedModel, TypedModel> typeSubstitutions = new HashMap<TypedModel, TypedModel>()
-   { 
-      private static final long serialVersionUID = 8092480390430415094L;
-   {
-      put(TypedModel.of("java.lang.String", false), TypedModel.of("string", true));
-   }};
-   
+
    /**
     * Checks if an element is public
     * 
@@ -68,7 +57,7 @@ public class DataSetter
       {
          return;
       }
-      NamedModel field = new NamedModel(element.getSimpleName().toString());
+      NamedModel field = NamedModel.of(element.getSimpleName().toString());
       classModel.addField(field);
    }
 
@@ -84,17 +73,8 @@ public class DataSetter
       {
          return;
       }
-      ExecutableElement executableElement = (ExecutableElement) element;
+      MethodModel method = MethodModel.of((ExecutableElement) element);
 
-      MethodModel method = new MethodModel(element.getSimpleName().toString());
-
-      for (VariableElement parameterElement : executableElement.getParameters())
-      {
-         boolean primitive = parameterElement.asType().getKind().isPrimitive();
-         TypedModel parameter = new TypedModel(parameterElement.asType().toString(), primitive);
-         parameter = typeSubstitutions.containsKey(parameter) ? typeSubstitutions.get(parameter) : parameter;
-         method.addParameter(parameter);
-      }
       // OK, cheating a little with a common model for methods and constructors
       if ("<init>".equals(method.getName()))
       {

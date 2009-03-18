@@ -31,9 +31,14 @@ public class NamedModel
 {
    protected String name;
 
-   public NamedModel(String name)
+   protected NamedModel(String name)
    {
       this.name = name;
+   }
+
+   public static NamedModel of(String name)
+   {
+      return new NamedModel(name);
    }
 
    public String getName()
@@ -45,7 +50,7 @@ public class NamedModel
    {
       this.name = name;
    }
-   
+
    @Override
    public String toString()
    {
