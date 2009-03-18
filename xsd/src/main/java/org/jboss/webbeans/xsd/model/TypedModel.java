@@ -94,9 +94,9 @@ public class TypedModel
 
    public Element toXSD(NamespaceHandler namespaceHandler)
    {
-      String namespace = isPrimitive() ? "" : namespaceHandler.getShortNamespace(type);
-      Element item = DocumentFactory.getInstance().createElement("element");
-      item.addAttribute("type", type);
+      String namespace = isPrimitive() ? ("xs:" + type) : (namespaceHandler.getShortNamespace(type) + ":" + getTypeSimpleName());
+      Element item = DocumentFactory.getInstance().createElement("xs:element");
+      item.addAttribute("type", namespace);
       return item;
    }
 

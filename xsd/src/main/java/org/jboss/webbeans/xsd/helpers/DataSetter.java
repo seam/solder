@@ -88,6 +88,7 @@ public class DataSetter
       // OK, cheating a little with a common model for methods and constructors
       if ("<init>".equals(method.getName()))
       {
+         method.setName(classModel.getSimpleName());
          classModel.addConstructor(method);
       }
       else

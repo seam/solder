@@ -41,6 +41,11 @@ public class NamedModel
       return name;
    }
 
+   public void setName(String name)
+   {
+      this.name = name;
+   }
+   
    @Override
    public String toString()
    {
@@ -62,7 +67,7 @@ public class NamedModel
 
    public Element toXSD(NamespaceHandler namespaceHandler)
    {
-      Element item = DocumentFactory.getInstance().createElement("element");
+      Element item = DocumentFactory.getInstance().createElement("xs:element");
       item.addAttribute("name", name);
       return item;
    }

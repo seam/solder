@@ -235,21 +235,26 @@ public class ClassModel extends NamedModel
       return new ClassModel(typeElement.getQualifiedName().toString());
    }
 
+   @Override
    public Element toXSD(NamespaceHandler namespaceHandler)
    {
-      Element classElement = DocumentFactory.getInstance().createElement("element");
+      Element classElement = DocumentFactory.getInstance().createElement("xs:element");
       classElement.addAttribute("name", getSimpleName());
+      Element complexElement = DocumentFactory.getInstance().createElement("xs:complexType");
+      Element anyElement = DocumentFactory.getInstance().createElement("xs:any");
+      complexElement.add(anyElement);
+      classElement.add(complexElement);
       for (MethodModel constructor : getMergedConstructors())
       {
-         classElement.add(constructor.toXSD(namespaceHandler));
+         anyElement.add(constructor.toXSD(namespaceHandler));
       }
       for (NamedModel field : getMergedFields())
       {
-         classElement.add(field.toXSD(namespaceHandler));
+         anyElement.add(field.toXSD(namespaceHandler));
       }
       for (MethodModel method : getMergedMethods())
       {
-         classElement.add(method.toXSD(namespaceHandler));
+         anyElement.add(method.toXSD(namespaceHandler));
       }
       return classElement;
    }

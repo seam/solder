@@ -187,10 +187,7 @@ public class XSDHelper
          System.out.println(schema.getDocument().asXML());
          try
          {
-            if (1 == 2)
-            {
-               writeSchema(schema);
-            }
+            writeSchema(schema);
          }
          catch (IOException e)
          {

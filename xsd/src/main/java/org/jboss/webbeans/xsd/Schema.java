@@ -21,9 +21,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
 import org.jboss.webbeans.xsd.NamespaceHandler.SchemaNamespace;
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.TypedModel;
@@ -48,6 +49,11 @@ public class Schema
       classModels = new HashSet<ClassModel>();
    }
 
+   public String getPackageName()
+   {
+      return packageName;
+   }
+
    public void addClass(ClassModel classModel)
    {
       classModels.add(classModel);
@@ -67,20 +73,18 @@ public class Schema
       this.document = document;
    }
 
-   public String getPackageName()
+   private boolean isClassInPackage(PackageElement packageElement, String FQN)
    {
-      return packageName;
+      for (javax.lang.model.element.Element classElement : packageElement.getEnclosedElements())
+      {
+         TypeElement typeElement = (TypeElement) classElement;
+         if (typeElement.getQualifiedName().toString().equals(FQN))
+         {
+            return true;
+         }
+      }
+      return false;
    }
-
-   public void setPackageName(String packageName)
-   {
-      this.packageName = packageName;
-   }
-
-//   public Set<String> getNamespaces()
-//   {
-//      return namespaceHandler.getUsedNamespaces();
-//   }
 
    public void rebuild(PackageElement packageElement)
    {
@@ -88,10 +92,36 @@ public class Schema
       {
          document.getRootElement().addNamespace(schemaNamespace.shortNamespace, schemaNamespace.urn);
       }
+
+      for (Object xsdClass : document.selectNodes("//xs:schema//xs:element"))
+      {
+         String className = ((Element) xsdClass).attributeValue("name");
+         if (!isClassInPackage(packageElement, packageName + "." + className))
+         {
+            ((Element) xsdClass).detach();
+         }
+      }
+
       for (ClassModel classModel : classModels)
       {
+         // Remove old version of class xsd (if present)
+         for (Object previousClass : document.selectNodes("//xs:schema//xs:element[@name=\"" + classModel.getSimpleName() + "\"]"))
+         {
+            ((Element) previousClass).detach();
+         }
          document.getRootElement().add(classModel.toXSD(namespaceHandler));
       }
+
+      /**
+       * XSD: Foo Bar Tar
+       * 
+       * ClassModels: Foo
+       * 
+       * Package: Foo Bar
+       * 
+       * => update Foo, remove Tar
+       */
+
       // System.out.println("Current contents of package " + packageName);
       // for (Element e : packageElement.getEnclosedElements())
       // {
