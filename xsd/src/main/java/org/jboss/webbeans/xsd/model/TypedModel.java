@@ -83,13 +83,14 @@ public class TypedModel
    @Override
    public boolean equals(Object other)
    {
-      return type.equals(other);
+      TypedModel otherType = (TypedModel) other;
+      return type.equals(otherType.getType()) && primitive == otherType.isPrimitive();
    }
 
    @Override
    public int hashCode()
    {
-      return type.hashCode();
+      return type.hashCode() + (isPrimitive() ? 0 : 1);
    }
 
    public Element toXSD(NamespaceHandler namespaceHandler)
@@ -98,6 +99,11 @@ public class TypedModel
       Element item = DocumentFactory.getInstance().createElement("xs:element");
       item.addAttribute("type", namespace);
       return item;
+   }
+
+   public static TypedModel of(String type, boolean primitive)
+   {
+      return new TypedModel(type, primitive);
    }
 
 }

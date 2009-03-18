@@ -17,6 +17,9 @@
 
 package org.jboss.webbeans.xsd.helpers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -35,7 +38,13 @@ import org.jboss.webbeans.xsd.model.TypedModel;
  */
 public class DataSetter
 {
-
+   public static Map<TypedModel, TypedModel> typeSubstitutions = new HashMap<TypedModel, TypedModel>()
+   { 
+      private static final long serialVersionUID = 8092480390430415094L;
+   {
+      put(TypedModel.of("java.lang.String", false), TypedModel.of("string", true));
+   }};
+   
    /**
     * Checks if an element is public
     * 
@@ -83,6 +92,7 @@ public class DataSetter
       {
          boolean primitive = parameterElement.asType().getKind().isPrimitive();
          TypedModel parameter = new TypedModel(parameterElement.asType().toString(), primitive);
+         parameter = typeSubstitutions.containsKey(parameter) ? typeSubstitutions.get(parameter) : parameter;
          method.addParameter(parameter);
       }
       // OK, cheating a little with a common model for methods and constructors
