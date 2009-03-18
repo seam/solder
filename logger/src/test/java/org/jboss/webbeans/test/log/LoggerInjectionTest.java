@@ -18,6 +18,7 @@
 package org.jboss.webbeans.test.log;
 
 import org.jboss.testharness.impl.packaging.Artifact;
+import org.jboss.testharness.impl.packaging.Classes;
 import org.jboss.webbeans.test.AbstractLogTest;
 import org.testng.annotations.Test;
 
@@ -28,6 +29,7 @@ import org.testng.annotations.Test;
  *
  */
 @Artifact
+@Classes(packages = { "org.jboss.webbeans.producer", "org.jboss.webbeans.test.log" })
 public class LoggerInjectionTest extends AbstractLogTest
 {
    @Test( groups = { "broken" } )
