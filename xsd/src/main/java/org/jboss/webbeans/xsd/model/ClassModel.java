@@ -40,6 +40,11 @@ public class ClassModel extends NamedModel
    // The constructors of the class
    private List<MethodModel> constructors = new ArrayList<MethodModel>();
 
+   public ClassModel(String name)
+   {
+      super(name);
+   }
+
    /**
     * Adds a field to the class model
     * 

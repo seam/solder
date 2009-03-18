@@ -13,6 +13,7 @@ public class Foo extends Bar
    public int poo;
    public Bar bar;
    public org.jboss.webbeans.xsd.test.test.Foo foo2;
+   public org.jboss.webbeans.xsd.test.test.test.Tar tar2;
    public Tar tar;
 
    @Initializer
@@ -26,7 +27,7 @@ public class Foo extends Bar
       return foo;
    }
 
-   public void testy() {
+   public void testy(org.jboss.webbeans.xsd.test.test.Foo a, org.jboss.webbeans.xsd.test.test.test.Tar b) {
       
    }
    

@@ -94,9 +94,8 @@ public class PackageSchemaGenerator extends AbstractProcessor
    private ClassModel inspectClass(Element element)
    {
       TypeElement typeElement = (TypeElement) element;
-      
-      ClassModel classModel = new ClassModel();
-      
+      ClassModel classModel = new ClassModel(typeElement.getQualifiedName().toString());
+
       // If the class has superclass's, scan them recursively
       if (typeElement.getSuperclass().getKind() != TypeKind.NONE)
       {
@@ -104,11 +103,8 @@ public class PackageSchemaGenerator extends AbstractProcessor
       }
 
       // Gets the parent from the cache. We know it's there since we has scanned
-      // the
-      // hierarchy already
-      ClassModel parent = helper.getCachedClassModel(typeElement.getSuperclass().toString());
-      // Populate the class level info (name, parent etc)
-      DataSetter.populateClassModel(classModel, element, parent);
+      // the hierarchy already
+      classModel.setParent(helper.getCachedClassModel(typeElement.getSuperclass().toString()));
       // Filter out the fields and populate the model
       for (Element field : ElementFilter.fieldsIn(element.getEnclosedElements()))
       {
@@ -126,7 +122,6 @@ public class PackageSchemaGenerator extends AbstractProcessor
       }
       // Place the new class model in the cache
       helper.cacheClassModel(classModel);
-      System.out.println(classModel);
       return classModel;
    }
 

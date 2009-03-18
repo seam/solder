@@ -24,11 +24,16 @@ import java.util.List;
  * The model of a method
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
 public class MethodModel extends NamedModel
 {
    private List<TypedModel> parameters = new ArrayList<TypedModel>();
+
+   public MethodModel(String name)
+   {
+      super(name);
+   }
 
    public List<TypedModel> getParameters()
    {
@@ -52,7 +57,7 @@ public class MethodModel extends NamedModel
    {
       return name.hashCode() + parameters.hashCode();
    }
-   
+
    @Override
    public String toString()
    {

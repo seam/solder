@@ -20,9 +20,7 @@ package org.jboss.webbeans.xsd.helpers;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeKind;
 
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.MethodModel;
@@ -50,20 +48,6 @@ public class DataSetter
    }
 
    /**
-    * Inspects a type element and populates a class model
-    * 
-    * @param classModel The class model to populate
-    * @param element The element to inspect
-    * @param parent The parent of the class
-    */
-   public static void populateClassModel(ClassModel classModel, Element element, ClassModel parent)
-   {
-      TypeElement typeElement = (TypeElement) element;
-      classModel.setName(typeElement.getQualifiedName().toString());
-      classModel.setParent(parent);
-   }
-
-   /**
     * Inspects a field element and populates a class model
     * 
     * @param classModel The class model to populate
@@ -75,9 +59,7 @@ public class DataSetter
       {
          return;
       }
-      String name = element.getSimpleName().toString();
-      NamedModel field = new NamedModel();
-      field.setName(name);
+      NamedModel field = new NamedModel(element.getSimpleName().toString());
       classModel.addField(field);
    }
 
@@ -95,26 +77,16 @@ public class DataSetter
       }
       ExecutableElement executableElement = (ExecutableElement) element;
 
-      String name = element.getSimpleName().toString();
-      
-      TypedModel returnType = new TypedModel();
-      returnType.setType(executableElement.getReturnType().toString());
-      returnType.setPrimitive(executableElement.getReturnType().getKind().isPrimitive() || executableElement.getReturnType().getKind() == TypeKind.VOID);
-      
-      MethodModel method = new MethodModel();
-      method.setName(name);
-   
+      MethodModel method = new MethodModel(element.getSimpleName().toString());
+
       for (VariableElement parameterElement : executableElement.getParameters())
       {
-         String paramType = parameterElement.asType().toString();
-         boolean paramPrimitive = parameterElement.asType().getKind().isPrimitive();
-         TypedModel parameter = new TypedModel();
-         parameter.setType(paramType);
-         parameter.setPrimitive(paramPrimitive);
+         boolean primitive = parameterElement.asType().getKind().isPrimitive();
+         TypedModel parameter = new TypedModel(parameterElement.asType().toString(), primitive);
          method.addParameter(parameter);
       }
       // OK, cheating a little with a common model for methods and constructors
-      if ("<init>".equals(name))
+      if ("<init>".equals(method.getName()))
       {
          classModel.addConstructor(method);
       }
@@ -123,5 +95,5 @@ public class DataSetter
          classModel.addMethod(method);
       }
    }
-   
+
 }

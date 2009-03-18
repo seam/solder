@@ -30,7 +30,10 @@ import javax.tools.StandardLocation;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.QName;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -74,9 +77,17 @@ public class XSDHelper
    {
       Schema schema = new Schema(packageName);
       Document document = readSchema(packageName);
-      if (document == null) {
+      if (document == null)
+      {
          document = DocumentHelper.createDocument();
-         document.addElement("schema");
+         QName rootQName = DocumentFactory.getInstance().createQName("schema", "xs", "http://www.w3.org/2001/XMLSchema");
+         Element rootElement = DocumentFactory.getInstance().createElement(rootQName);
+         rootElement.addAttribute("elementFormDefault", "qualified");
+         rootElement.addAttribute("targetNamespace", "urn:java:" + packageName);
+         rootElement.addAttribute("elementFormDefault", "qualified");
+         rootElement.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+         rootElement.addAttribute("xsi:schemaLocation", "http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd");
+         document.setRootElement(rootElement);
       }
       schema.setDocument(document);
       return schema;
@@ -165,14 +176,15 @@ public class XSDHelper
 
    /**
     * Writes the schemas back to disk
-    * @param packageModels 
+    * 
+    * @param packageModels
     */
    public void writeSchemas(Map<String, PackageElement> packageModels)
    {
       for (Schema schema : schemaMap.values())
       {
          schema.rebuild(packageModels.get(schema.getPackageName()));
-         System.out.println(schema.getPackageName() + " (" + schema.getNamespaces() + ")");
+         System.out.println(schema.getDocument().asXML());
          try
          {
             writeSchema(schema);

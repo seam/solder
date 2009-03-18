@@ -20,10 +20,10 @@ package org.jboss.webbeans.xsd;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.TypedModel;
 
@@ -83,11 +83,39 @@ public class Schema
 
    public void rebuild(PackageElement packageElement)
    {
-      System.out.println("Stuff in " + packageName);
-      for (Element e : packageElement.getEnclosedElements())
+      for (String namespace : namespaceHandler.getUsedNamespaces())
       {
-         System.out.println(e.asType().toString());
+         document.getRootElement().addNamespace("x", namespace);
       }
+      for (ClassModel classModel : classModels)
+      {
+         org.dom4j.Element classElement = DocumentFactory.getInstance().createElement("element");
+         classElement.addAttribute("name", classModel.getSimpleName());
+         document.getRootElement().add(classElement);
+      }
+      // System.out.println("Current contents of package " + packageName);
+      // for (Element e : packageElement.getEnclosedElements())
+      // {
+      // System.out.println(e.asType().toString());
+      // }
+   }
+
+   @Override
+   public String toString()
+   {
+      StringBuilder buffer = new StringBuilder();
+      buffer.append("Package: " + packageName + "\n");
+      buffer.append("Used namespaces\n");
+      for (String namespace : namespaceHandler.getUsedNamespaces())
+      {
+         buffer.append("  " + namespace + "\n");
+      }
+      buffer.append("Contained classes:\n");
+      for (ClassModel classModel : classModels)
+      {
+         buffer.append(classModel + "\n");
+      }
+      return buffer.toString();
    }
 
 }

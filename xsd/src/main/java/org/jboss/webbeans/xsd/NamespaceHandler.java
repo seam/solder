@@ -128,20 +128,6 @@ public class NamespaceHandler
       return lastDot < 0 ? packageName : packageName.substring(lastDot + 1);
    }
 
-   // TODO testing, remove
-   public static void main(String[] params)
-   {
-      NamespaceHandler ng = new NamespaceHandler("com.acme.foo");
-      System.out.println(ng.getShortNamespace("com.acme.foo"));
-      System.out.println(ng.getShortNamespace("com.acme.foo.foo"));
-      System.out.println(ng.getShortNamespace("com.acme.foo.foo.foo"));
-      System.out.println(ng.getShortNamespace("java.util"));
-      for (String ns : ng.getUsedNamespaces())
-      {
-         System.out.println(ns);
-      }
-   }
-
    public void addPackage(String packageName)
    {
       if (schemaNamespaces.containsKey(packageName))
