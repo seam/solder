@@ -38,7 +38,7 @@ import org.jboss.webbeans.xsd.model.TypedModel;
  */
 public class DataSetter
 {
-   public static Map<TypedModel, TypedModel> typeSubstitutions = new HashMap<TypedModel, TypedModel>()
+   private static Map<TypedModel, TypedModel> typeSubstitutions = new HashMap<TypedModel, TypedModel>()
    { 
       private static final long serialVersionUID = 8092480390430415094L;
    {
