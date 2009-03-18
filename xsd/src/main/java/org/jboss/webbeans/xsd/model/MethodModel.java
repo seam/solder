@@ -20,6 +20,9 @@ package org.jboss.webbeans.xsd.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dom4j.Element;
+import org.jboss.webbeans.xsd.NamespaceHandler;
+
 /**
  * The model of a method
  * 
@@ -62,6 +65,17 @@ public class MethodModel extends NamedModel
    public String toString()
    {
       return "\n  " + name + "(" + (parameters.isEmpty() ? "" : parameters) + ")";
+   }
+
+   @Override
+   public Element toXSD(NamespaceHandler namespaceHandler)
+   {
+      Element method = super.toXSD(namespaceHandler);
+      for (TypedModel parameter : parameters)
+      {
+         method.add(parameter.toXSD(namespaceHandler));
+      }
+      return method;
    }
 
 }

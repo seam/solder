@@ -162,11 +162,11 @@ public class XSDHelper
             }
             catch (DocumentException e)
             {
-               throw new RuntimeException("Could not parse schema for package " + packageName);
+               throw new RuntimeException("Could not parse schema for package " + packageName, e);
             }
             catch (IOException e)
             {
-               throw new RuntimeException("Could not read schema for package " + packageName);
+               throw new RuntimeException("Could not read schema for package " + packageName, e);
             }
             schemaMap.put(packageName, schema);
          }
@@ -187,11 +187,14 @@ public class XSDHelper
          System.out.println(schema.getDocument().asXML());
          try
          {
-            writeSchema(schema);
+            if (1 == 2)
+            {
+               writeSchema(schema);
+            }
          }
          catch (IOException e)
          {
-            throw new RuntimeException("Could not write schema for " + schema.getPackageName());
+            throw new RuntimeException("Could not write schema for " + schema.getPackageName(), e);
          }
       }
    }

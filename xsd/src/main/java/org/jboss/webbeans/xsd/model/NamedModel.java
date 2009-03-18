@@ -17,6 +17,10 @@
 
 package org.jboss.webbeans.xsd.model;
 
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+import org.jboss.webbeans.xsd.NamespaceHandler;
+
 /**
  * A superclass for named models
  * 
@@ -54,5 +58,12 @@ public class NamedModel
    public int hashCode()
    {
       return name.hashCode();
+   }
+
+   public Element toXSD(NamespaceHandler namespaceHandler)
+   {
+      Element item = DocumentFactory.getInstance().createElement("element");
+      item.addAttribute("name", name);
+      return item;
    }
 }

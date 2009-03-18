@@ -22,6 +22,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.lang.model.element.TypeElement;
+
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+import org.jboss.webbeans.xsd.NamespaceHandler;
+
 /**
  * A model of a class
  * 
@@ -40,7 +46,7 @@ public class ClassModel extends NamedModel
    // The constructors of the class
    private List<MethodModel> constructors = new ArrayList<MethodModel>();
 
-   public ClassModel(String name)
+   protected ClassModel(String name)
    {
       super(name);
    }
@@ -222,6 +228,30 @@ public class ClassModel extends NamedModel
       buffer.append("Methods:\n" + getMergedMethods() + "\n");
       buffer.append("Fields:\n" + getMergedFields() + "\n");
       return buffer.toString();
+   }
+
+   public static ClassModel of(TypeElement typeElement)
+   {
+      return new ClassModel(typeElement.getQualifiedName().toString());
+   }
+
+   public Element toXSD(NamespaceHandler namespaceHandler)
+   {
+      Element classElement = DocumentFactory.getInstance().createElement("element");
+      classElement.addAttribute("name", getSimpleName());
+      for (MethodModel constructor : getMergedConstructors())
+      {
+         classElement.add(constructor.toXSD(namespaceHandler));
+      }
+      for (NamedModel field : getMergedFields())
+      {
+         classElement.add(field.toXSD(namespaceHandler));
+      }
+      for (MethodModel method : getMergedMethods())
+      {
+         classElement.add(method.toXSD(namespaceHandler));
+      }
+      return classElement;
    }
 
 }

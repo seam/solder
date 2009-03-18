@@ -94,7 +94,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
    private ClassModel inspectClass(Element element)
    {
       TypeElement typeElement = (TypeElement) element;
-      ClassModel classModel = new ClassModel(typeElement.getQualifiedName().toString());
+      ClassModel classModel = ClassModel.of(typeElement);
 
       // If the class has superclass's, scan them recursively
       if (typeElement.getSuperclass().getKind() != TypeKind.NONE)

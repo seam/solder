@@ -17,6 +17,10 @@
 
 package org.jboss.webbeans.xsd.model;
 
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+import org.jboss.webbeans.xsd.NamespaceHandler;
+
 /**
  * The model of a typed member
  * 
@@ -86,6 +90,14 @@ public class TypedModel
    public int hashCode()
    {
       return type.hashCode();
+   }
+
+   public Element toXSD(NamespaceHandler namespaceHandler)
+   {
+      String namespace = isPrimitive() ? "" : namespaceHandler.getShortNamespace(type);
+      Element item = DocumentFactory.getInstance().createElement("element");
+      item.addAttribute("type", type);
+      return item;
    }
 
 }

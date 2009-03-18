@@ -24,6 +24,7 @@ import javax.lang.model.element.PackageElement;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
+import org.jboss.webbeans.xsd.NamespaceHandler.SchemaNamespace;
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.TypedModel;
 
@@ -76,22 +77,20 @@ public class Schema
       this.packageName = packageName;
    }
 
-   public Set<String> getNamespaces()
-   {
-      return namespaceHandler.getUsedNamespaces();
-   }
+//   public Set<String> getNamespaces()
+//   {
+//      return namespaceHandler.getUsedNamespaces();
+//   }
 
    public void rebuild(PackageElement packageElement)
    {
-      for (String namespace : namespaceHandler.getUsedNamespaces())
+      for (SchemaNamespace schemaNamespace : namespaceHandler.getSchemaNamespaces().values())
       {
-         document.getRootElement().addNamespace("x", namespace);
+         document.getRootElement().addNamespace(schemaNamespace.shortNamespace, schemaNamespace.urn);
       }
       for (ClassModel classModel : classModels)
       {
-         org.dom4j.Element classElement = DocumentFactory.getInstance().createElement("element");
-         classElement.addAttribute("name", classModel.getSimpleName());
-         document.getRootElement().add(classElement);
+         document.getRootElement().add(classModel.toXSD(namespaceHandler));
       }
       // System.out.println("Current contents of package " + packageName);
       // for (Element e : packageElement.getEnclosedElements())
@@ -106,9 +105,9 @@ public class Schema
       StringBuilder buffer = new StringBuilder();
       buffer.append("Package: " + packageName + "\n");
       buffer.append("Used namespaces\n");
-      for (String namespace : namespaceHandler.getUsedNamespaces())
+      for (SchemaNamespace schemaNamespace : namespaceHandler.getSchemaNamespaces().values())
       {
-         buffer.append("  " + namespace + "\n");
+         buffer.append("  " + schemaNamespace + "\n");
       }
       buffer.append("Contained classes:\n");
       for (ClassModel classModel : classModels)

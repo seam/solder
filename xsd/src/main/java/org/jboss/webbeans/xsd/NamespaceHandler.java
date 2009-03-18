@@ -42,6 +42,11 @@ public class NamespaceHandler
    // Namespace infos
    private Map<String, SchemaNamespace> schemaNamespaces = new HashMap<String, SchemaNamespace>();
 
+   public Map<String, SchemaNamespace> getSchemaNamespaces()
+   {
+      return schemaNamespaces;
+   }
+
    /**
     * Creats a new namespace generator
     * 
@@ -59,14 +64,14 @@ public class NamespaceHandler
     * @author Nicklas Karlsson
     * 
     */
-   private class SchemaNamespace
+   public class SchemaNamespace
    {
       // The package name
       String packageName;
       // The full namespace
-      String namespace;
-      // The namespace abbreviation
       String shortNamespace;
+      // The urn
+      String urn;
       // Is this a EE reserved package?
       boolean ee;
 
@@ -74,12 +79,14 @@ public class NamespaceHandler
       {
          this.packageName = packageName;
          this.shortNamespace = shortNamespace;
-         // Skip ":" for default namespace
-         String colon = "".equals(shortNamespace) ? "" : ":";
-         // Hardcode "ee" for EE reserved packages
-         String url = ee ? "ee" : packageName;
-         this.namespace = "xmlns" + colon + shortNamespace + "=\"urn:java:" + url + "\"";
          this.ee = ee;
+         this.urn = "urn:java:" + (ee ? "ee" : packageName);
+      }
+
+      @Override
+      public String toString()
+      {
+         return shortNamespace + "=" + urn;
       }
    }
 
@@ -88,16 +95,15 @@ public class NamespaceHandler
     * 
     * @return The used namespaces
     */
-   public Set<String> getUsedNamespaces()
-   {
-      Set<String> usedNamespaces = new HashSet<String>();
-      for (SchemaNamespace schemaNamespace : schemaNamespaces.values())
-      {
-         usedNamespaces.add(schemaNamespace.namespace);
-      }
-      return usedNamespaces;
-   }
-
+   // public Set<String> getUsedNamespaces()
+   // {
+   // Set<String> usedNamespaces = new HashSet<String>();
+   // for (SchemaNamespace schemaNamespace : schemaNamespaces.values())
+   // {
+   // usedNamespaces.add(schemaNamespace.getFullNamespace());
+   // }
+   // return usedNamespaces;
+   // }
    /**
     * Gets a namespace abbreviation for a package
     * 
@@ -106,9 +112,10 @@ public class NamespaceHandler
     */
    public String getShortNamespace(String packageName)
    {
-      if (schemaNamespaces.containsKey(packageName))
+      String shortName = getPackageName(packageName);
+      if (schemaNamespaces.containsKey(shortName))
       {
-         return schemaNamespaces.get(packageName).shortNamespace;
+         return schemaNamespaces.get(shortName).shortNamespace;
       }
       else
       {
@@ -126,6 +133,12 @@ public class NamespaceHandler
    {
       int lastDot = packageName.lastIndexOf(".");
       return lastDot < 0 ? packageName : packageName.substring(lastDot + 1);
+   }
+
+   private String getPackageName(String FQN)
+   {
+      int lastDot = FQN.lastIndexOf(".");
+      return lastDot < 0 ? "nopak" : FQN.substring(0, lastDot);
    }
 
    public void addPackage(String packageName)
