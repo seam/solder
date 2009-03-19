@@ -4,16 +4,17 @@ import javax.context.ApplicationScoped;
 import javax.event.Observes;
 import javax.inject.manager.Manager;
 
-import org.apache.log4j.Logger;
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.context.DependentContext;
 import org.jboss.webbeans.environment.se.events.Shutdown;
+import org.jboss.webbeans.log.LogProvider;
+import org.jboss.webbeans.log.Logging;
 
 @ApplicationScoped
 public class ShutdownManager
 {
    
-   private static Logger log = Logger.getLogger(ShutdownManager.class);
+   private static LogProvider log = Logging.getLogProvider(ShutdownManager.class);
    
    private boolean hasShutdownBeenCalled = false;
    

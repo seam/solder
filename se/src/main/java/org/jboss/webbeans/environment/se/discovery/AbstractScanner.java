@@ -17,8 +17,8 @@
 package org.jboss.webbeans.environment.se.discovery;
 
 import java.net.URL;
-
-import org.apache.log4j.Logger;
+import org.jboss.webbeans.log.LogProvider;
+import org.jboss.webbeans.log.Logging;
 
 /**
  * Abstract base class for {@link Scanner} providing common functionality
@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 public abstract class AbstractScanner implements Scanner
 {
    
-   private static final Logger log = Logger.getLogger(Scanner.class);
+   private static final LogProvider log = Logging.getLogProvider(Scanner.class);
    private final ClassLoader classLoader;
    private final SEWebBeanDiscovery webBeanDiscovery;
    

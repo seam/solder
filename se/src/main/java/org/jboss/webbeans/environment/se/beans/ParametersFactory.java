@@ -37,20 +37,29 @@ import org.jboss.webbeans.environment.se.bindings.Parameters;
 public class ParametersFactory
 {
    private String[] args;
+   private List<String> argsList;
    
    /**
-    * Producer method for the injectible command line args.
+    * Producer method for the injectable command line args.
     * 
     * @return The command line arguments.
     */
-   @Produces
-   @Parameters
-   // TODO Give generic type - WBRI-186
-   public List getArgs()
+   @Produces @Parameters
+   public List<String> getArgs()
    {
-      return Collections.unmodifiableList(new ArrayList<String>(Arrays.asList(this.args)));
+      return argsList;
    }
-   
+
+   /**
+    * Producer method for the injectable command line args.
+    * @return The command line arguments.
+    */
+   @Produces @Parameters
+   public String[] getArgsAsArray(  )
+   {
+      return this.args;
+   }
+
    /**
     * StartMain passes in the command line args here.
     * 
@@ -60,5 +69,6 @@ public class ParametersFactory
    public void setArgs(String[] args)
    {
       this.args = args;
+      this.argsList = Collections.unmodifiableList( new ArrayList<String>( Arrays.asList( args ) ) );
    }
 }
