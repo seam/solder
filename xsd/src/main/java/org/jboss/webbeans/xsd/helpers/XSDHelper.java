@@ -73,9 +73,9 @@ public class XSDHelper
     * @throws DocumentException If the schema could not be parsed
     * @throws IOException If the schema could not be read
     */
-   private Schema createSchema(String packageName) throws DocumentException, IOException
+   private Schema createSchema(String packageName, PackageElement packageElement) throws DocumentException, IOException
    {
-      Schema schema = new Schema(packageName);
+      Schema schema = new Schema(packageName, packageElement);
       Document document = readSchema(packageName);
       if (document == null)
       {
@@ -158,7 +158,7 @@ public class XSDHelper
          {
             try
             {
-               schema = createSchema(packageName);
+               schema = createSchema(packageName, classModel.getPackageElement());
             }
             catch (DocumentException e)
             {
@@ -179,11 +179,11 @@ public class XSDHelper
     * 
     * @param packageModels
     */
-   public void writeSchemas(Map<String, PackageElement> packageModels)
+   public void writeSchemas()
    {
       for (Schema schema : schemaMap.values())
       {
-         schema.rebuild(packageModels.get(schema.getPackageName()));
+         schema.rebuild();
          System.out.println(schema.getDocument().asXML());
          try
          {

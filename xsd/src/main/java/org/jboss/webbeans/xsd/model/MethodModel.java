@@ -44,7 +44,7 @@ public class MethodModel extends NamedModel
       }
    };
 
-   private List<TypedModel> parameters = new ArrayList<TypedModel>();
+   protected List<TypedModel> parameters = new ArrayList<TypedModel>();
 
    protected MethodModel(ExecutableElement executableElement)
    {

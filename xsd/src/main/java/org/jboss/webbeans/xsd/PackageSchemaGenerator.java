@@ -18,9 +18,7 @@
 package org.jboss.webbeans.xsd;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -30,7 +28,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
@@ -64,23 +62,24 @@ public class PackageSchemaGenerator extends AbstractProcessor
    @Override
    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment)
    {
-      Map<String, PackageElement> packageModels = new HashMap<String, PackageElement>();
       List<ClassModel> workingSet = new ArrayList<ClassModel>();
 
       // Iterates over the classes compiled, creates a model of the classes and
       // add them to a working set
       for (Element element : roundEnvironment.getRootElements())
       {
-         ClassModel classModel = inspectClass(element);
-         workingSet.add(classModel);
-         packageModels.put(classModel.getPackage(), processingEnv.getElementUtils().getPackageOf(element));
+         if (ElementKind.CLASS.equals(element.getKind()) || ElementKind.ANNOTATION_TYPE.equals(element.getKind()))
+         {
+            ClassModel classModel = inspectClass(element);
+            workingSet.add(classModel);
+         }
       }
       if (!roundEnvironment.processingOver())
       {
          // Update the package XSDs for the files changed
          helper.updateSchemas(workingSet);
          // And flush the changes to disk
-         helper.writeSchemas(packageModels);
+         helper.writeSchemas();
       }
       return false;
    }
@@ -94,7 +93,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
    private ClassModel inspectClass(Element element)
    {
       TypeElement typeElement = (TypeElement) element;
-      ClassModel classModel = ClassModel.of(typeElement);
+      ClassModel classModel = ClassModel.of(typeElement, processingEnv.getElementUtils().getPackageOf(typeElement));
 
       // If the class has superclass's, scan them recursively
       if (typeElement.getSuperclass().getKind() != TypeKind.NONE)
@@ -118,7 +117,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
       // Filter out the constructors and populate the model
       for (Element constructor : ElementFilter.constructorsIn(element.getEnclosedElements()))
       {
-         DataSetter.populateMethodModel(classModel, constructor);
+         DataSetter.populateConstructorModel(classModel, constructor);
       }
       // Place the new class model in the cache
       helper.cacheClassModel(classModel);

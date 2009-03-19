@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 import org.dom4j.DocumentFactory;
@@ -36,19 +38,29 @@ import org.jboss.webbeans.xsd.NamespaceHandler;
  */
 public class ClassModel extends NamedModel
 {
+   // The package of the class
+   private PackageElement packageElement;
    // The parent (or null if top-level)
    private ClassModel parent;
-
    // The fields of the class
    private List<NamedModel> fields = new ArrayList<NamedModel>();
    // The methods of the class
    private List<MethodModel> methods = new ArrayList<MethodModel>();
    // The constructors of the class
-   private List<MethodModel> constructors = new ArrayList<MethodModel>();
+   private List<ConstructorModel> constructors = new ArrayList<ConstructorModel>();
+   // The kind of class
+   private ElementKind kind;
 
-   protected ClassModel(String name)
+   protected ClassModel(String name, ElementKind kind, PackageElement packageElement)
    {
       super(name);
+      this.kind = kind;
+      this.packageElement = packageElement;
+   }
+
+   public static ClassModel of(TypeElement typeElement, PackageElement packageElement)
+   {
+      return new ClassModel(typeElement.getQualifiedName().toString(), typeElement.getKind(), packageElement);
    }
 
    /**
@@ -66,7 +78,7 @@ public class ClassModel extends NamedModel
     * 
     * @param constructor The constructor to add
     */
-   public void addConstructor(MethodModel constructor)
+   public void addConstructor(ConstructorModel constructor)
    {
       constructors.add(constructor);
    }
@@ -107,9 +119,9 @@ public class ClassModel extends NamedModel
     * 
     * @return The set of constructors available
     */
-   public Set<MethodModel> getMergedConstructors()
+   public Set<ConstructorModel> getMergedConstructors()
    {
-      return new HashSet<MethodModel>(constructors);
+      return new HashSet<ConstructorModel>(constructors);
    }
 
    /**
@@ -219,6 +231,11 @@ public class ClassModel extends NamedModel
       return lastDot < 0 ? name : name.substring(lastDot + 1);
    }
 
+   public PackageElement getPackageElement()
+   {
+      return packageElement;
+   }
+
    @Override
    public String toString()
    {
@@ -230,11 +247,6 @@ public class ClassModel extends NamedModel
       return buffer.toString();
    }
 
-   public static ClassModel of(TypeElement typeElement)
-   {
-      return new ClassModel(typeElement.getQualifiedName().toString());
-   }
-
    @Override
    public Element toXSD(NamespaceHandler namespaceHandler)
    {
@@ -244,18 +256,27 @@ public class ClassModel extends NamedModel
       Element anyElement = DocumentFactory.getInstance().createElement("xs:any");
       complexElement.add(anyElement);
       classElement.add(complexElement);
-      for (MethodModel constructor : getMergedConstructors())
+
+      Element choice = DocumentFactory.getInstance().createElement("xs:choice");
+      for (ConstructorModel constructor : getMergedConstructors())
       {
-         anyElement.add(constructor.toXSD(namespaceHandler));
+         if (!constructor.getParameters().isEmpty())
+         {
+            choice.add(constructor.toXSD(namespaceHandler));
+         }
       }
-      for (NamedModel field : getMergedFields())
-      {
-         anyElement.add(field.toXSD(namespaceHandler));
-      }
+      anyElement.add(choice);
+
       for (MethodModel method : getMergedMethods())
       {
          anyElement.add(method.toXSD(namespaceHandler));
       }
+
+      for (NamedModel field : getMergedFields())
+      {
+         anyElement.add(field.toXSD(namespaceHandler));
+      }
+
       return classElement;
    }
 

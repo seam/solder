@@ -49,17 +49,19 @@ public class Schema
    private NamespaceHandler namespaceHandler;
    // The set of classes to update
    private Set<ClassModel> classModels;
-
+   private PackageElement packageElement;
+   
    /**
     * Creates a new package
     * 
     * @param packageName The name of the package
     */
-   public Schema(String packageName)
+   public Schema(String packageName, PackageElement packageElement)
    {
       this.packageName = packageName;
       namespaceHandler = new NamespaceHandler(packageName);
       classModels = new HashSet<ClassModel>();
+      this.packageElement = packageElement;
    }
 
    /**
@@ -113,7 +115,7 @@ public class Schema
     * @param FQN The full name of the class
     * @return True if present, false otherwise
     */
-   private boolean isClassInPackage(PackageElement packageElement, String FQN)
+   private boolean isClassInPackage(String FQN)
    {
       for (javax.lang.model.element.Element classElement : packageElement.getEnclosedElements())
       {
@@ -130,12 +132,12 @@ public class Schema
     * Cleans out XSD for files that are no longer present in the package
     * @param packageElement
     */
-   private void cleanRemovedClasses(PackageElement packageElement)
+   private void cleanRemovedClasses()
    {
       for (Object xsdClass : document.selectNodes("/xs:schema/xs:element"))
       {
          String FQN = packageName + "." + ((Element) xsdClass).attributeValue("name");
-         if (!isClassInPackage(packageElement, FQN))
+         if (!isClassInPackage(FQN))
          {
             ((Element) xsdClass).detach();
          }
@@ -192,9 +194,9 @@ public class Schema
     * 
     * @param packageElement The package abstraction
     */
-   public void rebuild(PackageElement packageElement)
+   public void rebuild()
    {
-      cleanRemovedClasses(packageElement);
+      cleanRemovedClasses();
       updateNamespaces();
 
       for (ClassModel classModel : classModels)

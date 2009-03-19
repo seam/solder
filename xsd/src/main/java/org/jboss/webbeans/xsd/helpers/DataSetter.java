@@ -22,6 +22,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 
 import org.jboss.webbeans.xsd.model.ClassModel;
+import org.jboss.webbeans.xsd.model.ConstructorModel;
 import org.jboss.webbeans.xsd.model.MethodModel;
 import org.jboss.webbeans.xsd.model.NamedModel;
 
@@ -62,11 +63,21 @@ public class DataSetter
    }
 
    /**
-    * Inspects a method or constructor and populates a class model
+    * Inspects a constructor and populates a class model
     * 
     * @param classModel The class model to populate
     * @param element The element to inspect
     */
+   public static void populateConstructorModel(ClassModel classModel, Element element)
+   {
+      if (!isPublic(element))
+      {
+         return;
+      }
+      ConstructorModel constructor = ConstructorModel.of((ExecutableElement) element);
+      classModel.addConstructor(constructor);
+   }
+
    public static void populateMethodModel(ClassModel classModel, Element element)
    {
       if (!isPublic(element))
@@ -74,17 +85,7 @@ public class DataSetter
          return;
       }
       MethodModel method = MethodModel.of((ExecutableElement) element);
-
-      // OK, cheating a little with a common model for methods and constructors
-      if ("<init>".equals(method.getName()))
-      {
-         method.setName(classModel.getSimpleName());
-         classModel.addConstructor(method);
-      }
-      else
-      {
-         classModel.addMethod(method);
-      }
+      classModel.addMethod(method);
    }
 
 }
