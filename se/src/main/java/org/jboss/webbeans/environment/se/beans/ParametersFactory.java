@@ -36,8 +36,8 @@ import org.jboss.webbeans.environment.se.bindings.Parameters;
 @ApplicationScoped
 public class ParametersFactory
 {
-   private String[] args;
-   private List<String> argsList;
+   private String[] args = new String[]{};
+   private List<String> argsList = new ArrayList<String>(0);
    
    /**
     * Producer method for the injectable command line args.
