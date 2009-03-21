@@ -32,8 +32,8 @@ import org.testng.annotations.Test;
  */
 public class StartMainTest {
 
-    public static String[] ARGS = new String[] { "arg1", "arg2", "arg 3"};
-
+    public static String[] ARGS = new String[] { "arg1", "arg2", "arg3"};
+    public static String[] ARGS_EMPTY = new String[] { };
 
     /**
      * Test of main method, of class StartMain. Checks that the beans
@@ -51,24 +51,57 @@ public class StartMainTest {
 
         ParametersTestBean paramsBean = mainTestBean.getParametersTestBean();
         Assert.assertNotNull( paramsBean );
-        Assert.assertNotNull( paramsBean.getParam1() );
-        Assert.assertEquals( ARGS[0], paramsBean.getParam1() );
-        Assert.assertNotNull( paramsBean.getParam2() );
-        Assert.assertEquals( ARGS[1], paramsBean.getParam2() );
-        Assert.assertNotNull( paramsBean.getParam3() );
-        Assert.assertEquals( ARGS[2], paramsBean.getParam3() );
+        Assert.assertNotNull( paramsBean.getParameters() );
+        Assert.assertNotNull( paramsBean.getParameters().get(0) );
+        Assert.assertEquals( ARGS[0], paramsBean.getParameters().get(0) );
+        Assert.assertNotNull( paramsBean.getParameters().get(1) );
+        Assert.assertEquals( ARGS[1], paramsBean.getParameters().get(1) );
+        Assert.assertNotNull( paramsBean.getParameters().get(2) );
+        Assert.assertEquals( ARGS[2], paramsBean.getParameters().get(2) );
 
-        manager.fireEvent( manager, new AnnotationLiteral<Shutdown>() {} );
+        shutdownManager(manager);
         boolean contextNotActive = false;
         try
         {
            assert manager.getInstanceByType(MainTestBean.class) == null;
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
            contextNotActive = true;
         }
         assert contextNotActive;
+    }
+
+    /**
+     * Test of main method, of class StartMain when no command-line args are
+     * provided.
+     */
+    @Test
+    public void testMainEmptyArgs()
+    {
+        Manager manager = new StartMain(ARGS_EMPTY).main();
+
+        MainTestBean mainTestBean = manager.getInstanceByType( MainTestBean.class );
+        Assert.assertNotNull( mainTestBean );
+
+        ParametersTestBean paramsBean = mainTestBean.getParametersTestBean();
+        Assert.assertNotNull( paramsBean );
+        Assert.assertNotNull( paramsBean.getParameters() );
+
+        shutdownManager(manager);
+    }
+
+    private void shutdownManager( Manager manager )
+    {
+        manager.fireEvent( manager, new ShutdownAnnotation() );
+    }
+
+    private static class ShutdownAnnotation extends AnnotationLiteral<Shutdown>
+    {
+
+        public ShutdownAnnotation()
+        {
+        }
     }
 
 }

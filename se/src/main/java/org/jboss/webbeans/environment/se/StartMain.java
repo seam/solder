@@ -47,14 +47,14 @@ public class StartMain
    
    private final Bootstrap bootstrap;
    private final BeanStore applicationBeanStore;
-   private String[] args;
+   public static String[] ARGS;
    
    private WebBeansManager manager;
    
    
    public StartMain(String[] commandLineArgs)
    {
-      this.args = commandLineArgs;
+      ARGS = commandLineArgs;
       try
       {
          bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME, Bootstrap.class);
@@ -73,9 +73,8 @@ public class StartMain
       bootstrap.getServices().add(NamingContext.class, new NoNamingContext() {});
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
-      bootstrap.boot();
       this.manager = bootstrap.getManager();
-      bootstrap.getManager().getInstanceByType(ParametersFactory.class).setArgs(args);
+      bootstrap.boot();
       DependentContext.INSTANCE.setActive(true);
       bootstrap.getManager().getInstanceByType(ShutdownManager.class).setBootstrap(bootstrap);
    }

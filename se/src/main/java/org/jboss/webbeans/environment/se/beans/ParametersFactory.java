@@ -22,8 +22,12 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.context.ApplicationScoped;
+import javax.event.Observes;
 import javax.inject.Produces;
 
+import javax.inject.manager.Initialized;
+import javax.inject.manager.Manager;
+import org.jboss.webbeans.environment.se.StartMain;
 import org.jboss.webbeans.environment.se.bindings.Parameters;
 
 /**
@@ -36,8 +40,8 @@ import org.jboss.webbeans.environment.se.bindings.Parameters;
 @ApplicationScoped
 public class ParametersFactory
 {
-   private String[] args = new String[]{};
-   private List<String> argsList = new ArrayList<String>(0);
+   private String[] args;
+   private List<String> argsList;
    
    /**
     * Producer method for the injectable command line args.
@@ -64,11 +68,25 @@ public class ParametersFactory
     * StartMain passes in the command line args here.
     * 
     * @param args
-    *           The command line arguments.
+    *           The command line arguments. If null is given then an empty array
+    *           will be used instead.
     */
    public void setArgs(String[] args)
    {
+      if (args == null) {
+         args = new String[] {};
+      }
       this.args = args;
       this.argsList = Collections.unmodifiableList( new ArrayList<String>( Arrays.asList( args ) ) );
+   }
+
+   /**
+    * On WebBeans initialisation, retrieve the command line args that were given
+    * to StartMain.
+    *
+    * @param manager The Manager which has been initialized.
+    */
+   public void initArgs(@Observes @Initialized Manager manager) {
+      this.setArgs( StartMain.ARGS );
    }
 }

@@ -20,44 +20,31 @@ package org.jboss.webbeans.environment.se.test.beans;
 
 import java.util.List;
 
+import javax.context.ApplicationScoped;
 import javax.inject.Initializer;
 
 import org.jboss.webbeans.environment.se.bindings.Parameters;
-import org.jboss.webbeans.environment.se.test.StartMainTest;
 import org.testng.Assert;
 
 /**
  *
  * @author Peter Royle
  */
+@ApplicationScoped
 public class ParametersTestBean {
 
-    String param1;
-    String param2;
-    String param3;
+    List<String> parameters;
 
     @Initializer
     public void init(@Parameters List<String> params) {
+        this.parameters = params;
+        // even if no args are given, it should will always at least be an empty array
         Assert.assertNotNull( params );
-        Assert.assertEquals( StartMainTest.ARGS.length, params.size(), "Unexpected number of arguments");
-        param1 = params.get( 0 );
-        param2 = params.get( 1 );
-        param3 = params.get( 2 );
     }
 
-    public String getParam1()
+    public List<String> getParameters()
     {
-        return param1;
-    }
-
-    public String getParam2()
-    {
-        return param2;
-    }
-
-    public String getParam3()
-    {
-        return param3;
+        return parameters;
     }
 
 }

@@ -16,8 +16,11 @@
  */
 package org.jboss.webbeans.environment.se.test.beans;
 
+import javax.event.Observes;
 import javax.inject.Current;
 import javax.inject.Initializer;
+import javax.inject.manager.Deployed;
+import javax.inject.manager.Manager;
 
 /**
  *
@@ -34,6 +37,12 @@ public class MainTestBean
     {
         this.initialised = true;
         this.parametersTestBean = paramsTestBean;
+        // this call is important. It invokes initialiser on the proxy
+        paramsTestBean.getParameters();
+    }
+
+    public void mainMethod(@Observes @Deployed Manager manager) {
+        System.out.println( "Starting main test app" );
     }
 
     public ParametersTestBean getParametersTestBean()
@@ -45,6 +54,5 @@ public class MainTestBean
     {
         return initialised;
     }
-
     
 }
