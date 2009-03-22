@@ -17,6 +17,8 @@
 
 package org.jboss.webbeans.test.log;
 
+import javax.inject.ExecutionException;
+
 import org.jboss.testharness.impl.packaging.Artifact;
 import org.jboss.testharness.impl.packaging.Classes;
 import org.jboss.webbeans.test.AbstractLogTest;
@@ -26,16 +28,26 @@ import org.testng.annotations.Test;
  * All the tests related to the @Logger binding type and injection.
  * 
  * @author David Allen
- *
  */
 @Artifact
 @Classes(packages = { "org.jboss.webbeans.producer", "org.jboss.webbeans.test.log" })
 public class LoggerInjectionTest extends AbstractLogTest
 {
-   @Test( groups = { "broken" } )
+   @Test
    public void testBasicLogInjection()
    {
       Sparrow bird = getCurrentManager().getInstanceByType(Sparrow.class);
       bird.generateLogMessage();
+      assert TestAppender.getLastEvent() != null;
+      assert TestAppender.getLastEvent().getLoggerName().equals("org.jboss.webbeans.test.log.Sparrow");
+   }
+   
+   @Test
+   public void testCategorySpecifiedLogger()
+   {
+      Finch bird = getCurrentManager().getInstanceByType(Finch.class);
+      bird.generateLogMessage();
+      assert TestAppender.getLastEvent() != null;
+      assert TestAppender.getLastEvent().getLoggerName().equals("Finch");
    }
 }

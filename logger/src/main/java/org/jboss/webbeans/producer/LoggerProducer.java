@@ -17,9 +17,7 @@
 
 package org.jboss.webbeans.producer;
 
-import javax.context.ApplicationScoped;
 import javax.inject.Current;
-import javax.inject.DefinitionException;
 import javax.inject.Produces;
 import javax.inject.manager.InjectionPoint;
 
@@ -38,17 +36,13 @@ import org.jboss.webbeans.log.Logging;
  */
 public class LoggerProducer
 {
-   @Produces @ApplicationScoped
+   @Produces @Logger
    public Log produceLog(@Current InjectionPoint injectionPoint)
    {
       Log log = null;
       String category = null;
-      if (injectionPoint.getType().equals(Log.class))
-      {
-         throw new DefinitionException("Cannot use @Logger on any type other than org.jboss.webbeans.log.Log: " + injectionPoint);
-      }
       category = injectionPoint.getAnnotation(Logger.class).value();
-      if (category == null)
+      if (category.isEmpty())
       {
          log = Logging.getLog((Class<?>) injectionPoint.getMember().getDeclaringClass());
       }
