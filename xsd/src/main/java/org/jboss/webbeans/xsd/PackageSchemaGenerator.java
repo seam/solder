@@ -30,6 +30,8 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
@@ -38,8 +40,10 @@ import javax.lang.model.util.ElementFilter;
 import org.dom4j.DocumentException;
 import org.jboss.webbeans.log.LogProvider;
 import org.jboss.webbeans.log.Logging;
-import org.jboss.webbeans.xsd.helpers.DataSetter;
 import org.jboss.webbeans.xsd.model.ClassModel;
+import org.jboss.webbeans.xsd.model.ConstructorModel;
+import org.jboss.webbeans.xsd.model.FieldModel;
+import org.jboss.webbeans.xsd.model.MethodModel;
 
 /**
  * An annotation processor that updates the package-level XSD for the packages
@@ -53,7 +57,7 @@ import org.jboss.webbeans.xsd.model.ClassModel;
 public class PackageSchemaGenerator extends AbstractProcessor
 {
    private static LogProvider log = Logging.getLogProvider(PackageSchemaGenerator.class);
-   
+
    private Map<String, ClassModel> classModelCache;
    private Map<String, Schema> schemas;
 
@@ -97,7 +101,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
             }
          }
       }
-      return false;
+      return true;
    }
 
    private void addClassToSchema(ClassModel classModel) throws DocumentException
@@ -110,6 +114,11 @@ public class PackageSchemaGenerator extends AbstractProcessor
          schemas.put(packageName, schema);
       }
       schema.addClass(classModel);
+   }
+
+   private boolean isPublic(Element element)
+   {
+      return element.getModifiers().contains(Modifier.PUBLIC);
    }
 
    /**
@@ -135,17 +144,29 @@ public class PackageSchemaGenerator extends AbstractProcessor
       // Filter out the fields and populate the model
       for (Element field : ElementFilter.fieldsIn(element.getEnclosedElements()))
       {
-         DataSetter.populateFieldModel(classModel, field);
+         if (!isPublic(field))
+         {
+            continue;
+         }
+         classModel.addField(FieldModel.of(field));
       }
       // Filter out the methods and populate the model
-      for (Element method : ElementFilter.methodsIn(element.getEnclosedElements()))
+      for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements()))
       {
-         DataSetter.populateMethodModel(classModel, method);
+         if (!isPublic(method))
+         {
+            continue;
+         }
+         classModel.addMethod(MethodModel.of(method));
       }
       // Filter out the constructors and populate the model
-      for (Element constructor : ElementFilter.constructorsIn(element.getEnclosedElements()))
+      for (ExecutableElement constructor : ElementFilter.constructorsIn(element.getEnclosedElements()))
       {
-         DataSetter.populateConstructorModel(classModel, constructor);
+         if (!isPublic(constructor))
+         {
+            continue;
+         }
+         classModel.addConstructor(ConstructorModel.of(constructor));
       }
       // Place the new class model in the cache
       classModelCache.put(classModel.getName(), classModel);

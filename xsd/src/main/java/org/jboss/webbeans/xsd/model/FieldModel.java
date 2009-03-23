@@ -17,7 +17,8 @@
 
 package org.jboss.webbeans.xsd.model;
 
-import org.dom4j.Element;
+import javax.lang.model.element.Element;
+
 import org.jboss.webbeans.xsd.NamespaceHandler;
 
 /**
@@ -34,15 +35,15 @@ public class FieldModel extends NamedModel
       super(name);
    }
 
-   public static FieldModel of(String name)
+   public static FieldModel of(Element element)
    {
-      return new FieldModel(name);
+      return new FieldModel(element.getSimpleName().toString());
    }
 
    @Override
-   public Element toXSD(NamespaceHandler namespaceHandler)
+   public org.dom4j.Element toXSD(NamespaceHandler namespaceHandler)
    {
-      Element field = super.toXSD(namespaceHandler);
+      org.dom4j.Element field = super.toXSD(namespaceHandler);
       field.addAttribute("type", "wb:field");    
       return field;
    }
