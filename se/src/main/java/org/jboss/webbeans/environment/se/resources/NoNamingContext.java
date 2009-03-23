@@ -39,4 +39,9 @@ public abstract class NoNamingContext implements NamingContext
       return null;
    }
    
+   public void unbind(String key)
+   {
+      // No-op
+   }
+   
 }
