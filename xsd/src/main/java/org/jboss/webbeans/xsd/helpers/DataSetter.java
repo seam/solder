@@ -58,8 +58,7 @@ public class DataSetter
       {
          return;
       }
-      FieldModel field = FieldModel.of(element.getSimpleName().toString());
-      classModel.addField(field);
+      classModel.addField(FieldModel.of(element.getSimpleName().toString()));
    }
 
    /**
@@ -74,18 +73,22 @@ public class DataSetter
       {
          return;
       }
-      ConstructorModel constructor = ConstructorModel.of((ExecutableElement) element);
-      classModel.addConstructor(constructor);
+      classModel.addConstructor(ConstructorModel.of((ExecutableElement) element));
    }
 
+   /**
+    * Inspects a method and populates a class model
+    * 
+    * @param classModel The class model to populate
+    * @param element The element to inspect
+    */
    public static void populateMethodModel(ClassModel classModel, Element element)
    {
       if (!isPublic(element))
       {
          return;
       }
-      MethodModel method = MethodModel.of((ExecutableElement) element);
-      classModel.addMethod(method);
+      classModel.addMethod(MethodModel.of((ExecutableElement) element));
    }
 
 }

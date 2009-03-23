@@ -36,6 +36,8 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.util.ElementFilter;
 
 import org.dom4j.DocumentException;
+import org.jboss.webbeans.log.LogProvider;
+import org.jboss.webbeans.log.Logging;
 import org.jboss.webbeans.xsd.helpers.DataSetter;
 import org.jboss.webbeans.xsd.model.ClassModel;
 
@@ -50,6 +52,8 @@ import org.jboss.webbeans.xsd.model.ClassModel;
 @SupportedAnnotationTypes("*")
 public class PackageSchemaGenerator extends AbstractProcessor
 {
+   private static LogProvider log = Logging.getLogProvider(PackageSchemaGenerator.class);
+   
    private Map<String, ClassModel> classModelCache;
    private Map<String, Schema> schemas;
 
@@ -75,8 +79,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
             }
             catch (DocumentException e)
             {
-               // TODO: real logging
-               System.out.println("Could not read or create schema for " + classModel.getPackage());
+               log.error("Could not read or create schema for package " + classModel.getPackage());
             }
          }
       }
@@ -90,8 +93,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
             }
             catch (IOException e)
             {
-               // TODO: real logging
-               System.out.println("Could not write schema.xsd for " + schema);
+               log.error("Could not write schema.xsd for " + schema, e);
             }
          }
       }

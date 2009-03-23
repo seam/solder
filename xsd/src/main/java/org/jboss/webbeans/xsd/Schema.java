@@ -52,6 +52,7 @@ import org.jboss.webbeans.xsd.model.TypedModel;
  */
 public class Schema
 {
+   // The default namespace of the schema
    public static final List<Namespace> defaultNamespaces = new ArrayList<Namespace>();
 
    static
@@ -95,6 +96,11 @@ public class Schema
       init();
    }
 
+   /**
+    * Creates a new schema document
+    * 
+    * @return The document
+    */
    private Document createDocument()
    {
       Document document = DocumentHelper.createDocument();
@@ -112,17 +118,45 @@ public class Schema
       return document;
    }
 
+   /**
+    * Static factory method
+    * 
+    * @param packageName The package name
+    * @param packageElement The package content representation
+    * @param filer The filer for resources
+    * 
+    * @return A new schema instance
+    * 
+    * @throws DocumentException If an existing schema could not be parsed
+    */
    public static Schema of(String packageName, PackageElement packageElement, Filer filer) throws DocumentException
    {
       return new Schema(packageName, packageElement, filer);
    }
 
+   /**
+    * Reads a schema document
+    * 
+    * @param filer The filer to be used for resource reading
+    * 
+    * @return The schema documetn
+    * 
+    * @throws IOException If the file could not be find or there was an error reading it
+    * @throws DocumentException If the read document could not be parsed
+    */
    private Document readDocument(Filer filer) throws IOException, DocumentException
    {
       InputStream in = filer.getResource(StandardLocation.CLASS_OUTPUT, packageName, "schema.xsd").openInputStream();
       return new SAXReader().read(in);
    }
 
+   /**
+    * Writes a schema back to disk
+    * 
+    * @param filer The filer to be used for resource writing
+    * 
+    * @throws IOException If the file could not be written
+    */
    public void write(Filer filer) throws IOException
    {
       OutputFormat format = OutputFormat.createPrettyPrint();
@@ -164,6 +198,7 @@ public class Schema
          }
       }
 
+      // Collect namespaces that are references in the document
       Set<Namespace> referencedNamespaces = new HashSet<Namespace>(defaultNamespaces);
       for (Object attribute : document.getRootElement().selectNodes("//@type"))
       {
@@ -173,6 +208,8 @@ public class Schema
          referencedNamespaces.add(document.getRootElement().getNamespaceForPrefix(prefix));
       }
 
+      // Register the namespaces with the namespace handler if they are present, otherwise
+      // remove them from the document
       for (Object item : document.getRootElement().additionalNamespaces())
       {
          Namespace namespace = (Namespace) item;
@@ -211,6 +248,7 @@ public class Schema
     * Rebuilds the schema document
     * 
     * @param packageElement The package abstraction
+    * @return the schema for fluent interface
     */
    public Schema rebuild()
    {
@@ -223,9 +261,9 @@ public class Schema
          }
       }
 
+      // Remove old version of class xsd (if present) and add the fresh version
       for (ClassModel classModel : classModels)
       {
-         // Remove old version of class xsd (if present)
          for (Object previousClass : document.selectNodes("/xs:schema/xs:element[@name=\"" + classModel.getSimpleName() + "\"]"))
          {
             ((Element) previousClass).detach();
