@@ -23,8 +23,8 @@ import javax.lang.model.element.Modifier;
 
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.ConstructorModel;
+import org.jboss.webbeans.xsd.model.FieldModel;
 import org.jboss.webbeans.xsd.model.MethodModel;
-import org.jboss.webbeans.xsd.model.NamedModel;
 
 /**
  * Helper for examining classes and members and populating the model
@@ -58,7 +58,7 @@ public class DataSetter
       {
          return;
       }
-      NamedModel field = NamedModel.of(element.getSimpleName().toString());
+      FieldModel field = FieldModel.of(element.getSimpleName().toString());
       classModel.addField(field);
    }
 

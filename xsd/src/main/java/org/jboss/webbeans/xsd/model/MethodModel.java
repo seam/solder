@@ -96,6 +96,7 @@ public class MethodModel extends NamedModel
    public Element toXSD(NamespaceHandler namespaceHandler)
    {
       Element method = super.toXSD(namespaceHandler);
+      method.addAttribute("type", "wb:method");      
       for (TypedModel parameter : parameters)
       {
          method.add(parameter.toXSD(namespaceHandler));

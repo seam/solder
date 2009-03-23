@@ -29,7 +29,6 @@ import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
-import org.jboss.webbeans.xsd.NamespaceHandler.SchemaNamespace;
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.TypedModel;
 
@@ -41,6 +40,14 @@ import org.jboss.webbeans.xsd.model.TypedModel;
  */
 public class Schema
 {
+   public static final List<Namespace> defaultNamespaces = new ArrayList<Namespace>();
+
+   static
+   {
+      defaultNamespaces.add(new Namespace("wb", "http://seamframework.org/WebBeans"));
+      defaultNamespaces.add(new Namespace("xsi", "http://www.w3.org/2001/XMLSchema-instance"));
+   };
+
    // The name of the package
    private String packageName;
    // The XSD document
@@ -50,7 +57,7 @@ public class Schema
    // The set of classes to update
    private Set<ClassModel> classModels;
    private PackageElement packageElement;
-   
+
    /**
     * Creates a new package
     * 
@@ -58,10 +65,10 @@ public class Schema
     */
    public Schema(String packageName, PackageElement packageElement)
    {
-      this.packageName = packageName;
-      namespaceHandler = new NamespaceHandler(packageName);
       classModels = new HashSet<ClassModel>();
+      this.packageName = packageName;
       this.packageElement = packageElement;
+      namespaceHandler = new NamespaceHandler(packageName);
    }
 
    /**
@@ -75,7 +82,8 @@ public class Schema
    }
 
    /**
-    * Adds a class model to the working set and adds the referenced types to the namespace handler
+    * Adds a class model to the working set and adds the referenced types to the
+    * namespace handler
     * 
     * @param classModel The class model
     */
@@ -106,6 +114,46 @@ public class Schema
    public void setDocument(Document document)
    {
       this.document = document;
+      init();
+   }
+
+   /**
+    * Cleans out namespaces and XSD for files that are no longer present in the
+    * package
+    */
+   private void init()
+   {
+      // Removes elements that are no longer in the package
+      for (Object xsdClass : document.selectNodes("/xs:schema/xs:element"))
+      {
+         String FQN = packageName + "." + ((Element) xsdClass).attributeValue("name");
+         if (!isClassInPackage(FQN))
+         {
+            ((Element) xsdClass).detach();
+         }
+      }
+
+      Set<Namespace> referencedNamespaces = new HashSet<Namespace>(defaultNamespaces);
+      for (Object attribute : document.getRootElement().selectNodes("//@type"))
+      {
+         String ref = ((Attribute) attribute).getValue();
+         int colon = ref.indexOf(":");
+         String prefix = colon < 0 ? "" : ref.substring(0, colon);
+         referencedNamespaces.add(document.getRootElement().getNamespaceForPrefix(prefix));
+      }
+
+      for (Object item : document.getRootElement().additionalNamespaces())
+      {
+         Namespace namespace = (Namespace) item;
+         if (referencedNamespaces.contains(namespace))
+         {
+            namespaceHandler.addNamespace(namespace);
+         }
+         else
+         {
+            document.getRootElement().remove(namespace);
+         }
+      }
    }
 
    /**
@@ -129,75 +177,20 @@ public class Schema
    }
 
    /**
-    * Cleans out XSD for files that are no longer present in the package
-    * @param packageElement
-    */
-   private void cleanRemovedClasses()
-   {
-      for (Object xsdClass : document.selectNodes("/xs:schema/xs:element"))
-      {
-         String FQN = packageName + "." + ((Element) xsdClass).attributeValue("name");
-         if (!isClassInPackage(FQN))
-         {
-            ((Element) xsdClass).detach();
-         }
-      }
-   }
-
-   /**
-    * Updates the namespaces of the XSD document
-    */
-   private void updateNamespaces()
-   {
-      // Collects the prefixes of the namspaces referenced in the classes
-      List<String> referencedNamespaces = new ArrayList<String>();
-      for (Object attribute : document.getRootElement().selectNodes("//@ref"))
-      {
-         String ref = ((Attribute) attribute).getValue();
-         int colon = ref.indexOf(":");
-         String namespace = colon < 0 ? "" : ref.substring(0, colon);
-         referencedNamespaces.add(namespace);
-      }
-      
-      // Collects the prefixes of the namespaces in the schema document
-      List<String> currentNamespaces = new ArrayList<String>();
-      for (Object item : document.getRootElement().additionalNamespaces())
-      {
-         Namespace namespace = (Namespace) item;
-         String prefix = namespace.getPrefix();
-         if (!("".equals(prefix) || "xsi".equals(prefix)))
-         {
-            currentNamespaces.add(namespace.getPrefix());
-         }
-      }
-      
-      // Removes the namespaces that are no longer referenced
-      currentNamespaces.removeAll(referencedNamespaces);
-      for (String obsolete : currentNamespaces)
-      {
-         document.getRootElement().remove(document.getRootElement().getNamespaceForPrefix(obsolete));
-      }
-      
-      // Adds new namespaces if they are not already present
-      for (SchemaNamespace schemaNamespace : namespaceHandler.getSchemaNamespaces().values())
-      {
-         if (document.getRootElement().getNamespaceForPrefix(schemaNamespace.shortNamespace) == null)
-         {
-            document.getRootElement().addNamespace(schemaNamespace.shortNamespace, schemaNamespace.urn);
-         }
-      }
-
-   }
-
-   /**
     * Rebuilds the schema document
     * 
     * @param packageElement The package abstraction
     */
-   public void rebuild()
+   public Schema rebuild()
    {
-      cleanRemovedClasses();
-      updateNamespaces();
+      // Adds new namespaces if they are not already present
+      for (Namespace namespace : namespaceHandler.getNamespaces())
+      {
+         if (document.getRootElement().getNamespaceForPrefix(namespace.getPrefix()) == null)
+         {
+            document.getRootElement().add(namespace);
+         }
+      }
 
       for (ClassModel classModel : classModels)
       {
@@ -208,6 +201,7 @@ public class Schema
          }
          document.getRootElement().add(classModel.toXSD(namespaceHandler));
       }
+      return this;
    }
 
    @Override
@@ -216,9 +210,9 @@ public class Schema
       StringBuilder buffer = new StringBuilder();
       buffer.append("Package: " + packageName + "\n");
       buffer.append("Used namespaces\n");
-      for (SchemaNamespace schemaNamespace : namespaceHandler.getSchemaNamespaces().values())
+      for (Namespace namespace : namespaceHandler.getNamespaces())
       {
-         buffer.append("  " + schemaNamespace + "\n");
+         buffer.append("  " + namespace + "\n");
       }
       buffer.append("Contained classes:\n");
       for (ClassModel classModel : classModels)

@@ -43,7 +43,7 @@ public class ClassModel extends NamedModel
    // The parent (or null if top-level)
    private ClassModel parent;
    // The fields of the class
-   private List<NamedModel> fields = new ArrayList<NamedModel>();
+   private List<FieldModel> fields = new ArrayList<FieldModel>();
    // The methods of the class
    private List<MethodModel> methods = new ArrayList<MethodModel>();
    // The constructors of the class
@@ -68,7 +68,7 @@ public class ClassModel extends NamedModel
     * 
     * @param field The field to add
     */
-   public void addField(NamedModel field)
+   public void addField(FieldModel field)
    {
       fields.add(field);
    }
@@ -129,7 +129,7 @@ public class ClassModel extends NamedModel
     * 
     * @return The public fields
     */
-   public List<NamedModel> getFields()
+   public List<FieldModel> getFields()
    {
       return fields;
    }
@@ -252,10 +252,7 @@ public class ClassModel extends NamedModel
    {
       Element classElement = DocumentFactory.getInstance().createElement("xs:element");
       classElement.addAttribute("name", getSimpleName());
-      Element complexElement = DocumentFactory.getInstance().createElement("xs:complexType");
-      Element anyElement = DocumentFactory.getInstance().createElement("xs:any");
-      complexElement.add(anyElement);
-      classElement.add(complexElement);
+      classElement.addAttribute("type", "wb:bean");
 
       Element choice = DocumentFactory.getInstance().createElement("xs:choice");
       for (ConstructorModel constructor : getMergedConstructors())
@@ -265,16 +262,16 @@ public class ClassModel extends NamedModel
             choice.add(constructor.toXSD(namespaceHandler));
          }
       }
-      anyElement.add(choice);
+      classElement.add(choice);
 
       for (MethodModel method : getMergedMethods())
       {
-         anyElement.add(method.toXSD(namespaceHandler));
+         classElement.add(method.toXSD(namespaceHandler));
       }
 
       for (NamedModel field : getMergedFields())
       {
-         anyElement.add(field.toXSD(namespaceHandler));
+         classElement.add(field.toXSD(namespaceHandler));
       }
 
       return classElement;

@@ -100,10 +100,9 @@ public class TypedModel
       } else {
          
       }
-      String typeOrRef = isPrimitive() ? ("xs:" + type) : (namespaceHandler.getShortNamespace(type) + ":" + getTypeSimpleName());
-      String attrName = isPrimitive() ? "type" : "ref";
+      String typeValue = isPrimitive() ? ("xs:" + type) : (namespaceHandler.getPrefix(type) + ":" + getTypeSimpleName());
       Element item = DocumentFactory.getInstance().createElement("xs:element");
-      item.addAttribute(attrName, typeOrRef);
+      item.addAttribute("type", typeValue);
       return item;
    }
 

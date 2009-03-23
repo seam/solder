@@ -18,10 +18,13 @@
 package org.jboss.webbeans.xsd;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.dom4j.Namespace;
 
 /**
  * Helper for generating and keeping track of namespaces in a schema
@@ -31,91 +34,28 @@ import java.util.Set;
  */
 public class NamespaceHandler
 {
-   // The set of reserved EE packages
    private static final Set<String> URN_JAVA_EE = new HashSet<String>(Arrays.asList("java.lang", "java.util", "javax.annotation", "javax.inject", "javax.context", "javax.interceptor", "javax.decorator", "javax.event", "javax.ejb", "javax.persistence", "javax.xml.ws", "javax.jms", "javax.sql"));
 
-   // The local package of the scema
    private String localPackage;
+   private Map<String, Namespace> namespaces = new HashMap<String, Namespace>();
 
-   // Duplicate shortname counters
-   private Map<String, Integer> counters = new HashMap<String, Integer>();
-   // Namespace infos
-   private Map<String, SchemaNamespace> schemaNamespaces = new HashMap<String, SchemaNamespace>();
-
-   public Map<String, SchemaNamespace> getSchemaNamespaces()
+   public Collection<Namespace> getNamespaces()
    {
-      return schemaNamespaces;
+      return namespaces.values();
    }
 
-   /**
-    * Creats a new namespace generator
-    * 
-    * @param localPackage The local package
-    */
    public NamespaceHandler(String localPackage)
    {
       this.localPackage = localPackage;
-      addPackage(localPackage);
+      addNamespace(new Namespace("", localPackage));
    }
 
-   /**
-    * Data for a package namespace
-    * 
-    * @author Nicklas Karlsson
-    * 
-    */
-   public class SchemaNamespace
-   {
-      // The package name
-      String packageName;
-      // The full namespace
-      String shortNamespace;
-      // The urn
-      String urn;
-      // Is this a EE reserved package?
-      boolean ee;
-
-      public SchemaNamespace(String packageName, String shortNamespace, boolean ee)
-      {
-         this.packageName = packageName;
-         this.shortNamespace = shortNamespace;
-         this.ee = ee;
-         this.urn = "urn:java:" + (ee ? "ee" : packageName);
-      }
-
-      @Override
-      public String toString()
-      {
-         return shortNamespace + "=" + urn;
-      }
-   }
-
-   /**
-    * Gets all used namespaces for the schema
-    * 
-    * @return The used namespaces
-    */
-   // public Set<String> getUsedNamespaces()
-   // {
-   // Set<String> usedNamespaces = new HashSet<String>();
-   // for (SchemaNamespace schemaNamespace : schemaNamespaces.values())
-   // {
-   // usedNamespaces.add(schemaNamespace.getFullNamespace());
-   // }
-   // return usedNamespaces;
-   // }
-   /**
-    * Gets a namespace abbreviation for a package
-    * 
-    * @param packageName The name of the package
-    * @return The namespace abbreviation
-    */
-   public String getShortNamespace(String packageName)
+   public String getPrefix(String packageName)
    {
       String shortName = getPackageName(packageName);
-      if (schemaNamespaces.containsKey(shortName))
+      if (namespaces.containsKey(shortName))
       {
-         return schemaNamespaces.get(shortName).shortNamespace;
+         return namespaces.get(shortName).getPrefix();
       }
       else
       {
@@ -123,59 +63,91 @@ public class NamespaceHandler
       }
    }
 
-   /**
-    * Gets the short name (last part) of a package
-    * 
-    * @param packageName The package name to parse
-    * @return The short name
-    */
-   private String getShortName(String packageName)
+   private String getPackageLastPart(String packageName)
    {
       int lastDot = packageName.lastIndexOf(".");
       return lastDot < 0 ? packageName : packageName.substring(lastDot + 1);
    }
 
-   private String getPackageName(String FQN)
+   private String getPackageName(String FQCN)
    {
-      int lastDot = FQN.lastIndexOf(".");
-      return lastDot < 0 ? "nopak" : FQN.substring(0, lastDot);
+      int lastDot = FQCN.lastIndexOf(".");
+      return lastDot < 0 ? "nopak" : FQCN.substring(0, lastDot);
    }
 
    public void addPackage(String packageName)
    {
-      if (schemaNamespaces.containsKey(packageName))
+      if (namespaces.containsKey(packageName))
       {
          return;
       }
-      String shortNamespace = "";
-      boolean ee = false;
+      String prefix = null;
+      String URI = "java:urn:" + packageName;
       if (localPackage.equals(packageName))
       {
-         // Nothing to do but want to hit this case first for performance
+         prefix = "";
       }
       else if (URN_JAVA_EE.contains(packageName))
       {
-         shortNamespace = "ee";
-         ee = true;
+         prefix = "ee";
+         URI = "java:urn:ee";
       }
       else
       {
-         String shortName = getShortName(packageName);
-         Integer count = counters.get(shortName);
-         String countString = "";
-         if (count == null)
+         prefix = getAvailablePrefix(packageName);
+      }
+      namespaces.put(packageName, new Namespace(prefix, URI));
+   }
+
+   private String getAvailablePrefix(String packageName)
+   {
+      int suffix = 1;
+      boolean found = false;
+      while (true)
+      {
+         String prefix = getPackageLastPart(packageName) + (suffix == 1 ? "" : String.valueOf(suffix));
+         for (Namespace namespace : namespaces.values())
          {
-            count = new Integer(1);
-            counters.put(shortName, count);
+            if (namespace.getPrefix().equals(prefix))
+            {
+               found = true;
+               break;
+            }
+         }
+         if (!found)
+         {
+            return prefix;
          }
          else
          {
-            count++;
-            countString = String.valueOf(count);
+            suffix++;
+            found = false;
          }
-         shortNamespace = getShortName(packageName) + countString;
       }
-      schemaNamespaces.put(packageName, new SchemaNamespace(packageName, shortNamespace, ee));
    }
 
+   public void addNamespace(Namespace namespace)
+   {
+      namespaces.put(getNamespacePackage(namespace), namespace);
+   }
+
+   private String getNamespacePackage(Namespace namespace)
+   {
+      int urnJava = namespace.getURI().indexOf("urn:java:");
+      if (urnJava >= 0)
+      {
+         return namespace.getURI().substring(urnJava);
+      }
+      else
+      {
+         return namespace.getURI();
+      }
+   }
+
+   @Override
+   public String toString()
+   {
+      return namespaces.toString();
+   }
+   
 }

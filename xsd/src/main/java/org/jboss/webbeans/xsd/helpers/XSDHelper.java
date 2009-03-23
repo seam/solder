@@ -33,6 +33,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -85,8 +86,10 @@ public class XSDHelper
          rootElement.addAttribute("elementFormDefault", "qualified");
          rootElement.addAttribute("targetNamespace", "urn:java:" + packageName);
          rootElement.addAttribute("elementFormDefault", "qualified");
-         rootElement.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-         rootElement.addAttribute("xsi:schemaLocation", "http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd");
+         for (Namespace namespace : Schema.defaultNamespaces)
+         {
+            rootElement.add(namespace);
+         }
          document.setRootElement(rootElement);
       }
       schema.setDocument(document);
@@ -184,7 +187,6 @@ public class XSDHelper
       for (Schema schema : schemaMap.values())
       {
          schema.rebuild();
-         System.out.println(schema.getDocument().asXML());
          try
          {
             writeSchema(schema);
