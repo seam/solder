@@ -17,18 +17,30 @@
 
 package org.jboss.webbeans.xsd;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.processing.Filer;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.tools.StandardLocation;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentFactory;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
+import org.dom4j.QName;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 import org.jboss.webbeans.xsd.model.ClassModel;
 import org.jboss.webbeans.xsd.model.TypedModel;
 
@@ -62,23 +74,63 @@ public class Schema
     * Creates a new package
     * 
     * @param packageName The name of the package
+    * @throws DocumentException 
     */
-   public Schema(String packageName, PackageElement packageElement)
+   public Schema(String packageName, PackageElement packageElement, Filer filer) throws DocumentException
    {
-      classModels = new HashSet<ClassModel>();
       this.packageName = packageName;
       this.packageElement = packageElement;
+      classModels = new HashSet<ClassModel>();
       namespaceHandler = new NamespaceHandler(packageName);
+      try
+      {
+         document = readDocument(filer);
+      } catch (IOException e) {
+         // schema not found, safe to proceed
+      }
+      if (document == null)
+      {
+         document = createDocument();
+      }
+      init();
    }
 
-   /**
-    * Gets the name of the package
-    * 
-    * @return The package name
-    */
-   public String getPackageName()
+   private Document createDocument()
    {
-      return packageName;
+      Document document = DocumentHelper.createDocument();
+      QName rootQName = DocumentFactory.getInstance().createQName("schema", "xs", "http://www.w3.org/2001/XMLSchema");
+      Element rootElement = DocumentFactory.getInstance().createElement(rootQName);
+      rootElement.addAttribute("elementFormDefault", "qualified");
+      rootElement.addAttribute("targetNamespace", "urn:java:" + packageName);
+      rootElement.addAttribute("elementFormDefault", "qualified");
+      rootElement.addAttribute("xsi:schemaLocation", "http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd");
+      document.setRootElement(rootElement);
+      for (Namespace namespace : defaultNamespaces)
+      {
+         rootElement.add(namespace);
+      }
+      return document;
+   }
+
+   public static Schema of(String packageName, PackageElement packageElement, Filer filer) throws DocumentException
+   {
+      return new Schema(packageName, packageElement, filer);
+   }
+
+   private Document readDocument(Filer filer) throws IOException, DocumentException
+   {
+      InputStream in = filer.getResource(StandardLocation.CLASS_OUTPUT, packageName, "schema.xsd").openInputStream();
+      return new SAXReader().read(in);
+   }
+
+   public void write(Filer filer) throws IOException
+   {
+      OutputFormat format = OutputFormat.createPrettyPrint();
+      OutputStream out = filer.createResource(StandardLocation.CLASS_OUTPUT, packageName, "schema.xsd").openOutputStream();
+      XMLWriter writer = new XMLWriter(out, format);
+      writer.write(document);
+      writer.flush();
+      writer.close();
    }
 
    /**
@@ -94,27 +146,6 @@ public class Schema
       {
          namespaceHandler.addPackage(reference.getTypePackage());
       }
-   }
-
-   /**
-    * Gets the XSD document
-    * 
-    * @return The XSD document
-    */
-   public Document getDocument()
-   {
-      return document;
-   }
-
-   /**
-    * Sets the XSD document
-    * 
-    * @param document The XSD document
-    */
-   public void setDocument(Document document)
-   {
-      this.document = document;
-      init();
    }
 
    /**

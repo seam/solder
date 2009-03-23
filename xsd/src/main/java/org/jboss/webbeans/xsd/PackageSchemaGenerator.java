@@ -17,8 +17,9 @@
 
 package org.jboss.webbeans.xsd;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -34,8 +35,8 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.util.ElementFilter;
 
+import org.dom4j.DocumentException;
 import org.jboss.webbeans.xsd.helpers.DataSetter;
-import org.jboss.webbeans.xsd.helpers.XSDHelper;
 import org.jboss.webbeans.xsd.model.ClassModel;
 
 /**
@@ -49,39 +50,64 @@ import org.jboss.webbeans.xsd.model.ClassModel;
 @SupportedAnnotationTypes("*")
 public class PackageSchemaGenerator extends AbstractProcessor
 {
-   // A helper for the XSD operations
-   XSDHelper helper;
+   private Map<String, ClassModel> classModelCache;
+   private Map<String, Schema> schemas;
 
    @Override
    public synchronized void init(ProcessingEnvironment processingEnvironment)
    {
       super.init(processingEnvironment);
-      helper = new XSDHelper(processingEnvironment);
+      classModelCache = new HashMap<String, ClassModel>();
+      schemas = new HashMap<String, Schema>();
    }
 
    @Override
    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment)
    {
-      List<ClassModel> workingSet = new ArrayList<ClassModel>();
-
-      // Iterates over the classes compiled, creates a model of the classes and
-      // add them to a working set
       for (Element element : roundEnvironment.getRootElements())
       {
          if (ElementKind.CLASS.equals(element.getKind()) || ElementKind.ANNOTATION_TYPE.equals(element.getKind()))
          {
             ClassModel classModel = inspectClass(element);
-            workingSet.add(classModel);
+            try
+            {
+               addClassToSchema(classModel);
+            }
+            catch (DocumentException e)
+            {
+               // TODO: real logging
+               System.out.println("Could not read or create schema for " + classModel.getPackage());
+            }
          }
       }
       if (!roundEnvironment.processingOver())
       {
-         // Update the package XSDs for the files changed
-         helper.updateSchemas(workingSet);
-         // And flush the changes to disk
-         helper.writeSchemas();
+         for (Schema schema : schemas.values())
+         {
+            try
+            {
+               schema.rebuild().write(processingEnv.getFiler());
+            }
+            catch (IOException e)
+            {
+               // TODO: real logging
+               System.out.println("Could not write schema.xsd for " + schema);
+            }
+         }
       }
       return false;
+   }
+
+   private void addClassToSchema(ClassModel classModel) throws DocumentException
+   {
+      String packageName = classModel.getPackage();
+      Schema schema = schemas.get(packageName);
+      if (schema == null)
+      {
+         schema = Schema.of(packageName, classModel.getPackageElement(), processingEnv.getFiler());
+         schemas.put(packageName, schema);
+      }
+      schema.addClass(classModel);
    }
 
    /**
@@ -103,7 +129,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
 
       // Gets the parent from the cache. We know it's there since we has scanned
       // the hierarchy already
-      classModel.setParent(helper.getCachedClassModel(typeElement.getSuperclass().toString()));
+      classModel.setParent(classModelCache.get(typeElement.getSuperclass().toString()));
       // Filter out the fields and populate the model
       for (Element field : ElementFilter.fieldsIn(element.getEnclosedElements()))
       {
@@ -120,7 +146,7 @@ public class PackageSchemaGenerator extends AbstractProcessor
          DataSetter.populateConstructorModel(classModel, constructor);
       }
       // Place the new class model in the cache
-      helper.cacheClassModel(classModel);
+      classModelCache.put(classModel.getName(), classModel);
       return classModel;
    }
 
