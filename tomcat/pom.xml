@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.webbeans.tomcat</groupId>
-   <artifactId>webbeans-tomcat</artifactId>
+   <artifactId>webbeans-tomcat-parent</artifactId>
    <packaging>pom</packaging>
    <version>1.0.0-SNAPSHOT</version>
    
@@ -11,11 +11,12 @@
       <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-   <name>Web Beans Tomcat module</name>
+   <name>Web Beans Tomcat aggregator</name>
    <url>http://www.seamframework.org/WebBeans</url>
    
    <modules>
       <module>int</module>
+      <module>build</module>
    </modules>
 
    <description>
@@ -33,7 +34,7 @@
          <url>http://in.relation.to/Bloggers/Pete</url>
       </developer>
    </developers>
-
+   
    <build>
       <plugins>
          <plugin>
@@ -61,7 +62,7 @@
              <tagBase>https://svn.jboss.org/repos/webbeans/extensions/tags</tagBase>
              <autoVersionSubmodules>true</autoVersionSubmodules>
            </configuration>
-         </plugin>
+        </plugin>
       </plugins>
       <defaultGoal>package</defaultGoal>
 
@@ -94,6 +95,12 @@
          </plugins>
       </pluginManagement>
    </build>
+   
+   <dependencyManagement>
+      <dependencies>
+
+      </dependencies>
+   </dependencyManagement>
    
    <profiles>
      

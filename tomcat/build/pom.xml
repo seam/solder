@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <artifactId>webbeans-tomcat-parent</artifactId>
+      <groupId>org.jboss.webbeans.tomcat</groupId>
+      <version>1.0.0-SNAPSHOT</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.jboss.webbeans.tomcat</groupId>
+   <artifactId>webbeans-tomcat</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <packaging>jar</packaging>
+   <name>Web Beans Tomcat module</name>
+   <url>http://www.seamframework.org/WebBeans</url>
+    
+   <dependencies>
+   
+      <dependency>
+         <groupId>org.jboss.webbeans.tomcat</groupId>
+         <artifactId>webbeans-tomcat-int</artifactId>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.jboss.webbeans</groupId>
+         <artifactId>webbeans-core</artifactId>
+      </dependency>
+      
+      <dependency>
+         <groupId>javassist</groupId>
+         <artifactId>javassist</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>dom4j</groupId>
+         <artifactId>dom4j</artifactId>
+      </dependency>
+   
+   </dependencies>
+   
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <executions>
+               <execution>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>shade</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <artifactSet>
+                  <excludes>
+                     <exclude>xml-apis:xml-apis</exclude>
+                  </excludes>
+               </artifactSet>
+            </configuration>
+         </plugin> 
+      </plugins>
+   </build>
+
+</project>

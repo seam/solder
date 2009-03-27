@@ -18,7 +18,6 @@ package org.jboss.webbeans.environment.tomcat.discovery;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,6 +27,7 @@ import javax.servlet.ServletContext;
 
 import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
 import org.jboss.webbeans.environment.tomcat.util.Reflections;
+import org.jboss.webbeans.environment.tomcat.util.Servlets;
 
 /**
  * The means by which Web Beans are discovered on the classpath. This will only
@@ -78,17 +78,16 @@ public abstract class TomcatWebBeanDiscovery implements WebBeanDiscovery
       scanner.scanResources(new String[] { "beans.xml" });
       try
       {
-         if (servletContext.getResource("/WEB-INF/beans.xml") != null)
+         URL beans = servletContext.getResource("/WEB-INF/beans.xml");
+         if (beans != null)
          {
-            File[] files = {new File(servletContext.getResource("/WEB-INF/classes").toURI())};
+            File webInfClasses = Servlets.getRealFile(servletContext, "/WEB-INF/classes");
+            File[] files = {webInfClasses};
             scanner.scanDirectories(files);
+            wbUrls.add(beans);
          }
       }
       catch (MalformedURLException e)
-      {
-         throw new IllegalStateException("Error loading resources from servlet context ", e);
-      }
-      catch (URISyntaxException e)
       {
          throw new IllegalStateException("Error loading resources from servlet context ", e);
       }

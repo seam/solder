@@ -55,4 +55,10 @@ public class ReadOnlyNamingContext extends AbstractNamingContext
       return context;
    }
    
+   @Override
+   public void unbind(String key)
+   {
+      // No-op
+   }
+   
 }
