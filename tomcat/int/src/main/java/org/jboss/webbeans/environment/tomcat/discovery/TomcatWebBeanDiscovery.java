@@ -16,10 +16,15 @@
  */
 package org.jboss.webbeans.environment.tomcat.discovery;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.servlet.ServletContext;
 
 import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
 import org.jboss.webbeans.environment.tomcat.util.Reflections;
@@ -37,11 +42,13 @@ public abstract class TomcatWebBeanDiscovery implements WebBeanDiscovery
    
    private final Set<Class<?>> wbClasses;
    private final Set<URL> wbUrls;
+   private final ServletContext servletContext;
    
-   public TomcatWebBeanDiscovery()
+   public TomcatWebBeanDiscovery(ServletContext servletContext)
    {
       this.wbClasses = new HashSet<Class<?>>();
       this.wbUrls = new HashSet<URL>();
+      this.servletContext = servletContext;
       scan();
    }
    
@@ -69,6 +76,22 @@ public abstract class TomcatWebBeanDiscovery implements WebBeanDiscovery
    {
       Scanner scanner = new URLScanner(Reflections.getClassLoader(), this);
       scanner.scanResources(new String[] { "beans.xml" });
+      try
+      {
+         if (servletContext.getResource("/WEB-INF/beans.xml") != null)
+         {
+            File[] files = {new File(servletContext.getResource("/WEB-INF/classes").toURI())};
+            scanner.scanDirectories(files);
+         }
+      }
+      catch (MalformedURLException e)
+      {
+         throw new IllegalStateException("Error loading resources from servlet context ", e);
+      }
+      catch (URISyntaxException e)
+      {
+         throw new IllegalStateException("Error loading resources from servlet context ", e);
+      }
    }
    
 }

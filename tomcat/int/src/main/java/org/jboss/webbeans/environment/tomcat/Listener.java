@@ -17,7 +17,6 @@
 package org.jboss.webbeans.environment.tomcat;
 
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.bootstrap.api.Environments;
@@ -28,20 +27,23 @@ import org.jboss.webbeans.environment.tomcat.discovery.TomcatWebBeanDiscovery;
 import org.jboss.webbeans.environment.tomcat.resources.ReadOnlyNamingContext;
 import org.jboss.webbeans.environment.tomcat.util.Reflections;
 import org.jboss.webbeans.resources.spi.NamingContext;
-import org.jboss.webbeans.servlet.WebBeansListener;
+import org.jboss.webbeans.servlet.api.ServletListener;
+import org.jboss.webbeans.servlet.api.helpers.ForwardingServletListener;
 
 /**
  * @author Pete Muir
  */
-public class ServletListener extends WebBeansListener implements ServletContextListener
+public class Listener extends ForwardingServletListener
 {
    
    private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
-   private static final String APPLICATION_BEAN_STORE_ATTRIBUTE_NAME = ServletListener.class.getName() + ".applicationBeanStore";
+   private static final String WEB_BEANS_LISTENER_CLASS_NAME = "org.jboss.webbeans.servlet.WebBeansListener";
+   private static final String APPLICATION_BEAN_STORE_ATTRIBUTE_NAME = Listener.class.getName() + ".applicationBeanStore";
    
    private final transient Bootstrap bootstrap;
+   private final transient ServletListener webBeansListener;
    
-   public ServletListener() 
+   public Listener() 
    {
       try
       {
@@ -51,23 +53,39 @@ public class ServletListener extends WebBeansListener implements ServletContextL
       {
          throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
       }
+      try
+      {
+         webBeansListener = Reflections.newInstance(WEB_BEANS_LISTENER_CLASS_NAME, ServletListener.class);
+      }
+      catch (Exception e)
+      {
+         throw new IllegalStateException("Error loading Web Beans listener, check that Web Beans is on the classpath", e);
+      }
    }
 
    public void contextDestroyed(ServletContextEvent sce)
    {
       bootstrap.shutdown();
+      super.contextDestroyed(sce);
    }
 
    public void contextInitialized(ServletContextEvent sce)
    {
       BeanStore applicationBeanStore = new ConcurrentHashMapBeanStore();
       sce.getServletContext().setAttribute(APPLICATION_BEAN_STORE_ATTRIBUTE_NAME, applicationBeanStore);
-      bootstrap.setEnvironment(Environments.SE);
-      bootstrap.getServices().add(WebBeanDiscovery.class, new TomcatWebBeanDiscovery() {});
+      bootstrap.setEnvironment(Environments.SERVLET);
+      bootstrap.getServices().add(WebBeanDiscovery.class, new TomcatWebBeanDiscovery(sce.getServletContext()) {});
       bootstrap.getServices().add(NamingContext.class, new ReadOnlyNamingContext() {});
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
       bootstrap.boot();
+      super.contextInitialized(sce);
+   }
+
+   @Override
+   protected ServletListener delegate()
+   {
+      return webBeansListener;
    }
    
 }
