@@ -26,6 +26,7 @@ import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.tomcat.discovery.TomcatWebBeanDiscovery;
 import org.jboss.webbeans.environment.tomcat.resources.ReadOnlyNamingContext;
 import org.jboss.webbeans.environment.tomcat.util.Reflections;
+import org.jboss.webbeans.manager.api.WebBeansManager;
 import org.jboss.webbeans.resources.spi.NamingContext;
 import org.jboss.webbeans.servlet.api.ServletListener;
 import org.jboss.webbeans.servlet.api.helpers.ForwardingServletListener;
@@ -42,6 +43,7 @@ public class Listener extends ForwardingServletListener
    
    private final transient Bootstrap bootstrap;
    private final transient ServletListener webBeansListener;
+   private WebBeansManager manager;
    
    public Listener() 
    {
@@ -65,7 +67,7 @@ public class Listener extends ForwardingServletListener
 
    public void contextDestroyed(ServletContextEvent sce)
    {
-      bootstrap.shutdown();
+      manager.shutdown();
       super.contextDestroyed(sce);
    }
 
@@ -78,6 +80,7 @@ public class Listener extends ForwardingServletListener
       bootstrap.getServices().add(NamingContext.class, new ReadOnlyNamingContext() {});
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
+      manager = bootstrap.getManager();
       bootstrap.boot();
       super.contextInitialized(sce);
    }
