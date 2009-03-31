@@ -17,9 +17,10 @@
 
 package org.jboss.webbeans.test;
 
+import javax.inject.manager.Manager;
+
 import org.jboss.testharness.AbstractTest;
 import org.jboss.webbeans.CurrentManager;
-import org.jboss.webbeans.ManagerImpl;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -33,7 +34,7 @@ import org.testng.annotations.BeforeSuite;
  */
 public abstract class AbstractLogTest extends AbstractTest
 {
-   private ManagerImpl manager;
+   private Manager manager;
 
    @Override
    @BeforeSuite
@@ -59,7 +60,7 @@ public abstract class AbstractLogTest extends AbstractTest
       manager = null;
    }
    
-   public ManagerImpl getCurrentManager()
+   public Manager getCurrentManager()
    {
       return manager;
    }
