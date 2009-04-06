@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.tomcat.resources;
+package org.jboss.webbeans.environment.servlet.resources;
 
 import javax.inject.DeploymentException;
 import javax.naming.Context;

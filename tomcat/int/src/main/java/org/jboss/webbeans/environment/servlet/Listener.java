@@ -14,8 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.tomcat;
+package org.jboss.webbeans.environment.servlet;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
@@ -23,11 +26,13 @@ import org.jboss.webbeans.bootstrap.api.Environments;
 import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
-import org.jboss.webbeans.environment.tomcat.discovery.TomcatWebBeanDiscovery;
-import org.jboss.webbeans.environment.tomcat.resources.ReadOnlyNamingContext;
-import org.jboss.webbeans.environment.tomcat.util.Reflections;
+import org.jboss.webbeans.environment.servlet.discovery.TomcatWebBeanDiscovery;
+import org.jboss.webbeans.environment.servlet.resources.ReadOnlyNamingContext;
+import org.jboss.webbeans.environment.servlet.util.Reflections;
 import org.jboss.webbeans.manager.api.WebBeansManager;
 import org.jboss.webbeans.resources.spi.NamingContext;
+import org.jboss.webbeans.resources.spi.ResourceServices;
+import org.jboss.webbeans.resources.spi.helpers.AbstractResourceServices;
 import org.jboss.webbeans.servlet.api.ServletListener;
 import org.jboss.webbeans.servlet.api.helpers.ForwardingServletListener;
 
@@ -78,6 +83,25 @@ public class Listener extends ForwardingServletListener
       bootstrap.setEnvironment(Environments.SERVLET);
       bootstrap.getServices().add(WebBeanDiscovery.class, new TomcatWebBeanDiscovery(sce.getServletContext()) {});
       bootstrap.getServices().add(NamingContext.class, new ReadOnlyNamingContext() {});
+      final Context context;
+      try
+      {
+         context = new InitialContext();
+      }
+      catch (NamingException e)
+      {
+         throw new IllegalStateException("Error creating JNDI context", e);
+      }
+      bootstrap.getServices().add(ResourceServices.class, new AbstractResourceServices()
+      {
+         
+         @Override
+         protected Context getContext()
+         {
+            return context; 
+         }
+         
+      });
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
       manager = bootstrap.getManager();

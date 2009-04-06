@@ -1,4 +1,4 @@
-package org.jboss.webbeans.environment.tomcat.util;
+package org.jboss.webbeans.environment.servlet.util;
 
 import java.io.File;
 import java.net.MalformedURLException;

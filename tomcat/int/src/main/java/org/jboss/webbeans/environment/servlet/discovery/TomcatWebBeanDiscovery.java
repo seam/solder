@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.tomcat.discovery;
+package org.jboss.webbeans.environment.servlet.discovery;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -26,8 +26,8 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 
 import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
-import org.jboss.webbeans.environment.tomcat.util.Reflections;
-import org.jboss.webbeans.environment.tomcat.util.Servlets;
+import org.jboss.webbeans.environment.servlet.util.Reflections;
+import org.jboss.webbeans.environment.servlet.util.Servlets;
 
 /**
  * The means by which Web Beans are discovered on the classpath. This will only
