@@ -17,8 +17,6 @@
 
 package org.jboss.webbeans.test.log;
 
-import javax.inject.ExecutionException;
-
 import org.jboss.testharness.impl.packaging.Artifact;
 import org.jboss.testharness.impl.packaging.Classes;
 import org.jboss.webbeans.test.AbstractLogTest;
@@ -30,7 +28,7 @@ import org.testng.annotations.Test;
  * @author David Allen
  */
 @Artifact
-@Classes(packages = { "org.jboss.webbeans.producer", "org.jboss.webbeans.test.log" })
+@Classes(packages = { "org.jboss.webbeans.log", "org.jboss.webbeans.test.log" })
 public class LoggerInjectionTest extends AbstractLogTest
 {
    @Test
