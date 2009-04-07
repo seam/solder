@@ -54,6 +54,10 @@
                <artifactSet>
                   <excludes>
                      <exclude>xml-apis:xml-apis</exclude>
+                     <exclude>org.apache.tomcat:catalina</exclude>
+                     <exclude>org.apache.tomcat:servlet-api</exclude>
+                     <exclude>org.apache.tomcat:juli</exclude>
+                     <exclude>org.apache.tomcat:annotations-api</exclude>
                   </excludes>
                </artifactSet>
             </configuration>

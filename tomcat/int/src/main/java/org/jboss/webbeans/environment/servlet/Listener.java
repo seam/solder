@@ -29,6 +29,9 @@ import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.servlet.discovery.TomcatWebBeanDiscovery;
 import org.jboss.webbeans.environment.servlet.resources.ReadOnlyNamingContext;
 import org.jboss.webbeans.environment.servlet.util.Reflections;
+import org.jboss.webbeans.environment.tomcat.WebBeansAnnotationProcessor;
+import org.jboss.webbeans.log.Log;
+import org.jboss.webbeans.log.Logging;
 import org.jboss.webbeans.manager.api.WebBeansManager;
 import org.jboss.webbeans.resources.spi.NamingContext;
 import org.jboss.webbeans.resources.spi.ResourceServices;
@@ -41,6 +44,8 @@ import org.jboss.webbeans.servlet.api.helpers.ForwardingServletListener;
  */
 public class Listener extends ForwardingServletListener
 {
+   
+   private static final Log log = Logging.getLog(Listener.class);
    
    private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
    private static final String WEB_BEANS_LISTENER_CLASS_NAME = "org.jboss.webbeans.servlet.WebBeansListener";
@@ -105,9 +110,44 @@ public class Listener extends ForwardingServletListener
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
       manager = bootstrap.getManager();
+      
+      boolean tomcat = true;
+      try
+      {
+         Reflections.loadClass("org.apache.AnnotationProcessor", Object.class);
+      }
+      catch (ClassNotFoundException e) 
+      {
+         log.info("JSR-299 injection will not be available in Servlets, Filters etc. This facility is only available in Tomcat");
+         tomcat = false;
+      }
+      catch (NoClassDefFoundError e) 
+      {
+         log.info("JSR-299 injection will not be available in Servlets, Filters etc. This facility is only available in Tomcat");
+         tomcat = false;
+      }
+      
+      if (tomcat)
+      {
+         // Try pushing a Tomcat AnnotationProcessor into the servlet context
+         try
+         {
+            Class<?> clazz = Reflections.loadClass(WebBeansAnnotationProcessor.class.getName(), Object.class);
+            Object annotationProcessor = clazz.getConstructor(WebBeansManager.class).newInstance(manager);
+            sce.getServletContext().setAttribute(WebBeansAnnotationProcessor.class.getName(), annotationProcessor);
+         }
+         catch (Exception e) 
+         {
+            log.error("Unable to create Tomcat AnnotationProcessor. JSR-299 injection will not be available in Servlets, Filters etc.", e);
+         }
+      }
+
+      
       bootstrap.boot();
       super.contextInitialized(sce);
    }
+   
+   
 
    @Override
    protected ServletListener delegate()
