@@ -42,7 +42,7 @@
       
       <dependency>
       	<groupId>org.jboss.test-harness</groupId>
-      	<artifactId>jboss-test-harness-jboss-as-5</artifactId>
+      	<artifactId>jboss-test-harness-jboss-as-50</artifactId>
       	<scope>test</scope>
       </dependency>
       
