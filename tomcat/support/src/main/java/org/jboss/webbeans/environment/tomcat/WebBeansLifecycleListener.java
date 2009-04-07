@@ -13,32 +13,71 @@ import org.apache.catalina.core.StandardContext;
 public class WebBeansLifecycleListener implements LifecycleListener
 {
    
+   private static final AnnotationProcessor DUMMY_PROCESSOR = new AnnotationProcessor()
+   {
+
+      public void postConstruct(Object arg0) throws IllegalAccessException, InvocationTargetException {}
+
+      public void preDestroy(Object arg0) throws IllegalAccessException, InvocationTargetException {}
+
+      public void processAnnotations(Object arg0) throws IllegalAccessException, InvocationTargetException, NamingException {}
+      
+   };
+   
    public void lifecycleEvent(LifecycleEvent event)
    {
       if (event.getType().equals("after_start") && event.getLifecycle() instanceof StandardContext)
       {
          StandardContext context = (StandardContext) event.getLifecycle();
          final ServletContext servletContext = context.getServletContext();
-         final AnnotationProcessor annotationProcessor = context.getAnnotationProcessor();
+         final AnnotationProcessor originalAnnotationProcessor = context.getAnnotationProcessor();
          context.setAnnotationProcessor(new ForwardingAnnotationProcessor()
          {
+            
+            private AnnotationProcessor processor;
 
             @Override
             protected AnnotationProcessor delegate()
             {
-               return annotationProcessor;
+               return originalAnnotationProcessor;
             }
             
             @Override
             public void processAnnotations(Object instance) throws IllegalAccessException, InvocationTargetException, NamingException
             {
                super.processAnnotations(instance);
-               Object o = servletContext.getAttribute("org.jboss.webbeans.environment.tomcat.WebBeansAnnotationProcessor");
-               if (o != null)
+               getProcessor().processAnnotations(instance);
+            }
+            
+            @Override
+            public void postConstruct(Object instance) throws IllegalAccessException, InvocationTargetException
+            {
+               super.postConstruct(instance);
+               getProcessor().postConstruct(instance);
+            }
+            
+            @Override
+            public void preDestroy(Object instance) throws IllegalAccessException, InvocationTargetException
+            {
+               super.preDestroy(instance);
+               getProcessor().preDestroy(instance);
+            }
+            
+            private AnnotationProcessor getProcessor()
+            {
+               if (processor == null)
                {
-                  AnnotationProcessor processor = (AnnotationProcessor) o;
-                  processor.processAnnotations(instance);
+                  Object o = servletContext.getAttribute("org.jboss.webbeans.environment.tomcat.WebBeansAnnotationProcessor");
+                  if (o instanceof AnnotationProcessor)
+                  {
+                     processor = (AnnotationProcessor) o;
+                  }
+                  else
+                  {
+                     return DUMMY_PROCESSOR;
+                  }
                }
+               return processor;
             }
             
          });
