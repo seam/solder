@@ -18,21 +18,25 @@
       <dependency>
          <groupId>org.jboss.webbeans.tomcat</groupId>
          <artifactId>webbeans-tomcat-int</artifactId>
+         <optional>true</optional>
       </dependency>
       
       <dependency>
          <groupId>org.jboss.webbeans</groupId>
          <artifactId>webbeans-core</artifactId>
+         <optional>true</optional>
       </dependency>
       
       <dependency>
          <groupId>javassist</groupId>
          <artifactId>javassist</artifactId>
+         <optional>true</optional>
       </dependency>
 
       <dependency>
          <groupId>dom4j</groupId>
          <artifactId>dom4j</artifactId>
+         <optional>true</optional>
       </dependency>
    
    </dependencies>
