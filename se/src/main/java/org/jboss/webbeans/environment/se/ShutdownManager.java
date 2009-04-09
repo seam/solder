@@ -35,7 +35,7 @@ public class ShutdownManager
          {
             hasShutdownBeenCalled = true;
             bootstrap.shutdown();
-            DependentContext.INSTANCE.setActive(false);
+            DependentContext.instance().setActive(false);
          }
          else
          {

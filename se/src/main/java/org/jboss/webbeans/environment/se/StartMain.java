@@ -24,7 +24,6 @@ import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
 import org.jboss.webbeans.context.DependentContext;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
-import org.jboss.webbeans.environment.se.beans.ParametersFactory;
 import org.jboss.webbeans.environment.se.discovery.SEWebBeanDiscovery;
 import org.jboss.webbeans.environment.se.resources.NoNamingContext;
 import org.jboss.webbeans.environment.se.util.Reflections;
@@ -47,14 +46,14 @@ public class StartMain
    
    private final Bootstrap bootstrap;
    private final BeanStore applicationBeanStore;
-   public static String[] ARGS;
+   public static String[] PARAMETERS;
    
    private WebBeansManager manager;
    
    
    public StartMain(String[] commandLineArgs)
    {
-      ARGS = commandLineArgs;
+      PARAMETERS = commandLineArgs;
       try
       {
          bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME, Bootstrap.class);
@@ -75,13 +74,12 @@ public class StartMain
       bootstrap.initialize();
       this.manager = bootstrap.getManager();
       bootstrap.boot();
-      DependentContext.INSTANCE.setActive(true);
+      DependentContext.instance().setActive(true);
       bootstrap.getManager().getInstanceByType(ShutdownManager.class).setBootstrap(bootstrap);
    }
    
    /**
-    * The main method called from the command line. This little puppy will get
-    * the ball rolling.
+    * The main method called from the command line.
     * 
     * @param args
     *           the command line arguments
@@ -96,5 +94,10 @@ public class StartMain
       go();
       return manager;
    }
-   
+
+   public static String[] getParameters() {
+      // TODO(PR): make immutable
+      return PARAMETERS;
+   }
+
 }

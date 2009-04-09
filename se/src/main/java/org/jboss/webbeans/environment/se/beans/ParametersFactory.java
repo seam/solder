@@ -87,6 +87,6 @@ public class ParametersFactory
     * @param manager The Manager which has been initialized.
     */
    public void initArgs(@Observes @Initialized Manager manager) {
-      this.setArgs( StartMain.ARGS );
+      this.setArgs( StartMain.PARAMETERS );
    }
 }
