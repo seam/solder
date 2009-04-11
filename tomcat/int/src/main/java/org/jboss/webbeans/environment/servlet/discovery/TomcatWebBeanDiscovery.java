@@ -82,9 +82,12 @@ public abstract class TomcatWebBeanDiscovery implements WebBeanDiscovery
          if (beans != null)
          {
             File webInfClasses = Servlets.getRealFile(servletContext, "/WEB-INF/classes");
-            File[] files = {webInfClasses};
-            scanner.scanDirectories(files);
-            wbUrls.add(beans);
+            if (webInfClasses != null)
+            {
+               File[] files = { webInfClasses };
+               scanner.scanDirectories(files);
+               wbUrls.add(beans);
+            }
          }
       }
       catch (MalformedURLException e)
