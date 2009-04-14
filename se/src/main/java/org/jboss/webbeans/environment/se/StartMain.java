@@ -25,10 +25,8 @@ import org.jboss.webbeans.context.DependentContext;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.discovery.SEWebBeanDiscovery;
-import org.jboss.webbeans.environment.se.resources.NoNamingContext;
 import org.jboss.webbeans.environment.se.util.Reflections;
 import org.jboss.webbeans.manager.api.WebBeansManager;
-import org.jboss.webbeans.resources.spi.NamingContext;
 
 /**
  * This is the main class that should always be called from the command line for
@@ -69,7 +67,6 @@ public class StartMain
    {
       bootstrap.setEnvironment(Environments.SE);
       bootstrap.getServices().add(WebBeanDiscovery.class, new SEWebBeanDiscovery() {});
-      bootstrap.getServices().add(NamingContext.class, new NoNamingContext() {});
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
       this.manager = bootstrap.getManager();
