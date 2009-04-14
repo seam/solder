@@ -16,9 +16,6 @@
  */
 package org.jboss.webbeans.environment.servlet;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
@@ -28,6 +25,7 @@ import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.servlet.discovery.TomcatWebBeanDiscovery;
 import org.jboss.webbeans.environment.servlet.resources.ReadOnlyNamingContext;
+import org.jboss.webbeans.environment.servlet.resources.TomcatResourceServices;
 import org.jboss.webbeans.environment.servlet.util.Reflections;
 import org.jboss.webbeans.environment.tomcat.WebBeansAnnotationProcessor;
 import org.jboss.webbeans.log.Log;
@@ -35,7 +33,6 @@ import org.jboss.webbeans.log.Logging;
 import org.jboss.webbeans.manager.api.WebBeansManager;
 import org.jboss.webbeans.resources.spi.NamingContext;
 import org.jboss.webbeans.resources.spi.ResourceServices;
-import org.jboss.webbeans.resources.spi.helpers.AbstractResourceServices;
 import org.jboss.webbeans.servlet.api.ServletListener;
 import org.jboss.webbeans.servlet.api.helpers.ForwardingServletListener;
 
@@ -75,12 +72,14 @@ public class Listener extends ForwardingServletListener
       }
    }
 
+   @Override
    public void contextDestroyed(ServletContextEvent sce)
    {
       manager.shutdown();
       super.contextDestroyed(sce);
    }
 
+   @Override
    public void contextInitialized(ServletContextEvent sce)
    {
       BeanStore applicationBeanStore = new ConcurrentHashMapBeanStore();
@@ -88,25 +87,7 @@ public class Listener extends ForwardingServletListener
       bootstrap.setEnvironment(Environments.SERVLET);
       bootstrap.getServices().add(WebBeanDiscovery.class, new TomcatWebBeanDiscovery(sce.getServletContext()) {});
       bootstrap.getServices().add(NamingContext.class, new ReadOnlyNamingContext() {});
-      final Context context;
-      try
-      {
-         context = new InitialContext();
-      }
-      catch (NamingException e)
-      {
-         throw new IllegalStateException("Error creating JNDI context", e);
-      }
-      bootstrap.getServices().add(ResourceServices.class, new AbstractResourceServices()
-      {
-         
-         @Override
-         protected Context getContext()
-         {
-            return context; 
-         }
-         
-      });
+      bootstrap.getServices().add(ResourceServices.class, new TomcatResourceServices() {});
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
       manager = bootstrap.getManager();
