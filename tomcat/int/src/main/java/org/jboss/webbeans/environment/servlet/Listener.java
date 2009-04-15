@@ -84,7 +84,15 @@ public class Listener extends ForwardingServletListener
       sce.getServletContext().setAttribute(APPLICATION_BEAN_STORE_ATTRIBUTE_NAME, applicationBeanStore);
       bootstrap.setEnvironment(Environments.SERVLET);
       bootstrap.getServices().add(WebBeanDiscovery.class, new TomcatWebBeanDiscovery(sce.getServletContext()) {});
-      bootstrap.getServices().add(ResourceServices.class, new TomcatResourceServices() {});
+      try
+      {
+    	  bootstrap.getServices().add(ResourceServices.class, new TomcatResourceServices() {});
+      }
+      catch (NoClassDefFoundError e)
+      {
+    	 // Support GAE 
+    	 log.warn("@Resource injection not available in simple beans");
+      }
       bootstrap.setApplicationContext(applicationBeanStore);
       bootstrap.initialize();
       manager = bootstrap.getManager();
