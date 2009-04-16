@@ -23,8 +23,8 @@ import org.jboss.webbeans.bootstrap.api.Environments;
 import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
-import org.jboss.webbeans.environment.servlet.discovery.TomcatWebBeanDiscovery;
-import org.jboss.webbeans.environment.servlet.resources.TomcatResourceServices;
+import org.jboss.webbeans.environment.servlet.discovery.ServletWebBeanDiscovery;
+import org.jboss.webbeans.environment.servlet.resources.ServletResourceServices;
 import org.jboss.webbeans.environment.servlet.util.Reflections;
 import org.jboss.webbeans.environment.tomcat.WebBeansAnnotationProcessor;
 import org.jboss.webbeans.log.Log;
@@ -83,10 +83,10 @@ public class Listener extends ForwardingServletListener
       BeanStore applicationBeanStore = new ConcurrentHashMapBeanStore();
       sce.getServletContext().setAttribute(APPLICATION_BEAN_STORE_ATTRIBUTE_NAME, applicationBeanStore);
       bootstrap.setEnvironment(Environments.SERVLET);
-      bootstrap.getServices().add(WebBeanDiscovery.class, new TomcatWebBeanDiscovery(sce.getServletContext()) {});
+      bootstrap.getServices().add(WebBeanDiscovery.class, new ServletWebBeanDiscovery(sce.getServletContext()) {});
       try
       {
-    	  bootstrap.getServices().add(ResourceServices.class, new TomcatResourceServices() {});
+    	  bootstrap.getServices().add(ResourceServices.class, new ServletResourceServices() {});
       }
       catch (NoClassDefFoundError e)
       {

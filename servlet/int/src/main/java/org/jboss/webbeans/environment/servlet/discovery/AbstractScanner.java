@@ -34,9 +34,9 @@ public abstract class AbstractScanner implements Scanner
    
    private static final Log log = Logging.getLog(Scanner.class);
    private final ClassLoader classLoader;
-   private final TomcatWebBeanDiscovery webBeanDiscovery;
+   private final ServletWebBeanDiscovery webBeanDiscovery;
    
-   public AbstractScanner(ClassLoader classLoader, TomcatWebBeanDiscovery webBeanDiscovery)
+   public AbstractScanner(ClassLoader classLoader, ServletWebBeanDiscovery webBeanDiscovery)
    {
       this.classLoader = classLoader;
       this.webBeanDiscovery = webBeanDiscovery;

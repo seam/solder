@@ -37,14 +37,14 @@ import org.jboss.webbeans.environment.servlet.util.Servlets;
  * @author Pete Muir
  * @author Ales Justin
  */
-public abstract class TomcatWebBeanDiscovery implements WebBeanDiscovery
+public abstract class ServletWebBeanDiscovery implements WebBeanDiscovery
 {
    
    private final Set<Class<?>> wbClasses;
    private final Set<URL> wbUrls;
    private final ServletContext servletContext;
    
-   public TomcatWebBeanDiscovery(ServletContext servletContext)
+   public ServletWebBeanDiscovery(ServletContext servletContext)
    {
       this.wbClasses = new HashSet<Class<?>>();
       this.wbUrls = new HashSet<URL>();

@@ -45,7 +45,7 @@ public class URLScanner extends AbstractScanner
 {
    private static final Log log = Logging.getLog(URLScanner.class);
    
-   public URLScanner(ClassLoader classLoader, TomcatWebBeanDiscovery webBeanDiscovery)
+   public URLScanner(ClassLoader classLoader, ServletWebBeanDiscovery webBeanDiscovery)
    {
       super(classLoader, webBeanDiscovery);
    }

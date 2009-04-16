@@ -7,12 +7,12 @@ import javax.naming.NamingException;
 import org.jboss.webbeans.resources.spi.ResourceServices;
 import org.jboss.webbeans.resources.spi.helpers.AbstractResourceServices;
 
-public abstract class TomcatResourceServices extends AbstractResourceServices implements ResourceServices
+public abstract class ServletResourceServices extends AbstractResourceServices implements ResourceServices
 {
    
    private Context context;
    
-   public TomcatResourceServices()
+   public ServletResourceServices()
    {
       try
       {
