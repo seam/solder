@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
-      <artifactId>webbeans-tomcat-parent</artifactId>
-      <groupId>org.jboss.webbeans.tomcat</groupId>
+      <artifactId>webbeans-servlet-parent</artifactId>
+      <groupId>org.jboss.webbeans.servlet</groupId>
       <version>1.0.0-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jboss.webbeans.tomcat</groupId>
-   <artifactId>webbeans-tomcat-support</artifactId>
+   <groupId>org.jboss.webbeans.servlet</groupId>
+   <artifactId>webbeans-servlet-int</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
-   <name>Web Beans Tomcat Integration</name>
+   <name>Web Beans Servlet Integration</name>
    <url>http://www.seamframework.org/WebBeans</url>
     
    <dependencies>
@@ -28,22 +28,34 @@
       </dependency>
    
       <dependency>
+         <groupId>org.jboss.webbeans</groupId>
+         <artifactId>webbeans-spi</artifactId>
+      </dependency>
+   
+      <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>servlet-api</artifactId>
          <scope>provided</scope>
       </dependency>
-  
+      
+      <dependency>
+         <groupId>org.jboss.webbeans</groupId>
+         <artifactId>webbeans-logging</artifactId>
+      </dependency>
+      
       <dependency>
          <groupId>org.apache.tomcat</groupId>
          <artifactId>catalina</artifactId>
+         <version>6.0.18</version>
          <scope>provided</scope>
+         <optional>true</optional>
          <exclusions>
             <exclusion>
                <groupId>org.apache.tomcat</groupId>
                <artifactId>servlet-api</artifactId>
             </exclusion>
          </exclusions>
-      </dependency>    
+      </dependency>
    
    </dependencies>
 
