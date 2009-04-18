@@ -108,10 +108,10 @@ public class WebBeansRequestCycle extends WebRequestCycle
       }
 
       // Now set up the conversational context if it isn't already
-      if (!ConversationContext.INSTANCE.isActive())
+      if (!ConversationContext.instance().isActive())
       {
-         ConversationContext.INSTANCE.setBeanStore(new ConversationBeanStore(((WebRequest) request).getHttpServletRequest().getSession(), conversation.getId()));
-         ConversationContext.INSTANCE.setActive(true);
+         ConversationContext.instance().setBeanStore(new ConversationBeanStore(((WebRequest) request).getHttpServletRequest().getSession(), conversation.getId()));
+         ConversationContext.instance().setActive(true);
       }
    }
 }

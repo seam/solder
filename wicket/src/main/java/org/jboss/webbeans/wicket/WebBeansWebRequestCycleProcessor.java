@@ -41,6 +41,6 @@ public class WebBeansWebRequestCycleProcessor extends WebRequestCycleProcessor
       //cleanup and deactivate the conversation context
       
       CurrentManager.rootManager().getInstanceByType(ConversationManager.class).cleanupConversation();
-      ConversationContext.INSTANCE.setActive(false);
+      ConversationContext.instance().setActive(false);
    }
 }
