@@ -5,7 +5,6 @@ import javax.event.Observes;
 import javax.inject.manager.Manager;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
-import org.jboss.webbeans.context.DependentContext;
 import org.jboss.webbeans.environment.se.events.Shutdown;
 import org.jboss.webbeans.log.LogProvider;
 import org.jboss.webbeans.log.Logging;
@@ -35,7 +34,6 @@ public class ShutdownManager
          {
             hasShutdownBeenCalled = true; 
             bootstrap.shutdown();
-            DependentContext.instance().setActive(false);
          }
          else
          {
