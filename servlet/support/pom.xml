@@ -7,10 +7,10 @@
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.webbeans.servlet</groupId>
-   <artifactId>webbeans-servlet-support</artifactId>
+   <artifactId>webbeans-tomcat-support</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
-   <name>Web Beans Servlet Integration</name>
+   <name>Web Beans Servlet Integration: Tomcat Support</name>
    <url>http://www.seamframework.org/WebBeans</url>
     
    <dependencies>
