@@ -2,7 +2,7 @@ package org.jboss.webbeans.test.tomcat.examples;
 
 import org.jboss.testharness.impl.packaging.Artifact;
 import org.jboss.webbeans.test.AbstractWebBeansTest;
-import org.jboss.webbeans.test.ServletLifecycleContainersImpl;
+import org.jboss.webbeans.test.harness.ServletLifecycleContainersImpl;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
