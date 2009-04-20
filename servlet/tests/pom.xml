@@ -3,12 +3,12 @@
    <parent>
       <artifactId>webbeans-servlet-parent</artifactId>
       <groupId>org.jboss.webbeans.servlet</groupId>
-      <version>1.0.0.CR1</version>
+      <version>1.0.0-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.webbeans.servlet</groupId>
    <artifactId>webbeans-servlet-test</artifactId>
-   <version>1.0.0.CR1</version>
+   <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
    <name>Web Beans Servlet Integration Tests</name>
    <url>http://www.seamframework.org/WebBeans</url>
