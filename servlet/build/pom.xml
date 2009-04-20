@@ -19,6 +19,7 @@
          <groupId>org.jboss.webbeans.servlet</groupId>
          <artifactId>webbeans-servlet-int</artifactId>
          <optional>true</optional>
+         <version>${project.version}</version>
       </dependency>
       
       <dependency>
