@@ -7,7 +7,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.webbeans</groupId>
    <artifactId>webbeans-wicket</artifactId>
-   <version>1.0.0.BETA1</version>
+   <version>1.0.0-SNAPSHOT</version>
    <name>Web Beans Wicket Integration</name>
    <dependencies>
 
@@ -64,9 +64,9 @@
 	</properties>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/webbeans/extensions/webbeans-wicket-1.0.0.BETA1</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/webbeans/extensions/tags/webbeans-wicket-1.0.0.BETA1</developerConnection>
-      <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/webbeans/extensions/webbeans-wicket-1.0.0.BETA1</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/webbeans/extensions</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/webbeans/extensions</developerConnection>
+      <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/webbeans/extensions</url>
    </scm>
 
 </project>
