@@ -80,6 +80,12 @@
       
    </dependencies>
 
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/webbeans/extensions</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/webbeans/extensions</developerConnection>
+      <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/webbeans/extensions</url>
+   </scm>
+
    <build>
       <defaultGoal>install</defaultGoal>
    </build>
