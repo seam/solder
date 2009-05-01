@@ -41,7 +41,7 @@ public class LoggerProducer
       Log log = null;
       String category = null;
       category = injectionPoint.getAnnotation(Logger.class).value();
-      if (category.isEmpty())
+      if (category.length() == 0)
       {
          log = Logging.getLog((Class<?>) injectionPoint.getMember().getDeclaringClass());
       }
