@@ -75,7 +75,7 @@ public abstract class ServletWebBeanDiscovery implements WebBeanDiscovery
    private void scan()
    {
       Scanner scanner = new URLScanner(Reflections.getClassLoader(), this);
-      scanner.scanResources(new String[] { "beans.xml" });
+      scanner.scanResources(new String[] { "/META-INF/beans.xml" });
       try
       {
          URL beans = servletContext.getResource("/WEB-INF/beans.xml");
