@@ -68,7 +68,7 @@ public abstract class SEWebBeanDiscovery implements WebBeanDiscovery
    private void scan()
    {
       Scanner scanner = new URLScanner(Reflections.getClassLoader(), this);
-      scanner.scanResources(new String[] { "/META-INF/beans.xml" });
+      scanner.scanResources(new String[] { "META-INF/beans.xml" });
    }
    
 }
