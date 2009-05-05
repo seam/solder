@@ -31,7 +31,7 @@ import org.jboss.webbeans.log.Logging;
  */
 public abstract class AbstractScanner implements Scanner
 {
-   
+
    private static final Log log = Logging.getLog(Scanner.class);
    private final ClassLoader classLoader;
    private final ServletWebBeanDiscovery webBeanDiscovery;
@@ -60,7 +60,7 @@ public abstract class AbstractScanner implements Scanner
             log.error("Error loading " + name, e);
          }
       }
-      else if (name.endsWith("beans.xml"))
+      else if (name.equals(ServletWebBeanDiscovery.META_INF_BEANS_XML))
       {
          webBeanDiscovery.getWbUrls().add(url);
       }

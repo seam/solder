@@ -39,6 +39,9 @@ import org.jboss.webbeans.environment.servlet.util.Servlets;
  */
 public abstract class ServletWebBeanDiscovery implements WebBeanDiscovery
 {
+   public static final String META_INF_BEANS_XML = "META-INF/beans.xml";
+   public static final String WEB_INF_BEANS_XML = "/WEB-INF/beans.xml";
+   public static final String WEB_INF_CLASSES = "/WEB-INF/classes";
    
    private final Set<Class<?>> wbClasses;
    private final Set<URL> wbUrls;
@@ -75,13 +78,13 @@ public abstract class ServletWebBeanDiscovery implements WebBeanDiscovery
    private void scan()
    {
       Scanner scanner = new URLScanner(Reflections.getClassLoader(), this);
-      scanner.scanResources(new String[] { "/META-INF/beans.xml" });
+      scanner.scanResources(new String[] { META_INF_BEANS_XML });
       try
       {
-         URL beans = servletContext.getResource("/WEB-INF/beans.xml");
+         URL beans = servletContext.getResource(WEB_INF_BEANS_XML);
          if (beans != null)
          {
-            File webInfClasses = Servlets.getRealFile(servletContext, "/WEB-INF/classes");
+            File webInfClasses = Servlets.getRealFile(servletContext, WEB_INF_CLASSES);
             if (webInfClasses != null)
             {
                File[] files = { webInfClasses };
