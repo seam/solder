@@ -88,7 +88,7 @@ public class URLScanner extends AbstractScanner
                   
                   if ((resourceName != null) && (resourceName.lastIndexOf('/') > 0))
                   {
-                     // for META-INF/components.xml
+                     // for META-INF/beans.xml
                      dirOrArchive = dirOrArchive.getParentFile();
                   }
                   
