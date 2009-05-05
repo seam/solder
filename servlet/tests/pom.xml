@@ -32,11 +32,32 @@
          <artifactId>servlet-api</artifactId>
          <scope>provided</scope>
       </dependency>
+
+      <dependency>
+         <groupId>org.jboss.ejb3</groupId>
+         <artifactId>jboss-ejb3-api</artifactId>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <artifactId>jboss-jaxrpc</artifactId>
+               <groupId>jbossws</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>jboss-jaxrpc</artifactId>
+               <groupId>jboss.jbossws</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>jboss-transaction-api</artifactId>
+               <groupId>org.jboss.javaee</groupId>
+            </exclusion>
+         </exclusions>
+      </dependency>
       
       <dependency>
          <groupId>org.jboss.webbeans</groupId>
          <artifactId>webbeans-core-test</artifactId>
          <scope>test</scope>
+         <version>1.0.0-SNAPSHOT</version> <!-- waiting on >= 1.0.0.PREVIEW2 -->
       </dependency>
       
       <dependency>
@@ -60,6 +81,13 @@
          <groupId>org.jboss.webbeans</groupId>
          <artifactId>webbeans-spi</artifactId>
          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.webbeans.servlet</groupId>
+         <artifactId>webbeans-servlet-int</artifactId>
+         <scope>test</scope>
+         <version>1.0.0-SNAPSHOT</version> <!-- waiting on >= 1.0.0.CR2 -->
       </dependency>
       
       <dependency>
