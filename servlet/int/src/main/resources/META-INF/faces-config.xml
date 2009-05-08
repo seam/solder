@@ -6,6 +6,7 @@
 
    <application>
       <el-resolver>org.jboss.webbeans.el.WebBeansELResolver</el-resolver>
+      <view-handler>org.jboss.webbeans.jsf.ConversationAwareViewHandler</view-handler>
    </application>
 	<lifecycle>
 		<phase-listener>org.jboss.webbeans.jsf.WebBeansPhaseListener</phase-listener>
