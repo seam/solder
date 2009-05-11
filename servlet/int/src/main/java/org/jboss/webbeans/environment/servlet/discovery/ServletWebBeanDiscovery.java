@@ -84,12 +84,12 @@ public abstract class ServletWebBeanDiscovery implements WebBeanDiscovery
          URL beans = servletContext.getResource(WEB_INF_BEANS_XML);
          if (beans != null)
          {
+       	    wbUrls.add(beans); // this is consistent with how the JBoss webbeans.deployer works
             File webInfClasses = Servlets.getRealFile(servletContext, WEB_INF_CLASSES);
             if (webInfClasses != null)
             {
                File[] files = { webInfClasses };
                scanner.scanDirectories(files);
-               wbUrls.add(beans);
             }
          }
       }
