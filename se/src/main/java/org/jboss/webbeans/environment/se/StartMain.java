@@ -39,62 +39,56 @@ import org.jboss.webbeans.manager.api.WebBeansManager;
  */
 public class StartMain
 {
-   
-   private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
-   
-   private final Bootstrap bootstrap;
-   private final BeanStore applicationBeanStore;
-   public static String[] PARAMETERS;
-   
-   private WebBeansManager manager;
-   
-   
-   public StartMain(String[] commandLineArgs)
-   {
-      PARAMETERS = commandLineArgs;
-      try
-      {
-         bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME, Bootstrap.class);
-      }
-      catch (Exception e)
-      {
-         throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
-      }
-      this.applicationBeanStore = new ConcurrentHashMapBeanStore();
-   }
-   
-   private void go()
-   {
-      bootstrap.setEnvironment(Environments.SE);
-      bootstrap.getServices().add(WebBeanDiscovery.class, new SEWebBeanDiscovery() {});
-      bootstrap.setApplicationContext(applicationBeanStore);
-      bootstrap.initialize();
-      this.manager = bootstrap.getManager();
-      bootstrap.boot();
-      DependentContext.instance().setActive(true);
-      bootstrap.getManager().getInstanceByType(ShutdownManager.class).setBootstrap(bootstrap);
-   }
-   
-   /**
-    * The main method called from the command line.
-    * 
-    * @param args
-    *           the command line arguments
-    */
-   public static void main(String[] args)
-   {
-      new StartMain(args).main();
-   }
-   
-   public Manager main()
-   {
-      go();
-      return manager;
-   }
 
-   public static String[] getParameters() {
-      // TODO(PR): make immutable
-      return PARAMETERS;
-   }
+    private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
+    private final Bootstrap bootstrap;
+    private final BeanStore applicationBeanStore;
+    public static String[] PARAMETERS;
+    private WebBeansManager manager;
 
+    public StartMain(String[] commandLineArgs)
+    {
+        PARAMETERS = commandLineArgs;
+        try {
+            bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME, Bootstrap.class);
+        } catch (Exception e) {
+            throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
+        }
+        this.applicationBeanStore = new ConcurrentHashMapBeanStore();
+    }
+
+    private void go()
+    {
+        bootstrap.setEnvironment(Environments.SE);
+        bootstrap.getServices().add(WebBeanDiscovery.class, new SEWebBeanDiscovery() {});
+        bootstrap.setApplicationContext(applicationBeanStore);
+        bootstrap.initialize();
+        this.manager = bootstrap.getManager();
+        bootstrap.boot();
+        DependentContext.instance().setActive(true);
+        bootstrap.getManager().getInstanceByType(ShutdownManager.class).setBootstrap(bootstrap);
+    }
+
+    /**
+     * The main method called from the command line.
+     *
+     * @param args
+     *           the command line arguments
+     */
+    public static void main(String[] args)
+    {
+        new StartMain(args).main();
+    }
+
+    public Manager main()
+    {
+        go();
+        return manager;
+    }
+
+    public static String[] getParameters()
+    {
+        // TODO(PR): make immutable
+        return PARAMETERS;
+    }
 }
