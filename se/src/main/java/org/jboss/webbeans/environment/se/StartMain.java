@@ -21,7 +21,6 @@ import javax.inject.manager.Manager;
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.bootstrap.api.Environments;
 import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
-import org.jboss.webbeans.context.DependentContext;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.discovery.SEWebBeanDiscovery;
@@ -65,7 +64,6 @@ public class StartMain
         bootstrap.initialize();
         this.manager = bootstrap.getManager();
         bootstrap.boot();
-        DependentContext.instance().setActive(true);
         bootstrap.getManager().getInstanceByType(ShutdownManager.class).setBootstrap(bootstrap);
     }
 
