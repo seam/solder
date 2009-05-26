@@ -1,7 +1,7 @@
 package org.jboss.webbeans.wicket;
 
-import javax.context.Conversation;
-import javax.inject.manager.Manager;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
@@ -72,7 +72,7 @@ public class WebBeansRequestCycle extends WebRequestCycle
          specifiedCid = request.getParameter("cid");
       }
 
-      Manager manager = CurrentManager.rootManager();
+      BeanManager manager = CurrentManager.rootManager();
       Conversation conversation = manager.getInstanceByType(Conversation.class);
 
       // restore a conversation if it exists

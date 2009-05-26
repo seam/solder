@@ -1,6 +1,6 @@
 package org.jboss.webbeans.wicket;
 
-import javax.context.Conversation;
+import javax.enterprise.context.Conversation;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;

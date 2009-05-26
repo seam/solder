@@ -1,8 +1,8 @@
 package org.jboss.webbeans.environment.se;
 
-import javax.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.event.Observes;
-import javax.inject.manager.Manager;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.environment.se.events.Shutdown;
@@ -25,7 +25,7 @@ public class ShutdownManager
     * 
     * @param shutdownRequest
     */
-   public void shutdown(@Observes @Shutdown Manager shutdownRequest)
+   public void shutdown(@Observes @Shutdown BeanManager shutdownRequest)
    {
       synchronized (this)
       {

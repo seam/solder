@@ -17,12 +17,9 @@
 
 package org.jboss.webbeans.log;
 
-import javax.inject.Current;
-import javax.inject.Produces;
-import javax.inject.manager.InjectionPoint;
-
-import org.jboss.webbeans.log.Log;
-import org.jboss.webbeans.log.Logging;
+import javax.enterprise.inject.Current;
+import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
 
 /**
  * The <code>LoggerProducer</code> provides a producer method for all

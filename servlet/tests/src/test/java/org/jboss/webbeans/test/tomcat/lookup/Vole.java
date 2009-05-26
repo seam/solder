@@ -1,15 +1,15 @@
 package org.jboss.webbeans.test.tomcat.lookup;
 
 import javax.annotation.Resource;
-import javax.inject.manager.Manager;
+import javax.enterprise.inject.spi.BeanManager;
 
 public class Vole
 {
    
    @Resource(mappedName="java:comp/env/app/Manager")
-   Manager manager;
+   BeanManager manager;
    
-   public Manager getManager()
+   public BeanManager getManager()
    {
       return manager;
    }

@@ -1,6 +1,6 @@
 package org.jboss.webbeans.test.tomcat.examples;
 
-import javax.inject.Initializer;
+import javax.enterprise.inject.Initializer;
 
 public class Game
 {

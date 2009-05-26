@@ -16,7 +16,7 @@
  */
 package org.jboss.webbeans.environment.se;
 
-import javax.inject.manager.Manager;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.bootstrap.api.Environments;
@@ -78,7 +78,7 @@ public class StartMain
         new StartMain(args).main();
     }
 
-    public Manager main()
+    public BeanManager main()
     {
         go();
         return manager;

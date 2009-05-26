@@ -21,12 +21,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.event.Observes;
-import javax.inject.Produces;
 
-import javax.inject.manager.Initialized;
-import javax.inject.manager.Manager;
 import org.jboss.webbeans.environment.se.StartMain;
 import org.jboss.webbeans.environment.se.bindings.Parameters;
 
@@ -86,7 +86,7 @@ public class ParametersFactory
     *
     * @param manager The Manager which has been initialized.
     */
-   public void initArgs(@Observes @Initialized Manager manager) {
+   public void initArgs(@Observes @BeforeBeanDiscovery BeanManager manager) {
       this.setArgs( StartMain.PARAMETERS );
    }
 }

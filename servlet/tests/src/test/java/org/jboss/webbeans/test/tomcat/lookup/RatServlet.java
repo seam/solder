@@ -2,7 +2,7 @@ package org.jboss.webbeans.test.tomcat.lookup;
 
 import java.io.IOException;
 
-import javax.inject.Current;
+import javax.enterprise.inject.Current;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

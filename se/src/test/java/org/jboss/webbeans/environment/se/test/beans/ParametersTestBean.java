@@ -20,8 +20,8 @@ package org.jboss.webbeans.environment.se.test.beans;
 
 import java.util.List;
 
-import javax.context.ApplicationScoped;
-import javax.inject.Initializer;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Initializer;
 
 import org.jboss.webbeans.environment.se.bindings.Parameters;
 import org.testng.Assert;

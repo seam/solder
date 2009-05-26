@@ -16,8 +16,8 @@
  */
 package org.jboss.webbeans.environment.se.test;
 
-import javax.inject.AnnotationLiteral;
-import javax.inject.manager.Manager;
+import javax.enterprise.inject.AnnotationLiteral;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.webbeans.environment.se.StartMain;
 import org.jboss.webbeans.environment.se.events.Shutdown;
@@ -44,7 +44,7 @@ public class StartMainTest {
     public void testMain()
     {
         String[] args = ARGS ;
-        Manager manager = new StartMain(args).main();
+        BeanManager manager = new StartMain(args).main();
 
         MainTestBean mainTestBean = manager.getInstanceByType( MainTestBean.class );
         Assert.assertNotNull( mainTestBean );
@@ -79,7 +79,7 @@ public class StartMainTest {
     @Test
     public void testMainEmptyArgs()
     {
-        Manager manager = new StartMain(ARGS_EMPTY).main();
+        BeanManager manager = new StartMain(ARGS_EMPTY).main();
 
         MainTestBean mainTestBean = manager.getInstanceByType( MainTestBean.class );
         Assert.assertNotNull( mainTestBean );
@@ -91,7 +91,7 @@ public class StartMainTest {
         shutdownManager(manager);
     }
 
-    private void shutdownManager( Manager manager )
+    private void shutdownManager( BeanManager manager )
     {
         manager.fireEvent( manager, new ShutdownAnnotation() );
     }
