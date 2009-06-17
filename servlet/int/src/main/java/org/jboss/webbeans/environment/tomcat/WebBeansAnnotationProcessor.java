@@ -19,7 +19,10 @@ public class WebBeansAnnotationProcessor implements AnnotationProcessor
 
    public void processAnnotations(Object instance) throws IllegalAccessException, InvocationTargetException, NamingException
    {
-      manager.injectNonContextualInstance(instance);
+      //FIXME disabled as this method is being reimplemented
+      //manager.createInjectionTarget(instance.getClass()).inject(instance, manager.createCreationalContext());
+      // replaces
+      //manager.injectNonContextualInstance(instance);
    }
 
    public void postConstruct(Object arg0) throws IllegalAccessException, InvocationTargetException
