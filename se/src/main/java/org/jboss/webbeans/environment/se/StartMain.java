@@ -25,6 +25,7 @@ import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.discovery.SEWebBeanDiscovery;
 import org.jboss.webbeans.environment.se.util.Reflections;
+import org.jboss.webbeans.environment.se.util.WebBeansManagerUtils;
 import org.jboss.webbeans.manager.api.WebBeansManager;
 
 /**
@@ -56,7 +57,7 @@ public class StartMain
         this.applicationBeanStore = new ConcurrentHashMapBeanStore();
     }
 
-    private void go()
+    public BeanManager go()
     {
         bootstrap.setEnvironment(Environments.SE);
         bootstrap.getServices().add(WebBeanDiscovery.class, new SEWebBeanDiscovery() {});
@@ -64,7 +65,9 @@ public class StartMain
         bootstrap.initialize();
         this.manager = bootstrap.getManager();
         bootstrap.boot();
-        bootstrap.getManager().getInstanceByType(ShutdownManager.class).setBootstrap(bootstrap);
+        WebBeansManagerUtils.getInstanceByType(manager, ShutdownManager.class).
+                setBootstrap(bootstrap);
+        return this.manager;
     }
 
     /**
@@ -75,13 +78,7 @@ public class StartMain
      */
     public static void main(String[] args)
     {
-        new StartMain(args).main();
-    }
-
-    public BeanManager main()
-    {
-        go();
-        return manager;
+        new StartMain(args).go();
     }
 
     public static String[] getParameters()
@@ -89,4 +86,5 @@ public class StartMain
         // TODO(PR): make immutable
         return PARAMETERS;
     }
+    
 }

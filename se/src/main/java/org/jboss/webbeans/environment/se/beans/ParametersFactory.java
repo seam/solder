@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.event.Observes;
 
@@ -86,7 +86,7 @@ public class ParametersFactory
     *
     * @param manager The Manager which has been initialized.
     */
-   public void initArgs(@Observes @BeforeBeanDiscovery BeanManager manager) {
+   public void initArgs(@Observes AfterBeanDiscovery after) {
       this.setArgs( StartMain.PARAMETERS );
    }
 }

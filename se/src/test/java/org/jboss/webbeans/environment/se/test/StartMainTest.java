@@ -23,6 +23,7 @@ import org.jboss.webbeans.environment.se.StartMain;
 import org.jboss.webbeans.environment.se.events.Shutdown;
 import org.jboss.webbeans.environment.se.test.beans.MainTestBean;
 import org.jboss.webbeans.environment.se.test.beans.ParametersTestBean;
+import org.jboss.webbeans.environment.se.util.WebBeansManagerUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -44,9 +45,9 @@ public class StartMainTest {
     public void testMain()
     {
         String[] args = ARGS ;
-        BeanManager manager = new StartMain(args).main();
+        BeanManager manager = new StartMain(args).go();
 
-        MainTestBean mainTestBean = manager.getInstanceByType( MainTestBean.class );
+        MainTestBean mainTestBean = WebBeansManagerUtils.getInstanceByType( manager, MainTestBean.class );
         Assert.assertNotNull( mainTestBean );
 
         ParametersTestBean paramsBean = mainTestBean.getParametersTestBean();
@@ -60,16 +61,6 @@ public class StartMainTest {
         Assert.assertEquals( ARGS[2], paramsBean.getParameters().get(2) );
 
         shutdownManager(manager);
-        boolean contextNotActive = false;
-        try
-        {
-           assert manager.getInstanceByType(MainTestBean.class) == null;
-        }
-        catch (Exception e)
-        {
-           contextNotActive = true;
-        }
-        assert contextNotActive;
     }
 
     /**
@@ -79,9 +70,9 @@ public class StartMainTest {
     @Test
     public void testMainEmptyArgs()
     {
-        BeanManager manager = new StartMain(ARGS_EMPTY).main();
+        BeanManager manager = new StartMain(ARGS_EMPTY).go();
 
-        MainTestBean mainTestBean = manager.getInstanceByType( MainTestBean.class );
+        MainTestBean mainTestBean = WebBeansManagerUtils.getInstanceByType( manager, MainTestBean.class );
         Assert.assertNotNull( mainTestBean );
 
         ParametersTestBean paramsBean = mainTestBean.getParametersTestBean();

@@ -16,16 +16,17 @@
  */
 package org.jboss.webbeans.environment.se.test.beans;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Current;
 import javax.enterprise.inject.Initializer;
-import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.event.Observes;
 
 /**
  *
  * @author Peter Royle
  */
+@ApplicationScoped
 public class MainTestBean
 {
 
@@ -41,7 +42,7 @@ public class MainTestBean
         paramsTestBean.getParameters();
     }
 
-    public void mainMethod(@Observes @AfterBeanDiscovery BeanManager manager) {
+    public void mainMethod(@Observes AfterDeploymentValidation after) {
         System.out.println( "Starting main test app" );
     }
 

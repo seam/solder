@@ -1,6 +1,7 @@
 package org.jboss.webbeans.environment.se;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Current;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.event.Observes;
 
@@ -8,13 +9,15 @@ import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.environment.se.events.Shutdown;
 import org.jboss.webbeans.log.LogProvider;
 import org.jboss.webbeans.log.Logging;
+import org.jboss.webbeans.manager.api.WebBeansManager;
 
 @ApplicationScoped
 public class ShutdownManager
 {
    
    private static LogProvider log = Logging.getLogProvider(ShutdownManager.class);
-   
+   private @Current WebBeansManager manager;
+
    private boolean hasShutdownBeenCalled = false;
    
    private Bootstrap bootstrap;
@@ -32,7 +35,7 @@ public class ShutdownManager
          
          if (!hasShutdownBeenCalled)
          {
-            hasShutdownBeenCalled = true; 
+            hasShutdownBeenCalled = true;
             bootstrap.shutdown();
          }
          else
@@ -41,6 +44,14 @@ public class ShutdownManager
             log.trace(Thread.currentThread().getStackTrace());
          }
       }
+   }
+
+   /**
+    * Shutdown WebBeans SE gracefully (call this as an alternative to firing the
+    * "@Shutdown Manager" event.
+    */
+   public void shutdown() {
+       shutdown(manager);
    }
    
    public void setBootstrap(Bootstrap bootstrap)
