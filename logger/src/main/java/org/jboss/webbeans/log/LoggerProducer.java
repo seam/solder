@@ -37,7 +37,8 @@ public class LoggerProducer
    {
       Log log = null;
       String category = null;
-      category = injectionPoint.getAnnotation(Logger.class).value();
+      
+      category = injectionPoint.getAnnotated().getAnnotation(Logger.class).value();
       if (category.length() == 0)
       {
          log = Logging.getLog((Class<?>) injectionPoint.getMember().getDeclaringClass());
