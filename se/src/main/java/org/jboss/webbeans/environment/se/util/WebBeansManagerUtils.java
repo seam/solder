@@ -21,12 +21,12 @@ import javax.enterprise.inject.spi.BeanManager;
 
 /**
  * 
- * @author PeteR
+ * @author Peter Royle
  */
 public class WebBeansManagerUtils {
 
     public static <T> T getInstanceByType(BeanManager manager, Class<T> type, Annotation... bindings) {
         return (T)manager.getReference(
-                manager.getBeans(type).iterator().next(), type);
+                manager.getBeans(type).iterator().next(), type, null);
     }
 }

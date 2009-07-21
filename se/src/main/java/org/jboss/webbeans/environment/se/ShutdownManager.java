@@ -1,9 +1,9 @@
 package org.jboss.webbeans.environment.se;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Current;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.event.Observes;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.environment.se.events.Shutdown;

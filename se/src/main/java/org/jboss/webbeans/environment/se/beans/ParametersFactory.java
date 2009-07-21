@@ -22,10 +22,9 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeforeBeanDiscovery;
-import javax.event.Observes;
 
 import org.jboss.webbeans.environment.se.StartMain;
 import org.jboss.webbeans.environment.se.bindings.Parameters;
