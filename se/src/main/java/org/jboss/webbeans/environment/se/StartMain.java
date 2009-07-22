@@ -20,10 +20,10 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.bootstrap.api.Environments;
-import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
+import org.jboss.webbeans.bootstrap.spi.Deployment;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
-import org.jboss.webbeans.environment.se.discovery.SEWebBeanDiscovery;
+import org.jboss.webbeans.environment.se.discovery.SEWebBeansDeployment;
 import org.jboss.webbeans.environment.se.util.Reflections;
 import org.jboss.webbeans.environment.se.util.WebBeansManagerUtils;
 import org.jboss.webbeans.manager.api.WebBeansManager;
@@ -60,7 +60,7 @@ public class StartMain
     public BeanManager go()
     {
         bootstrap.setEnvironment(Environments.SE);
-        bootstrap.getServices().add(WebBeanDiscovery.class, new SEWebBeanDiscovery() {});
+        bootstrap.getServices().add(Deployment.class, new SEWebBeansDeployment() {});
         bootstrap.setApplicationContext(applicationBeanStore);
         bootstrap.initialize();
         this.manager = bootstrap.getManager();

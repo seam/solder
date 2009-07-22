@@ -17,6 +17,8 @@
 package org.jboss.webbeans.environment.se.util;
 
 import java.lang.annotation.Annotation;
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
 /**
@@ -26,7 +28,13 @@ import javax.enterprise.inject.spi.BeanManager;
 public class WebBeansManagerUtils {
 
     public static <T> T getInstanceByType(BeanManager manager, Class<T> type, Annotation... bindings) {
+        final Bean<?> bean = manager.getBeans(type).iterator().next();
+        CreationalContext cc = manager.createCreationalContext(bean);
+        return (T)manager.getReference(bean, type, cc);
+    }
+
+    public static <T> T getInstanceByType(BeanManager manager, Class<T> type, CreationalContext cc, Annotation... bindings) {
         return (T)manager.getReference(
-                manager.getBeans(type).iterator().next(), type, null);
+                manager.getBeans(type).iterator().next(), type, cc);
     }
 }
