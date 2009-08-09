@@ -17,6 +17,7 @@
 package org.jboss.webbeans.environment.se.discovery;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.jboss.webbeans.bootstrap.spi.BeanDeploymentArchive;
@@ -42,7 +43,7 @@ public class SEBeanDeploymentArchive implements BeanDeploymentArchive
     /**
      * @return a collection of all Bean classes on the classpath.
      */
-    public Iterable<Class<?>> getBeanClasses()
+    public Collection<Class<?>> getBeanClasses()
     {
         return wbDiscovery.getWbClasses();
     }
@@ -59,7 +60,7 @@ public class SEBeanDeploymentArchive implements BeanDeploymentArchive
     /**
      * @return all beans.xml decriptors found on the classpath.
      */
-    public Iterable<URL> getBeansXml()
+    public Collection<URL> getBeansXml()
     {
         return wbDiscovery.discoverWebBeansXml();
     }
@@ -67,7 +68,7 @@ public class SEBeanDeploymentArchive implements BeanDeploymentArchive
     /**
      * @return an empty collection since there are no EJBs in Java SE.
      */
-    public Iterable<EjbDescriptor<?>> getEjbs()
+    public Collection<EjbDescriptor<?>> getEjbs()
     {
         return Collections.EMPTY_SET;
     }

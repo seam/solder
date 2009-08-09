@@ -17,6 +17,7 @@
 package org.jboss.webbeans.environment.se.discovery;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +51,7 @@ public abstract class SEWebBeanDiscovery implements WebBeanDiscovery
       return Collections.unmodifiableSet(wbClasses);
    }
    
-   public Iterable<URL> discoverWebBeansXml()
+   public Collection<URL> discoverWebBeansXml()
    {
       return Collections.unmodifiableSet(wbUrls);
    }

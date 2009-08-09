@@ -31,5 +31,5 @@ import javax.enterprise.inject.BindingType;
  */
 @BindingType
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD })
+@Target( { ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD, ElementType.TYPE })
 public @interface Shutdown{}
