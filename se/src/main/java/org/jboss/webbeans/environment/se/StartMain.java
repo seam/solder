@@ -62,9 +62,9 @@ public class StartMain
         bootstrap.setEnvironment(Environments.SE);
         bootstrap.getServices().add(Deployment.class, new SEWebBeansDeployment() {});
         bootstrap.setApplicationContext(applicationBeanStore);
-        bootstrap.initialize();
+        bootstrap.startContainer();
+        bootstrap.startInitialization().deployBeans().validateBeans().endInitialization();
         this.manager = bootstrap.getManager();
-        bootstrap.boot();
         WebBeansManagerUtils.getInstanceByType(manager, ShutdownManager.class).
                 setBootstrap(bootstrap);
         return this.manager;
