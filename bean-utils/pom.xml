@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <artifactId>webbeans-parent</artifactId>
+      <groupId>org.jboss.webbeans</groupId>
+      <version>1.0.0-SNAPSHOT</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.jboss.webbeans</groupId>
+   <artifactId>webbeans-bean-utils</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <name>Web Beans Utilities For Managing Beans</name>
+   
+   <dependencies>
+
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <scope>test</scope>
+         <classifier>jdk15</classifier>
+         <exclusions>
+         	<exclusion>
+         		<artifactId>junit</artifactId>
+         		<groupId>junit</groupId>
+         	</exclusion>
+         </exclusions>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.jboss.webbeans</groupId>
+         <artifactId>webbeans-logging</artifactId>
+      </dependency>
+      
+      <dependency>
+      	<groupId>org.jboss.webbeans</groupId>
+      	<artifactId>webbeans-core</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      
+      <dependency>
+      	<groupId>org.jboss.test-harness</groupId>
+      	<artifactId>jboss-test-harness</artifactId>
+      	<scope>test</scope>
+      </dependency>
+<!--      
+      <dependency>
+      	<groupId>org.jboss.test-harness</groupId>
+      	<artifactId>jboss-test-harness-jboss-as-50</artifactId>
+      	<scope>test</scope>
+      </dependency>
+      <dependency>
+      	<groupId>org.jboss.webbeans</groupId>
+      	<artifactId>webbeans-core</artifactId>
+      	<scope>test</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.jboss.webbeans</groupId>
+         <artifactId>webbeans-core-test</artifactId>
+         <scope>test</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.jboss.ejb3</groupId>
+         <artifactId>jboss-ejb3-api</artifactId>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <artifactId>jboss-jaxrpc</artifactId>
+               <groupId>jbossws</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>jboss-transaction-api</artifactId>
+               <groupId>org.jboss.javaee</groupId>
+            </exclusion>
+            <exclusion>
+               <artifactId>jboss-jaxrpc</artifactId>
+               <groupId>jboss.jbossws</groupId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+-->      
+   </dependencies>
+
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/webbeans/extensions</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/webbeans/extensions</developerConnection>
+      <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/webbeans/extensions</url>
+   </scm>
+
+   <build>
+      <defaultGoal>install</defaultGoal>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <configuration>
+               <tagBase>https://svn.jboss.org/repos/webbeans/extensions/tags</tagBase>
+               <autoVersionSubmodules>true</autoVersionSubmodules>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+</project>
