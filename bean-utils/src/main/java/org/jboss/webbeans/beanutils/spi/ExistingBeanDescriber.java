@@ -19,42 +19,40 @@
 * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 */ 
-package org.jboss.webbeans.beanutils;
+package org.jboss.webbeans.beanutils.spi;
 
 import javax.enterprise.inject.spi.AnnotatedType;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.webbeans.BeanManagerImpl;
-import org.jboss.webbeans.bean.SimpleBean;
-import org.jboss.webbeans.introspector.WBClass;
-import org.jboss.webbeans.introspector.jlr.WBClassImpl;
-import org.jboss.webbeans.resources.ClassTransformer;
+import org.jboss.webbeans.beanutils.exisiting.ExistingBeanDescriberImpl;
+import org.jboss.webbeans.bootstrap.BeanDeployerEnvironment;
 
 /**
+ * Utilities to create beans that take an existing instance
  * 
  * @author <a href="kabir.khan@jboss.com">Kabir Khan</a>
  * @version $Revision: 1.1 $
  */
-public class BeanDescriber<T>
+public class ExistingBeanDescriber
 {
-   public static <T> Bean<T> describeBean(AnnotatedType<T> type, BeanManager beanManager)
+   private static final ExistingBeanDescriber EXISTING_BEAN_DESCRIBER = new ExistingBeanDescriber();
+   
+   private ExistingBeanDescriber()
    {
-      if (type == null)
-         throw new IllegalArgumentException("Null type");
-      if (beanManager == null)
-         throw new IllegalArgumentException("Null beanManager");
-      if (beanManager instanceof BeanManagerImpl == false)
-         throw new IllegalArgumentException("BeanManager is not an instance of BeanManagerImpl");
       
-      WBClass<T> clazz = type instanceof WBClass ? 
-            (WBClass<T>)type :
-               WBClassImpl.of(type, ((BeanManagerImpl)beanManager).getServices().get(ClassTransformer.class));
-      
-      Bean<T> bean = SimpleBean.of(clazz, (BeanManagerImpl)beanManager);
-      
-      //TODO How to get BeanDeployerEnvironment?
-      ((SimpleBean<T>)bean).initialize(null);
-      return bean;
    }
+   
+   /**
+    * Takes an existing bean instance and creates the Beans wrapping it
+    * 
+    * @param type the annotated type of the bean
+    * @param the bean deployer environment
+    * @param beanManager the bean manager used to create the bean
+    * @param instance the instance we want to wrap
+    */
+   public static <T> Beans<T> describePreinstantiatedBean(AnnotatedType<T> type, BeanDeployerEnvironment env, BeanManager beanManager, T instance)
+   {
+      return ExistingBeanDescriberImpl.describePreinstantiatedBean(EXISTING_BEAN_DESCRIBER, env, type, beanManager, instance);
+   }
+   
 }

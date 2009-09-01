@@ -37,28 +37,11 @@
       </dependency>
       
       <dependency>
-      	<groupId>org.jboss.test-harness</groupId>
-      	<artifactId>jboss-test-harness</artifactId>
-      	<scope>test</scope>
-      </dependency>
-<!--      
-      <dependency>
-      	<groupId>org.jboss.test-harness</groupId>
-      	<artifactId>jboss-test-harness-jboss-as-50</artifactId>
-      	<scope>test</scope>
-      </dependency>
-      <dependency>
-      	<groupId>org.jboss.webbeans</groupId>
-      	<artifactId>webbeans-core</artifactId>
-      	<scope>test</scope>
-      </dependency>
-      
-      <dependency>
          <groupId>org.jboss.webbeans</groupId>
          <artifactId>webbeans-core-test</artifactId>
          <scope>test</scope>
       </dependency>
-      
+
       <dependency>
          <groupId>org.jboss.ejb3</groupId>
          <artifactId>jboss-ejb3-api</artifactId>
@@ -78,7 +61,7 @@
             </exclusion>
          </exclusions>
       </dependency>
--->      
+
    </dependencies>
 
    <scm>
