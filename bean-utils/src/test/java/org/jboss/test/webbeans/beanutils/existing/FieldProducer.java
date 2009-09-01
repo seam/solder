@@ -33,7 +33,7 @@ public class FieldProducer
 {
    @Produces @Default Bean defaultBean = new DefaultBean();
    
-   @Produces @Custom Bean customBean = new CustomBean();
+   @Produces @Custom Bean customBean = new ABean();
    
    public Bean getDefaultBean()
    {

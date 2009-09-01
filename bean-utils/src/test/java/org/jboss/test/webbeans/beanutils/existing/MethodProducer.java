@@ -33,7 +33,7 @@ public class MethodProducer
 {
    Bean defaultBean = new DefaultBean();
    
-   Bean customBean = new CustomBean();
+   Bean customBean = new ABean();
    
    @Produces @Default
    public Bean getDefaultBean()

@@ -21,13 +21,18 @@
 */ 
 package org.jboss.test.webbeans.beanutils.existing;
 
+import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Produces;
+
 /**
  * 
  * @author <a href="kabir.khan@jboss.com">Kabir Khan</a>
  * @version $Revision: 1.1 $
  */
-@Custom
-public class CustomBean implements Bean
+public class DefaultMethodProducerWithInjection
 {
-
+   @Produces @Default Bean getBean(@Custom Bean bean)
+   {
+      return bean;
+   }
 }

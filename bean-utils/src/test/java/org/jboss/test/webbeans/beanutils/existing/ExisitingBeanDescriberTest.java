@@ -21,7 +21,6 @@
 */ 
 package org.jboss.test.webbeans.beanutils.existing;
 
-import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -30,12 +29,8 @@ import javax.enterprise.inject.spi.Bean;
 
 import org.jboss.test.webbeans.beanutils.AbstractBeanUtilsTest;
 import org.jboss.test.webbeans.beanutils.RegisterBeansObserver;
-import org.jboss.webbeans.BeanManagerImpl;
-import org.jboss.webbeans.CurrentManager;
 import org.jboss.webbeans.beanutils.spi.Beans;
 import org.jboss.webbeans.beanutils.spi.ExistingBeanDescriber;
-import org.jboss.webbeans.bootstrap.BeanDeployerEnvironment;
-import org.jboss.webbeans.bootstrap.spi.BeanDeploymentArchive;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -59,7 +54,7 @@ public class ExisitingBeanDescriberTest extends AbstractBeanUtilsTest
       {
          initialiseEnvironment(DefaultFieldReceiver.class);
          DefaultBean bean = new DefaultBean();
-         registerBeans(bean);
+         registerBean(bean);
          deployWebBeans();
 
          DefaultFieldReceiver receiver = assertBean(DefaultFieldReceiver.class);
@@ -79,7 +74,7 @@ public class ExisitingBeanDescriberTest extends AbstractBeanUtilsTest
       {
          initialiseEnvironment(DefaultConstructorReceiver.class);
          DefaultBean bean = new DefaultBean();
-         registerBeans(bean);
+         registerBean(bean);
          deployWebBeans();
 
          DefaultConstructorReceiver receiver = assertBean(DefaultConstructorReceiver.class);
@@ -99,7 +94,7 @@ public class ExisitingBeanDescriberTest extends AbstractBeanUtilsTest
       {
          initialiseEnvironment(CustomDefaultFieldReceiver.class);
          MethodProducer bean = new MethodProducer();
-         registerBeans(bean);
+         registerBean(bean);
          deployWebBeans();
 
          CustomDefaultFieldReceiver receiver = assertBean(CustomDefaultFieldReceiver.class);
@@ -121,7 +116,7 @@ public class ExisitingBeanDescriberTest extends AbstractBeanUtilsTest
       {
          initialiseEnvironment(CustomDefaultConstructorReceiver.class);
          MethodProducer bean = new MethodProducer();
-         registerBeans(bean);
+         registerBean(bean);
          deployWebBeans();
 
          CustomDefaultConstructorReceiver receiver = assertBean(CustomDefaultConstructorReceiver.class);
@@ -143,7 +138,7 @@ public class ExisitingBeanDescriberTest extends AbstractBeanUtilsTest
       {
          initialiseEnvironment(CustomDefaultFieldReceiver.class);
          FieldProducer bean = new FieldProducer();
-         registerBeans(bean);
+         registerBean(bean);
          deployWebBeans();
 
          CustomDefaultFieldReceiver receiver = assertBean(CustomDefaultFieldReceiver.class);
@@ -165,7 +160,7 @@ public class ExisitingBeanDescriberTest extends AbstractBeanUtilsTest
       {
          initialiseEnvironment(CustomDefaultConstructorReceiver.class);
          FieldProducer bean = new FieldProducer();
-         registerBeans(bean);
+         registerBean(bean);
          deployWebBeans();
 
          CustomDefaultConstructorReceiver receiver = assertBean(CustomDefaultConstructorReceiver.class);
@@ -180,7 +175,31 @@ public class ExisitingBeanDescriberTest extends AbstractBeanUtilsTest
       }
    }
    
-   private <T> void registerBeans(T instance) throws Exception
+   @Test
+   public void testMethodProducerWithInjection() throws Exception
+   {
+      try
+      {
+         initialiseEnvironment(CustomDefaultConstructorReceiver.class);
+         DefaultMethodProducerWithInjection producer = new DefaultMethodProducerWithInjection();
+         registerBean(producer);
+         CustomBean bean = new CustomBean();
+         registerBean(bean);
+         deployWebBeans();
+
+         CustomDefaultConstructorReceiver receiver = assertBean(CustomDefaultConstructorReceiver.class);
+         assert receiver.getDefaultBean() != null;
+         assert receiver.getDefaultBean() == bean;
+         assert receiver.getCustomBean() != null;
+         assert receiver.getCustomBean() == bean;
+      }
+      finally
+      {
+         undeployWebBeans();
+      }
+   }
+   
+   private <T> void registerBean(T instance) throws Exception
    {
       AnnotatedType<T> type = getCurrentManager().createAnnotatedType((Class<T>)instance.getClass());
       Beans<T> beans = ExistingBeanDescriber.describePreinstantiatedBean(type, getBeanDeployerEnvironment(), getCurrentManager(), instance);

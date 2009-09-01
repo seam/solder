@@ -26,8 +26,7 @@ package org.jboss.test.webbeans.beanutils.existing;
  * @author <a href="kabir.khan@jboss.com">Kabir Khan</a>
  * @version $Revision: 1.1 $
  */
-@Custom
-public class CustomBean implements Bean
+public class ABean implements Bean
 {
 
 }
