@@ -1,8 +1,8 @@
 /**
  * JBoss, Home of Professional Open Source
- * Copyright 2008, Red Hat Middleware LLC, and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * Copyright 2009, Red Hat, Inc. and/or its affiliates, and individual
+ * contributors by the @authors tag. See the copyright.txt in the
+ * distribution for a full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,28 @@
  */
 package org.jboss.webbeans.environment.se.test.beans;
 
+import java.io.Serializable;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Current;
-import javax.enterprise.inject.Initializer;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
+import javax.inject.Inject;
 
 /**
  *
  * @author Peter Royle
  */
 @ApplicationScoped
-public class MainTestBean
+public class MainTestBean implements Serializable
 {
 
     boolean initialised = false;
     ParametersTestBean parametersTestBean;
 
-    @Initializer
-    public void init(@Current ParametersTestBean paramsTestBean)
+    public MainTestBean() {
+    }
+
+    @Inject
+    public MainTestBean(ParametersTestBean paramsTestBean)
     {
         this.initialised = true;
         this.parametersTestBean = paramsTestBean;

@@ -1,8 +1,8 @@
 /**
  * JBoss, Home of Professional Open Source
- * Copyright 2008, Red Hat Middleware LLC, and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * Copyright 2009, Red Hat, Inc. and/or its affiliates, and individual
+ * contributors by the @authors tag. See the copyright.txt in the
+ * distribution for a full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
 import org.jboss.webbeans.environment.se.util.Reflections;
 
 /**
@@ -33,7 +32,7 @@ import org.jboss.webbeans.environment.se.util.Reflections;
  * @author Pete Muir
  * @author Ales Justin
  */
-public abstract class SEWebBeanDiscovery implements WebBeanDiscovery
+public abstract class SEWebBeanDiscovery
 {
    
    private final Set<Class<?>> wbClasses;

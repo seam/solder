@@ -20,7 +20,7 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.bootstrap.api.Environments;
-import org.jboss.webbeans.bootstrap.spi.Deployment;
+import org.jboss.webbeans.bootstrap.spi.BeanDeploymentArchive;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.discovery.SEWebBeansDeployment;
@@ -57,16 +57,16 @@ public class StartMain
         this.applicationBeanStore = new ConcurrentHashMapBeanStore();
     }
 
-    public BeanManager go()
-    {
-        bootstrap.setEnvironment(Environments.SE);
-        bootstrap.getServices().add(Deployment.class, new SEWebBeansDeployment() {});
-        bootstrap.setApplicationContext(applicationBeanStore);
-        bootstrap.startContainer();
-        bootstrap.startInitialization().deployBeans().validateBeans().endInitialization();
-        this.manager = bootstrap.getManager();
-        WebBeansManagerUtils.getInstanceByType(manager, ShutdownManager.class).
-                setBootstrap(bootstrap);
+    public BeanManager go() {
+        SEWebBeansDeployment deployment = new SEWebBeansDeployment() {};
+        bootstrap.startContainer(Environments.SE, deployment, this.applicationBeanStore);
+        final BeanDeploymentArchive mainBeanDepArch = deployment.getBeanDeploymentArchives().get(0);
+        this.manager = bootstrap.getManager(mainBeanDepArch);
+        bootstrap.startInitialization();
+        bootstrap.deployBeans();
+        WebBeansManagerUtils.getInstanceByType(manager, ShutdownManager.class).setBootstrap(bootstrap);
+        bootstrap.validateBeans();
+        bootstrap.endInitialization();
         return this.manager;
     }
 

@@ -1,8 +1,8 @@
-/*
+/**
  * JBoss, Home of Professional Open Source
- * Copyright 2008, Red Hat Middleware LLC, and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * Copyright 2009, Red Hat, Inc. and/or its affiliates, and individual
+ * contributors by the @authors tag. See the copyright.txt in the
+ * distribution for a full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 
-import javax.enterprise.inject.BindingType;
 
 /**
  * Fired by webbeans SE before shutting down. Applications and modules should
@@ -29,7 +29,7 @@ import javax.enterprise.inject.BindingType;
  * 
  * @author Peter Royle
  */
-@BindingType
+@Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD, ElementType.TYPE })
 public @interface Shutdown{}

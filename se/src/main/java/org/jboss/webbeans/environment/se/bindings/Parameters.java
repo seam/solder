@@ -20,14 +20,14 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 
-import javax.enterprise.inject.BindingType;
 
 /**
  * 
  * @author Peter Royle
  */
-@BindingType
+@Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD, ElementType.TYPE })
 public @interface Parameters {}

@@ -1,8 +1,8 @@
 /**
  * JBoss, Home of Professional Open Source
- * Copyright 2008, Red Hat Middleware LLC, and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * Copyright 2009, Red Hat, Inc. and/or its affiliates, and individual
+ * contributors by the @authors tag. See the copyright.txt in the
+ * distribution for a full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-
 package org.jboss.webbeans.environment.se.test.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Initializer;
 
+import javax.inject.Inject;
 import org.jboss.webbeans.environment.se.bindings.Parameters;
 import org.testng.Assert;
 
@@ -31,12 +31,15 @@ import org.testng.Assert;
  * @author Peter Royle
  */
 @ApplicationScoped
-public class ParametersTestBean {
+public class ParametersTestBean implements Serializable {
 
     List<String> parameters;
 
-    @Initializer
-    public void init(@Parameters List<String> params) {
+    public ParametersTestBean() {
+    }
+
+    @Inject
+    public ParametersTestBean(@Parameters List<String> params) {
         this.parameters = params;
         // even if no args are given, it should will always at least be an empty array
         Assert.assertNotNull( params );

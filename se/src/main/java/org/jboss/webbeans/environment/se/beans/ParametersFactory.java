@@ -22,9 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.AfterBeanDiscovery;
 
 import org.jboss.webbeans.environment.se.StartMain;
 import org.jboss.webbeans.environment.se.bindings.Parameters;
@@ -41,6 +39,10 @@ public class ParametersFactory
 {
    private String[] args;
    private List<String> argsList;
+
+    public ParametersFactory() {
+        this.setArgs(StartMain.PARAMETERS);
+    }
    
    /**
     * Producer method for the injectable command line args.
@@ -79,13 +81,4 @@ public class ParametersFactory
       this.argsList = Collections.unmodifiableList( new ArrayList<String>( Arrays.asList( args ) ) );
    }
 
-   /**
-    * On WebBeans initialisation, retrieve the command line args that were given
-    * to StartMain.
-    *
-    * @param manager The Manager which has been initialized.
-    */
-   public void initArgs(@Observes AfterBeanDiscovery after) {
-      this.setArgs( StartMain.PARAMETERS );
-   }
 }

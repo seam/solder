@@ -69,6 +69,11 @@
             <artifactId>webbeans-core</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>inject-api</artifactId>
+        </dependency>
+
     </dependencies>
 
     <scm>
