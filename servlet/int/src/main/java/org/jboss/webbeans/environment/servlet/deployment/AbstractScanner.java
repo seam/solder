@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.servlet.discovery;
+package org.jboss.webbeans.environment.servlet.deployment;
 
 import java.net.URL;
 
@@ -34,12 +34,12 @@ public abstract class AbstractScanner implements Scanner
 
    private static final Log log = Logging.getLog(Scanner.class);
    private final ClassLoader classLoader;
-   private final ServletWebBeanDiscovery webBeanDiscovery;
+   private final WebAppBeanDeploymentArchive webAppBeanDeploymentArchive;
    
-   public AbstractScanner(ClassLoader classLoader, ServletWebBeanDiscovery webBeanDiscovery)
+   public AbstractScanner(ClassLoader classLoader, WebAppBeanDeploymentArchive webBeanDiscovery)
    {
       this.classLoader = classLoader;
-      this.webBeanDiscovery = webBeanDiscovery;
+      this.webAppBeanDeploymentArchive = webBeanDiscovery;
    }
    
    protected void handle(String name, URL url)
@@ -49,7 +49,7 @@ public abstract class AbstractScanner implements Scanner
          String className = filenameToClassname(name);
          try
          {
-            webBeanDiscovery.getWbClasses().add(getClassLoader().loadClass(className));
+            webAppBeanDeploymentArchive.getBeanClasses().add(getClassLoader().loadClass(className));
          }
          catch (NoClassDefFoundError e)
          {
@@ -60,9 +60,9 @@ public abstract class AbstractScanner implements Scanner
             log.error("Error loading " + name, e);
          }
       }
-      else if (name.equals(ServletWebBeanDiscovery.META_INF_BEANS_XML))
+      else if (name.equals(WebAppBeanDeploymentArchive.META_INF_BEANS_XML))
       {
-         webBeanDiscovery.getWbUrls().add(url);
+         webAppBeanDeploymentArchive.getWbUrls().add(url);
       }
    }
    

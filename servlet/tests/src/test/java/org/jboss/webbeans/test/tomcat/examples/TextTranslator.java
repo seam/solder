@@ -1,6 +1,7 @@
 package org.jboss.webbeans.test.tomcat.examples;
 
-import javax.enterprise.inject.Initializer;
+import javax.inject.Inject;
+
 
 public class TextTranslator 
 { 
@@ -8,7 +9,7 @@ public class TextTranslator
    private SentenceParser sentenceParser; 
    private Translator sentenceTranslator; 
    
-   @Initializer
+   @Inject
    TextTranslator(SentenceParser sentenceParser, Translator sentenceTranslator)
    { 
       this.sentenceParser = sentenceParser; 

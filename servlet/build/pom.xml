@@ -34,12 +34,6 @@
          <artifactId>javassist</artifactId>
          <optional>true</optional>
       </dependency>
-
-      <dependency>
-         <groupId>dom4j</groupId>
-         <artifactId>dom4j</artifactId>
-         <optional>true</optional>
-      </dependency>
    
    </dependencies>
    

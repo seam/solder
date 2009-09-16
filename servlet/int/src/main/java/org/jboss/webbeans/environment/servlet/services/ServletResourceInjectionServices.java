@@ -1,18 +1,18 @@
-package org.jboss.webbeans.environment.servlet.resources;
+package org.jboss.webbeans.environment.servlet.services;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.jboss.webbeans.resources.spi.ResourceServices;
-import org.jboss.webbeans.resources.spi.helpers.AbstractResourceServices;
+import org.jboss.webbeans.injection.spi.ResourceInjectionServices;
+import org.jboss.webbeans.injection.spi.helpers.AbstractResourceServices;
 
-public abstract class ServletResourceServices extends AbstractResourceServices implements ResourceServices
+public abstract class ServletResourceInjectionServices extends AbstractResourceServices implements ResourceInjectionServices
 {
    
    private Context context;
    
-   public ServletResourceServices()
+   public ServletResourceInjectionServices()
    {
       try
       {

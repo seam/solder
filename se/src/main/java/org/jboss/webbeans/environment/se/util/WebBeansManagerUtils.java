@@ -17,6 +17,7 @@
 package org.jboss.webbeans.environment.se.util;
 
 import java.lang.annotation.Annotation;
+
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;

@@ -20,18 +20,19 @@ import javax.servlet.ServletContextEvent;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.bootstrap.api.Environments;
-import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
-import org.jboss.webbeans.environment.servlet.discovery.ServletWebBeanDiscovery;
-import org.jboss.webbeans.environment.servlet.resources.ServletResourceServices;
+import org.jboss.webbeans.environment.servlet.deployment.ServletDeployment;
+import org.jboss.webbeans.environment.servlet.services.ServletResourceInjectionServices;
+import org.jboss.webbeans.environment.servlet.services.ServletServicesImpl;
 import org.jboss.webbeans.environment.servlet.util.Reflections;
 import org.jboss.webbeans.environment.tomcat.WebBeansAnnotationProcessor;
+import org.jboss.webbeans.injection.spi.ResourceInjectionServices;
 import org.jboss.webbeans.log.Log;
 import org.jboss.webbeans.log.Logging;
 import org.jboss.webbeans.manager.api.WebBeansManager;
-import org.jboss.webbeans.resources.spi.ResourceServices;
 import org.jboss.webbeans.servlet.api.ServletListener;
+import org.jboss.webbeans.servlet.api.ServletServices;
 import org.jboss.webbeans.servlet.api.helpers.ForwardingServletListener;
 
 /**
@@ -73,7 +74,7 @@ public class Listener extends ForwardingServletListener
    @Override
    public void contextDestroyed(ServletContextEvent sce)
    {
-      manager.shutdown();
+      bootstrap.shutdown();
       super.contextDestroyed(sce);
    }
 
@@ -82,20 +83,24 @@ public class Listener extends ForwardingServletListener
    {
       BeanStore applicationBeanStore = new ConcurrentHashMapBeanStore();
       sce.getServletContext().setAttribute(APPLICATION_BEAN_STORE_ATTRIBUTE_NAME, applicationBeanStore);
-      bootstrap.setEnvironment(Environments.SERVLET);
-      bootstrap.getServices().add(WebBeanDiscovery.class, new ServletWebBeanDiscovery(sce.getServletContext()) {});
+      
+      
+      
+      ServletDeployment deployment = new ServletDeployment(sce.getServletContext());
       try
       {
-    	  bootstrap.getServices().add(ResourceServices.class, new ServletResourceServices() {});
+    	  deployment.getWebAppBeanDeploymentArchive().getServices().add(ResourceInjectionServices.class, new ServletResourceInjectionServices() {});
       }
       catch (NoClassDefFoundError e)
       {
     	 // Support GAE 
     	 log.warn("@Resource injection not available in simple beans");
       }
-      bootstrap.setApplicationContext(applicationBeanStore);
-      bootstrap.initialize();
-      manager = bootstrap.getManager();
+      
+      deployment.getServices().add(ServletServices.class, new ServletServicesImpl(deployment.getWebAppBeanDeploymentArchive()));
+      
+      bootstrap.startContainer(Environments.SERVLET, deployment, applicationBeanStore).startInitialization();
+      manager = bootstrap.getManager(deployment.getWebAppBeanDeploymentArchive());
       
       boolean tomcat = true;
       try
@@ -129,7 +134,7 @@ public class Listener extends ForwardingServletListener
       }
 
       
-      bootstrap.boot();
+      bootstrap.deployBeans().validateBeans().endInitialization();
       super.contextInitialized(sce);
    }
    

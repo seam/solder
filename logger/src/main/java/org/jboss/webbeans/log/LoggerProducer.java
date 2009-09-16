@@ -17,7 +17,6 @@
 
 package org.jboss.webbeans.log;
 
-import javax.enterprise.inject.Current;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
@@ -33,7 +32,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 public class LoggerProducer
 {
    @Produces @Logger
-   public Log produceLog(@Current InjectionPoint injectionPoint)
+   public Log produceLog(InjectionPoint injectionPoint)
    {
       Log log = null;
       String category = null;

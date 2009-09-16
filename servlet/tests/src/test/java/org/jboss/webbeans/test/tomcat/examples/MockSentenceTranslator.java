@@ -1,6 +1,8 @@
 package org.jboss.webbeans.test.tomcat.examples;
 
-@Mock
+import javax.enterprise.inject.Alternative;
+
+@Alternative
 public class MockSentenceTranslator implements Translator
 {
    public String translate(String sentence)

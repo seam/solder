@@ -2,7 +2,9 @@ package org.jboss.webbeans.environment.servlet.discovery;
 
 import java.net.URL;
 import java.util.Set;
+
 import org.jboss.testharness.impl.packaging.Artifact;
+import org.jboss.webbeans.environment.servlet.deployment.WebAppBeanDeploymentArchive;
 import org.jboss.webbeans.mock.MockServletContext;
 import org.jboss.webbeans.test.AbstractWebBeansTest;
 import org.testng.annotations.Test;
@@ -27,7 +29,7 @@ public class ServletWebBeanDiscoveryTest extends AbstractWebBeansTest
    @Test
    public void testDiscoverMetaInfBeansXml()
    {
-      ServletWebBeanDiscovery discovery = new ServletWebBeanDiscovery(new MockServletContext("."))
+      WebAppBeanDeploymentArchive discovery = new WebAppBeanDeploymentArchive(new MockServletContext("."))
       {
       };
 

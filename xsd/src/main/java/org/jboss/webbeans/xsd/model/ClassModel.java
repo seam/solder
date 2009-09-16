@@ -26,8 +26,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
-import org.dom4j.DocumentFactory;
-import org.dom4j.Element;
 import org.jboss.webbeans.xsd.NamespaceHandler;
 
 /**

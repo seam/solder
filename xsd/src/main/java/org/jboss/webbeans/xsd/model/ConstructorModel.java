@@ -19,8 +19,6 @@ package org.jboss.webbeans.xsd.model;
 
 import javax.lang.model.element.ExecutableElement;
 
-import org.dom4j.DocumentFactory;
-import org.dom4j.Element;
 import org.jboss.webbeans.xsd.NamespaceHandler;
 
 /**

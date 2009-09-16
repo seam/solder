@@ -1,8 +1,5 @@
-<Beans xmlns="urn:java:ee"
-       xmlns:test="urn:java:org.jboss.webbeans.test.tomcat.examples"> 
-   <Deploy>
-      <Standard />
-      <Production />
-      <test:Mock />
-   </Deploy>
-</Beans>
+<beans>
+   <alternatives>
+      <class>org.jboss.webbeans.test.tomcat.examples.MockSentenceTranslator</class>
+   </alternatives>
+</beans>

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.servlet.discovery;
+package org.jboss.webbeans.environment.servlet.deployment;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class URLScanner extends AbstractScanner
 {
    private static final Log log = Logging.getLog(URLScanner.class);
    
-   public URLScanner(ClassLoader classLoader, ServletWebBeanDiscovery webBeanDiscovery)
+   public URLScanner(ClassLoader classLoader, WebAppBeanDeploymentArchive webBeanDiscovery)
    {
       super(classLoader, webBeanDiscovery);
    }

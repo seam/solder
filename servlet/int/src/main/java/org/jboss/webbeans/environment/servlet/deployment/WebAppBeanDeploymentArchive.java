@@ -14,18 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.servlet.discovery;
+package org.jboss.webbeans.environment.servlet.deployment;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
 
-import org.jboss.webbeans.bootstrap.spi.WebBeanDiscovery;
+import org.jboss.webbeans.bootstrap.api.ServiceRegistry;
+import org.jboss.webbeans.bootstrap.api.helpers.SimpleServiceRegistry;
+import org.jboss.webbeans.bootstrap.spi.BeanDeploymentArchive;
+import org.jboss.webbeans.ejb.spi.EjbDescriptor;
 import org.jboss.webbeans.environment.servlet.util.Reflections;
 import org.jboss.webbeans.environment.servlet.util.Servlets;
 
@@ -37,45 +41,40 @@ import org.jboss.webbeans.environment.servlet.util.Servlets;
  * @author Pete Muir
  * @author Ales Justin
  */
-public abstract class ServletWebBeanDiscovery implements WebBeanDiscovery
+public class WebAppBeanDeploymentArchive implements BeanDeploymentArchive
 {
    public static final String META_INF_BEANS_XML = "META-INF/beans.xml";
    public static final String WEB_INF_BEANS_XML = "/WEB-INF/beans.xml";
    public static final String WEB_INF_CLASSES = "/WEB-INF/classes";
    
-   private final Set<Class<?>> wbClasses;
-   private final Set<URL> wbUrls;
-   private final ServletContext servletContext;
+   private final Set<Class<?>> classes;
+   private final Set<URL> beansXml;
+   private final ServiceRegistry services;
    
-   public ServletWebBeanDiscovery(ServletContext servletContext)
+   public WebAppBeanDeploymentArchive(ServletContext servletContext)
    {
-      this.wbClasses = new HashSet<Class<?>>();
-      this.wbUrls = new HashSet<URL>();
-      this.servletContext = servletContext;
-      scan();
+      this.classes = new HashSet<Class<?>>();
+      this.beansXml = new HashSet<URL>();
+      this.services = new SimpleServiceRegistry();
+      scan(servletContext);
    }
    
    public Iterable<Class<?>> discoverWebBeanClasses()
    {
-      return Collections.unmodifiableSet(wbClasses);
+      return Collections.unmodifiableSet(classes);
    }
    
    public Iterable<URL> discoverWebBeansXml()
    {
-      return Collections.unmodifiableSet(wbUrls);
-   }
-   
-   public Set<Class<?>> getWbClasses()
-   {
-      return wbClasses;
+      return Collections.unmodifiableSet(beansXml);
    }
    
    public Set<URL> getWbUrls()
    {
-      return wbUrls;
+      return beansXml;
    }
    
-   private void scan()
+   private void scan(ServletContext servletContext)
    {
       Scanner scanner = new URLScanner(Reflections.getClassLoader(), this);
       scanner.scanResources(new String[] { META_INF_BEANS_XML });
@@ -84,7 +83,7 @@ public abstract class ServletWebBeanDiscovery implements WebBeanDiscovery
          URL beans = servletContext.getResource(WEB_INF_BEANS_XML);
          if (beans != null)
          {
-       	    wbUrls.add(beans); // this is consistent with how the JBoss webbeans.deployer works
+       	   beansXml.add(beans); // this is consistent with how the JBoss webbeans.deployer works
             File webInfClasses = Servlets.getRealFile(servletContext, WEB_INF_CLASSES);
             if (webInfClasses != null)
             {
@@ -97,6 +96,31 @@ public abstract class ServletWebBeanDiscovery implements WebBeanDiscovery
       {
          throw new IllegalStateException("Error loading resources from servlet context ", e);
       }
+   }
+
+   public Collection<Class<?>> getBeanClasses()
+   {
+      return classes;
+   }
+
+   public Collection<BeanDeploymentArchive> getBeanDeploymentArchives()
+   {
+      return Collections.emptySet();
+   }
+
+   public Collection<URL> getBeansXml()
+   {
+      return beansXml;
+   }
+
+   public Collection<EjbDescriptor<?>> getEjbs()
+   {
+      return Collections.emptySet();
+   }
+
+   public ServiceRegistry getServices()
+   {
+      return services;
    }
    
 }

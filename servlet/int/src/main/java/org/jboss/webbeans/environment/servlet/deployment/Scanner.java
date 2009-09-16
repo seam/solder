@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.servlet.discovery;
+package org.jboss.webbeans.environment.servlet.deployment;
 
 import java.io.File;
 

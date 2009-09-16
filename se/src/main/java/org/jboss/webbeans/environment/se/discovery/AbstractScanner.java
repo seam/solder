@@ -17,6 +17,7 @@
 package org.jboss.webbeans.environment.se.discovery;
 
 import java.net.URL;
+
 import org.jboss.webbeans.log.LogProvider;
 import org.jboss.webbeans.log.Logging;
 

@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.dom4j.Namespace;
+import javax.xml.stream.events.Namespace;
 
 /**
  * Helper for generating and keeping track of namespaces in a schema
