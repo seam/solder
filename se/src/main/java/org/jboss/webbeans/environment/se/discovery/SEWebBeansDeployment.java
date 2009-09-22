@@ -24,44 +24,46 @@ import org.jboss.webbeans.bootstrap.spi.Deployment;
 
 /**
  * WebBeans Deployment for Java SE environment.
- *
+ * 
  * @author Peter Royle
  */
 public abstract class SEWebBeansDeployment implements Deployment
 {
-    private final BeanDeploymentArchive beanDeploymentArchive;
-    private final List<BeanDeploymentArchive> archInCollection;
+   private final BeanDeploymentArchive beanDeploymentArchive;
+   private final List<BeanDeploymentArchive> archInCollection;
 
-    public SEWebBeansDeployment()
-    {
-        this.beanDeploymentArchive = new SEBeanDeploymentArchive();
-        this.archInCollection = new ArrayList<BeanDeploymentArchive>(1);
-        this.archInCollection.add(this.beanDeploymentArchive);
-    }
+   public SEWebBeansDeployment()
+   {
+      this.beanDeploymentArchive = new SEBeanDeploymentArchive();
+      this.archInCollection = new ArrayList<BeanDeploymentArchive>(1);
+      this.archInCollection.add(this.beanDeploymentArchive);
+   }
 
+   /**
+    * {@inheritDoc}
+    * 
+    * @return A collection containing the singular logical BeanDeploymentArchive
+    *         consisting of all Bean classes and beans.xml descriptors in the
+    *         current classpath.
+    */
+   public List<BeanDeploymentArchive> getBeanDeploymentArchives()
+   {
+      return this.archInCollection;
+   }
 
-    /**
-     * {@inheritDoc}
-     * @return A collection containing the singular logical BeanDeploymentArchive
-     *         consisting of all Bean classes and beans.xml descriptors in the current
-     *         classpath.
-     */
-    public List<BeanDeploymentArchive> getBeanDeploymentArchives()
-    {
-        return this.archInCollection;
-    }
+   /**
+    * {@inheritDoc}
+    * 
+    * @return The singular logical BeanDeploymentArchive consisting of all which
+    *         contains all Beans classes.
+    */
+   public BeanDeploymentArchive loadBeanDeploymentArchive(Class<?> beanClass)
+   {
+      return this.beanDeploymentArchive;
+   }
 
-    /**
-     * {@inheritDoc}
-     * @return The singular logical BeanDeploymentArchive consisting of all
-     *         which contains all Beans classes.
-     */
-    public BeanDeploymentArchive loadBeanDeploymentArchive(Class<?> beanClass)
-    {
-        return this.beanDeploymentArchive;
-    }
-
-    public ServiceRegistry getServices() {
-        return this.beanDeploymentArchive.getServices();
-    }
+   public ServiceRegistry getServices()
+   {
+      return this.beanDeploymentArchive.getServices();
+   }
 }

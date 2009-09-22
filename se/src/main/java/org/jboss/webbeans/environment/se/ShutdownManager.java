@@ -32,7 +32,9 @@ public class ShutdownManager
 {
    
    private static LogProvider log = Logging.getLogProvider(ShutdownManager.class);
-   private @Inject WebBeansManager manager;
+   
+   @Inject 
+   private WebBeansManager manager;
 
    private boolean hasShutdownBeenCalled = false;
    
@@ -66,7 +68,8 @@ public class ShutdownManager
     * Shutdown WebBeans SE gracefully (call this as an alternative to firing the
     * "@Shutdown Manager" event.
     */
-   public void shutdown() {
+   public void shutdown() 
+   {
        shutdown(manager);
    }
    
@@ -74,5 +77,5 @@ public class ShutdownManager
    {
       this.bootstrap = bootstrap;
    }
-   
+
 }

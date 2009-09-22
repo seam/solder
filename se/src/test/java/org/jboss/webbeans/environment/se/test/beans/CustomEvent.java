@@ -22,6 +22,7 @@ package org.jboss.webbeans.environment.se.test.beans;
  * 
  * @author Peter Royle
  */
-public class CustomEvent {
+public class CustomEvent
+{
 
 }

@@ -34,41 +34,41 @@ import org.jboss.webbeans.environment.se.util.Reflections;
  */
 public abstract class SEWebBeanDiscovery
 {
-   
+
    private final Set<Class<?>> wbClasses;
    private final Set<URL> wbUrls;
-   
+
    public SEWebBeanDiscovery()
    {
       this.wbClasses = new HashSet<Class<?>>();
       this.wbUrls = new HashSet<URL>();
       scan();
    }
-   
+
    public Iterable<Class<?>> discoverWebBeanClasses()
    {
       return Collections.unmodifiableSet(wbClasses);
    }
-   
+
    public Collection<URL> discoverWebBeansXml()
    {
       return Collections.unmodifiableSet(wbUrls);
    }
-   
+
    public Set<Class<?>> getWbClasses()
    {
       return wbClasses;
    }
-   
+
    public Set<URL> getWbUrls()
    {
       return wbUrls;
    }
-   
+
    private void scan()
    {
       Scanner scanner = new URLScanner(Reflections.getClassLoader(), this);
       scanner.scanResources(new String[] { "META-INF/beans.xml" });
    }
-   
+
 }

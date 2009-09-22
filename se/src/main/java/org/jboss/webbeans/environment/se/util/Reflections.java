@@ -24,17 +24,17 @@ package org.jboss.webbeans.environment.se.util;
  */
 public abstract class Reflections
 {
-   
+
    private Reflections()
    {
       // TODO Auto-generated constructor stub
    }
-   
+
    public static <T> T newInstance(String className, Class<T> expectedType) throws InstantiationException, IllegalAccessException, ClassNotFoundException
    {
       return loadClass(className, expectedType).newInstance();
    }
-   
+
    public static <T> Class<? extends T> loadClass(String className, Class<T> expectedType) throws ClassNotFoundException
    {
       if (Thread.currentThread().getContextClassLoader() != null)
@@ -46,7 +46,7 @@ public abstract class Reflections
          return Class.forName(className).asSubclass(expectedType);
       }
    }
-   
+
    public static ClassLoader getClassLoader()
    {
       if (Thread.currentThread().getContextClassLoader() != null)
@@ -58,5 +58,5 @@ public abstract class Reflections
          return Reflections.class.getClassLoader();
       }
    }
-   
+
 }

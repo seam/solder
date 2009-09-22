@@ -32,7 +32,6 @@ import java.util.zip.ZipFile;
 import org.jboss.webbeans.log.LogProvider;
 import org.jboss.webbeans.log.Logging;
 
-
 /**
  * Implementation of {@link Scanner} which can scan a {@link URLClassLoader}
  * 
@@ -45,7 +44,7 @@ import org.jboss.webbeans.log.Logging;
 public class URLScanner extends AbstractScanner
 {
    private static final LogProvider log = Logging.getLogProvider(URLScanner.class);
-   
+
    public URLScanner(ClassLoader classLoader, SEWebBeanDiscovery webBeanDiscovery)
    {
       super(classLoader, webBeanDiscovery);
@@ -58,27 +57,27 @@ public class URLScanner extends AbstractScanner
          handleDirectory(directory, null);
       }
    }
-   
+
    public void scanResources(String[] resources)
    {
       Set<String> paths = new HashSet<String>();
-      
+
       for (String resourceName : resources)
       {
          try
          {
             Enumeration<URL> urlEnum = getClassLoader().getResources(resourceName);
-            
+
             while (urlEnum.hasMoreElements())
             {
                String urlPath = urlEnum.nextElement().getFile();
                urlPath = URLDecoder.decode(urlPath, "UTF-8");
-               
+
                if (urlPath.startsWith("file:"))
                {
                   urlPath = urlPath.substring(5);
                }
-               
+
                if (urlPath.indexOf('!') > 0)
                {
                   urlPath = urlPath.substring(0, urlPath.indexOf('!'));
@@ -86,16 +85,16 @@ public class URLScanner extends AbstractScanner
                else
                {
                   File dirOrArchive = new File(urlPath);
-                  
+
                   if ((resourceName != null) && (resourceName.lastIndexOf('/') > 0))
                   {
                      // for META-INF/components.xml
                      dirOrArchive = dirOrArchive.getParentFile();
                   }
-                  
+
                   urlPath = dirOrArchive.getParent();
                }
-               
+
                paths.add(urlPath);
             }
          }
@@ -104,10 +103,10 @@ public class URLScanner extends AbstractScanner
             log.warn("could not read: " + resourceName, ioe);
          }
       }
-      
+
       handle(paths);
    }
-   
+
    protected void handle(Set<String> paths)
    {
       for (String urlPath : paths)
@@ -115,9 +114,9 @@ public class URLScanner extends AbstractScanner
          try
          {
             log.trace("scanning: " + urlPath);
-            
+
             File file = new File(urlPath);
-            
+
             if (file.isDirectory())
             {
                handleDirectory(file, null);
@@ -133,16 +132,16 @@ public class URLScanner extends AbstractScanner
          }
       }
    }
-   
+
    private void handleArchiveByFile(File file) throws IOException
    {
       try
       {
          log.trace("archive: " + file);
-         
+
          ZipFile zip = new ZipFile(file);
          Enumeration<? extends ZipEntry> entries = zip.entries();
-         
+
          while (entries.hasMoreElements())
          {
             ZipEntry entry = entries.nextElement();
@@ -155,12 +154,12 @@ public class URLScanner extends AbstractScanner
          throw new RuntimeException("Error handling file " + file, e);
       }
    }
-   
+
    private void handleDirectory(File file, String path)
    {
       handleDirectory(file, path, new File[0]);
    }
-   
+
    private void handleDirectory(File file, String path, File[] excludedDirectories)
    {
       for (File excludedDirectory : excludedDirectories)
@@ -168,17 +167,17 @@ public class URLScanner extends AbstractScanner
          if (file.equals(excludedDirectory))
          {
             log.trace("skipping excluded directory: " + file);
-            
+
             return;
          }
       }
-      
+
       log.trace("handling directory: " + file);
-      
+
       for (File child : file.listFiles())
       {
          String newPath = (path == null) ? child.getName() : (path + '/' + child.getName());
-         
+
          if (child.isDirectory())
          {
             handleDirectory(child, newPath, excludedDirectories);
@@ -196,5 +195,5 @@ public class URLScanner extends AbstractScanner
          }
       }
    }
-   
+
 }

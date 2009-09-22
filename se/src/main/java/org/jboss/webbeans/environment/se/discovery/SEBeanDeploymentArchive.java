@@ -35,50 +35,53 @@ import org.jboss.webbeans.ejb.spi.EjbDescriptor;
  */
 public class SEBeanDeploymentArchive implements BeanDeploymentArchive
 {
-    private final SEWebBeanDiscovery wbDiscovery;
-    private final ServiceRegistry serviceRegistry;
+   private final SEWebBeanDiscovery wbDiscovery;
+   private final ServiceRegistry serviceRegistry;
 
-    public SEBeanDeploymentArchive()
-    {
-        wbDiscovery = new SEWebBeanDiscovery() {};
-        serviceRegistry = new SimpleServiceRegistry();
-    }
+   public SEBeanDeploymentArchive()
+   {
+      wbDiscovery = new SEWebBeanDiscovery()
+      {
+      };
+      serviceRegistry = new SimpleServiceRegistry();
+   }
 
-    /**
-     * @return a collection of all Bean classes on the classpath.
-     */
-    public Collection<Class<?>> getBeanClasses()
-    {
-        return wbDiscovery.getWbClasses();
-    }
+   /**
+    * @return a collection of all Bean classes on the classpath.
+    */
+   public Collection<Class<?>> getBeanClasses()
+   {
+      return wbDiscovery.getWbClasses();
+   }
 
-    /**
-     * @return an empty collection, since this instance is the only logical
-     *         archive for the current SE classloader.
-     */
-    public List<BeanDeploymentArchive> getBeanDeploymentArchives()
-    {
-        return Collections.EMPTY_LIST;
-    }
+   /**
+    * @return an empty collection, since this instance is the only logical
+    *         archive for the current SE classloader.
+    */
+   public List<BeanDeploymentArchive> getBeanDeploymentArchives()
+   {
+      return Collections.EMPTY_LIST;
+   }
 
-    /**
-     * @return all beans.xml decriptors found on the classpath.
-     */
-    public Collection<URL> getBeansXml()
-    {
-        return wbDiscovery.discoverWebBeansXml();
-    }
+   /**
+    * @return all beans.xml decriptors found on the classpath.
+    */
+   public Collection<URL> getBeansXml()
+   {
+      return wbDiscovery.discoverWebBeansXml();
+   }
 
-    /**
-     * @return an empty collection since there are no EJBs in Java SE.
-     */
-    public Collection<EjbDescriptor<?>> getEjbs()
-    {
-        return Collections.EMPTY_SET;
-    }
+   /**
+    * @return an empty collection since there are no EJBs in Java SE.
+    */
+   public Collection<EjbDescriptor<?>> getEjbs()
+   {
+      return Collections.EMPTY_SET;
+   }
 
-    public ServiceRegistry getServices() {
-        return this.serviceRegistry;
-    }
+   public ServiceRegistry getServices()
+   {
+      return this.serviceRegistry;
+   }
 
 }

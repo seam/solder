@@ -31,17 +31,15 @@ public interface Scanner
    /**
     * Recursively scan directories.
     * 
-    * @param directories
-    *           An array of the roots of the directory trees to scan
+    * @param directories An array of the roots of the directory trees to scan
     */
    public void scanDirectories(File[] directories);
-   
+
    /**
     * Scan for structures which contain any of the given resources in their root
     * 
-    * @param resources
-    *           The resources to scan for
+    * @param resources The resources to scan for
     */
    public void scanResources(String[] resources);
-   
+
 }

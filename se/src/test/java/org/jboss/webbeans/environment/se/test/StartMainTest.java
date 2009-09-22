@@ -30,84 +30,86 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- *
+ * 
  * @author Peter Royle
  */
-public class StartMainTest {
+public class StartMainTest
+{
 
-    public static String[] ARGS = new String[] { "arg1", "arg2", "arg3"};
-    public static String[] ARGS_EMPTY = new String[] { };
+   public static String[] ARGS = new String[] { "arg1", "arg2", "arg3" };
+   public static String[] ARGS_EMPTY = new String[] {};
 
-    /**
-     * Test of main method, of class StartMain. Checks that the beans
-     * found in the org.jboss.webbeans.environment.se.beans package are
-     * initialised as expected.
-     */
-    @Test
-    public void testMain()
-    {
-        String[] args = ARGS ;
-        BeanManager manager = new StartMain(args).go();
+   /**
+    * Test of main method, of class StartMain. Checks that the beans found in
+    * the org.jboss.webbeans.environment.se.beans package are initialised as
+    * expected.
+    */
+   @Test
+   public void testMain()
+   {
+      String[] args = ARGS;
+      BeanManager manager = new StartMain(args).go();
 
-        MainTestBean mainTestBean = WebBeansManagerUtils.getInstanceByType( manager, MainTestBean.class );
-        Assert.assertNotNull( mainTestBean );
+      MainTestBean mainTestBean = WebBeansManagerUtils.getInstanceByType(manager, MainTestBean.class);
+      Assert.assertNotNull(mainTestBean);
 
-        ParametersTestBean paramsBean = mainTestBean.getParametersTestBean();
-        Assert.assertNotNull( paramsBean );
-        Assert.assertNotNull( paramsBean.getParameters() );
-        Assert.assertNotNull( paramsBean.getParameters().get(0) );
-        Assert.assertEquals( ARGS[0], paramsBean.getParameters().get(0) );
-        Assert.assertNotNull( paramsBean.getParameters().get(1) );
-        Assert.assertEquals( ARGS[1], paramsBean.getParameters().get(1) );
-        Assert.assertNotNull( paramsBean.getParameters().get(2) );
-        Assert.assertEquals( ARGS[2], paramsBean.getParameters().get(2) );
+      ParametersTestBean paramsBean = mainTestBean.getParametersTestBean();
+      Assert.assertNotNull(paramsBean);
+      Assert.assertNotNull(paramsBean.getParameters());
+      Assert.assertNotNull(paramsBean.getParameters().get(0));
+      Assert.assertEquals(ARGS[0], paramsBean.getParameters().get(0));
+      Assert.assertNotNull(paramsBean.getParameters().get(1));
+      Assert.assertEquals(ARGS[1], paramsBean.getParameters().get(1));
+      Assert.assertNotNull(paramsBean.getParameters().get(2));
+      Assert.assertEquals(ARGS[2], paramsBean.getParameters().get(2));
 
-        shutdownManager(manager);
-    }
+      shutdownManager(manager);
+   }
 
-    /**
-     * Test of main method, of class StartMain when no command-line args are
-     * provided.
-     */
-    @Test
-    public void testMainEmptyArgs()
-    {
-        BeanManager manager = new StartMain(ARGS_EMPTY).go();
+   /**
+    * Test of main method, of class StartMain when no command-line args are
+    * provided.
+    */
+   @Test
+   public void testMainEmptyArgs()
+   {
+      BeanManager manager = new StartMain(ARGS_EMPTY).go();
 
-        MainTestBean mainTestBean = WebBeansManagerUtils.getInstanceByType( manager, MainTestBean.class );
-        Assert.assertNotNull( mainTestBean );
+      MainTestBean mainTestBean = WebBeansManagerUtils.getInstanceByType(manager, MainTestBean.class);
+      Assert.assertNotNull(mainTestBean);
 
-        ParametersTestBean paramsBean = mainTestBean.getParametersTestBean();
-        Assert.assertNotNull( paramsBean );
-        Assert.assertNotNull( paramsBean.getParameters() );
+      ParametersTestBean paramsBean = mainTestBean.getParametersTestBean();
+      Assert.assertNotNull(paramsBean);
+      Assert.assertNotNull(paramsBean.getParameters());
 
-        shutdownManager(manager);
-    }
+      shutdownManager(manager);
+   }
 
-    @Test
-    public void testObservers() {
-        BeanManager manager = new StartMain(ARGS_EMPTY).go();
+   @Test
+   public void testObservers()
+   {
+      BeanManager manager = new StartMain(ARGS_EMPTY).go();
 
-        manager.fireEvent( new CustomEvent() );
+      manager.fireEvent(new CustomEvent());
 
-        ObserverTestBean observerTestBean = WebBeansManagerUtils.getInstanceByType( manager, ObserverTestBean.class );
-        Assert.assertNotNull( observerTestBean );
-        Assert.assertTrue( observerTestBean.isCustomObserved() );
-        Assert.assertTrue( observerTestBean.isBuiltInObserved() );
+      ObserverTestBean observerTestBean = WebBeansManagerUtils.getInstanceByType(manager, ObserverTestBean.class);
+      Assert.assertNotNull(observerTestBean);
+      Assert.assertTrue(observerTestBean.isCustomObserved());
+      Assert.assertTrue(observerTestBean.isBuiltInObserved());
 
-    }
+   }
 
-    private void shutdownManager( BeanManager manager )
-    {
-        manager.fireEvent( manager, new ShutdownAnnotation() );
-    }
+   private void shutdownManager(BeanManager manager)
+   {
+      manager.fireEvent(manager, new ShutdownAnnotation());
+   }
 
-    private static class ShutdownAnnotation extends AnnotationLiteral<Shutdown>
-    {
+   private static class ShutdownAnnotation extends AnnotationLiteral<Shutdown>
+   {
 
-        public ShutdownAnnotation()
-        {
-        }
-    }
+      public ShutdownAnnotation()
+      {
+      }
+   }
 
 }

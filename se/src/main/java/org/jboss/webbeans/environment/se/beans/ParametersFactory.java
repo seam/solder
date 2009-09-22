@@ -40,16 +40,18 @@ public class ParametersFactory
    private String[] args;
    private List<String> argsList;
 
-    public ParametersFactory() {
-        this.setArgs(StartMain.PARAMETERS);
-    }
-   
+   public ParametersFactory()
+   {
+      this.setArgs(StartMain.PARAMETERS);
+   }
+
    /**
     * Producer method for the injectable command line args.
     * 
     * @return The command line arguments.
     */
-   @Produces @Parameters
+   @Produces
+   @Parameters
    public List<String> getArgs()
    {
       return argsList;
@@ -57,10 +59,12 @@ public class ParametersFactory
 
    /**
     * Producer method for the injectable command line args.
+    * 
     * @return The command line arguments.
     */
-   @Produces @Parameters
-   public String[] getArgsAsArray(  )
+   @Produces
+   @Parameters
+   public String[] getArgsAsArray()
    {
       return this.args;
    }
@@ -68,17 +72,17 @@ public class ParametersFactory
    /**
     * StartMain passes in the command line args here.
     * 
-    * @param args
-    *           The command line arguments. If null is given then an empty array
-    *           will be used instead.
+    * @param args The command line arguments. If null is given then an empty
+    *           array will be used instead.
     */
    public void setArgs(String[] args)
    {
-      if (args == null) {
+      if (args == null)
+      {
          args = new String[] {};
       }
       this.args = args;
-      this.argsList = Collections.unmodifiableList( new ArrayList<String>( Arrays.asList( args ) ) );
+      this.argsList = Collections.unmodifiableList(new ArrayList<String>(Arrays.asList(args)));
    }
 
 }

@@ -26,16 +26,18 @@ import javax.enterprise.inject.spi.BeanManager;
  * 
  * @author Peter Royle
  */
-public class WebBeansManagerUtils {
+public class WebBeansManagerUtils
+{
 
-    public static <T> T getInstanceByType(BeanManager manager, Class<T> type, Annotation... bindings) {
-        final Bean<?> bean = manager.getBeans(type).iterator().next();
-        CreationalContext cc = manager.createCreationalContext(bean);
-        return (T)manager.getReference(bean, type, cc);
-    }
+   public static <T> T getInstanceByType(BeanManager manager, Class<T> type, Annotation... bindings)
+   {
+      final Bean<?> bean = manager.getBeans(type).iterator().next();
+      CreationalContext cc = manager.createCreationalContext(bean);
+      return (T) manager.getReference(bean, type, cc);
+   }
 
-    public static <T> T getInstanceByType(BeanManager manager, Class<T> type, CreationalContext cc, Annotation... bindings) {
-        return (T)manager.getReference(
-                manager.getBeans(type).iterator().next(), type, cc);
-    }
+   public static <T> T getInstanceByType(BeanManager manager, Class<T> type, CreationalContext cc, Annotation... bindings)
+   {
+      return (T) manager.getReference(manager.getBeans(type).iterator().next(), type, cc);
+   }
 }

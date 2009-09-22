@@ -31,17 +31,17 @@ import org.jboss.webbeans.log.Logging;
  */
 public abstract class AbstractScanner implements Scanner
 {
-   
+
    private static final LogProvider log = Logging.getLogProvider(Scanner.class);
    private final ClassLoader classLoader;
    private final SEWebBeanDiscovery webBeanDiscovery;
-   
+
    public AbstractScanner(ClassLoader classLoader, SEWebBeanDiscovery webBeanDiscovery)
    {
       this.classLoader = classLoader;
       this.webBeanDiscovery = webBeanDiscovery;
    }
-   
+
    protected void handle(String name, URL url)
    {
       if (name.endsWith(".class"))
@@ -65,19 +65,18 @@ public abstract class AbstractScanner implements Scanner
          webBeanDiscovery.getWbUrls().add(url);
       }
    }
-   
+
    public ClassLoader getClassLoader()
    {
       return classLoader;
    }
-   
+
    /**
     * Convert a path to a class file to a class name
     */
    public static String filenameToClassname(String filename)
    {
-      return filename.substring( 0, filename.lastIndexOf(".class") )
-            .replace('/', '.').replace('\\', '.');
+      return filename.substring(0, filename.lastIndexOf(".class")).replace('/', '.').replace('\\', '.');
    }
-   
+
 }

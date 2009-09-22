@@ -27,27 +27,31 @@ import org.jboss.webbeans.environment.se.bindings.Parameters;
 import org.testng.Assert;
 
 /**
- *
+ * 
  * @author Peter Royle
  */
 @ApplicationScoped
-public class ParametersTestBean implements Serializable {
+public class ParametersTestBean implements Serializable
+{
 
-    List<String> parameters;
+   List<String> parameters;
 
-    public ParametersTestBean() {
-    }
+   public ParametersTestBean()
+   {
+   }
 
-    @Inject
-    public ParametersTestBean(@Parameters List<String> params) {
-        this.parameters = params;
-        // even if no args are given, it should will always at least be an empty array
-        Assert.assertNotNull( params );
-    }
+   @Inject
+   public ParametersTestBean(@Parameters List<String> params)
+   {
+      this.parameters = params;
+      // even if no args are given, it should will always at least be an empty
+      // array
+      Assert.assertNotNull(params);
+   }
 
-    public List<String> getParameters()
-    {
-        return parameters;
-    }
+   public List<String> getParameters()
+   {
+      return parameters;
+   }
 
 }

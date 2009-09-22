@@ -23,40 +23,42 @@ import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.inject.Inject;
 
 /**
- *
+ * 
  * @author Peter Royle
  */
 @ApplicationScoped
 public class MainTestBean implements Serializable
 {
 
-    boolean initialised = false;
-    ParametersTestBean parametersTestBean;
+   boolean initialised = false;
+   ParametersTestBean parametersTestBean;
 
-    public MainTestBean() {
-    }
+   public MainTestBean()
+   {
+   }
 
-    @Inject
-    public MainTestBean(ParametersTestBean paramsTestBean)
-    {
-        this.initialised = true;
-        this.parametersTestBean = paramsTestBean;
-        // this call is important. It invokes initialiser on the proxy
-        paramsTestBean.getParameters();
-    }
+   @Inject
+   public MainTestBean(ParametersTestBean paramsTestBean)
+   {
+      this.initialised = true;
+      this.parametersTestBean = paramsTestBean;
+      // this call is important. It invokes initialiser on the proxy
+      paramsTestBean.getParameters();
+   }
 
-    public void mainMethod(@Observes AfterDeploymentValidation after) {
-        System.out.println( "Starting main test app" );
-    }
+   public void mainMethod(@Observes AfterDeploymentValidation after)
+   {
+      System.out.println("Starting main test app");
+   }
 
-    public ParametersTestBean getParametersTestBean()
-    {
-        return parametersTestBean;
-    }
+   public ParametersTestBean getParametersTestBean()
+   {
+      return parametersTestBean;
+   }
 
-    public boolean isInitialised()
-    {
-        return initialised;
-    }
-    
+   public boolean isInitialised()
+   {
+      return initialised;
+   }
+
 }

@@ -26,37 +26,41 @@ import javax.enterprise.inject.spi.AfterDeploymentValidation;
  * @author Peter Royle
  */
 @ApplicationScoped
-public class ObserverTestBean {
+public class ObserverTestBean
+{
 
-    private boolean builtInObserved = false;
-    private boolean customObserved = false;
+   private boolean builtInObserved = false;
+   private boolean customObserved = false;
 
-    public ObserverTestBean() {
-    }
+   public ObserverTestBean()
+   {
+   }
 
-    public void observeBuiltInEvent(@Observes AfterDeploymentValidation after) {
-        this.builtInObserved = true;
-    }
+   public void observeBuiltInEvent(@Observes AfterDeploymentValidation after)
+   {
+      this.builtInObserved = true;
+   }
 
-    public void observeCustomEvent(@Observes CustomEvent event) {
-        this.customObserved = true;
+   public void observeCustomEvent(@Observes CustomEvent event)
+   {
+      this.customObserved = true;
 
-    }
-    
-    /**
-     * @return the observed
-     */
-    public boolean isBuiltInObserved() {
-        return builtInObserved;
-    }
+   }
 
-    /**
-     * @return
-     */
-    public boolean isCustomObserved() {
-        return customObserved;
-    }
+   /**
+    * @return the observed
+    */
+   public boolean isBuiltInObserved()
+   {
+      return builtInObserved;
+   }
 
-
+   /**
+    * @return
+    */
+   public boolean isCustomObserved()
+   {
+      return customObserved;
+   }
 
 }
