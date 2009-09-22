@@ -88,15 +88,13 @@ public class StartMainTest
    @Test
    public void testObservers()
    {
+      ObserverTestBean.reset();
+      
       BeanManager manager = new StartMain(ARGS_EMPTY).go();
-
       manager.fireEvent(new CustomEvent());
-
-      ObserverTestBean observerTestBean = WebBeansManagerUtils.getInstanceByType(manager, ObserverTestBean.class);
-      Assert.assertNotNull(observerTestBean);
-      Assert.assertTrue(observerTestBean.isCustomObserved());
-      Assert.assertTrue(observerTestBean.isBuiltInObserved());
-
+      
+      Assert.assertTrue(ObserverTestBean.isBuiltInObserved());
+      Assert.assertTrue(ObserverTestBean.isCustomObserved());
    }
 
    private void shutdownManager(BeanManager manager)

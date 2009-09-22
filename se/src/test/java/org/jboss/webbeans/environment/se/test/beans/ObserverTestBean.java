@@ -19,18 +19,18 @@ package org.jboss.webbeans.environment.se.test.beans;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
+import javax.enterprise.inject.spi.Extension;
 
 /**
  * Tests the observing of both built-in and application-specific events.
  * 
  * @author Peter Royle
  */
-@ApplicationScoped
-public class ObserverTestBean
+public class ObserverTestBean implements Extension
 {
 
-   private boolean builtInObserved = false;
-   private boolean customObserved = false;
+   private static boolean builtInObserved = false;
+   private static boolean customObserved = false;
 
    public ObserverTestBean()
    {
@@ -38,19 +38,24 @@ public class ObserverTestBean
 
    public void observeBuiltInEvent(@Observes AfterDeploymentValidation after)
    {
-      this.builtInObserved = true;
+      builtInObserved = true;
    }
 
    public void observeCustomEvent(@Observes CustomEvent event)
    {
-      this.customObserved = true;
-
+      customObserved = true;
+   }
+   
+   public static void reset()
+   {
+      customObserved = false;
+      builtInObserved = false;
    }
 
    /**
     * @return the observed
     */
-   public boolean isBuiltInObserved()
+   public static boolean isBuiltInObserved()
    {
       return builtInObserved;
    }
@@ -58,7 +63,7 @@ public class ObserverTestBean
    /**
     * @return
     */
-   public boolean isCustomObserved()
+   public static boolean isCustomObserved()
    {
       return customObserved;
    }
