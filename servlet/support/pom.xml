@@ -43,7 +43,19 @@
                <artifactId>servlet-api</artifactId>
             </exclusion>
          </exclusions>
-      </dependency>    
+      </dependency>
+      
+      <dependency>
+         <groupId>org.apache.tomcat</groupId>
+         <artifactId>jasper</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>javax.servlet.jsp</groupId>
+         <artifactId>jsp-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
    
    </dependencies>
 

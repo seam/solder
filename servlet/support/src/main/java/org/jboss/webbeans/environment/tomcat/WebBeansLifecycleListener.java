@@ -30,6 +30,8 @@ public class WebBeansLifecycleListener implements LifecycleListener
       {
          StandardContext context = (StandardContext) event.getLifecycle();
          final ServletContext servletContext = context.getServletContext();
+         
+         // Initialize servlet injection
          final AnnotationProcessor originalAnnotationProcessor = context.getAnnotationProcessor();
          context.setAnnotationProcessor(new ForwardingAnnotationProcessor()
          {

@@ -1,4 +1,4 @@
-/**
+/*
  * JBoss, Home of Professional Open Source
  * Copyright 2008, Red Hat Middleware LLC, and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
@@ -9,26 +9,21 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,  
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.webbeans.environment.servlet.util;
+package org.jboss.webbeans.environment.tomcat.util;
 
 
 /**
- * Reflection utilities
- * 
- * @author Pete Muir
- * 
+ * @author pmuir
+ *
  */
-public abstract class Reflections
+public class Reflections
 {
    
-   private Reflections()
-   {
-   }
    
    public static <T> T newInstance(String className)
    {
@@ -80,17 +75,5 @@ public abstract class Reflections
          throw new IllegalArgumentException("Cannot load class for " + name, e);
       }
    }
-   
-   public static ClassLoader getClassLoader()
-   {
-      if (Thread.currentThread().getContextClassLoader() != null)
-      {
-         return Thread.currentThread().getContextClassLoader();
-      }
-      else
-      {
-         return Reflections.class.getClassLoader();
-      }
-   }
-   
+
 }

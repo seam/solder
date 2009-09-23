@@ -67,6 +67,8 @@
                      <exclude>org.apache.tomcat:servlet-api</exclude>
                      <exclude>org.apache.tomcat:juli</exclude>
                      <exclude>org.apache.tomcat:annotations-api</exclude>
+                     <exclude>javax.faces:jsf-api</exclude>
+                     <exclude>javax.el:el-api</exclude>
                   </excludes>
                </artifactSet>
             </configuration>

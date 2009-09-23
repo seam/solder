@@ -57,6 +57,17 @@
          </exclusions>
       </dependency>
    
+      <dependency>
+      	<groupId>javax.faces</groupId>
+      	<artifactId>jsf-api</artifactId>
+      </dependency>
+      
+      <dependency>
+      	<groupId>javax.servlet.jsp</groupId>
+      	<artifactId>jsp-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      
    </dependencies>
 
 </project>

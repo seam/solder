@@ -16,7 +16,10 @@
  */
 package org.jboss.webbeans.environment.servlet;
 
+import javax.el.ELContextListener;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.jsp.JspApplicationContext;
+import javax.servlet.jsp.JspFactory;
 
 import org.jboss.webbeans.bootstrap.api.Bootstrap;
 import org.jboss.webbeans.bootstrap.api.Environments;
@@ -46,6 +49,7 @@ public class Listener extends ForwardingServletListener
    private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
    private static final String WEB_BEANS_LISTENER_CLASS_NAME = "org.jboss.webbeans.servlet.WebBeansListener";
    private static final String APPLICATION_BEAN_STORE_ATTRIBUTE_NAME = Listener.class.getName() + ".applicationBeanStore";
+   private static final String EXPRESSION_FACTORY_NAME = "org.jboss.webbeans.el.ExpressionFactory";
    
    private final transient Bootstrap bootstrap;
    private final transient ServletListener webBeansListener;
@@ -55,17 +59,17 @@ public class Listener extends ForwardingServletListener
    {
       try
       {
-         bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME, Bootstrap.class);
+         bootstrap = Reflections.newInstance(BOOTSTRAP_IMPL_CLASS_NAME);
       }
-      catch (Exception e)
+      catch (IllegalArgumentException e)
       {
          throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
       }
       try
       {
-         webBeansListener = Reflections.newInstance(WEB_BEANS_LISTENER_CLASS_NAME, ServletListener.class);
+         webBeansListener = Reflections.newInstance(WEB_BEANS_LISTENER_CLASS_NAME);
       }
-      catch (Exception e)
+      catch (IllegalArgumentException e)
       {
          throw new IllegalStateException("Error loading Web Beans listener, check that Web Beans is on the classpath", e);
       }
@@ -105,14 +109,9 @@ public class Listener extends ForwardingServletListener
       boolean tomcat = true;
       try
       {
-         Reflections.loadClass("org.apache.AnnotationProcessor", Object.class);
+         Reflections.classForName("org.apache.AnnotationProcessor");
       }
-      catch (ClassNotFoundException e) 
-      {
-         log.info("JSR-299 injection will not be available in Servlets, Filters etc. This facility is only available in Tomcat");
-         tomcat = false;
-      }
-      catch (NoClassDefFoundError e) 
+      catch (IllegalArgumentException e) 
       {
          log.info("JSR-299 injection will not be available in Servlets, Filters etc. This facility is only available in Tomcat");
          tomcat = false;
@@ -123,7 +122,7 @@ public class Listener extends ForwardingServletListener
          // Try pushing a Tomcat AnnotationProcessor into the servlet context
          try
          {
-            Class<?> clazz = Reflections.loadClass(WebBeansAnnotationProcessor.class.getName(), Object.class);
+            Class<?> clazz = Reflections.classForName(WebBeansAnnotationProcessor.class.getName());
             Object annotationProcessor = clazz.getConstructor(WebBeansManager.class).newInstance(manager);
             sce.getServletContext().setAttribute(WebBeansAnnotationProcessor.class.getName(), annotationProcessor);
          }
@@ -133,6 +132,19 @@ public class Listener extends ForwardingServletListener
          }
       }
 
+      // Push the manager into the servlet context so we can access in JSF
+      sce.getServletContext().setAttribute(WebBeansManager.class.getName(), manager);
+      
+      JspApplicationContext jspApplicationContext = JspFactory.getDefaultFactory().getJspApplicationContext(sce.getServletContext());
+      
+      // Register the ELResolver with JSP
+      jspApplicationContext.addELResolver(manager.getELResolver());
+      
+      // Register ELContextListener with JSP
+      jspApplicationContext.addELContextListener(Reflections.<ELContextListener>newInstance("org.jboss.webbeans.el.WebBeansELContextListener"));
+      
+      // Push the wrapped expression factory into the servlet context so that Tomcat or Jetty can hook it in using a container code
+      sce.getServletContext().setAttribute(EXPRESSION_FACTORY_NAME, manager.wrapExpressionFactory(jspApplicationContext.getExpressionFactory()));
       
       bootstrap.deployBeans().validateBeans().endInitialization();
       super.contextInitialized(sce);
