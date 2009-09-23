@@ -87,11 +87,11 @@ public class WebBeansApplication extends ForwardingApplication
          throw new IllegalStateException("Not in a servlet environment!");
       }
       ServletContext ctx = (ServletContext) facesContext.getExternalContext().getContext();
-      if (ctx.getAttribute(WebBeansManager.class.getName()) == null)
+      if (ctx.getAttribute(BeanManager.class.getName()) == null)
       {
          throw new IllegalStateException("BeanManager has not been pushed into the ServletContext");
       }
-      return (WebBeansManager) ctx.getAttribute(WebBeansManager.class.getName());
+      return (WebBeansManager) ctx.getAttribute(BeanManager.class.getName());
    }
 
 }

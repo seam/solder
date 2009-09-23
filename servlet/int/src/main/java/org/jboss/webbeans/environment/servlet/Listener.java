@@ -17,6 +17,7 @@
 package org.jboss.webbeans.environment.servlet;
 
 import javax.el.ELContextListener;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
@@ -133,18 +134,21 @@ public class Listener extends ForwardingServletListener
       }
 
       // Push the manager into the servlet context so we can access in JSF
-      sce.getServletContext().setAttribute(WebBeansManager.class.getName(), manager);
+      sce.getServletContext().setAttribute(BeanManager.class.getName(), manager);
       
-      JspApplicationContext jspApplicationContext = JspFactory.getDefaultFactory().getJspApplicationContext(sce.getServletContext());
-      
-      // Register the ELResolver with JSP
-      jspApplicationContext.addELResolver(manager.getELResolver());
-      
-      // Register ELContextListener with JSP
-      jspApplicationContext.addELContextListener(Reflections.<ELContextListener>newInstance("org.jboss.webbeans.el.WebBeansELContextListener"));
-      
-      // Push the wrapped expression factory into the servlet context so that Tomcat or Jetty can hook it in using a container code
-      sce.getServletContext().setAttribute(EXPRESSION_FACTORY_NAME, manager.wrapExpressionFactory(jspApplicationContext.getExpressionFactory()));
+      if (JspFactory.getDefaultFactory() != null)
+      {
+         JspApplicationContext jspApplicationContext = JspFactory.getDefaultFactory().getJspApplicationContext(sce.getServletContext());
+         
+         // Register the ELResolver with JSP
+         jspApplicationContext.addELResolver(manager.getELResolver());
+         
+         // Register ELContextListener with JSP
+         jspApplicationContext.addELContextListener(Reflections.<ELContextListener>newInstance("org.jboss.webbeans.el.WebBeansELContextListener"));
+         
+         // Push the wrapped expression factory into the servlet context so that Tomcat or Jetty can hook it in using a container code
+         sce.getServletContext().setAttribute(EXPRESSION_FACTORY_NAME, manager.wrapExpressionFactory(jspApplicationContext.getExpressionFactory()));
+      }
       
       bootstrap.deployBeans().validateBeans().endInitialization();
       super.contextInitialized(sce);
