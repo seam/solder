@@ -22,6 +22,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import org.jboss.webbeans.environment.se.StartMain;
 import org.jboss.webbeans.environment.se.events.Shutdown;
 import org.jboss.webbeans.environment.se.test.beans.CustomEvent;
+import org.jboss.webbeans.environment.se.test.beans.InitObserverTestBean;
 import org.jboss.webbeans.environment.se.test.beans.MainTestBean;
 import org.jboss.webbeans.environment.se.test.beans.ObserverTestBean;
 import org.jboss.webbeans.environment.se.test.beans.ParametersTestBean;
@@ -88,13 +89,17 @@ public class StartMainTest
    @Test
    public void testObservers()
    {
+      InitObserverTestBean.reset();
       ObserverTestBean.reset();
-      
+
       BeanManager manager = new StartMain(ARGS_EMPTY).go();
       manager.fireEvent(new CustomEvent());
-      
+
       Assert.assertTrue(ObserverTestBean.isBuiltInObserved());
       Assert.assertTrue(ObserverTestBean.isCustomObserved());
+      Assert.assertTrue(ObserverTestBean.isInitObserved());
+
+      Assert.assertTrue(InitObserverTestBean.isInitObserved());
    }
 
    private void shutdownManager(BeanManager manager)

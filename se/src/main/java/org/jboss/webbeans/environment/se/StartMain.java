@@ -24,6 +24,7 @@ import org.jboss.webbeans.bootstrap.spi.BeanDeploymentArchive;
 import org.jboss.webbeans.context.api.BeanStore;
 import org.jboss.webbeans.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.webbeans.environment.se.discovery.SEWebBeansDeployment;
+import org.jboss.webbeans.environment.se.events.ContainerInitialized;
 import org.jboss.webbeans.environment.se.util.Reflections;
 import org.jboss.webbeans.environment.se.util.WebBeansManagerUtils;
 import org.jboss.webbeans.manager.api.WebBeansManager;
@@ -73,6 +74,8 @@ public class StartMain
       WebBeansManagerUtils.getInstanceByType(manager, ShutdownManager.class).setBootstrap(bootstrap);
       bootstrap.validateBeans();
       bootstrap.endInitialization();
+
+      this.manager.fireEvent(new ContainerInitialized());
       return this.manager;
    }
 

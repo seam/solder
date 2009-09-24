@@ -17,8 +17,6 @@
 package org.jboss.webbeans.environment.se.test.beans;
 
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterDeploymentValidation;
-import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 import org.jboss.webbeans.environment.se.events.ContainerInitialized;
 
@@ -27,58 +25,25 @@ import org.jboss.webbeans.environment.se.events.ContainerInitialized;
  * 
  * @author Peter Royle
  */
-public class ObserverTestBean implements Extension
+public class InitObserverTestBean
 {
 
-   private static boolean builtInObserved = false;
-   private static boolean customObserved = false;
    private static boolean initObserved = false;
 
    @Inject MainTestBean bean;
 
-   public ObserverTestBean()
+   public InitObserverTestBean()
    {
    }
 
-   public void observeBuiltInEvent(@Observes AfterDeploymentValidation after)
-   {
-      builtInObserved = true;
-       assert this.bean == null;
-   }
-
-   public void observeCustomEvent(@Observes CustomEvent event)
-   {
-      customObserved = true;
-       assert this.bean != null;
-   }
-
-   public void observeInitEvent(@Observes ContainerInitialized event)
-   {
+   public void observeInitEvent(@Observes ContainerInitialized event) {
        initObserved = true;
        assert this.bean != null;
    }
    
    public static void reset()
    {
-      customObserved = false;
-      builtInObserved = false;
       initObserved = false;
-   }
-
-   /**
-    * @return the observed
-    */
-   public static boolean isBuiltInObserved()
-   {
-      return builtInObserved;
-   }
-
-   /**
-    * @return
-    */
-   public static boolean isCustomObserved()
-   {
-      return customObserved;
    }
 
    /**
