@@ -1,5 +1,12 @@
 package org.jboss.webbeans.wicket;
 
+import java.lang.reflect.Type;
+import java.util.Set;
+
+import javax.enterprise.inject.AmbiguousResolutionException;
+import javax.enterprise.inject.UnsatisfiedResolutionException;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
@@ -27,15 +34,44 @@ import org.apache.wicket.request.IRequestCycleProcessor;
  */
 public abstract class WebBeansApplication extends WebApplication
 {
+   
+   private <T> T getInstanceByType(Class<T> beanType)
+   {
+      BeanManager manager = BeanManagerLookup.getBeanManager();
+      Bean<T> bean = (Bean<T>) ensureUniqueBean(beanType, manager.getBeans(beanType));
+      return (T) manager.getReference(bean, beanType, manager.createCreationalContext(bean));
+   }
+   
+   private static Bean<?> ensureUniqueBean(Type type, Set<Bean<?>> beans)
+   {
+      if (beans.size() == 0)
+      {
+         throw new UnsatisfiedResolutionException("Unable to resolve any Web Beans of " + type);
+      }
+      else if (beans.size() > 1)
+      {
+         throw new AmbiguousResolutionException("More than one bean available for type " + type);
+      }
+      return beans.iterator().next();
+   }
+
    /**
-    * Use the constructor to add our component instantiation listener
-    * 
-    * @see WebBeansComponentInstantiationListener
     */
    public WebBeansApplication()
    {
-      addComponentInstantiationListener(new WebBeansComponentInstantiationListener());
    }
+
+   /**
+    * Add our component instantiation listener
+    * 
+    * @see WebBeansComponentInstantiationListener
+    */
+   protected void internalInit() 
+   {
+      super.internalInit();
+      addComponentInstantiationListener(getInstanceByType(WebBeansComponentInstantiationListener.class));
+   }
+
 
    /**
     * Override to return our WebBeans-specific request cycle processor
@@ -45,7 +81,7 @@ public abstract class WebBeansApplication extends WebApplication
    @Override
    protected IRequestCycleProcessor newRequestCycleProcessor()
    {
-      return new WebBeansWebRequestCycleProcessor();
+      return getInstanceByType(WebBeansWebRequestCycleProcessor.class);
    }
 
    /**

@@ -1,6 +1,13 @@
 package org.jboss.webbeans.wicket;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.Set;
+
 import javax.enterprise.context.Conversation;
+import javax.enterprise.inject.AmbiguousResolutionException;
+import javax.enterprise.inject.UnsatisfiedResolutionException;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.apache.wicket.IRequestTarget;
@@ -11,7 +18,8 @@ import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.component.IPageRequestTarget;
-import org.jboss.webbeans.CurrentManager;
+import org.jboss.webbeans.Container;
+import org.jboss.webbeans.context.ContextLifecycle;
 import org.jboss.webbeans.context.ConversationContext;
 import org.jboss.webbeans.conversation.ConversationManager;
 import org.jboss.webbeans.servlet.ConversationBeanStore;
@@ -72,14 +80,15 @@ public class WebBeansRequestCycle extends WebRequestCycle
          specifiedCid = request.getParameter("cid");
       }
 
-      BeanManager manager = CurrentManager.rootManager();
-      Conversation conversation = manager.getInstanceByType(Conversation.class);
+      BeanManager manager = BeanManagerLookup.getBeanManager();
+      
+      Conversation conversation = getInstanceByType(manager, Conversation.class);
 
       // restore a conversation if it exists
       if (specifiedCid != null)
       {
          // Restore this conversation
-         manager.getInstanceByType(ConversationManager.class).beginOrRestoreConversation(specifiedCid);
+         getInstanceByType(manager, ConversationManager.class).beginOrRestoreConversation(specifiedCid);
       }
 
       // handle propagation of existing long running converstaions to new
@@ -107,11 +116,35 @@ public class WebBeansRequestCycle extends WebRequestCycle
          }
       }
 
+      ConversationContext conversationContext = Container.instance().deploymentServices().get(
+            ContextLifecycle.class).getConversationContext();
       // Now set up the conversational context if it isn't already
-      if (!ConversationContext.instance().isActive())
+      if (!conversationContext.isActive())
       {
-         ConversationContext.instance().setBeanStore(new ConversationBeanStore(((WebRequest) request).getHttpServletRequest().getSession(), conversation.getId()));
-         ConversationContext.instance().setActive(true);
+         conversationContext.setBeanStore(new ConversationBeanStore(((WebRequest) request)
+               .getHttpServletRequest().getSession(), conversation.getId()));
+         conversationContext.setActive(true);
       }
    }
+
+   @SuppressWarnings("unchecked")
+   private <T> T getInstanceByType(BeanManager manager, Class<T> beanType, Annotation... bindings)
+   {
+      Bean<T> bean = (Bean<T>) ensureUniqueBean(beanType, manager.getBeans(beanType, bindings));
+      return (T) manager.getReference(bean, beanType, manager.createCreationalContext(bean));
+   }
+
+   private static Bean<?> ensureUniqueBean(Type type, Set<Bean<?>> beans)
+   {
+      if (beans.size() == 0)
+      {
+         throw new UnsatisfiedResolutionException("Unable to resolve any Web Beans of " + type);
+      }
+      else if (beans.size() > 1)
+      {
+         throw new AmbiguousResolutionException("More than one bean available for type " + type);
+      }
+      return beans.iterator().next();
+   }
+
 }

@@ -1,11 +1,13 @@
 package org.jboss.webbeans.wicket;
 
 import javax.enterprise.context.Conversation;
+import javax.inject.Inject;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
-import org.jboss.webbeans.CurrentManager;
+import org.jboss.webbeans.Container;
+import org.jboss.webbeans.context.ContextLifecycle;
 import org.jboss.webbeans.context.ConversationContext;
 import org.jboss.webbeans.conversation.ConversationManager;
 
@@ -20,6 +22,11 @@ import org.jboss.webbeans.conversation.ConversationManager;
  */
 public class WebBeansWebRequestCycleProcessor extends WebRequestCycleProcessor
 {
+   @Inject
+   Conversation conversation;
+   @Inject
+   ConversationManager conversationManager;
+   
    /**
     * If a long running conversation has been started, store its id into page
     * metadata
@@ -28,7 +35,6 @@ public class WebBeansWebRequestCycleProcessor extends WebRequestCycleProcessor
    public void respond(RequestCycle requestCycle)
    {
       super.respond(requestCycle);
-      Conversation conversation = CurrentManager.rootManager().getInstanceByType(Conversation.class);
       if (conversation.isLongRunning())
       {
          Page page = RequestCycle.get().getResponsePage();
@@ -39,8 +45,10 @@ public class WebBeansWebRequestCycleProcessor extends WebRequestCycleProcessor
       }
       
       //cleanup and deactivate the conversation context
+      conversationManager.cleanupConversation();
       
-      CurrentManager.rootManager().getInstanceByType(ConversationManager.class).cleanupConversation();
-      ConversationContext.instance().setActive(false);
+      ConversationContext conversationContext = Container.instance().deploymentServices().get(
+            ContextLifecycle.class).getConversationContext();
+      conversationContext.setActive(false);
    }
 }

@@ -16,7 +16,7 @@ public class WebBeansMetaData
     * This is the key we will use to to store the conversation metadata in the
     * wicket page.
     */
-   public static final MetaDataKey CID = new MetaDataKey(String.class) 
+   public static final MetaDataKey CID = new MetaDataKey<String>()
    {
       private static final long serialVersionUID = -8788010688731927318L; 
    }; 
