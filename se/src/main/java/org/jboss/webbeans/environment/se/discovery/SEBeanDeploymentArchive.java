@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import org.jboss.webbeans.bootstrap.api.ServiceRegistry;
 import org.jboss.webbeans.bootstrap.api.helpers.SimpleServiceRegistry;
 import org.jboss.webbeans.bootstrap.spi.BeanDeploymentArchive;
@@ -82,6 +83,11 @@ public class SEBeanDeploymentArchive implements BeanDeploymentArchive
    public ServiceRegistry getServices()
    {
       return this.serviceRegistry;
+   }
+   
+   public String getId()
+   {
+      return "se-module";
    }
 
 }

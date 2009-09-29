@@ -123,4 +123,9 @@ public class WebAppBeanDeploymentArchive implements BeanDeploymentArchive
       return services;
    }
    
+   public String getId()
+   {
+      return "web-module";
+   }
+   
 }
