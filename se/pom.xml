@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
-        <artifactId>webbeans-parent</artifactId>
-        <groupId>org.jboss.webbeans</groupId>
+        <artifactId>weld-parent</artifactId>
+        <groupId>org.jboss.weld</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.jboss.webbeans</groupId>
-    <artifactId>webbeans-se</artifactId>
+    <groupId>org.jboss.weld</groupId>
+    <artifactId>weld-se</artifactId>
     <packaging>jar</packaging>
-    <name>Web Beans SE Module</name>
+    <name>Weld SE Module</name>
     <url>http://maven.apache.org</url>
     <build>
         <plugins>
@@ -25,7 +25,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
-                    <tagBase>https://svn.jboss.org/repos/webbeans/extensions/tags</tagBase>
+                    <tagBase>https://svn.jboss.org/repos/weld/extensions/tags</tagBase>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
@@ -47,8 +47,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.webbeans</groupId>
-            <artifactId>webbeans-spi</artifactId>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-spi</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>javax.jms</groupId>
@@ -65,21 +65,21 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.jboss.webbeans</groupId>
-            <artifactId>webbeans-core</artifactId>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-core</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
-            <artifactId>inject-api</artifactId>
+            <artifactId>javax.inject</artifactId>
         </dependency>
 
     </dependencies>
 
     <scm>
-        <connection>scm:svn:http://anonsvn.jboss.org/repos/webbeans/extensions</connection>
-        <developerConnection>scm:svn:https://svn.jboss.org/repos/webbeans/extensions</developerConnection>
-        <url>http://fisheye.jboss.org/browse/WebBeans/extensions</url>
+        <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions</connection>
+        <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions</developerConnection>
+        <url>http://fisheye.jboss.org/browse/Weld/extensions</url>
     </scm>
 </project>
 

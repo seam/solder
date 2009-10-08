@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
-      <artifactId>webbeans-servlet-parent</artifactId>
-      <groupId>org.jboss.webbeans.servlet</groupId>
+      <artifactId>weld-servlet-parent</artifactId>
+      <groupId>org.jboss.weld.servlet</groupId>
       <version>1.0.0-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jboss.webbeans.servlet</groupId>
-   <artifactId>webbeans-servlet-test</artifactId>
+   <groupId>org.jboss.weld.servlet</groupId>
+   <artifactId>weld-servlet-test</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
-   <name>Web Beans Servlet Integration Tests</name>
-   <url>http://www.seamframework.org/WebBeans</url>
+   <name>Weld Servlet Integration Tests</name>
+   <url>http://www.seamframework.org/Weld</url>
     
    <dependencies>
       <dependency>
@@ -54,8 +54,8 @@
       </dependency>
       
       <dependency>
-         <groupId>org.jboss.webbeans</groupId>
-         <artifactId>webbeans-core-test</artifactId>
+         <groupId>org.jboss.weld</groupId>
+         <artifactId>weld-core-test</artifactId>
          <scope>test</scope>
          <version>1.0.0-SNAPSHOT</version> <!-- waiting on >= 1.0.0.PREVIEW2 -->
       </dependency>
@@ -72,20 +72,20 @@
       </dependency>
       
       <dependency>
-         <groupId>org.jboss.webbeans</groupId>
-         <artifactId>webbeans-core</artifactId>
+         <groupId>org.jboss.weld</groupId>
+         <artifactId>weld-core</artifactId>
          <scope>test</scope>
       </dependency>
       
       <dependency>
-         <groupId>org.jboss.webbeans</groupId>
-         <artifactId>webbeans-spi</artifactId>
+         <groupId>org.jboss.weld</groupId>
+         <artifactId>weld-spi</artifactId>
          <scope>test</scope>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.webbeans.servlet</groupId>
-         <artifactId>webbeans-servlet-int</artifactId>
+         <groupId>org.jboss.weld.servlet</groupId>
+         <artifactId>weld-servlet-int</artifactId>
          <scope>test</scope>
          <version>1.0.0-SNAPSHOT</version> <!-- waiting on >= 1.0.0.CR2 -->
       </dependency>
@@ -189,8 +189,8 @@
                                  <outputDirectory>${project.build.directory}/dependency/lib</outputDirectory>
                               </artifactItem>
                               <artifactItem>
-                                 <groupId>org.jboss.webbeans.servlet</groupId>
-                                 <artifactId>webbeans-servlet</artifactId>
+                                 <groupId>org.jboss.weld.servlet</groupId>
+                                 <artifactId>weld-servlet</artifactId>
                                  <overWrite>true</overWrite>
                                  <outputDirectory>${project.build.directory}/dependency/lib</outputDirectory>
                               </artifactItem>

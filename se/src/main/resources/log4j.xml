@@ -32,9 +32,9 @@
         </filter>
     </appender>
 
-    <!-- ############### Web Beans logging ################### -->
+    <!-- ############### Weld logging ################### -->
 
-    <category name="org.jboss.webbeans">
+    <category name="org.jboss.weld">
         <priority value="INFO"/>
     </category>
     

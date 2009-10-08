@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
-      <groupId>org.jboss.webbeans</groupId>
-      <artifactId>webbeans-version-matrix</artifactId>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-version-matrix</artifactId>
       <version>1.0.0-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jboss.webbeans</groupId>
-   <artifactId>webbeans-wicket</artifactId>
+   <groupId>org.jboss.weld</groupId>
+   <artifactId>weld-wicket</artifactId>
    <version>1.0.0-SNAPSHOT</version>
-   <name>Web Beans Wicket Integration</name>
+   <name>Weld Wicket Integration</name>
    <dependencies>
 
       <dependency>
@@ -25,12 +25,12 @@
          </exclusions>
       </dependency>
       <dependency>
-         <groupId>org.jboss.webbeans</groupId>
-         <artifactId>jsr299-api</artifactId>
+         <groupId>javax.enterprise</groupId>
+         <artifactId>cdi-api</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.jboss.webbeans</groupId>
-         <artifactId>webbeans-core</artifactId>
+         <groupId>org.jboss.weld</groupId>
+         <artifactId>weld-core</artifactId>
          <scope>provided</scope>
       </dependency>
       <dependency>
@@ -52,7 +52,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-release-plugin</artifactId>
             <configuration>
-               <tagBase>https://svn.jboss.org/repos/webbeans/extensions/tags</tagBase>
+               <tagBase>https://svn.jboss.org/repos/weld/extensions/tags</tagBase>
                <autoVersionSubmodules>true</autoVersionSubmodules>
             </configuration>
          </plugin>
@@ -60,9 +60,9 @@
    </build>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/webbeans/extensions</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/webbeans/extensions</developerConnection>
-      <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/webbeans/extensions</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions</developerConnection>
+      <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/weld/extensions</url>
    </scm>
 
 </project>

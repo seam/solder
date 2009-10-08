@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
-      <artifactId>webbeans-servlet-parent</artifactId>
-      <groupId>org.jboss.webbeans.servlet</groupId>
+      <artifactId>weld-servlet-parent</artifactId>
+      <groupId>org.jboss.weld.servlet</groupId>
       <version>1.0.0-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jboss.webbeans.servlet</groupId>
-   <artifactId>webbeans-tomcat-support</artifactId>
+   <groupId>org.jboss.weld.servlet</groupId>
+   <artifactId>weld-tomcat-support</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
-   <name>Web Beans Servlet Integration: Tomcat Support</name>
+   <name>Weld Servlet Integration: Tomcat Support</name>
    <url>http://www.seamframework.org/WebBeans</url>
     
    <dependencies>

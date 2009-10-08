@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
-      <artifactId>webbeans-servlet-parent</artifactId>
-      <groupId>org.jboss.webbeans.servlet</groupId>
+      <artifactId>weld-servlet-parent</artifactId>
+      <groupId>org.jboss.weld.servlet</groupId>
       <version>1.0.0-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jboss.webbeans.servlet</groupId>
-   <artifactId>webbeans-servlet</artifactId>
+   <groupId>org.jboss.weld.servlet</groupId>
+   <artifactId>weld-servlet</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
-   <name>Web Beans Servlet module</name>
-   <url>http://www.seamframework.org/WebBeans</url>
+   <name>Weld Servlet module</name>
+   <url>http://www.seamframework.org/Weld</url>
     
    <dependencies>
    
       <dependency>
-         <groupId>org.jboss.webbeans.servlet</groupId>
-         <artifactId>webbeans-servlet-int</artifactId>
+         <groupId>org.jboss.weld.servlet</groupId>
+         <artifactId>weld-servlet-int</artifactId>
          <optional>true</optional>
          <version>${project.version}</version>
       </dependency>
       
       <dependency>
-         <groupId>org.jboss.webbeans</groupId>
-         <artifactId>webbeans-core</artifactId>
+         <groupId>org.jboss.weld</groupId>
+         <artifactId>weld-core</artifactId>
          <optional>true</optional>
          <version>1.0.0-SNAPSHOT</version>
       </dependency>
