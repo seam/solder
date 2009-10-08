@@ -43,17 +43,16 @@ import org.jboss.weld.environment.tomcat.WeldAnnotationProcessor;
  * @author Pete Muir
  */
 public class Listener extends ForwardingServletListener
-{
-   
+{   
    private static final Log log = Logging.getLog(Listener.class);
    
-   private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
-   private static final String WEB_BEANS_LISTENER_CLASS_NAME = "org.jboss.webbeans.servlet.WebBeansListener";
+   private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.weld.bootstrap.WeldBootstrap";
+   private static final String WELD_LISTENER_CLASS_NAME = "org.jboss.weld.servlet.WeldListener";
    private static final String APPLICATION_BEAN_STORE_ATTRIBUTE_NAME = Listener.class.getName() + ".applicationBeanStore";
-   private static final String EXPRESSION_FACTORY_NAME = "org.jboss.webbeans.el.ExpressionFactory";
+   private static final String EXPRESSION_FACTORY_NAME = "org.jboss.weld.el.ExpressionFactory";
    
    private final transient Bootstrap bootstrap;
-   private final transient ServletListener webBeansListener;
+   private final transient ServletListener weldListener;
    private WeldManager manager;
    
    public Listener() 
@@ -64,15 +63,15 @@ public class Listener extends ForwardingServletListener
       }
       catch (IllegalArgumentException e)
       {
-         throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
+         throw new IllegalStateException("Error loading Weld bootstrap, check that Weld is on the classpath", e);
       }
       try
       {
-         webBeansListener = Reflections.newInstance(WEB_BEANS_LISTENER_CLASS_NAME);
+         weldListener = Reflections.newInstance(WELD_LISTENER_CLASS_NAME);
       }
       catch (IllegalArgumentException e)
       {
-         throw new IllegalStateException("Error loading Web Beans listener, check that Web Beans is on the classpath", e);
+         throw new IllegalStateException("Error loading Weld listener, check that Weld is on the classpath", e);
       }
    }
 
@@ -94,7 +93,8 @@ public class Listener extends ForwardingServletListener
       ServletDeployment deployment = new ServletDeployment(sce.getServletContext());
       try
       {
-    	  deployment.getWebAppBeanDeploymentArchive().getServices().add(ResourceInjectionServices.class, new ServletResourceInjectionServices() {});
+    	  deployment.getWebAppBeanDeploymentArchive().getServices().add(
+    	        ResourceInjectionServices.class, new ServletResourceInjectionServices() {});
       }
       catch (NoClassDefFoundError e)
       {
@@ -102,7 +102,8 @@ public class Listener extends ForwardingServletListener
     	 log.warn("@Resource injection not available in simple beans");
       }
       
-      deployment.getServices().add(ServletServices.class, new ServletServicesImpl(deployment.getWebAppBeanDeploymentArchive()));
+      deployment.getServices().add(ServletServices.class, 
+            new ServletServicesImpl(deployment.getWebAppBeanDeploymentArchive()));
       
       bootstrap.startContainer(Environments.SERVLET, deployment, applicationBeanStore).startInitialization();
       manager = bootstrap.getManager(deployment.getWebAppBeanDeploymentArchive());
@@ -144,10 +145,12 @@ public class Listener extends ForwardingServletListener
          jspApplicationContext.addELResolver(manager.getELResolver());
          
          // Register ELContextListener with JSP
-         jspApplicationContext.addELContextListener(Reflections.<ELContextListener>newInstance("org.jboss.webbeans.el.WebBeansELContextListener"));
+         jspApplicationContext.addELContextListener(Reflections.<ELContextListener>
+            newInstance("org.jboss.weld.el.WeldELContextListener"));
          
          // Push the wrapped expression factory into the servlet context so that Tomcat or Jetty can hook it in using a container code
-         sce.getServletContext().setAttribute(EXPRESSION_FACTORY_NAME, manager.wrapExpressionFactory(jspApplicationContext.getExpressionFactory()));
+         sce.getServletContext().setAttribute(EXPRESSION_FACTORY_NAME, 
+               manager.wrapExpressionFactory(jspApplicationContext.getExpressionFactory()));
       }
       
       bootstrap.deployBeans().validateBeans().endInitialization();
@@ -159,7 +162,7 @@ public class Listener extends ForwardingServletListener
    @Override
    protected ServletListener delegate()
    {
-      return webBeansListener;
+      return weldListener;
    }
    
 }

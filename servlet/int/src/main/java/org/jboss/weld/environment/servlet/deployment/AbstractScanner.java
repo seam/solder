@@ -62,7 +62,7 @@ public abstract class AbstractScanner implements Scanner
       }
       else if (name.equals(WebAppBeanDeploymentArchive.META_INF_BEANS_XML))
       {
-         webAppBeanDeploymentArchive.getWbUrls().add(url);
+         webAppBeanDeploymentArchive.getWeldUrls().add(url);
       }
    }
    

@@ -69,7 +69,7 @@ public class WeldLifecycleListener implements LifecycleListener
             {
                if (processor == null)
                {
-                  Object o = servletContext.getAttribute("org.jboss.webbeans.environment.tomcat.WebBeansAnnotationProcessor");
+                  Object o = servletContext.getAttribute("org.jboss.weld.environment.tomcat.WeldAnnotationProcessor");
                   if (o instanceof AnnotationProcessor)
                   {
                      processor = (AnnotationProcessor) o;

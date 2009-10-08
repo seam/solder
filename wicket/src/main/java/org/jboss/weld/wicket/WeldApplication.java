@@ -22,9 +22,9 @@ import org.apache.wicket.request.IRequestCycleProcessor;
  * JSR-299 conversation scopes with Wicket page metadata. If you have your own
  * WebApplication subclass, and can't subclass this class, you just need to do
  * the three things that this class does, i.e. register the
- * WebBeansComponentInstantiationListener, and override the two methods below to
+ * WeldComponentInstantiationListener, and override the two methods below to
  * return the RequestCycle and IRequestCycleProcessor subclasses specific to
- * WebBeans, or your subclasses of those classes.
+ * Weld, or your subclasses of those classes.
  * 
  * @author cpopetz
  * 
@@ -64,7 +64,7 @@ public abstract class WeldApplication extends WebApplication
    /**
     * Add our component instantiation listener
     * 
-    * @see WebBeansComponentInstantiationListener
+    * @see WeldComponentInstantiationListener
     */
    protected void internalInit() 
    {
@@ -74,7 +74,7 @@ public abstract class WeldApplication extends WebApplication
 
 
    /**
-    * Override to return our WebBeans-specific request cycle processor
+    * Override to return our Weld-specific request cycle processor
     * 
     * @see WeldWebRequestCycleProcessor
     */
@@ -85,7 +85,7 @@ public abstract class WeldApplication extends WebApplication
    }
 
    /**
-    * Override to return our WebBeans-specific request cycle
+    * Override to return our Weld-specific request cycle
     * 
     * @see WeldRequestCycle
     */

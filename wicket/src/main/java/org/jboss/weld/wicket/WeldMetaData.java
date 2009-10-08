@@ -3,7 +3,7 @@ package org.jboss.weld.wicket;
 import org.apache.wicket.MetaDataKey;
 
 /**
- * Public storage for the metadata key used by the WebBeans integration to store
+ * Public storage for the metadata key used by the Weld integration to store
  * conversation ids in wicket page metadata.
  * 
  * @author cpopetz

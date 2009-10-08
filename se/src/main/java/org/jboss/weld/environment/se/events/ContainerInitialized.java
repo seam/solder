@@ -17,7 +17,7 @@
 package org.jboss.weld.environment.se.events;
 
 /**
- * The event that is fired when the WebBeans CDI container is initialized and
+ * The event that is fired when the Weld CDI container is initialized and
  * ready for applications to take control, which it may do by observing this
  * event.
  *

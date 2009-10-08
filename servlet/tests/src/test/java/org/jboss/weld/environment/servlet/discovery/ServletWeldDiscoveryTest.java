@@ -33,7 +33,7 @@ public class ServletWeldDiscoveryTest extends AbstractWeldTest
       {
       };
 
-      Set<URL> beansXmls = discovery.getWbUrls();
+      Set<URL> beansXmls = discovery.getWeldUrls();
       assert beansXmls.size() >= 1 : "Expecting to find at least one META-INF/beans.xml resource on the test classpath";
       for (URL beansXml : beansXmls)
       {

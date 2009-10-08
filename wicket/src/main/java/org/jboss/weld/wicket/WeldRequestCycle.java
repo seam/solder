@@ -25,7 +25,7 @@ import org.jboss.weld.conversation.ConversationManager;
 import org.jboss.weld.servlet.ConversationBeanStore;
 
 /**
- * WebBeansRequestCycle is a subclass of the standard wicket WebRequestCycle
+ * WeldRequestCycle is a subclass of the standard wicket WebRequestCycle
  * which:
  * <ul>
  * <li>restores long-running conversations specified in wicket page metadata

@@ -23,7 +23,7 @@ import org.jboss.weld.bootstrap.spi.BeanDeploymentArchive;
 import org.jboss.weld.bootstrap.spi.Deployment;
 
 /**
- * WebBeans Deployment for Java SE environment.
+ * Weld Deployment for Java SE environment.
  * 
  * @author Peter Royle
  */

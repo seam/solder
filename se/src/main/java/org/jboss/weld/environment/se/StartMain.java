@@ -31,8 +31,8 @@ import org.jboss.weld.environment.se.util.WeldManagerUtils;
 
 /**
  * This is the main class that should always be called from the command line for
- * a WebBEans SE app. Something like: <code>
- * java -jar MyApp.jar org.jboss.webbeans.environment.se.StarMain arguments
+ * a Weld SE app. Something like: <code>
+ * java -jar MyApp.jar org.jboss.weld.environment.se.StarMain arguments
  * </code>
  * 
  * @author Peter Royle
@@ -41,7 +41,7 @@ import org.jboss.weld.environment.se.util.WeldManagerUtils;
 public class StartMain
 {
 
-   private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.webbeans.bootstrap.WebBeansBootstrap";
+   private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.weld.bootstrap.WeldBootstrap";
    private final Bootstrap bootstrap;
    private final BeanStore applicationBeanStore;
    public static String[] PARAMETERS;
@@ -56,7 +56,7 @@ public class StartMain
       }
       catch (Exception e)
       {
-         throw new IllegalStateException("Error loading Web Beans bootstrap, check that Web Beans is on the classpath", e);
+         throw new IllegalStateException("Error loading Weld bootstrap, check that Weld is on the classpath", e);
       }
       this.applicationBeanStore = new ConcurrentHashMapBeanStore();
    }

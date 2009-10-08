@@ -28,7 +28,7 @@ import org.jboss.weld.ejb.spi.EjbDescriptor;
 
 /**
  * A Java SE implementation of BeanDeploymentArchive. It is essentially an
- * adaptor from the SEWebBeanDiscovery to the BeanDeploymentArchive interface.
+ * adaptor from the SEWeldDiscovery to the BeanDeploymentArchive interface.
  * It returns, in a single logical archive, all Bean classes and beans.xml
  * descriptors. It always returns an empty collection of EJBs.
  * 
@@ -69,7 +69,7 @@ public class SEBeanDeploymentArchive implements BeanDeploymentArchive
     */
    public Collection<URL> getBeansXml()
    {
-      return wbDiscovery.discoverWebBeansXml();
+      return wbDiscovery.discoverWeldXml();
    }
 
    /**

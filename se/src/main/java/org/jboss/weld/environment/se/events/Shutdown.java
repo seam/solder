@@ -24,7 +24,7 @@ import javax.inject.Qualifier;
 
 
 /**
- * Fired by webbeans SE before shutting down. Applications and modules should
+ * Fired by weld SE before shutting down. Applications and modules should
  * release resources cleanly in response to this event.
  * 
  * @author Peter Royle

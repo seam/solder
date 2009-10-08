@@ -12,7 +12,7 @@ import org.jboss.weld.context.ConversationContext;
 import org.jboss.weld.conversation.ConversationManager;
 
 /**
- * WebBeansWebRequestCycleProcessor is a subclass of the standard wicket
+ * WeldWebRequestCycleProcessor is a subclass of the standard wicket
  * WebRequestCycleProcessor which saves the conversation id of any long-running
  * cornversation in wicket page metadata. It also cleans up the conversation
  * context.

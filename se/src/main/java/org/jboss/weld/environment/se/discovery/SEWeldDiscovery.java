@@ -25,8 +25,8 @@ import java.util.Set;
 import org.jboss.weld.environment.se.util.Reflections;
 
 /**
- * The means by which Web Beans are discovered on the classpath. This will only
- * discover simple web beans - there is no EJB/Servlet/JPA integration.
+ * The means by which beans are discovered on the classpath. This will only
+ * discover simple beans - there is no EJB/Servlet/JPA integration.
  * 
  * @author Peter Royle
  * @author Pete Muir
@@ -45,12 +45,12 @@ public abstract class SEWeldDiscovery
       scan();
    }
 
-   public Iterable<Class<?>> discoverWebBeanClasses()
+   public Iterable<Class<?>> discoverWeldClasses()
    {
       return Collections.unmodifiableSet(wbClasses);
    }
 
-   public Collection<URL> discoverWebBeansXml()
+   public Collection<URL> discoverWeldXml()
    {
       return Collections.unmodifiableSet(wbUrls);
    }

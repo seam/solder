@@ -59,17 +59,17 @@ public class WebAppBeanDeploymentArchive implements BeanDeploymentArchive
       scan(servletContext);
    }
    
-   public Iterable<Class<?>> discoverWebBeanClasses()
+   public Iterable<Class<?>> discoverWeldClasses()
    {
       return Collections.unmodifiableSet(classes);
    }
    
-   public Iterable<URL> discoverWebBeansXml()
+   public Iterable<URL> discoverWeldXml()
    {
       return Collections.unmodifiableSet(beansXml);
    }
    
-   public Set<URL> getWbUrls()
+   public Set<URL> getWeldUrls()
    {
       return beansXml;
    }
@@ -83,7 +83,7 @@ public class WebAppBeanDeploymentArchive implements BeanDeploymentArchive
          URL beans = servletContext.getResource(WEB_INF_BEANS_XML);
          if (beans != null)
          {
-       	   beansXml.add(beans); // this is consistent with how the JBoss webbeans.deployer works
+       	   beansXml.add(beans); // this is consistent with how the JBoss weld.deployer works
             File webInfClasses = Servlets.getRealFile(servletContext, WEB_INF_CLASSES);
             if (webInfClasses != null)
             {

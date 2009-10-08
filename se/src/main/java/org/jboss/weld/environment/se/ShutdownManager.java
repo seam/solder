@@ -65,7 +65,7 @@ public class ShutdownManager
    }
 
    /**
-    * Shutdown WebBeans SE gracefully (call this as an alternative to firing the
+    * Shutdown Weld SE gracefully (call this as an alternative to firing the
     * "@Shutdown Manager" event.
     */
    public void shutdown() 

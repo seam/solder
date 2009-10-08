@@ -22,18 +22,15 @@
  */
 package org.jboss.weld.environment.tomcat;
 
-import javax.el.ELContextListener;
-import javax.el.ELResolver;
 import javax.el.ExpressionFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
 
 import org.apache.jasper.runtime.JspApplicationContextImpl;
-import org.jboss.weld.environment.tomcat.util.Reflections;
 
 /**
- * The Web Beans JSP initialization listener
+ * The Weld JSP initialization listener
  * 
  * 
  * @author Pete Muir
@@ -42,14 +39,14 @@ import org.jboss.weld.environment.tomcat.util.Reflections;
 public class JspInitialization
 {
    
-   private static final String EXPRESSION_FACTORY_NAME = "org.jboss.webbeans.el.ExpressionFactory";
+   private static final String EXPRESSION_FACTORY_NAME = "org.jboss.weld.el.ExpressionFactory";
    
-   private static class WebBeansJspApplicationContextImpl extends ForwardingJspApplicationContextImpl
+   private static class WeldJspApplicationContextImpl extends ForwardingJspApplicationContextImpl
    {
       private final JspApplicationContextImpl delegate;
       private final ExpressionFactory expressionFactory;
       
-      public WebBeansJspApplicationContextImpl(JspApplicationContextImpl delegate, ExpressionFactory expressionFactory)
+      public WeldJspApplicationContextImpl(JspApplicationContextImpl delegate, ExpressionFactory expressionFactory)
       {
          this.delegate = delegate;
          this.expressionFactory = expressionFactory;
@@ -78,7 +75,7 @@ public class JspInitialization
       {
          ExpressionFactory expressionFactory = (ExpressionFactory) context.getAttribute(EXPRESSION_FACTORY_NAME);
          // Hack into JBoss Web/Catalina to replace the ExpressionFactory
-         JspApplicationContextImpl wrappedJspApplicationContextImpl = new WebBeansJspApplicationContextImpl(JspApplicationContextImpl.getInstance(context), expressionFactory);
+         JspApplicationContextImpl wrappedJspApplicationContextImpl = new WeldJspApplicationContextImpl(JspApplicationContextImpl.getInstance(context), expressionFactory);
          context.setAttribute(JspApplicationContextImpl.class.getName(), wrappedJspApplicationContextImpl);
       }
       // otherwise something went wrong starting WB, so don't register with JSP
