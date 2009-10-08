@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.webbeans.xsd;
+package org.jboss.weld.xsd;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,10 +37,13 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.util.ElementFilter;
 
-import org.jboss.webbeans.xsd.model.ClassModel;
-import org.jboss.webbeans.xsd.model.ConstructorModel;
-import org.jboss.webbeans.xsd.model.FieldModel;
-import org.jboss.webbeans.xsd.model.MethodModel;
+import org.dom4j.DocumentException;
+import org.jboss.weld.log.LogProvider;
+import org.jboss.weld.log.Logging;
+import org.jboss.weld.xsd.model.ClassModel;
+import org.jboss.weld.xsd.model.ConstructorModel;
+import org.jboss.weld.xsd.model.FieldModel;
+import org.jboss.weld.xsd.model.MethodModel;
 
 /**
  * An annotation processor that updates the package-level XSD for the packages

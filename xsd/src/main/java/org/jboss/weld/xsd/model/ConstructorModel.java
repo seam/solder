@@ -15,63 +15,56 @@
  * limitations under the License.
  */
 
-package org.jboss.webbeans.xsd.model;
+package org.jboss.weld.xsd.model;
 
-import org.jboss.webbeans.xsd.NamespaceHandler;
+import javax.lang.model.element.ExecutableElement;
+
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+import org.jboss.weld.xsd.NamespaceHandler;
 
 /**
- * A superclass for named models
+ * The model of a method
  * 
  * @author Nicklas Karlsson
- * 
+ *
  */
-public class NamedModel
+public class ConstructorModel extends MethodModel
 {
-   protected String name;
 
-   protected NamedModel(String name)
+   protected ConstructorModel(ExecutableElement executableElement)
    {
-      this.name = name;
+      super(executableElement);
+      name = null;
    }
 
-   public static NamedModel of(String name)
+   public static ConstructorModel of(ExecutableElement executableElement)
    {
-      return new NamedModel(name);
-   }
-
-   public String getName()
-   {
-      return name;
-   }
-
-   public void setName(String name)
-   {
-      this.name = name;
-   }
-
-   @Override
-   public String toString()
-   {
-      return name;
+      return new ConstructorModel(executableElement);
    }
 
    @Override
    public boolean equals(Object other)
    {
-      NamedModel otherNamed = (NamedModel) other;
-      return name.equals(otherNamed.getName());
+      ConstructorModel otherModel = (ConstructorModel) other;
+      return parameters.equals(otherModel.getParameters());
    }
 
    @Override
    public int hashCode()
    {
-      return name.hashCode();
+      return parameters.hashCode();
    }
 
+   @Override
    public Element toXSD(NamespaceHandler namespaceHandler)
    {
-      Element item = DocumentFactory.getInstance().createElement("xs:element");
-      item.addAttribute("name", name);
-      return item;
+      Element constructor = DocumentFactory.getInstance().createElement("xs:sequence");
+      for (TypedModel parameter : parameters)
+      {
+         constructor.add(parameter.toXSD(namespaceHandler));
+      }
+      return constructor;
    }
+
 }

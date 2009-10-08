@@ -1,4 +1,4 @@
-package org.jboss.webbeans.xsd.test;
+package org.jboss.weld.xsd.test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
 
-import org.jboss.webbeans.xsd.PackageSchemaGenerator;
+import org.jboss.weld.xsd.PackageSchemaGenerator;
 
 public class Test
 {

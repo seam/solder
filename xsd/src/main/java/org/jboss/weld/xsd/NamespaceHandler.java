@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.webbeans.xsd;
+package org.jboss.weld.xsd;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.stream.events.Namespace;
+import org.dom4j.Namespace;
 
 /**
  * Helper for generating and keeping track of namespaces in a schema

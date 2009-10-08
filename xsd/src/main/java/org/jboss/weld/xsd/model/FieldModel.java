@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package org.jboss.webbeans.xsd.model;
+package org.jboss.weld.xsd.model;
 
 import javax.lang.model.element.Element;
 
-import org.jboss.webbeans.xsd.NamespaceHandler;
+import org.jboss.weld.xsd.NamespaceHandler;
 
 /**
  * The model of a field

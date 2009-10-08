@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.webbeans.xsd;
+package org.jboss.weld.xsd;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,12 +29,20 @@ import javax.annotation.processing.Filer;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.StandardLocation;
-import javax.xml.stream.events.Namespace;
 
-import org.jboss.webbeans.xsd.model.ClassModel;
-import org.jboss.webbeans.xsd.model.TypedModel;
-
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentFactory;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+import org.jboss.weld.xsd.model.ClassModel;
+import org.jboss.weld.xsd.model.TypedModel;
 
 /**
  * A schema representation

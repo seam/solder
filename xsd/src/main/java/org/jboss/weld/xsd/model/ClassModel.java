@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.webbeans.xsd.model;
+package org.jboss.weld.xsd.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,7 +26,9 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
-import org.jboss.webbeans.xsd.NamespaceHandler;
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+import org.jboss.weld.xsd.NamespaceHandler;
 
 /**
  * A model of a class
