@@ -12,12 +12,12 @@
    </listener>
    
    <listener>
-      <listener-class>org.jboss.webbeans.environment.servlet.Listener</listener-class>
+      <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
    </listener>
    
    <servlet>
       <servlet-name>Rat Servlet</servlet-name>
-      <servlet-class>org.jboss.webbeans.test.tomcat.lookup.RatServlet</servlet-class>
+      <servlet-class>org.jboss.weld.test.tomcat.lookup.RatServlet</servlet-class>
    </servlet>
    
    <servlet-mapping>
