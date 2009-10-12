@@ -28,6 +28,11 @@
       
    </developers>
    
+   <organization>
+      <name>Seam Framework</name>
+      <url>http://seamframework.org</url>
+   </organization>
+   
    <ciManagement>
       <system>Hudson</system>
       <url />
