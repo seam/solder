@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.jboss.weld</groupId>
+   <artifactId>weld-extensions-parent</artifactId>
+   <packaging>pom</packaging>
+   <parent>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-extensions-bom</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <relativePath>../bom</relativePath>
+   </parent>
+
+   <name>Weld Extensions parent</name>
+   
+   <description>Parent POM for Weld Extensions modules, inherited by all Weld Extensions projects.</description>
+   
+   <!-- Metadata -->
+   <url>http://www.seamframework.org/Weld</url>
+
+   <developers>
+   
+      <developer>
+         <name>Pete Muir</name>
+         <email>pete.muir@jboss.org</email>
+         <organization>Red Hat Inc.</organization>
+         <url>http://in.relation.to/Bloggers/Pete</url>
+      </developer>
+      
+   </developers>
+   
+   <ciManagement>
+      <system>Hudson</system>
+      <url />
+   </ciManagement>
+
+   <issueManagement>
+      <system>JIRA</system>
+      <url>http://jira.jboss.org/browse/WELDX</url>
+   </issueManagement>
+
+   <inceptionYear>2008</inceptionYear>
+
+   <licenses>
+      <license>
+         <name>Apache License, Version 2.0</name>
+         <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      </license>
+   </licenses>
+   
+   <properties>
+      <!-- Testing deps -->
+      <testng.version>5.9</testng.version>
+      <jboss.test.harness.version>1.1.0-SNAPSHOT</jboss.test.harness.version>
+      <apache.httpclient.version>3.1</apache.httpclient.version>
+      <junit.version>4.7</junit.version>
+      <htmlunit.version>2.4</htmlunit.version>
+      
+      <!-- Force encoding to UTF-8 (bug on OS X) -->
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+   </properties>
+   
+   <!-- Set up local dependecies -->
+   
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness-jboss-as-50</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness-jboss-as-52</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness-jboss-embedded</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness-tomcat</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
+</project>

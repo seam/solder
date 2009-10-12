@@ -1,0 +1,176 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.jboss.weld</groupId>
+   <artifactId>weld-extensions-bom</artifactId>
+   <packaging>pom</packaging>
+   <version>1.0.0-SNAPSHOT</version>
+   
+   <parent>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-parent</artifactId>
+      <version>1-SNAPSHOT</version>
+   </parent>
+
+   <name>Weld Extensions BOM</name>
+   <url>http://www.seamframework.org/Weld</url>
+
+   <!-- Minimal project metadata, for more see parent/pom.xml -->
+   <description>Weld Extensions "bill of materials" which can be imported by any project using the Weld Extensions. It provides dependency management for the extensions.</description>
+
+   <licenses>
+      <license>
+         <name>Apache License, Version 2.0</name>
+         <distribution>repo</distribution>
+         <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      </license>
+   </licenses>
+
+   <developers>
+      <developer>
+         <name>Weld committers</name>
+      </developer>
+   </developers>
+
+  <properties>
+      <weld.api.version>1.0-SNAPSHOT</weld.api.version>
+      <weld.core.version>1.0.0-SNAPSHOT</weld.core.version>
+      <!-- Use JSF 2 for all extensions support, despite core using JSF 1.2 -->
+      <jsf.version>2.0.0-RC</jsf.version>
+      <weld.wicket.version>1.0.0-SNAPSHOT</weld.wicket.version>
+      <wicket.version>[1.4.1, 1.5)</wicket.version>
+      <jboss.test.harness.version>1.1.0-SNAPSHOT</jboss.test.harness.version>
+   </properties>
+   
+   <!-- Dependency management, including extra repositories if needed -->
+   <repositories>
+      <repository>
+         <id>repository.jboss.org</id>
+         <name>JBoss Release Repository</name>
+         <url>http://repository.jboss.org/maven2</url>
+         <releases>
+            <enabled>true</enabled>
+         </releases>
+         <snapshots>
+            <enabled>false</enabled>
+         </snapshots>
+      </repository>
+      <repository>
+         <id>snapshots.jboss.org</id>
+         <name>JBoss Snapshots Repository</name>
+         <url>http://snapshots.jboss.org/maven2</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </snapshots>
+      </repository>
+      <repository>
+        <id>oss.sonatype.org/jboss-snapshots</id>
+        <name>JBoss (Nexus) Snapshots Repository</name>
+        <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
+        <releases>
+          <enabled>false</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+          <updatePolicy>never</updatePolicy>
+        </snapshots>
+      </repository>
+   </repositories>
+   
+   <!-- Import the BOMs -->
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-api-bom</artifactId>
+            <version>${weld.api.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-core-bom</artifactId>
+            <version>${weld.core.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>${jsf.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>${jsf.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <classifier>jdk15</classifier>
+            <version>${testng.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket</artifactId>
+            <version>${wicket.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-wicket</artifactId>
+            <version>${weld.wicket.version}</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+   
+   <!-- The release profile -->
+   <profiles>
+      <profile>
+         <id>release</id>
+         <build>
+            <pluginManagement>
+               <plugins>
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <executions>
+                      <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                          <goal>sign</goal>
+                        </goals>
+                      </execution>
+                    </executions>
+                  </plugin>
+               </plugins>
+            </pluginManagement>
+         </build>
+      </profile>
+   </profiles>
+
+   <!-- SCM and distribution management -->
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk/bom</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk/bom</developerConnection>
+      <url>http://fisheye.jboss.org/browse/Weld/extensions</url>
+   </scm>
+
+   <distributionManagement>
+      <repository>
+         <id>oss.sonatype.org/jboss-staging</id>
+         <name>JBoss (Nexus) Release Staging Repository</name>
+         <url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      </repository>
+      <snapshotRepository>
+         <id>oss.sonatype.org/jboss-snapshots</id>
+         <name>JBoss (Nexus) Snapshots Repository</name>
+         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
+      </snapshotRepository>
+   </distributionManagement>
+
+</project>

@@ -2,14 +2,30 @@
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-version-matrix</artifactId>
+      <artifactId>weld-extensions-parent</artifactId>
       <version>1.0.0-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.weld</groupId>
    <artifactId>weld-wicket</artifactId>
-   <version>1.0.0-SNAPSHOT</version>
-   <name>Weld Wicket Integration</name>
+   <name>Weld Wicket support</name>
+   
+   <description>Weld support for Apache Wicket</description>
+   
+   <developers>
+      <developer>
+         <name>Clint Popetz</name>
+         <roles>
+            <role>Module lead</role>
+         </roles>
+      </developer>
+   </developers>
+   
+   <issueManagement>
+      <system>JIRA</system>
+      <url>https://jira.jboss.org/jira/browse/WELDX/component/12312752</url>
+   </issueManagement>
+   
    <dependencies>
 
       <dependency>
@@ -44,25 +60,5 @@
       </dependency>
 
    </dependencies>
-
-   <build>
-      <defaultGoal>install</defaultGoal>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-release-plugin</artifactId>
-            <configuration>
-               <tagBase>https://svn.jboss.org/repos/weld/extensions/tags</tagBase>
-               <autoVersionSubmodules>true</autoVersionSubmodules>
-            </configuration>
-         </plugin>
-      </plugins>
-   </build>
-
-   <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions</developerConnection>
-      <url>http://viewvc.jboss.org/cgi-bin/viewvc.cgi/weld/extensions</url>
-   </scm>
 
 </project>

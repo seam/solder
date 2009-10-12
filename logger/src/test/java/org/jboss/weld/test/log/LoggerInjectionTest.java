@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @author David Allen
  */
 @Artifact
-@Classes(packages = { "org.jboss.webbeans.log", "org.jboss.webbeans.test.log" })
+@Classes(packages = { "org.jboss.weld.log" })
 public class LoggerInjectionTest extends AbstractWeldTest
 {
    @Test
@@ -37,7 +37,7 @@ public class LoggerInjectionTest extends AbstractWeldTest
       Sparrow bird = getCurrentManager().getInstanceByType(Sparrow.class);
       bird.generateLogMessage();
       assert TestAppender.getLastEvent() != null;
-      assert TestAppender.getLastEvent().getLoggerName().equals("org.jboss.webbeans.test.log.Sparrow");
+      assert TestAppender.getLastEvent().getLoggerName().equals("org.jboss.weld.test.log.Sparrow");
    }
    
    @Test
