@@ -78,12 +78,12 @@ public class ExistingBeanDescriberImpl
       
       for (WeldMethod<?, ?> method : clazz.getDeclaredAnnotatedWeldMethods(Produces.class))
       {
-         beans.addMethodProducerBean(createProducerMethodBean(bean, env, (BeanManagerImpl)beanManager, (WeldMethod<T, ?>)method));
+         beans.addMethodProducerBean(createProducerMethodBean(bean, env, (BeanManagerImpl)beanManager, (WeldMethod<T, T>)method));
       }
    
       for (WeldField<?, ?> field : clazz.getDeclaredAnnotatedWeldFields(Produces.class))
       {
-         beans.addFieldProducerBean(createProducerFieldBean(bean, env, (BeanManagerImpl)beanManager, (WeldField<T, ?>)field));
+         beans.addFieldProducerBean(createProducerFieldBean(bean, env, (BeanManagerImpl)beanManager, (WeldField<T, T>)field));
       }
       
       return beans;
@@ -110,9 +110,9 @@ public class ExistingBeanDescriberImpl
    }
    
    private static <T> Bean<T> createProducerMethodBean(AbstractClassBean<T>  declaringBean, 
-         BeanDeployerEnvironment env, BeanManagerImpl beanManager, WeldMethod<T, ?> method)
+         BeanDeployerEnvironment env, BeanManagerImpl beanManager, WeldMethod<T, T> method)
    {
-      ProducerMethod<T> bean = ProducerMethod.of(method, declaringBean, beanManager);
+      ProducerMethod<T, T> bean = ProducerMethod.of(method, declaringBean, beanManager);
       
       //TODO How to get BeanDeployerEnvironment?
       bean.initialize(env);
@@ -121,9 +121,9 @@ public class ExistingBeanDescriberImpl
    
    
    private static <T> Bean<T> createProducerFieldBean(AbstractClassBean<T>  declaringBean, 
-         BeanDeployerEnvironment env, BeanManagerImpl beanManager, WeldField<T, ?> field)
+         BeanDeployerEnvironment env, BeanManagerImpl beanManager, WeldField<T, T> field)
    {
-      ProducerField<T> bean = ProducerField.of(field, declaringBean, beanManager);
+      ProducerField<T, T> bean = ProducerField.of(field, declaringBean, beanManager);
       
       //TODO How to get BeanDeployerEnvironment?
       bean.initialize(env);

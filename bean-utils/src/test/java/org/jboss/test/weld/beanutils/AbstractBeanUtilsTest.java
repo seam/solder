@@ -24,14 +24,12 @@ package org.jboss.test.weld.beanutils;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Map;
-
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.bootstrap.BeanDeployerEnvironment;
 import org.jboss.weld.bootstrap.BeanDeployment;
 import org.jboss.weld.bootstrap.WeldBootstrap;
 import org.jboss.weld.bootstrap.spi.BeanDeploymentArchive;
-import org.jboss.weld.mock.MockEELifecycle;
 
 /**
  * 
@@ -43,7 +41,7 @@ public abstract class AbstractBeanUtilsTest
    /**
     * Contains the web beans deployment
     */
-   MockEELifecycle lifecycle;
+   MockBULifecycle lifecycle;
    
    boolean deployedWebBeans;
 
@@ -54,7 +52,7 @@ public abstract class AbstractBeanUtilsTest
     */
    protected void initialiseEnvironment(Class<?>...classes)
    {
-      lifecycle = new MockEELifecycle();
+      lifecycle = new MockBULifecycle();
       lifecycle.getDeployment().getArchive().setBeanClasses(Arrays.asList(classes));
       lifecycle.initialize();
    }
@@ -103,6 +101,7 @@ public abstract class AbstractBeanUtilsTest
    {
       if (lifecycle == null)
          throw new IllegalStateException("Lifecycle needs to be initialised by calling initialiseEnvironment()");
+
       return lifecycle.getBootstrap().getManager(lifecycle.getDeployment().getArchive());
    }
    

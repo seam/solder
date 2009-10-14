@@ -35,7 +35,6 @@ import org.jboss.weld.introspector.WeldClass;
  */
 public class ExistingSimpleBean<T> extends ManagedBean<T>
 {
-   
    T instance;
    
    /**
@@ -83,7 +82,7 @@ public class ExistingSimpleBean<T> extends ManagedBean<T>
     * @param creationalContext the creational context
     * @return the instance
     */
-   @Override
+   // TODO -- override?
    public T produce(CreationalContext<T> ctx)
    {
       ctx.release();
