@@ -19,13 +19,12 @@ package org.jboss.weld.environment.se;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.BeanManager;
-
 import javax.inject.Inject;
+
 import org.jboss.weld.bootstrap.api.Bootstrap;
+import org.jboss.weld.environment.se.events.Shutdown;
 import org.jboss.weld.log.LogProvider;
 import org.jboss.weld.log.Logging;
-import org.jboss.weld.manager.api.WeldManager;
-import org.jboss.weld.environment.se.events.Shutdown;
 
 @ApplicationScoped
 public class ShutdownManager
@@ -34,7 +33,7 @@ public class ShutdownManager
    private static LogProvider log = Logging.getLogProvider(ShutdownManager.class);
    
    @Inject 
-   private WeldManager manager;
+   private BeanManager manager;
 
    private boolean hasShutdownBeenCalled = false;
    
