@@ -12,7 +12,7 @@
    </listener>
    
    <listener>
-      <listener-class>org.jboss.webbeans.environment.servlet.Listener</listener-class>
+      <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
    </listener>
    
    <servlet>
