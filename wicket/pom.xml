@@ -9,9 +9,9 @@
    <groupId>org.jboss.weld</groupId>
    <artifactId>weld-wicket</artifactId>
    <name>Weld Wicket support</name>
-   
+
    <description>Weld support for Apache Wicket</description>
-   
+
    <developers>
       <developer>
          <name>Clint Popetz</name>
@@ -20,12 +20,12 @@
          </roles>
       </developer>
    </developers>
-   
+
    <issueManagement>
       <system>JIRA</system>
       <url>https://jira.jboss.org/jira/browse/WELDX/component/12312752</url>
    </issueManagement>
-   
+
    <dependencies>
 
       <dependency>
@@ -40,19 +40,30 @@
             </exclusion>
          </exclusions>
       </dependency>
+     
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
       </dependency>
+     
       <dependency>
          <groupId>org.jboss.weld</groupId>
          <artifactId>weld-core</artifactId>
          <scope>provided</scope>
       </dependency>
+      
+      <!-- WELDX-36 -->
+      <dependency>
+         <groupId>javax.portlet</groupId>
+         <artifactId>portlet-api</artifactId>
+         <version>1.0</version>
+      </dependency>
+      
       <dependency>
          <groupId>org.apache.wicket</groupId>
          <artifactId>wicket</artifactId>
       </dependency>
+      
       <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>servlet-api</artifactId>
