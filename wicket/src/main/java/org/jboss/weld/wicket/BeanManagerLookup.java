@@ -21,7 +21,8 @@ public class BeanManagerLookup
     * This is the spec-defined name for the bean manager as registered in JNDI
     * See JSR-299 11.3
     */
-   private static String beanManagerJndiName = "java:comp/BeanManager";
+   // TODO Change to java:comp/BeanManager when JBoss AS supports it
+   private static String beanManagerJndiName = "java:app/BeanManager";
 
    public static void setBeanManagerJndiName(String beanManagerJndiName)
    {

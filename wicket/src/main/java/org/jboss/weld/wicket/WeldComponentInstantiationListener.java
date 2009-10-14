@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.application.IComponentInstantiationListener;
+import org.jboss.weld.wicket.util.NonContextual;
 
 /**
  * This listener uses the BeanManager to handle injections for all wicket components.
@@ -14,8 +15,9 @@ import org.apache.wicket.application.IComponentInstantiationListener;
  */
 public class WeldComponentInstantiationListener implements IComponentInstantiationListener
 {
+   
 	@Inject
-   BeanManager manager;
+   private BeanManager manager;
 	
    public void onInstantiation(Component component)
    {
@@ -24,8 +26,8 @@ public class WeldComponentInstantiationListener implements IComponentInstantiati
        */
       if (manager != null)
       {
-         manager.createInjectionTarget(manager.createAnnotatedType((Class) component.getClass()))
-            .inject(component, manager.createCreationalContext(null));
+         // TODO Cache the NonContextual!
+         new NonContextual<Component>(manager, component.getClass()).existingInstance(component).inject();
       }
    }
 }

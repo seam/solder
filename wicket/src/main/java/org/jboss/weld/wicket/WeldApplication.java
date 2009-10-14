@@ -1,13 +1,5 @@
 package org.jboss.weld.wicket;
 
-import java.lang.reflect.Type;
-import java.util.Set;
-
-import javax.enterprise.inject.AmbiguousResolutionException;
-import javax.enterprise.inject.UnsatisfiedResolutionException;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
-
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Response;
@@ -15,6 +7,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.request.IRequestCycleProcessor;
+import org.jboss.weld.wicket.util.NonContextual;
 
 /**
  * A convenience subclass of wicket's WebApplication which adds the hooks
@@ -27,6 +20,7 @@ import org.apache.wicket.request.IRequestCycleProcessor;
  * Weld, or your subclasses of those classes.
  * 
  * @author cpopetz
+ * @author pmuir
  * 
  * @see WebApplication
  * @see WeldWebRequestCycleProcessor
@@ -35,30 +29,15 @@ import org.apache.wicket.request.IRequestCycleProcessor;
 public abstract class WeldApplication extends WebApplication
 {
    
-   private <T> T getInstanceByType(Class<T> beanType)
-   {
-      BeanManager manager = BeanManagerLookup.getBeanManager();
-      Bean<T> bean = (Bean<T>) ensureUniqueBean(beanType, manager.getBeans(beanType));
-      return (T) manager.getReference(bean, beanType, manager.createCreationalContext(bean));
-   }
-   
-   private static Bean<?> ensureUniqueBean(Type type, Set<Bean<?>> beans)
-   {
-      if (beans.size() == 0)
-      {
-         throw new UnsatisfiedResolutionException("Unable to resolve any Web Beans of " + type);
-      }
-      else if (beans.size() > 1)
-      {
-         throw new AmbiguousResolutionException("More than one bean available for type " + type);
-      }
-      return beans.iterator().next();
-   }
+   private final NonContextual<WeldComponentInstantiationListener> weldComponentInstantiationListener;
+   private final NonContextual<WeldWebRequestCycleProcessor> weldWebRequestCycleProcessor;
 
    /**
     */
    public WeldApplication()
    {
+      this.weldComponentInstantiationListener = new NonContextual<WeldComponentInstantiationListener>(BeanManagerLookup.getBeanManager(), WeldComponentInstantiationListener.class);
+      this.weldWebRequestCycleProcessor = new NonContextual<WeldWebRequestCycleProcessor>(BeanManagerLookup.getBeanManager(), WeldWebRequestCycleProcessor.class);
    }
 
    /**
@@ -66,10 +45,11 @@ public abstract class WeldApplication extends WebApplication
     * 
     * @see WeldComponentInstantiationListener
     */
+   @Override
    protected void internalInit() 
    {
       super.internalInit();
-      addComponentInstantiationListener(getInstanceByType(WeldComponentInstantiationListener.class));
+      addComponentInstantiationListener(weldComponentInstantiationListener.newInstance().produce().inject().get());
    }
 
 
@@ -81,7 +61,7 @@ public abstract class WeldApplication extends WebApplication
    @Override
    protected IRequestCycleProcessor newRequestCycleProcessor()
    {
-      return getInstanceByType(WeldWebRequestCycleProcessor.class);
+      return weldWebRequestCycleProcessor.newInstance().produce().inject().get();
    }
 
    /**
