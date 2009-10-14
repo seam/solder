@@ -19,14 +19,12 @@
          <groupId>org.jboss.weld.servlet</groupId>
          <artifactId>weld-servlet-int</artifactId>
          <optional>true</optional>
-         <version>${project.version}</version>
       </dependency>
       
       <dependency>
          <groupId>org.jboss.weld</groupId>
          <artifactId>weld-core</artifactId>
          <optional>true</optional>
-         <version>1.0.0-SNAPSHOT</version>
       </dependency>
       
       <dependency>
