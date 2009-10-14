@@ -23,7 +23,6 @@ import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
-import org.jboss.weld.manager.api.WeldManager;
 import org.jboss.weld.environment.servlet.util.Reflections;
 
 /**
@@ -37,61 +36,62 @@ public class WeldApplication extends ForwardingApplication
    
    private final Application application;
    private ExpressionFactory expressionFactory;
+   private BeanManager beanManager;
    
    public WeldApplication(Application application)
    {
       this.application = application;
-      BeanManager beanManager = getBeanManager();
-      if (beanManager != null)
+   }
+   
+   private void init()
+   {
+      if (expressionFactory == null && application.getExpressionFactory() != null && beanManager() != null)
       {
          application.addELContextListener(Reflections.<ELContextListener>newInstance("org.jboss.weld.el.WeldELContextListener"));
-         application.addELResolver(beanManager.getELResolver());
+         application.addELResolver(beanManager().getELResolver());
+         this.expressionFactory = beanManager().wrapExpressionFactory(application.getExpressionFactory());
       }
    }
 
    @Override
    protected Application delegate()
    {
+      init();
       return application;
    }
    
    @Override
    public ExpressionFactory getExpressionFactory()
    {
-      // Application is multi-threaded, but no need to guard against races (re-
-      // creating the cached expression factory doesn't matter) or liveness
-      // (the value read by all threads will be the same)
-      // We have to do this lazily as Mojarra hasn't set the ExpressionFactory
-      // when the object is created
-      if (this.expressionFactory == null)
+      init();
+      if (expressionFactory == null)
       {
-         BeanManager beanManager = getBeanManager();
-         if (beanManager != null)
-         {
-            this.expressionFactory = beanManager.wrapExpressionFactory(delegate().getExpressionFactory());
-         }
-         else
-         {
-            // WB failed to initialize properly
-            this.expressionFactory = delegate().getExpressionFactory(); 
-         }
+         return application.getExpressionFactory();
       }
-      return expressionFactory;
+      else
+      {
+         return expressionFactory;
+      }
    }
    
-   private static WeldManager getBeanManager()
+   private BeanManager beanManager()
    {
-      FacesContext facesContext = FacesContext.getCurrentInstance();
-      if (!(facesContext.getExternalContext().getContext() instanceof ServletContext))
+      if (beanManager == null)
       {
-         throw new IllegalStateException("Not in a servlet environment!");
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         if (!(facesContext.getExternalContext().getContext() instanceof ServletContext))
+         {
+            throw new IllegalStateException("Not in a servlet environment!");
+         }
+         ServletContext ctx = (ServletContext) facesContext.getExternalContext().getContext();
+         if (ctx.getAttribute(BeanManager.class.getName()) == null)
+         {
+            return null;
+         }
+         this.beanManager = (BeanManager) ctx.getAttribute(BeanManager.class.getName());
       }
-      ServletContext ctx = (ServletContext) facesContext.getExternalContext().getContext();
-      if (ctx.getAttribute(BeanManager.class.getName()) == null)
-      {
-         throw new IllegalStateException("BeanManager has not been pushed into the ServletContext");
-      }
-      return (WeldManager) ctx.getAttribute(BeanManager.class.getName());
+      return beanManager;
+      
    }
 
 }
