@@ -26,6 +26,11 @@ import org.jboss.weld.bootstrap.api.Bootstrap;
 import org.jboss.weld.bootstrap.api.Environments;
 import org.jboss.weld.context.api.BeanStore;
 import org.jboss.weld.context.api.helpers.ConcurrentHashMapBeanStore;
+import org.jboss.weld.environment.servlet.deployment.ServletDeployment;
+import org.jboss.weld.environment.servlet.services.ServletResourceInjectionServices;
+import org.jboss.weld.environment.servlet.services.ServletServicesImpl;
+import org.jboss.weld.environment.servlet.util.Reflections;
+import org.jboss.weld.environment.tomcat.WeldAnnotationProcessor;
 import org.jboss.weld.injection.spi.ResourceInjectionServices;
 import org.jboss.weld.log.Log;
 import org.jboss.weld.log.Logging;
@@ -33,11 +38,6 @@ import org.jboss.weld.manager.api.WeldManager;
 import org.jboss.weld.servlet.api.ServletListener;
 import org.jboss.weld.servlet.api.ServletServices;
 import org.jboss.weld.servlet.api.helpers.ForwardingServletListener;
-import org.jboss.weld.environment.servlet.deployment.ServletDeployment;
-import org.jboss.weld.environment.servlet.services.ServletResourceInjectionServices;
-import org.jboss.weld.environment.servlet.services.ServletServicesImpl;
-import org.jboss.weld.environment.servlet.util.Reflections;
-import org.jboss.weld.environment.tomcat.WeldAnnotationProcessor;
 
 /**
  * @author Pete Muir
@@ -79,6 +79,8 @@ public class Listener extends ForwardingServletListener
    public void contextDestroyed(ServletContextEvent sce)
    {
       bootstrap.shutdown();
+      sce.getServletContext().removeAttribute(BeanManager.class.getName());
+      sce.getServletContext().removeAttribute(WeldAnnotationProcessor.class.getName());
       super.contextDestroyed(sce);
    }
 
