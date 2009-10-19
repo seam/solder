@@ -29,15 +29,13 @@ import org.jboss.weld.wicket.util.NonContextual;
 public abstract class WeldApplication extends WebApplication
 {
    
-   private final NonContextual<WeldComponentInstantiationListener> weldComponentInstantiationListener;
-   private final NonContextual<WeldWebRequestCycleProcessor> weldWebRequestCycleProcessor;
+   private NonContextual<WeldComponentInstantiationListener> weldComponentInstantiationListener;
+   private NonContextual<WeldWebRequestCycleProcessor> weldWebRequestCycleProcessor;
 
    /**
     */
    public WeldApplication()
    {
-      this.weldComponentInstantiationListener = new NonContextual<WeldComponentInstantiationListener>(BeanManagerLookup.getBeanManager(), WeldComponentInstantiationListener.class);
-      this.weldWebRequestCycleProcessor = new NonContextual<WeldWebRequestCycleProcessor>(BeanManagerLookup.getBeanManager(), WeldWebRequestCycleProcessor.class);
    }
 
    /**
@@ -49,6 +47,8 @@ public abstract class WeldApplication extends WebApplication
    protected void internalInit() 
    {
       super.internalInit();
+      this.weldComponentInstantiationListener = new NonContextual<WeldComponentInstantiationListener>(BeanManagerLookup.getBeanManager(), WeldComponentInstantiationListener.class);
+      this.weldWebRequestCycleProcessor = new NonContextual<WeldWebRequestCycleProcessor>(BeanManagerLookup.getBeanManager(), WeldWebRequestCycleProcessor.class);
       addComponentInstantiationListener(weldComponentInstantiationListener.newInstance().produce().inject().get());
    }
 

@@ -21,12 +21,12 @@ import org.apache.wicket.request.target.component.IPageRequestTarget;
 import org.jboss.weld.Container;
 import org.jboss.weld.context.ContextLifecycle;
 import org.jboss.weld.context.ConversationContext;
+import org.jboss.weld.conversation.ConversationImpl;
 import org.jboss.weld.conversation.ConversationManager;
 import org.jboss.weld.servlet.ConversationBeanStore;
 
 /**
- * WeldRequestCycle is a subclass of the standard wicket WebRequestCycle
- * which:
+ * WeldRequestCycle is a subclass of the standard wicket WebRequestCycle which:
  * <ul>
  * <li>restores long-running conversations specified in wicket page metadata
  * when a page target is first used.
@@ -34,12 +34,13 @@ import org.jboss.weld.servlet.ConversationBeanStore;
  * the above metadata
  * <li>propagates long running conversations across redirects through the use of
  * a request parameter if the redirect is handled with a BookmarkablePageRequest
- * <li>Sets up the conversational context
+ * <li>Sets up the conversational context when the request target is set
+ * <li>Tears down the conversation context on detach() of the RequestCycle
  * </ul>
  * 
- * @see WeldWebRequestCycleProcessor Which handles propogation of
- *      conversation data for newly-started long running conversations, by
- *      storing their ids in the page metadata
+ * @see WeldWebRequestCycleProcessor Which handles propogation of conversation
+ *      data for newly-started long running conversations, by storing their ids
+ *      in the page metadata
  * @author cpopetz
  * 
  */
@@ -82,18 +83,19 @@ public class WeldRequestCycle extends WebRequestCycle
 
       BeanManager manager = BeanManagerLookup.getBeanManager();
       
-      Conversation conversation = getInstanceByType(manager, Conversation.class);
+      ConversationImpl conversation = (ConversationImpl) getInstanceByType(manager,
+            Conversation.class);
 
-      // restore a conversation if it exists
-      if (specifiedCid != null)
+      // restore a conversation if it exists and we aren't already in it
+      if (specifiedCid != null
+            && (conversation == null || !specifiedCid.equals(conversation.getUnderlyingId())))
       {
-         // Restore this conversation
          getInstanceByType(manager, ConversationManager.class).beginOrRestoreConversation(specifiedCid);
       }
 
       // handle propagation of existing long running converstaions to new
       // targets
-      if (conversation.isLongRunning())
+      if (!conversation.isTransient())
       {
          // Note that we can't propagate conversations with other redirect
          // targets like RequestRedirectTarget through this mechanism, because
@@ -105,14 +107,14 @@ public class WeldRequestCycle extends WebRequestCycle
             BookmarkablePageRequestTarget bookmark = (BookmarkablePageRequestTarget) target;
             // if a cid has already been specified, don't override it
             if (!bookmark.getPageParameters().containsKey("cid"))
-               bookmark.getPageParameters().add("cid", conversation.getId());
+               bookmark.getPageParameters().add("cid", conversation.getUnderlyingId());
          }
 
          // If we have a target page, propagate the conversation to the page's
          // metadata
          if (page != null)
          {
-            page.setMetaData(WeldMetaData.CID, conversation.getId());
+            page.setMetaData(WeldMetaData.CID, conversation.getUnderlyingId());
          }
       }
 
@@ -122,7 +124,7 @@ public class WeldRequestCycle extends WebRequestCycle
       if (!conversationContext.isActive())
       {
          conversationContext.setBeanStore(new ConversationBeanStore(((WebRequest) request)
-               .getHttpServletRequest().getSession(), conversation.getId()));
+               .getHttpServletRequest().getSession(), conversation.getUnderlyingId()));
          conversationContext.setActive(true);
       }
    }
@@ -145,6 +147,22 @@ public class WeldRequestCycle extends WebRequestCycle
          throw new AmbiguousResolutionException("More than one bean available for type " + type);
       }
       return beans.iterator().next();
+   }
+   
+   @Override
+   public void detach()
+   {
+      super.detach();
+      ConversationContext conversationContext = Container.instance().deploymentServices().get(
+            ContextLifecycle.class).getConversationContext();
+      // cleanup and deactivate the conversation context
+      if (conversationContext.isActive())
+      {
+         ConversationManager conversationManager = getInstanceByType(BeanManagerLookup
+            .getBeanManager(), ConversationManager.class);
+         conversationManager.cleanupConversation();
+         conversationContext.setActive(false);
+      }
    }
 
 }

@@ -6,16 +6,11 @@ import javax.inject.Inject;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
-import org.jboss.weld.Container;
-import org.jboss.weld.context.ContextLifecycle;
-import org.jboss.weld.context.ConversationContext;
-import org.jboss.weld.conversation.ConversationManager;
 
 /**
  * WeldWebRequestCycleProcessor is a subclass of the standard wicket
  * WebRequestCycleProcessor which saves the conversation id of any long-running
- * cornversation in wicket page metadata. It also cleans up the conversation
- * context.
+ * cornversation in wicket page metadata.
  * 
  * @author cpopetz
  * 
@@ -24,8 +19,6 @@ public class WeldWebRequestCycleProcessor extends WebRequestCycleProcessor
 {
    @Inject
    Conversation conversation;
-   @Inject
-   ConversationManager conversationManager;
    
    /**
     * If a long running conversation has been started, store its id into page
@@ -35,7 +28,7 @@ public class WeldWebRequestCycleProcessor extends WebRequestCycleProcessor
    public void respond(RequestCycle requestCycle)
    {
       super.respond(requestCycle);
-      if (conversation.isLongRunning())
+      if (!conversation.isTransient())
       {
          Page page = RequestCycle.get().getResponsePage();
          if (page != null)
@@ -44,11 +37,5 @@ public class WeldWebRequestCycleProcessor extends WebRequestCycleProcessor
          }
       }
       
-      //cleanup and deactivate the conversation context
-      conversationManager.cleanupConversation();
-      
-      ConversationContext conversationContext = Container.instance().deploymentServices().get(
-            ContextLifecycle.class).getConversationContext();
-      conversationContext.setActive(false);
    }
 }
