@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.environment.se.test;
 
-import javax.enterprise.inject.AnnotationLiteral;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.util.AnnotationLiteral;
 
 import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.events.Shutdown;
