@@ -78,9 +78,8 @@
          <artifactId>jsr250-api</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.jboss.slf4j</groupId>
-         <artifactId>slf4j-jboss-logging</artifactId>
-         <version>1.0.2.GA</version>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
       </dependency>
    </dependencies>
 
