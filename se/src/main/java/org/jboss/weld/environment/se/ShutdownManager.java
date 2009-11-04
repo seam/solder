@@ -20,17 +20,16 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
-
 import org.jboss.weld.bootstrap.api.Bootstrap;
 import org.jboss.weld.environment.se.events.Shutdown;
-import org.jboss.weld.log.LogProvider;
-import org.jboss.weld.log.Logging;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class ShutdownManager
 {
    
-   private static LogProvider log = Logging.getLogProvider(ShutdownManager.class);
+   private static Logger log = LoggerFactory.getLogger(ShutdownManager.class);
    
    @Inject 
    private BeanManager manager;
@@ -58,7 +57,8 @@ public class ShutdownManager
          else
          {
             log.debug("Skipping spurious call to shutdown");
-            log.trace(Thread.currentThread().getStackTrace());
+            log.trace("Spurious call to shutdown located at: ",
+                    Thread.currentThread().getStackTrace());
          }
       }
    }

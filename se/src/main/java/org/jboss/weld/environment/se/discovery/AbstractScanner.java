@@ -17,9 +17,8 @@
 package org.jboss.weld.environment.se.discovery;
 
 import java.net.URL;
-
-import org.jboss.weld.log.LogProvider;
-import org.jboss.weld.log.Logging;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base class for {@link Scanner} providing common functionality
@@ -32,7 +31,7 @@ import org.jboss.weld.log.Logging;
 public abstract class AbstractScanner implements Scanner
 {
 
-   private static final LogProvider log = Logging.getLogProvider(Scanner.class);
+   private static final Logger log = LoggerFactory.getLogger(Scanner.class);
    private final ClassLoader classLoader;
    private final SEWeldDiscovery webBeanDiscovery;
 
