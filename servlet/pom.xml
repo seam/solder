@@ -37,13 +37,13 @@
             <role>Project Lead</role>
          </roles>
          <email>pete.muir@jboss.org</email>
-         <organization>Red Hat Inc.</organization>
+         <organization>Red Hat, Inc.</organization>
          <url>http://in.relation.to/Bloggers/Pete</url>
       </developer>
       <developer>
          <name>Dan Allen</name>
-         <organization>Red Hat Inc.</organization>
-         <url>http://in.relation.to/Bloggers/Pete</url>
+         <organization>Red Hat, Inc.</organization>
+         <url>http://in.relation.to/Bloggers/Dan</url>
       </developer>
    </developers>
    
