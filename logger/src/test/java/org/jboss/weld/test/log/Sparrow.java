@@ -2,13 +2,12 @@ package org.jboss.weld.test.log;
 
 import javax.inject.Inject;
 
-import org.jboss.weld.log.Log;
-import org.jboss.weld.log.Logger;
+import org.slf4j.Logger;
 
 class Sparrow
 {
-   @Inject @Logger
-   private Log log;
+   @Inject
+   private Logger log;
    
    public void generateLogMessage()
    {

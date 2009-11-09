@@ -11,22 +11,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.enterprise.util.Nonbinding;
-import javax.inject.Qualifier;
 
 /**
- * Injects a log
+ * Specifies a Category for the injected logger
  * 
  * @author Gavin King
  */
 @Target({METHOD, FIELD, PARAMETER, TYPE})
 @Retention(RUNTIME)
 @Documented
-@Qualifier
-public @interface Logger 
+public @interface Category 
 {
    /**
     * @return the log category
     */
    @Nonbinding
-   String value() default "";
+   String value();
 }

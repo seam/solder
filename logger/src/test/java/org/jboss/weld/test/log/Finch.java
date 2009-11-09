@@ -2,13 +2,13 @@ package org.jboss.weld.test.log;
 
 import javax.inject.Inject;
 
-import org.jboss.weld.log.Log;
-import org.jboss.weld.log.Logger;
+import org.jboss.weld.log.Category;
+import org.slf4j.Logger;
 
 public class Finch
 {
-   @Inject @Logger("Finch")
-   private Log log;
+   @Inject @Category("Finch")
+   private Logger log;
    
    public void generateLogMessage()
    {

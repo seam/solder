@@ -20,6 +20,9 @@ package org.jboss.weld.log;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The <code>LoggerProducer</code> provides a producer method for all
  * @Logger annotated log objects.  Each logger is application scoped
@@ -31,21 +34,19 @@ import javax.enterprise.inject.spi.InjectionPoint;
  */
 public class LoggerProducer
 {
-   @Produces @Logger
-   public Log produceLog(InjectionPoint injectionPoint)
+   
+   @Produces
+   public Logger produceLog(InjectionPoint injectionPoint)
    {
-      Log log = null;
-      String category = null;
-      
-      category = injectionPoint.getAnnotated().getAnnotation(Logger.class).value();
-      if (category.length() == 0)
+      if (injectionPoint.getAnnotated().isAnnotationPresent(Category.class))
       {
-         log = Logging.getLog((Class<?>) injectionPoint.getMember().getDeclaringClass());
+         String category = injectionPoint.getAnnotated().getAnnotation(Category.class).value();
+         return LoggerFactory.getLogger(category);
       }
       else
       {
-         log = Logging.getLog(category);
+         return LoggerFactory.getLogger(injectionPoint.getMember().getDeclaringClass());
       }
-      return log;
    }
+   
 }
