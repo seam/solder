@@ -197,12 +197,6 @@
                                  <overWrite>true</overWrite>
                                  <outputDirectory>${project.build.directory}/dependency/lib</outputDirectory>
                               </artifactItem>
-                              <artifactItem>
-                                 <groupId>log4j</groupId>
-                                 <artifactId>log4j</artifactId>
-                                 <overWrite>true</overWrite>
-                                 <outputDirectory>${project.build.directory}/dependency/lib</outputDirectory>
-                              </artifactItem>
                            </artifactItems>
                         </configuration>
                      </execution>
