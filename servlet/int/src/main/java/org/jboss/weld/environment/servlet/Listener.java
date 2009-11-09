@@ -17,7 +17,6 @@
 package org.jboss.weld.environment.servlet;
 
 import javax.el.ELContextListener;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
@@ -32,19 +31,19 @@ import org.jboss.weld.environment.servlet.services.ServletServicesImpl;
 import org.jboss.weld.environment.servlet.util.Reflections;
 import org.jboss.weld.environment.tomcat.WeldAnnotationProcessor;
 import org.jboss.weld.injection.spi.ResourceInjectionServices;
-import org.jboss.weld.log.Log;
-import org.jboss.weld.log.Logging;
 import org.jboss.weld.manager.api.WeldManager;
 import org.jboss.weld.servlet.api.ServletListener;
 import org.jboss.weld.servlet.api.ServletServices;
 import org.jboss.weld.servlet.api.helpers.ForwardingServletListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Pete Muir
  */
 public class Listener extends ForwardingServletListener
-{   
-   private static final Log log = Logging.getLog(Listener.class);
+{
+   private static final Logger log = LoggerFactory.getLogger(Listener.class);
    
    private static final String BOOTSTRAP_IMPL_CLASS_NAME = "org.jboss.weld.bootstrap.WeldBootstrap";
    private static final String WELD_LISTENER_CLASS_NAME = "org.jboss.weld.servlet.WeldListener";
@@ -55,7 +54,7 @@ public class Listener extends ForwardingServletListener
    private final transient ServletListener weldListener;
    private WeldManager manager;
    
-   public Listener() 
+   public Listener()
    {
       try
       {
@@ -79,7 +78,6 @@ public class Listener extends ForwardingServletListener
    public void contextDestroyed(ServletContextEvent sce)
    {
       bootstrap.shutdown();
-      sce.getServletContext().removeAttribute(BeanManager.class.getName());
       sce.getServletContext().removeAttribute(WeldAnnotationProcessor.class.getName());
       super.contextDestroyed(sce);
    }
@@ -90,8 +88,6 @@ public class Listener extends ForwardingServletListener
       BeanStore applicationBeanStore = new ConcurrentHashMapBeanStore();
       sce.getServletContext().setAttribute(APPLICATION_BEAN_STORE_ATTRIBUTE_NAME, applicationBeanStore);
       
-      
-      
       ServletDeployment deployment = new ServletDeployment(sce.getServletContext());
       try
       {
@@ -100,11 +96,11 @@ public class Listener extends ForwardingServletListener
       }
       catch (NoClassDefFoundError e)
       {
-    	 // Support GAE 
+    	 // Support GAE
     	 log.warn("@Resource injection not available in simple beans");
       }
       
-      deployment.getServices().add(ServletServices.class, 
+      deployment.getServices().add(ServletServices.class,
             new ServletServicesImpl(deployment.getWebAppBeanDeploymentArchive()));
       
       bootstrap.startContainer(Environments.SERVLET, deployment, applicationBeanStore).startInitialization();
@@ -115,7 +111,7 @@ public class Listener extends ForwardingServletListener
       {
          Reflections.classForName("org.apache.AnnotationProcessor");
       }
-      catch (IllegalArgumentException e) 
+      catch (IllegalArgumentException e)
       {
          log.info("JSR-299 injection will not be available in Servlets, Filters etc. This facility is only available in Tomcat");
          tomcat = false;
@@ -130,14 +126,13 @@ public class Listener extends ForwardingServletListener
             Object annotationProcessor = clazz.getConstructor(WeldManager.class).newInstance(manager);
             sce.getServletContext().setAttribute(WeldAnnotationProcessor.class.getName(), annotationProcessor);
          }
-         catch (Exception e) 
+         catch (Exception e)
          {
             log.error("Unable to create Tomcat AnnotationProcessor. JSR-299 injection will not be available in Servlets, Filters etc.", e);
          }
       }
 
       // Push the manager into the servlet context so we can access in JSF
-      sce.getServletContext().setAttribute(BeanManager.class.getName(), manager);
       
       if (JspFactory.getDefaultFactory() != null)
       {
@@ -151,7 +146,7 @@ public class Listener extends ForwardingServletListener
             newInstance("org.jboss.weld.el.WeldELContextListener"));
          
          // Push the wrapped expression factory into the servlet context so that Tomcat or Jetty can hook it in using a container code
-         sce.getServletContext().setAttribute(EXPRESSION_FACTORY_NAME, 
+         sce.getServletContext().setAttribute(EXPRESSION_FACTORY_NAME,
                manager.wrapExpressionFactory(jspApplicationContext.getExpressionFactory()));
       }
       
@@ -159,8 +154,6 @@ public class Listener extends ForwardingServletListener
       super.contextInitialized(sce);
    }
    
-   
-
    @Override
    protected ServletListener delegate()
    {

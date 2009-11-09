@@ -29,8 +29,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import org.jboss.weld.log.Log;
-import org.jboss.weld.log.Logging;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link Scanner} which can scan a {@link URLClassLoader}
@@ -43,7 +43,7 @@ import org.jboss.weld.log.Logging;
  */
 public class URLScanner extends AbstractScanner
 {
-   private static final Log log = Logging.getLog(URLScanner.class);
+   private static final Logger log = LoggerFactory.getLogger(URLScanner.class);
    
    public URLScanner(ClassLoader classLoader, WebAppBeanDeploymentArchive webBeanDiscovery)
    {
