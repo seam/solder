@@ -35,7 +35,7 @@ public class WeldApplication extends ForwardingApplication
 {
    /**
     * The BeanManager may not have been initialized at the time JSF is initializing. Therefore,
-    * we stick in an ELResolver that delegates to the BeanManager ELResolver, which will
+    * we stick in a ForwardingELResolver that delegates to the BeanManager ELResolver, which will
     * be plugged in when it's available. If the ELResolver is invoked before the BeanManager
     * is available, an IllegalStateException is thrown (is this the desired behavior?)
     */
