@@ -26,6 +26,7 @@ import javax.servlet.ServletContext;
 
 import org.jboss.weld.environment.servlet.util.ForwardingELResolver;
 import org.jboss.weld.environment.servlet.util.Reflections;
+import org.jboss.weld.environment.servlet.util.TransparentELResolver;
 
 /**
  * @author Pete Muir
@@ -41,8 +42,12 @@ public class WeldApplication extends ForwardingApplication
     */
    private static class LazyBeanManagerIntegrationELResolver extends ForwardingELResolver
    {
-      private ELResolver delegate = null;
+      private ELResolver delegate;
 
+      public LazyBeanManagerIntegrationELResolver() {
+         delegate = new TransparentELResolver();
+      }
+      
       public void beanManagerReady(BeanManager beanManager)
       {
          this.delegate = beanManager.getELResolver();
@@ -51,9 +56,6 @@ public class WeldApplication extends ForwardingApplication
       @Override
       protected ELResolver delegate()
       {
-         if (delegate == null) {
-            throw new IllegalStateException("Attempt to use JSR-299 ELResolver before BeanManager initialized.");
-         }
          return delegate;
       }
    }
