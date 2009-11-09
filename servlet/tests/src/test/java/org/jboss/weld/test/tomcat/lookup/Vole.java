@@ -6,7 +6,7 @@ import javax.enterprise.inject.spi.BeanManager;
 public class Vole
 {
    
-   @Resource(mappedName="java:comp/env/app/Manager")
+   @Resource(mappedName="java:comp/env/BeanManager")
    BeanManager manager;
    
    public BeanManager getManager()

@@ -11,7 +11,7 @@ public class Mouse
    {
       try
       {
-         return (BeanManager) new InitialContext().lookup("java:comp/env/app/Manager");
+         return (BeanManager) new InitialContext().lookup("java:comp/env/BeanManager");
       }
       catch (NamingException e)
       {

@@ -125,7 +125,8 @@ public class WebAppBeanDeploymentArchive implements BeanDeploymentArchive
    
    public String getId()
    {
-      return "web-module";
+      // Use "flat" to allow us to continue to use ManagerObjectFactory
+      return "flat";
    }
    
 }

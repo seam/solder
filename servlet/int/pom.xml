@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <artifactId>weld-servlet-parent</artifactId>
       <groupId>org.jboss.weld.servlet</groupId>
@@ -12,7 +13,7 @@
    <packaging>jar</packaging>
    <name>Weld Servlet Integration</name>
    <url>http://www.seamframework.org/Weld</url>
-    
+
    <dependencies>
       <dependency>
          <groupId>org.testng</groupId>
@@ -26,18 +27,18 @@
             </exclusion>
          </exclusions>
       </dependency>
-   
+
       <dependency>
          <groupId>org.jboss.weld</groupId>
          <artifactId>weld-spi</artifactId>
       </dependency>
-   
+
       <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>servlet-api</artifactId>
          <scope>provided</scope>
       </dependency>
-      
+
       <dependency>
          <groupId>org.apache.tomcat</groupId>
          <artifactId>catalina</artifactId>
@@ -51,15 +52,15 @@
             </exclusion>
          </exclusions>
       </dependency>
-   
+
       <dependency>
-      	<groupId>javax.faces</groupId>
-      	<artifactId>jsf-api</artifactId>
+         <groupId>javax.faces</groupId>
+         <artifactId>jsf-api</artifactId>
       </dependency>
-      
+
       <dependency>
-      	<groupId>javax.servlet.jsp</groupId>
-      	<artifactId>jsp-api</artifactId>
+         <groupId>javax.servlet.jsp</groupId>
+         <artifactId>jsp-api</artifactId>
          <scope>provided</scope>
       </dependency>
 
@@ -67,19 +68,7 @@
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-api</artifactId>
       </dependency>
-      <dependency>
-      	<groupId>org.slf4j</groupId>
-      	<artifactId>slf4j-jcl</artifactId>
-      	<version>1.5.8</version>
-      	<scope>runtime</scope>
-      </dependency>
-      <dependency>
-      	<groupId>commons-logging</groupId>
-      	<artifactId>commons-logging</artifactId>
-      	<version>1.1.1</version>
-      	<scope>runtime</scope>
-      </dependency>
-      
+
    </dependencies>
 
 </project>
