@@ -16,13 +16,27 @@
  */
 package org.jboss.weld.environment.servlet;
 
-import java.util.logging.Logger;
+import javax.el.ELContextListener;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.jsp.JspApplicationContext;
+import javax.servlet.jsp.JspFactory;
 
+import org.jboss.weld.bootstrap.api.Bootstrap;
+import org.jboss.weld.bootstrap.api.Environments;
+import org.jboss.weld.context.api.BeanStore;
+import org.jboss.weld.context.api.helpers.ConcurrentHashMapBeanStore;
 import org.jboss.weld.environment.servlet.deployment.ServletDeployment;
 import org.jboss.weld.environment.servlet.services.ServletResourceInjectionServices;
 import org.jboss.weld.environment.servlet.services.ServletServicesImpl;
 import org.jboss.weld.environment.servlet.util.Reflections;
 import org.jboss.weld.environment.tomcat.WeldAnnotationProcessor;
+import org.jboss.weld.injection.spi.ResourceInjectionServices;
+import org.jboss.weld.manager.api.WeldManager;
+import org.jboss.weld.servlet.api.ServletListener;
+import org.jboss.weld.servlet.api.ServletServices;
+import org.jboss.weld.servlet.api.helpers.ForwardingServletListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Pete Muir
