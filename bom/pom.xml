@@ -39,7 +39,6 @@
       <wicket.version>1.4.1</wicket.version>
       <tomcat.version>6.0.20</tomcat.version>
       <uel.glassfish.version>2.1.2-b04</uel.glassfish.version>
-      <log4j.version>1.2.14</log4j.version>
       <slf4j.version>1.5.9.RC1</slf4j.version>
    </properties>
    
@@ -159,12 +158,6 @@
             <version>${uel.glassfish.version}</version>
          </dependency>
 
-         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
-         </dependency>
- 
          <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
