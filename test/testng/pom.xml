@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>weld-test-parent</artifactId>
+		<groupId>org.jboss.weld.test</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jboss.weld.test</groupId>
+	<artifactId>weld-test-testng</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Weld Test TestNG Integration</name>
+	<url>http://www.seamframework.org/Weld</url>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<classifier>jdk15</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.weld.test</groupId>
+			<artifactId>weld-test-core</artifactId>
+		</dependency>
+
+         <dependency>
+            <groupId>org.jboss.weld.test</groupId>
+            <artifactId>weld-test-model</artifactId>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.weld.test</groupId>
+            <artifactId>weld-test-weld</artifactId>
+            <scope>test</scope>
+         </dependency>
+
+         <dependency>
+			<groupId>org.jboss.weld</groupId>
+			<artifactId>weld-core</artifactId>
+            <scope>test</scope>
+         </dependency>
+
+         <dependency>
+		   <groupId>org.jboss.weld</groupId>
+		   <artifactId>weld-se</artifactId>
+            <scope>test</scope>
+         </dependency>
+
+	</dependencies>
+
+</project>
