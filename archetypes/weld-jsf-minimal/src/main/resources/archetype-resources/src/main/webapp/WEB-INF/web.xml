@@ -2,24 +2,20 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
-	<!-- Standard JSF 2.0 Configuration Paramters. -->
-	<context-param>
-		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-		<param-value>.xhtml</param-value>
-	</context-param>
+	<!-- Activate the JSF 2.0 servlet -->
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
-	<!-- Tell the context which URLs to process as facelets.  -->
+	<!-- Tell the context which URLs to send through JSF -->
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
 	
-	<!-- This is an optional parameter, but it makes troubleshooting errors much easier.  -->
+	<!-- This is an optional parameter, but it makes troubleshooting errors much easier. -->
 	<!-- You may want to delete it before final deployment -->
 	<context-param>
 		<param-name>facelets.DEVELOPMENT</param-name>
@@ -27,7 +23,7 @@
 	</context-param>
 
 	<!-- Weld Jetty/Tomcat specific configuration parameters -->
-	<!-- Both the listener and resource-env-ref tags can be deleted in JEE6 containers.    -->
+	<!-- Both the listener and resource-env-ref tags can be deleted in JEE6 containers. -->
 	<listener>
 		<listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
 	</listener>
