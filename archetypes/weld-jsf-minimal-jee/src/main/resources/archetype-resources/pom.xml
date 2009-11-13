@@ -13,6 +13,9 @@
          platform dependent!
       -->
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <!-- To set the jboss.home environment variable the Maven way, set the jboss.home property in an active profile in the Maven 2 settings.xml file -->
+      <jboss.home>${env.JBOSS_HOME}</jboss.home>
+      <jboss.domain>default</jboss.domain>
    </properties>
    <dependencyManagement>
       <dependencies>
@@ -31,10 +34,12 @@
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>javax.annotation</groupId>
          <artifactId>jsr250-api</artifactId>
+         <scope>provided</scope>
       </dependency>
       <!-- JSF 2.0 -->
       <dependency>
@@ -57,7 +62,6 @@
          <scope>test</scope>
          <classifier>jdk15</classifier>
       </dependency>
-
 
       <dependency>
          <groupId>org.glassfish.web</groupId>
@@ -109,6 +113,14 @@
                <wtpversion>2.0</wtpversion>
                <downloadSources>true</downloadSources>
                <downloadJavadocs>true</downloadJavadocs>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jboss-maven-plugin</artifactId>
+            <configuration>
+               <jbossHome>${jboss.home}</jbossHome>
+               <serverName>${jboss.domain}</serverName>
             </configuration>
          </plugin>
       </plugins>
