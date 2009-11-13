@@ -64,16 +64,19 @@
       <dependency>
          <groupId>javax.faces</groupId>
          <artifactId>jsf-impl</artifactId>
+         <scope>runtime</scope>
       </dependency>
 
       <dependency>
          <groupId>org.jboss.weld.servlet</groupId>
          <artifactId>weld-servlet</artifactId>
+         <scope>runtime</scope>
       </dependency>
 
       <dependency>
          <groupId>org.glassfish.web</groupId>
          <artifactId>el-impl</artifactId>
+         <scope>runtime</scope>
          <exclusions>
             <exclusion>
                <groupId>javax.el</groupId>
@@ -82,24 +85,6 @@
          </exclusions>
       </dependency>
       <!-- end Jetty/Tomcat-specific scopes and artifacts -->
-
-      <!-- Sun Bean Validation API (JSR 303) -->
-      <!--<dependency>-->
-      <!--	<groupId>javax.validation</groupId>-->
-      <!--	<artifactId>validation-api</artifactId>-->
-      <!--</dependency>-->
-      <!-- Bean Validation Implementation -->
-      <!--<dependency>-->
-      <!--	<groupId>org.hibernate</groupId>-->
-      <!--	<artifactId>hibernate-validator</artifactId>-->
-      <!--	<version>4.0.0.GA</version>-->
-      <!--</dependency>-->
-      <!-- Additional Bean Validation Validation Dependency-->
-      <!--<dependency>-->
-      <!--	<groupId>org.slf4j</groupId>-->
-      <!--	<artifactId>slf4j-log4j12</artifactId>-->
-      <!--	<version>1.4.2</version>-->
-      <!--</dependency>-->
    </dependencies>
    <build>
       <finalName>${artifactId}</finalName>
