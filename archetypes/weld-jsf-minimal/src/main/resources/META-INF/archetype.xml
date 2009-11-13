@@ -1,17 +1,17 @@
 <archetype>
-	<id>weld-archetype-servlet-quickstart</id>
-	<resources>
-		<resource>src/main/webapp/index.xhtml</resource>
-		<resource>src/main/webapp/index.jsp</resource>
-		<resource>src/main/webapp/WEB-INF/web.xml</resource>
-		<resource>src/main/resources/META-INF/beans.xml</resource>
-		<resource>src/main/webapp/META-INF/context.xml</resource>
-	</resources>
-	<sources>
-		<source>src/main/java/HelloWorld.java</source>
-	</sources>
-	<testSources />
-	<testResources>
-		<resource>src/test/resources/jetty-env.xml</resource>
-	</testResources>
+   <id>weld-archetype-servlet-quickstart</id>
+   <resources>
+      <resource>src/main/webapp/index.xhtml</resource>
+      <resource>src/main/webapp/index.jsp</resource>
+      <resource>src/main/webapp/WEB-INF/web.xml</resource>
+      <resource>src/main/resources/META-INF/beans.xml</resource>
+      <resource>src/main/webapp/META-INF/context.xml</resource>
+   </resources>
+   <sources>
+      <source>src/main/java/HelloWorld.java</source>
+   </sources>
+   <testSources />
+   <testResources>
+      <resource>src/test/resources/jetty-env.xml</resource>
+   </testResources>
 </archetype>
