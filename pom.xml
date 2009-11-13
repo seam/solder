@@ -19,6 +19,7 @@
       <module>servlet</module>
       <module>se</module>
       <module>logger</module>
+      <module>faces</module>
       <module>wicket</module>
    </modules>
    
