@@ -14,23 +14,6 @@
 		-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<repositories>
-		<!--
-			As of October 2009, a few of the weld dependencies were not yet on the main maven repo. The JBoss repo is updated
-			more frequently.
-		-->
-		<repository>
-			<id>repository.jboss.org</id>
-			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/maven2</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 	<dependencyManagement>
 		<dependencies>
 			<!-- Import scope will provide versions and scopes for dependency below. -->
@@ -101,23 +84,22 @@
 		<!-- end Jetty/Tomcat-specific scopes and artifacts -->
 
 		<!-- Sun Bean Validation API (JSR 303) -->
-		<!--		<dependency>-->
-		<!--			<groupId>javax.validation</groupId>-->
-		<!--			<artifactId>validation-api</artifactId>-->
-		<!--			<version>1.0.0.GA</version>-->
-		<!--		</dependency>-->
-		<!-- hibernate bean validation impl -->
-		<!--		<dependency>-->
-		<!--			<groupId>org.hibernate</groupId>-->
-		<!--			<artifactId>hibernate-validator</artifactId>-->
-		<!--			<version>4.0.0.GA</version>-->
-		<!--		</dependency>-->
-		<!-- For some reason, this is a dependency of Bean Validation -->
-		<!--		<dependency>-->
-		<!--			<groupId>org.slf4j</groupId>-->
-		<!--			<artifactId>slf4j-log4j12</artifactId>-->
-		<!--			<version>1.4.2</version>-->
-		<!--		</dependency>-->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+		<!-- Bean Validation Implementation -->
+		<!--<dependency>-->
+		<!--	<groupId>org.hibernate</groupId>-->
+		<!--	<artifactId>hibernate-validator</artifactId>-->
+		<!--	<version>4.0.0.GA</version>-->
+		<!--</dependency>-->
+		<!-- Additional Bean Validation Validation Dependency-->
+		<!--<dependency>-->
+		<!--	<groupId>org.slf4j</groupId>-->
+		<!--	<artifactId>slf4j-log4j12</artifactId>-->
+		<!--	<version>1.4.2</version>-->
+		<!--</dependency>-->
 	</dependencies>
 	<build>
 		<finalName>${artifactId}</finalName>
