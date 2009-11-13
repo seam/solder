@@ -4,6 +4,7 @@
       <resource>src/main/webapp/index.xhtml</resource>
       <resource>src/main/webapp/index.jsp</resource>
       <resource>src/main/webapp/WEB-INF/web.xml</resource>
+      <resource>src/main/webapp/WEB-INF/faces-config.xml</resource>
       <resource>src/main/resources/META-INF/beans.xml</resource>
       <resource>src/main/webapp/META-INF/context.xml</resource>
    </resources>
