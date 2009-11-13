@@ -41,6 +41,18 @@
          <artifactId>jsr250-api</artifactId>
          <scope>provided</scope>
       </dependency>
+      <dependency>
+         <groupId>javax.validation</groupId>
+         <artifactId>validation-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <!-- Provided on JBoss AS, not necessarily Java EE 6 -->
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-validator</artifactId>
+         <version>4.0.0.GA</version>
+         <scope>provided</scope>
+      </dependency>
       <!-- JSF 2.0 -->
       <dependency>
          <groupId>javax.faces</groupId>
