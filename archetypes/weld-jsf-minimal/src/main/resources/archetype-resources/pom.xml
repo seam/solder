@@ -31,10 +31,12 @@
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>javax.annotation</groupId>
          <artifactId>jsr250-api</artifactId>
+         <scope>provided</scope>
       </dependency>
       <!-- JSF 2.0 -->
       <dependency>
@@ -56,7 +58,6 @@
          <scope>test</scope>
          <classifier>jdk15</classifier>
       </dependency>
-
 
       <!-- Jetty/Tomcat-specific scopes and artifacts -->
 
