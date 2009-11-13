@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.weld.faces;
+package org.jboss.weldx.faces;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
