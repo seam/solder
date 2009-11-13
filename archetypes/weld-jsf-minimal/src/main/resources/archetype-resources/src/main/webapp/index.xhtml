@@ -1,13 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html">
-<h:head>
-	<title>JSF Demo</title>
-</h:head>
-<h:body>
-	<h1>Does Weld Work?</h1>
-	<p>My weld-injected bean says <span style="color: blue;">#{helloWorld.text}</span> in a JSF EL dialect.</p>
-	<p>You can write the same value using the Unified EL: <span style="color: green;">${helloWorld.text}</span></p>
-</h:body>
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html">
+   <h:head>
+      <title>Weld Starter Application</title>
+   </h:head>
+   <h:body>
+      <h1>Hello World!</h1>
+      <p>My weld-injected bean says <span style="color: blue;">#{helloWorld.text}</span> in a JSF EL dialect.</p>
+      <p>You can write the same value using the Unified EL: <span style="color: green;">${helloWorld.text}</span></p>
+
+      <h:form>
+         <h2>Bean Validation examples</h2>
+         <p>Enforces the annotation-based constraints defined on the model class.</p>
+         <table>
+            <tr>
+               <th style="text-align: right;">
+                  <h:outputLabel for="letters" value="Letters:"/>
+               </th>
+               <td>
+                  <h:inputText id="letters" value="#{helloWorld.letters}"/>
+                  <h:message for="letters" style="color: red;"/>
+               </td>
+            </tr>
+            <tr>
+               <th style="text-align: right;">
+                  <h:outputLabel for="numbers" value="Numbers (max two digits):"/>
+               </th>
+               <td>
+                  <h:inputText id="numbers" value="#{helloWorld.numbers}"/>
+                  <h:message for="numbers" style="color: red;"/>
+               </td>
+            </tr>
+            <tr>
+               <th style="text-align: right;">
+                  <h:outputLabel for="email" value="Email:"/>
+               </th>
+               <td>
+                  <h:inputText id="email" value="#{helloWorld.email}"/>
+                  <h:message for="email" style="color: red;"/>
+               </td>
+            </tr>
+         </table>
+         <p>
+            <h:commandButton action="check" value="Check"/>
+            <h:outputText value=" All clear!" rendered="#{facesContext.postback and empty facesContext.messageList}" style="color: green;"/>
+         </p>
+      </h:form>
+   </h:body>
 </html>

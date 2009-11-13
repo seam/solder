@@ -44,11 +44,13 @@
          <artifactId>jsf-api</artifactId>
       </dependency>
 
-      <!-- Optional, but pretty useful.   -->
-      <!--		<dependency>-->
-      <!--			<groupId>javax.servlet</groupId>-->
-      <!--			<artifactId>jstl</artifactId>-->
-      <!--		</dependency>-->
+      <!-- Optional, but pretty useful. -->
+      <!--
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>jstl</artifactId>
+      </dependency>
+      -->
 
       <!-- Optional, but highly recommended. -->
       <dependency>
@@ -72,6 +74,19 @@
          <groupId>org.jboss.weld.servlet</groupId>
          <artifactId>weld-servlet</artifactId>
          <scope>runtime</scope>
+      </dependency>
+
+      <!-- Bean Validation API (JSR 303) -->
+      <dependency>
+         <groupId>javax.validation</groupId>
+         <artifactId>validation-api</artifactId>
+      </dependency>
+
+      <!-- Bean Validation Implementation -->
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-validator</artifactId>
+         <version>4.0.0.GA</version>
       </dependency>
 
       <dependency>
@@ -123,10 +138,10 @@
                </connectors>
                <!-- force friendly name instead of artifact name + version -->
                <contextPath>${build.finalName}</contextPath>
-               <!-- Where the BeanManager is constructed. This is where you'll declare datasources.	-->
+               <!-- Where the BeanManager is constructed. This is where you'll declare datasources. -->
                <jettyEnvXml>\${basedir}/src/test/resources/jetty-env.xml</jettyEnvXml>
-               <!-- This parameter will auto-deploy modified classes.	-->
-               <!-- You can save changes in a file or class and refresh your browser to view the changes.   -->
+               <!-- This parameter will auto-deploy modified classes. -->
+               <!-- You can save changes in a file or class and refresh your browser to view the changes. -->
                <scanIntervalSeconds>3</scanIntervalSeconds>
             </configuration>
          </plugin>
