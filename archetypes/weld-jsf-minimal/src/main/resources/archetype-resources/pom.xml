@@ -16,7 +16,7 @@
    </properties>
    <dependencyManagement>
       <dependencies>
-         <!-- Import scope will provide versions and scopes for dependency below. -->
+         <!-- Import scope will provide versions for dependencies below. -->
          <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-extensions-bom</artifactId>

@@ -8,7 +8,8 @@
       <version>0.0.1-BETA-SNAPSHOT</version>
    </parent>
    <artifactId>weld-jsf-minimal</artifactId>
-   <name>JSF 2.0 and Weld 1.0 on Servlet Containers like  Tomcat 6 and Jetty 6</name>
+   <name>jsf-minimal</name>
+   <description>JSF 2.0 and Weld 1.0 on Servlet Containers like  Tomcat 6 and Jetty 6</description>
    <packaging>maven-archetype</packaging>
    <build>
       <extensions>
