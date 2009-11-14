@@ -1,46 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.jboss.weld</groupId>
-		<artifactId>weld-parent</artifactId>
-		<version>5</version>
-	</parent>
-	<groupId>org.jboss.weld.archetype</groupId>
-	<artifactId>weld-archetype-parent</artifactId>
-	<version>0.0.1-BETA-SNAPSHOT</version>
-	<name>Weld Parent Archetype</name>
-	<description>This POM is the future home of configuration common to all archetypes.</description>
-	<url>http://sfwk.org/Documentation/WeldArchetypeProposal</url>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-parent</artifactId>
+      <version>5</version>
+   </parent>
+   <groupId>org.jboss.weld.archetype</groupId>
+   <artifactId>weld-archetype-parent</artifactId>
+   <version>0.0.1-BETA-SNAPSHOT</version>
+   <name>Weld Parent Archetype</name>
+   <description>This POM is the future home of configuration common to all archetypes.</description>
+   <url>http://sfwk.org/Documentation/WeldArchetypeProposal</url>
    <!-- SCM and distribution management -->
-<!--   <scm>-->
-<!--      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk</connection>-->
-<!--      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk</developerConnection>-->
-<!--      <url>http://fisheye.jboss.org/browse/Weld</url>-->
-<!--   </scm>-->
-	<packaging>pom</packaging>
-	<developers>
-		<developer>
-			<name>Steven Boscarine</name>
-			<roles>
-				<role>Developer</role>
-				<role>Volunteer</role>
-			</roles>
-			<email>steven.boscarine@childrens.harvard.edu</email>
-			<organization>Children's Hospital Boston: Informatics Program</organization>
-			<organizationUrl>http://chip.org/</organizationUrl>
-			<url>http://info.rmatics.org/</url>
-		</developer>
-	</developers>
-	<dependencies />
-	<properties>
-		<!--
-			eliminates [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform
-			dependent!
-		-->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<modules>
-		<module>weld-jsf-minimal</module>
-	</modules>
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk/archetypes</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk/archetypes</developerConnection>
+      <!-- This is an invalid URL -->
+      <!-- <url>http://fisheye.jboss.org/browse/Weld</url>-->
+   </scm>
+   <packaging>pom</packaging>
+   <developers>
+      <developer>
+         <name>Steven Boscarine</name>
+         <roles>
+            <role>Developer</role>
+            <role>Volunteer</role>
+         </roles>
+         <email>steven.boscarine@childrens.harvard.edu</email>
+         <organization>Children's Hospital Boston: Informatics Program</organization>
+         <organizationUrl>http://chip.org/</organizationUrl>
+         <url>http://info.rmatics.org/</url>
+      </developer>
+   </developers>
+   <dependencies />
+   <properties>
+      <!--
+         eliminates [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is
+         platform dependent!
+      -->
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
+   <modules>
+      <module>weld-jsf-minimal</module>
+      <module>weld-jsf-minimal-jee</module>
+   </modules>
 </project>
