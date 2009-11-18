@@ -17,47 +17,24 @@
 package org.jboss.weld.environment.se.test.beans;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterDeploymentValidation;
-import javax.inject.Inject;
+import org.jboss.weld.environment.se.test.interceptors.Aggregated;
+import org.jboss.weld.environment.se.test.interceptors.Recorded;
 
 /**
- * 
+ *
  * @author Peter Royle
  */
+@Recorded
 @ApplicationScoped
-public class MainTestBean
-{
+public class InterceptorTestBean {
 
-   boolean initialised = false;
-   ParametersTestBean parametersTestBean;
+    public void doSomethingRecorded() {
+        System.out.println("this should be recorded");
+    }
 
-   public MainTestBean()
-   {
-   }
-
-   @Inject
-   public MainTestBean(ParametersTestBean paramsTestBean)
-   {
-      this.initialised = true;
-      this.parametersTestBean = paramsTestBean;
-      // this call is important. It invokes initialiser on the proxy
-      paramsTestBean.getParameters();
-   }
-
-   public void mainMethod(@Observes AfterDeploymentValidation after)
-   {
-      System.out.println("Starting main test app");
-   }
-
-   public ParametersTestBean getParametersTestBean()
-   {
-      return parametersTestBean;
-   }
-
-   public boolean isInitialised()
-   {
-      return initialised;
-   }
+    @Aggregated
+    public void doSomethingRecordedAndAggregated() {
+        System.out.println("This should be aggregated");
+    }
 
 }

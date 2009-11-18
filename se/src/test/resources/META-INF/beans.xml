@@ -16,4 +16,9 @@
     limitations under the License.
 
 -->
-<beans></beans>
+<beans>
+    <interceptors>
+        <class>org.jboss.weld.environment.se.test.interceptors.RecordingInterceptor</class>
+        <class>org.jboss.weld.environment.se.test.interceptors.AggregatingInterceptor</class>
+    </interceptors>
+</beans>
