@@ -57,14 +57,13 @@ public class InterceptorsTest
       intTestBean.doSomethingRecorded();
       System.out.println(RecordingInterceptor.methodsRecorded);
       System.out.println(AggregatingInterceptor.methodsCalled);
-//      FIXME: This fails
-//      Assert.assertTrue(RecordingInterceptor.methodsRecorded.contains("doSomethingRecorded"));
+      Assert.assertTrue(RecordingInterceptor.methodsRecorded.contains("doSomethingRecorded"));
 
       intTestBean.doSomethingRecordedAndAggregated();
       System.out.println(RecordingInterceptor.methodsRecorded);
       System.out.println(AggregatingInterceptor.methodsCalled);
-//      FIXME: This fails
-//      Assert.assertEquals(1, AggregatingInterceptor.methodsCalled);
+
+      Assert.assertEquals(1, AggregatingInterceptor.methodsCalled);
 
       shutdownManager(manager);
    }

@@ -36,9 +36,10 @@ public class RecordingInterceptor {
     }
 
     @AroundInvoke
-    public void recordMethodCall(InvocationContext ctx) {
+    public Object recordMethodCall(InvocationContext ctx) throws Exception {
         final String methodName = ctx.getMethod().getName();
         System.out.println("Recording method: " + methodName);
         methodsRecorded.add(methodName);
+        return ctx.proceed();
     }
 }

@@ -24,7 +24,7 @@ import javax.interceptor.InvocationContext;
 /**
  * @author Peter Royle
  */
-@Recorded @Interceptor
+@Aggregated @Interceptor
 public class AggregatingInterceptor {
 
     public static int methodsCalled = 0;
@@ -34,7 +34,8 @@ public class AggregatingInterceptor {
     }
 
     @AroundInvoke
-    public void recordMEthodCall(InvocationContext ctx) {
-        methodsCalled ++;
+    public Object recordMEthodCall(InvocationContext ctx) throws Exception {
+       methodsCalled ++;
+       return ctx.proceed();
     }
 }
