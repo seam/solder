@@ -21,9 +21,10 @@ import javax.enterprise.util.AnnotationLiteral;
 
 import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.events.Shutdown;
-import org.jboss.weld.environment.se.test.beans.InterceptorTestBean;
-import org.jboss.weld.environment.se.test.interceptors.AggregatingInterceptor;
-import org.jboss.weld.environment.se.test.interceptors.RecordingInterceptor;
+import org.jboss.weld.environment.se.test.decorators.CarDoor;
+import org.jboss.weld.environment.se.test.decorators.Door;
+import org.jboss.weld.environment.se.test.decorators.CarDoorAlarm;
+import org.jboss.weld.environment.se.test.decorators.HouseDoor;
 import org.jboss.weld.environment.se.util.WeldManagerUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -32,7 +33,7 @@ import org.testng.annotations.Test;
  * 
  * @author Peter Royle
  */
-public class InterceptorsTest
+public class DecoratorsTest
 {
 
     public static String[] ARGS_EMPTY = new String[]
@@ -40,29 +41,45 @@ public class InterceptorsTest
     };
 
     /**
-     * Test that interceptors work as expected in SE.
+     * Test that decorators work as expected in SE.
      */
     @Test
-    public void testInterceptors()
+    public void testDecorators()
     {
         String[] args = ARGS_EMPTY;
         BeanManager manager = new StartMain(args).go();
 
-        InterceptorTestBean intTestBean = WeldManagerUtils.getInstanceByType(manager, InterceptorTestBean.class);
-        Assert.assertNotNull(intTestBean);
+        CarDoor carDoor = WeldManagerUtils.getInstanceByType(manager, CarDoor.class);
+        Assert.assertNotNull(carDoor);
 
-        intTestBean.doSomethingRecorded();
-        System.out.println(RecordingInterceptor.methodsRecorded);
-        System.out.println(AggregatingInterceptor.methodsCalled);
-        Assert.assertTrue(RecordingInterceptor.methodsRecorded.contains("doSomethingRecorded"));
+        // the car door is alarmed
+        CarDoorAlarm.alarmActivated = false;
+        Assert.assertFalse(CarDoorAlarm.alarmActivated);
+        testDoor(carDoor);
+        Assert.assertTrue(CarDoorAlarm.alarmActivated);
 
-        intTestBean.doSomethingRecordedAndAggregated();
-        System.out.println(RecordingInterceptor.methodsRecorded);
-        System.out.println(AggregatingInterceptor.methodsCalled);
+        HouseDoor houseDoor = WeldManagerUtils.getInstanceByType(manager, HouseDoor.class);
+        Assert.assertNotNull(carDoor);
 
-        Assert.assertEquals(1, AggregatingInterceptor.methodsCalled);
+        // the house door is not alarmed
+        CarDoorAlarm.alarmActivated = false;
+        Assert.assertFalse(CarDoorAlarm.alarmActivated);
+        testDoor(houseDoor);
+        Assert.assertFalse(CarDoorAlarm.alarmActivated);
 
         shutdownManager(manager);
+    }
+
+    private void testDoor(Door door)
+    {
+        Assert.assertTrue(door.open());
+        Assert.assertTrue(door.isOpen());
+        Assert.assertFalse(door.close());
+        Assert.assertFalse(door.isOpen());
+        Assert.assertTrue(door.lock());
+        Assert.assertTrue(door.isLocked());
+        Assert.assertFalse(door.open());
+        Assert.assertFalse(door.isOpen());
     }
 
     private void shutdownManager(BeanManager manager)
