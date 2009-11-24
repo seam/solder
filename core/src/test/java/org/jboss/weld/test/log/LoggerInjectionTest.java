@@ -20,6 +20,7 @@ package org.jboss.weld.test.log;
 import org.jboss.testharness.impl.packaging.Artifact;
 import org.jboss.testharness.impl.packaging.Classes;
 import org.jboss.weld.test.AbstractWeldTest;
+import org.slf4j.impl.TestLoggerFactory;
 import org.testng.annotations.Test;
 
 /**
@@ -35,17 +36,19 @@ public class LoggerInjectionTest extends AbstractWeldTest
    public void testBasicLogInjection()
    {
       Sparrow bird = getCurrentManager().getInstanceByType(Sparrow.class);
+      TestLoggerFactory.INSTANCE.getLogger("").reset();
       bird.generateLogMessage();
-      assert TestAppender.getLastEvent() != null;
-      assert TestAppender.getLastEvent().getLoggerName().equals("org.jboss.weld.test.log.Sparrow");
+      assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
+      assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Sparrow");
    }
    
    @Test
    public void testCategorySpecifiedLogger()
    {
       Finch bird = getCurrentManager().getInstanceByType(Finch.class);
+      TestLoggerFactory.INSTANCE.getLogger("").reset();
       bird.generateLogMessage();
-      assert TestAppender.getLastEvent() != null;
-      assert TestAppender.getLastEvent().getLoggerName().equals("Finch");
+      assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
+      assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Finch");
    }
 }

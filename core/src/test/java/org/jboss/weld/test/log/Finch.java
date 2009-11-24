@@ -12,6 +12,6 @@ public class Finch
    
    public void generateLogMessage()
    {
-      log.info("A test message");
+      log.info("Finch");
    }
 }

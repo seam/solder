@@ -11,6 +11,6 @@ class Sparrow
    
    public void generateLogMessage()
    {
-      log.info("A test message");
+      log.info("Sparrow");
    }
 }

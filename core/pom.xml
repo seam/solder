@@ -41,11 +41,11 @@
       </dependency>
       
       <dependency>
-      	<groupId>javax.enterprise</groupId>
-      	<artifactId>cdi-api</artifactId>
+      	 <groupId>javax.enterprise</groupId>
+      	 <artifactId>cdi-api</artifactId>
          <scope>provided</scope>
       </dependency>
-      
+
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-api</artifactId>
@@ -54,12 +54,6 @@
       <dependency>
       	<groupId>org.jboss.test-harness</groupId>
       	<artifactId>jboss-test-harness</artifactId>
-      	<scope>test</scope>
-      </dependency>
-      
-      <dependency>
-      	<groupId>org.jboss.test-harness</groupId>
-      	<artifactId>jboss-test-harness-jboss-as-50</artifactId>
       	<scope>test</scope>
       </dependency>
       
