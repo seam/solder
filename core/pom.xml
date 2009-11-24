@@ -7,19 +7,16 @@
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.weld</groupId>
-   <artifactId>weld-logger</artifactId>
+   <artifactId>weld-extensions</artifactId>
    
    <!-- metadata -->
-   <name>Weld Injectable Logger</name>
+   <name>Weld Extensions</name>
    
-   <description>An injectable logger for Weld</description>
+   <description>Portable extensions for Weld</description>
    
    <contributors>
       <contributor>
-         <name>David Allen</name>
-         <roles>
-            <role>Module lead</role>
-         </roles>
+         <name>Pete Muir</name>
       </contributor>
    </contributors>
    
