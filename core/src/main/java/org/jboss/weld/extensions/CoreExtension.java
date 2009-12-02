@@ -21,11 +21,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Qualifier;
 
-import org.jboss.weld.extensions.util.AnnotationRedefinition;
 import org.jboss.weld.extensions.util.BeanImpl;
-import org.jboss.weld.extensions.util.Reannotated;
-import org.jboss.weld.extensions.util.ReannotatedMember;
-import org.jboss.weld.extensions.util.ReannotatedType;
+import org.jboss.weld.extensions.util.reannotated.AnnotationRedefinition;
+import org.jboss.weld.extensions.util.reannotated.Reannotated;
+import org.jboss.weld.extensions.util.reannotated.ReannotatedMember;
+import org.jboss.weld.extensions.util.reannotated.ReannotatedType;
 
 public class CoreExtension implements Extension
 {

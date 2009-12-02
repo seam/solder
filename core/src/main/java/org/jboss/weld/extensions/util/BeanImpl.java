@@ -15,6 +15,8 @@ import javax.inject.Named;
 import javax.inject.Qualifier;
 import javax.inject.Scope;
 
+import org.jboss.weld.extensions.util.reannotated.ReannotatedType;
+
 /**
  * This implementation of Bean is immutable and threadsafe.
  * 

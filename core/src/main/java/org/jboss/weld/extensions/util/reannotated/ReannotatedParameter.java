@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.util;
+package org.jboss.weld.extensions.util.reannotated;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
