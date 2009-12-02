@@ -86,44 +86,50 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
       else
       {
          Object val = valueMap.get(method.getName());
-         if (val != null)
-         {
-            Class r = method.getReturnType();
-            if (Integer.class.isAssignableFrom(r) || r == int.class)
-            {
-               val = ((Number) val).intValue();
-            }
-            else if (Long.class.isAssignableFrom(r) || r == long.class)
-            {
-               val = ((Number) val).longValue();
-            }
-            else if (Short.class.isAssignableFrom(r) || r == short.class)
-            {
-               val = ((Number) val).shortValue();
-            }
-            else if (Byte.class.isAssignableFrom(r) || r == byte.class)
-            {
-               val = ((Number) val).shortValue();
-            }
-            else if (Double.class.isAssignableFrom(r) || r == double.class)
-            {
-               val = ((Number) val).doubleValue();
-            }
-            else if (Float.class.isAssignableFrom(r) || r == float.class)
-            {
-               val = ((Number) val).floatValue();
-            }
-            else if (Character.class.isAssignableFrom(r) || r == char.class)
-            {
-               if (String.class.isAssignableFrom(val.getClass()))
-               {
-                  val = val.toString().charAt(0);
-               }
-            }
-         }
+         Class<?> r = method.getReturnType();
+         val = performTypeCoercion(val, r);
          return val;
       }
 
+   }
+
+   private Object performTypeCoercion(Object val, Class<?> type)
+   {
+      if (val != null)
+      {
+         if (Integer.class.isAssignableFrom(type) || type == int.class)
+         {
+            return ((Number) val).intValue();
+         }
+         else if (Long.class.isAssignableFrom(type) || type == long.class)
+         {
+            return ((Number) val).longValue();
+         }
+         else if (Short.class.isAssignableFrom(type) || type == short.class)
+         {
+            return ((Number) val).shortValue();
+         }
+         else if (Byte.class.isAssignableFrom(type) || type == byte.class)
+         {
+            return ((Number) val).byteValue();
+         }
+         else if (Double.class.isAssignableFrom(type) || type == double.class)
+         {
+            return ((Number) val).doubleValue();
+         }
+         else if (Float.class.isAssignableFrom(type) || type == float.class)
+         {
+            return ((Number) val).floatValue();
+         }
+         else if (Character.class.isAssignableFrom(type) || type == char.class)
+         {
+            if (String.class.isAssignableFrom(val.getClass()))
+            {
+               return val.toString().charAt(0);
+            }
+         }
+      }
+      return val;
    }
 
    @Override
@@ -134,7 +140,7 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
       for (int i = 0; i < members.length; i++)
       {
          string.append(members[i].getName()).append('=');
-         Object value = invoke(members[i], this);
+         Object value = performTypeCoercion(valueMap.get(members[i].getName()), members[i].getReturnType());
          if (value instanceof boolean[])
          {
             appendInBraces(string, Arrays.toString((boolean[]) value));
@@ -226,7 +232,7 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
          {
             for (Method member : members)
             {
-               Object thisValue = valueMap.get(member.getName());
+               Object thisValue = performTypeCoercion(valueMap.get(member.getName()), member.getReturnType());
                Object thatValue = invoke(member, that);
                if (thisValue instanceof byte[] && thatValue instanceof byte[])
                {
@@ -276,7 +282,9 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
                else
                {
                   if (!thisValue.equals(thatValue))
+                  {
                      return false;
+                  }
                }
             }
             return true;
@@ -292,7 +300,7 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
       for (Method member : members)
       {
          int memberNameHashCode = 127 * member.getName().hashCode();
-         Object value = valueMap.get(member.getName());
+         Object value = performTypeCoercion(valueMap.get(member.getName()), member.getReturnType());
          int memberValueHashCode;
          if (value instanceof boolean[])
          {
