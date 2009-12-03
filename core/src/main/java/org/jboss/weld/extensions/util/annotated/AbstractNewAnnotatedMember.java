@@ -11,14 +11,14 @@ import javax.enterprise.inject.spi.AnnotatedType;
  * @author Stuart Douglas
  * 
  */
-public abstract class AbstractNewAnnotatedMember<X, M extends Member> extends AbstractNewAnnotatedElement implements AnnotatedMember<X>
+abstract class AbstractNewAnnotatedMember<X, M extends Member> extends AbstractNewAnnotatedElement implements AnnotatedMember<X>
 {
    private final AnnotatedType<X> declaringType;
    private final M javaMember;
 
-   protected AbstractNewAnnotatedMember(AnnotatedType<X> declaringType, M member, Class<?> memberType, boolean readAnnotations)
+   protected AbstractNewAnnotatedMember(AnnotatedType<X> declaringType, M member, Class<?> memberType, AnnotationStore annotations)
    {
-      super(memberType, readAnnotations);
+      super(memberType, annotations);
       this.declaringType = declaringType;
       this.javaMember = member;
    }

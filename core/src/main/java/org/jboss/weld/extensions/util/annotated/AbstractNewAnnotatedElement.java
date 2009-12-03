@@ -2,6 +2,7 @@ package org.jboss.weld.extensions.util.annotated;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.enterprise.inject.spi.Annotated;
@@ -12,42 +13,25 @@ import javax.enterprise.inject.spi.Annotated;
  * @author Stuart Douglas
  * 
  */
-public abstract class AbstractNewAnnotatedElement implements Annotated
+abstract class AbstractNewAnnotatedElement implements Annotated
 {
 
    private final Class<?> type;
+   private final Set<Type> typeClosure;
+   private final AnnotationStore annotations;
 
-   private final TypeStore typeStore = new TypeStore();
-   private final AnnotationStore annotations = new AnnotationStore();
-
-   /**
-    * Clears all annotation data from the the class. Useful if we are not
-    * interested in the annotations that are actually on the class but instead
-    * want to apply our own
-    */
-   public void clearAllAnnotations()
+   protected AbstractNewAnnotatedElement(Class<?> type, AnnotationStore annotations)
    {
-      annotations.clear();
-   }
-
-   protected AbstractNewAnnotatedElement(Class<?> type, boolean readAnnotations)
-   {
-      typeStore.add(type);
-      this.type = type;
-      if (readAnnotations)
+      this.typeClosure = new TypeClosureBuilder().add(type).getTypes();
+      if (annotations == null)
       {
-         annotations.addAll(type);
+         this.annotations = new AnnotationStore();
       }
-   }
-
-   public void addAnnotation(Annotation a)
-   {
-      annotations.addAnnotation(a);
-   }
-
-   public void removeAnnotation(Class<? extends Annotation> c)
-   {
-      annotations.removeAnnotation(c);
+      else
+      {
+         this.annotations = annotations;
+      }
+      this.type = type;
    }
 
    public <T extends Annotation> T getAnnotation(Class<T> annotationType)
@@ -67,11 +51,12 @@ public abstract class AbstractNewAnnotatedElement implements Annotated
 
    public Set<Type> getTypeClosure()
    {
-      return typeStore.getTypes();
+      return Collections.unmodifiableSet(typeClosure);
    }
 
    public Type getBaseType()
    {
       return type;
    }
+   
 }

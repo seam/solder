@@ -1,7 +1,6 @@
 package org.jboss.weld.extensions.util.annotated;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,52 +13,35 @@ import java.util.Set;
  */
 class AnnotationStore
 {
-   HashMap<Class<? extends Annotation>, Annotation> annotationMap = new HashMap<Class<? extends Annotation>, Annotation>();
-   Set<Annotation> annotations = new HashSet<Annotation>();
+   
+   private final HashMap<Class<? extends Annotation>, Annotation> annotationMap;
+   private final Set<Annotation> annotationSet;
 
-   public void clear()
+   AnnotationStore(HashMap<Class<? extends Annotation>, Annotation> annotationMap, Set<Annotation> annotationSet)
    {
-      annotationMap.clear();
-      annotations.clear();
+      this.annotationMap = annotationMap;
+      this.annotationSet = annotationSet;
+   }
+   
+   AnnotationStore()
+   {
+      this.annotationMap = new HashMap<Class<? extends Annotation>, Annotation>();
+      this.annotationSet = new HashSet<Annotation>();
    }
 
-   public void addAnnotation(Annotation a)
+   public <T extends Annotation> T getAnnotation(Class<T> annotationType)
    {
-      annotations.add(a);
-      annotationMap.put(a.getClass(), a);
-   }
-
-   public void removeAnnotation(Class a)
-   {
-      Annotation an = annotationMap.get(a);
-      if (an != null)
-      {
-         annotations.remove(an);
-         annotationMap.remove(a);
-      }
-   }
-
-   public <T extends Annotation> T getAnnotation(Class<T> type)
-   {
-      return (T) annotationMap.get(type);
+      return annotationType.cast(annotationMap.get(annotationType));
    }
 
    public Set<Annotation> getAnnotations()
    {
-      return Collections.unmodifiableSet(annotations);
+      return Collections.unmodifiableSet(annotationSet);
    }
 
-   public boolean isAnnotationPresent(Class<? extends Annotation> type)
+   public boolean isAnnotationPresent(Class<? extends Annotation> annotationType)
    {
-      return annotationMap.containsKey(type);
-   }
-
-   public void addAll(AnnotatedElement element)
-   {
-      for (Annotation a : element.getAnnotations())
-      {
-         addAnnotation(a);
-      }
+      return annotationMap.containsKey(annotationType);
    }
 
 }

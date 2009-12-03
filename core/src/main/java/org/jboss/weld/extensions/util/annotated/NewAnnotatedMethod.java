@@ -1,6 +1,7 @@
 package org.jboss.weld.extensions.util.annotated;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedType;
@@ -12,14 +13,9 @@ import javax.enterprise.inject.spi.AnnotatedType;
  */
 class NewAnnotatedMethod<X> extends AbstractNewAnnotatedCallable<X, Method> implements AnnotatedMethod<X>
 {
-   NewAnnotatedMethod(AnnotatedType<X> type, Method method, boolean readAnnotations)
+   NewAnnotatedMethod(AnnotatedType<X> type, Method method, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations)
    {
-      super(type, method, readAnnotations);
-      int count = 0;
-      for (Class<?> c : method.getParameterTypes())
-      {
-         NewAnnotatedParameter<X> mp = new NewAnnotatedParameter<X>(this, c, count++, readAnnotations);
-         getParameters().add(mp);
-      }
+      super(type, method, method.getReturnType(), method.getParameterTypes(), annotations, parameterAnnotations);
    }
+
 }

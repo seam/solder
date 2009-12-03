@@ -10,13 +10,12 @@ import javax.enterprise.inject.spi.AnnotatedType;
  * @author Stuart Douglas
  *
  */
-class NewAnnotatedField<X> extends AbstractNewAnnotatedMember<X, Field> implements
-      AnnotatedField<X>
+class NewAnnotatedField<X> extends AbstractNewAnnotatedMember<X, Field> implements AnnotatedField<X>
 {
 
-   NewAnnotatedField(AnnotatedType<X> declaringType, Field field, boolean readAnnotations)
+   NewAnnotatedField(AnnotatedType<X> declaringType, Field field, AnnotationStore annotations)
    {
-      super(declaringType, field, field.getType(), readAnnotations);
+      super(declaringType, field, field.getType(), annotations);
    }
 
 }

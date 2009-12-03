@@ -5,16 +5,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * A type closure builder
  * 
  * @author Stuart Douglas
  * 
  */
-class TypeStore
+class TypeClosureBuilder
 {
 
    final Set<Type> types = new HashSet<Type>();
 
-   public void add(Class<?> beanType)
+   public TypeClosureBuilder add(Class<?> beanType)
    {
       Class<?> c = beanType;
       do
@@ -27,14 +28,16 @@ class TypeStore
       {
          types.add(i);
       }
+      return this;
    }
 
-   public void addInterfaces(Class<?> beanType)
+   public TypeClosureBuilder addInterfaces(Class<?> beanType)
    {
       for (Class<?> i : beanType.getInterfaces())
       {
          types.add(i);
       }
+      return this;
    }
 
    public Set<Type> getTypes()

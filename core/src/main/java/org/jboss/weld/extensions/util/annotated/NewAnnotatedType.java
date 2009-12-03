@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -21,72 +20,47 @@ import javax.enterprise.inject.spi.AnnotatedType;
  * @author Stuart Douglas
  * 
  */
-public class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements AnnotatedType<X>
+class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements AnnotatedType<X>
 {
 
-   private final Set<NewAnnotatedConstructor<X>> constructors = new HashSet<NewAnnotatedConstructor<X>>();
-   private final Set<NewAnnotatedField<? super X>> fields = new HashSet<NewAnnotatedField<? super X>>();
-   private final Set<NewAnnotatedMethod<? super X>> methods = new HashSet<NewAnnotatedMethod<? super X>>();
-
-   // maps fields to the field objects
-   private final Map<Field, NewAnnotatedField<X>> fieldMap = new HashMap<Field, NewAnnotatedField<X>>();
-   // maps method names to the method objects
-   private final Map<Method, NewAnnotatedMethod<X>> methodMap = new HashMap<Method, NewAnnotatedMethod<X>>();
+   private final Set<AnnotatedConstructor<X>> constructors;
+   private final Set<AnnotatedField<? super X>> fields;
+   private final Set<AnnotatedMethod<? super X>> methods;
 
    private final Class<X> javaClass;
 
-   public NewAnnotatedType(Class<X> clazz, boolean readAnnotations)
+   NewAnnotatedType(Class<X> clazz, AnnotationStore typeAnnotations, Map<Field, AnnotationStore> fieldAnnotations, Map<Method, AnnotationStore> methodAnnotations, Map<Method, Map<Integer, AnnotationStore>> methodParameterAnnotations, Map<Constructor<X>, AnnotationStore> constructorAnnotations, Map<Constructor<X>, Map<Integer, AnnotationStore>> constructorParameterAnnotations)
    {
-      super(clazz, readAnnotations);
-      javaClass = clazz;
+      super(clazz, typeAnnotations);
+      this.javaClass = clazz;
+      this.constructors = new HashSet<AnnotatedConstructor<X>>();
       for (Constructor<?> c : clazz.getConstructors())
       {
-         constructors.add(new NewAnnotatedConstructor<X>(this, c, readAnnotations));
+         NewAnnotatedConstructor<X> nc = new NewAnnotatedConstructor<X>(this, c, constructorAnnotations.get(c), constructorParameterAnnotations.get(c));
+         constructors.add(nc);
       }
+      this.methods = new HashSet<AnnotatedMethod<? super X>>();
       for (Method m : clazz.getMethods())
       {
-         NewAnnotatedMethod<X> met = new NewAnnotatedMethod<X>(this, m, readAnnotations);
+         NewAnnotatedMethod<X> met = new NewAnnotatedMethod<X>(this, m, methodAnnotations.get(m), methodParameterAnnotations.get(m));
          methods.add(met);
-         methodMap.put(m, met);
       }
+      this.fields = new HashSet<AnnotatedField<? super X>>();
       for (Field f : clazz.getFields())
       {
-         NewAnnotatedField<X> b = new NewAnnotatedField<X>(this, f, readAnnotations);
+         NewAnnotatedField<X> b = new NewAnnotatedField<X>(this, f, fieldAnnotations.get(f));
          fields.add(b);
-         fieldMap.put(f, b);
-      }
-
-   }
-
-   /**
-    * clears all existing annotation data from a type
-    */
-   @Override
-   public void clearAllAnnotations()
-   {
-      super.clearAllAnnotations();
-      for (AbstractNewAnnotatedElement c : constructors)
-      {
-         c.clearAllAnnotations();
-      }
-      for (AbstractNewAnnotatedElement c : fields)
-      {
-         c.clearAllAnnotations();
-      }
-      for (AbstractNewAnnotatedElement c : methods)
-      {
-         c.clearAllAnnotations();
       }
    }
 
    public Set<AnnotatedConstructor<X>> getConstructors()
    {
-      return (Set) Collections.unmodifiableSet(constructors);
+      return Collections.unmodifiableSet(constructors);
    }
 
    public Set<AnnotatedField<? super X>> getFields()
    {
-      return (Set) Collections.unmodifiableSet(fields);
+      return Collections.unmodifiableSet(fields);
    }
 
    public Class<X> getJavaClass()
@@ -96,17 +70,7 @@ public class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements 
 
    public Set<AnnotatedMethod<? super X>> getMethods()
    {
-      return (Set) Collections.unmodifiableSet(methods);
-   }
-
-   public NewAnnotatedField<X> getField(Field field)
-   {
-      return fieldMap.get(field);
-   }
-
-   public NewAnnotatedMethod<X> getMethod(Method m)
-   {
-      return methodMap.get(m);
+      return Collections.unmodifiableSet(methods);
    }
 
 }
