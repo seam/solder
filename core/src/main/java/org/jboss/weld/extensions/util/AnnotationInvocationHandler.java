@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,6 +25,12 @@ import java.util.Map;
  * 
  * Numeric types do not have to match exactly, as they are converted using
  * java.lang.Number's xxxValue methods.
+ * 
+ * If am member does not have a corresponding entry in the value map then the
+ * annotations default value will be used. 
+ * 
+ * If the annotation member does not have a default value then a NullMemberException
+ * will be thrown
  * 
  * 
  * @author Stuart Douglas
@@ -58,11 +65,27 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
 
    private final Method[] members;
 
-   AnnotationInvocationHandler(Map<String, Object> valueMap, Class<? extends Annotation> annotationType)
+   AnnotationInvocationHandler(Map<String, Object> values, Class<? extends Annotation> annotationType)
    {
-      this.valueMap = valueMap;
+      this.valueMap = new HashMap<String, Object>();
+      valueMap.putAll(values);
       this.annotationType = annotationType;
       this.members = annotationType.getDeclaredMethods();
+      for (Method m : members)
+      {
+         Object value = valueMap.get(m.getName());
+         if (value == null)
+         {
+            value = m.getDefaultValue();
+            if (value == null)
+            {
+               throw new NullMemberException(annotationType, m, "Error creating annotation @" + annotationType.getName() + " member " + m.getName() + " was null and does not provide a default value");
+            } else
+            {
+               valueMap.put(m.getName(), value);
+            }
+         }
+      }
    }
    
    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
@@ -95,38 +118,35 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
 
    private Object performTypeCoercion(Object val, Class<?> type)
    {
-      if (val != null)
+      if (Integer.class.isAssignableFrom(type) || type == int.class)
       {
-         if (Integer.class.isAssignableFrom(type) || type == int.class)
+         return ((Number) val).intValue();
+      }
+      else if (Long.class.isAssignableFrom(type) || type == long.class)
+      {
+         return ((Number) val).longValue();
+      }
+      else if (Short.class.isAssignableFrom(type) || type == short.class)
+      {
+         return ((Number) val).shortValue();
+      }
+      else if (Byte.class.isAssignableFrom(type) || type == byte.class)
+      {
+         return ((Number) val).byteValue();
+      }
+      else if (Double.class.isAssignableFrom(type) || type == double.class)
+      {
+         return ((Number) val).doubleValue();
+      }
+      else if (Float.class.isAssignableFrom(type) || type == float.class)
+      {
+         return ((Number) val).floatValue();
+      }
+      else if (Character.class.isAssignableFrom(type) || type == char.class)
+      {
+         if (String.class.isAssignableFrom(val.getClass()))
          {
-            return ((Number) val).intValue();
-         }
-         else if (Long.class.isAssignableFrom(type) || type == long.class)
-         {
-            return ((Number) val).longValue();
-         }
-         else if (Short.class.isAssignableFrom(type) || type == short.class)
-         {
-            return ((Number) val).shortValue();
-         }
-         else if (Byte.class.isAssignableFrom(type) || type == byte.class)
-         {
-            return ((Number) val).byteValue();
-         }
-         else if (Double.class.isAssignableFrom(type) || type == double.class)
-         {
-            return ((Number) val).doubleValue();
-         }
-         else if (Float.class.isAssignableFrom(type) || type == float.class)
-         {
-            return ((Number) val).floatValue();
-         }
-         else if (Character.class.isAssignableFrom(type) || type == char.class)
-         {
-            if (String.class.isAssignableFrom(val.getClass()))
-            {
-               return val.toString().charAt(0);
-            }
+            return val.toString().charAt(0);
          }
       }
       return val;

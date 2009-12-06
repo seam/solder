@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
+import org.jboss.weld.extensions.util.NullMemberException;
 import org.testng.annotations.Test;
 
 /**
@@ -87,4 +88,34 @@ public class AnnotationInstanceProviderTest
       MultipleMembers realAn = AnnotatedClass.class.getAnnotation(MultipleMembers.class);
       assert an.equals(realAn) : "Equality between declared annotation failed";
    }
+
+   /**
+    * Test that an exception is thrown when a member is null
+    */
+   @Test(expectedExceptions = NullMemberException.class)
+   public void testNullMemberException()
+   {
+      AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
+      Map<String, Object> values = new HashMap<String, Object>();
+      values.put("value", Long.valueOf(1));
+      values.put("someMember", null);
+      IntMemberAnnotation an = provider.get(IntMemberAnnotation.class, values);
+
+   }
+
+   /**
+    * Test that an Annotation will use the default values if a member with default 
+    * values is null
+    */
+   @Test
+   public void testDefaultValue()
+   {
+      AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
+      Map<String, Object> values = new HashMap<String, Object>();
+      values.put("someMember", Integer.valueOf(0));
+      IntMemberAnnotation an = provider.get(IntMemberAnnotation.class, values);
+      assert an != null : "Annotation was null";
+      assert an.value() == 1 : "Annotation member was not equal to default value";
+   }
+
 }

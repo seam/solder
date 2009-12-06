@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IntMemberAnnotation
 {
-   int value();
+   int value() default 1;
 
    int someMember();
 }
