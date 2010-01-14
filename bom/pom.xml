@@ -39,7 +39,7 @@
       <wicket.version>1.4.1</wicket.version>
       <tomcat.version>6.0.20</tomcat.version>
       <uel.glassfish.version>2.1.2-b04</uel.glassfish.version>
-      <slf4j.version>1.5.9.RC1</slf4j.version>
+      <slf4j.version>1.5.10</slf4j.version>
    </properties>
    
    <!-- Dependency management, including extra repositories if needed -->
@@ -122,4 +122,12 @@
 
       </dependencies>
    </dependencyManagement>
+
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk/bom</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk/bom</developerConnection>
+      <url>http://fisheye.jboss.org/browse/weld/extensions/trunk/bom</url>
+   </scm>
+
+
 </project>

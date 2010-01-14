@@ -76,5 +76,12 @@
       </dependency>
       
    </dependencies>
+
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk/core</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk/core</developerConnection>
+      <url>http://fisheye.jboss.org/browse/weld/extensions/trunk/core</url>
+   </scm>
+
    
 </project>
