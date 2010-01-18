@@ -31,7 +31,13 @@ public abstract class Reannotated implements Annotated
 
       AnnotationSet(Map<Class<? extends Annotation>, Annotation> annotations, Set<Annotation> delegateAnnotations)
       {
-         list.addAll(annotations.values());
+         for (Annotation a : annotations.values())
+         {
+            if (a != null)
+            {
+               list.add(a);
+            }
+         }
          for (Annotation ann : delegateAnnotations)
          {
             if (!annotations.containsKey(ann.annotationType()))
@@ -70,21 +76,14 @@ public abstract class Reannotated implements Annotated
       if (isAnnotationPresent(annotationType))
       {
          X redefined = visitor.redefine(getAnnotation(annotationType), this);
-         if (redefined == null)
-         {
-            annotations.remove(annotationType);
-         }
-         else
-         {
-            annotations.put(annotationType, redefined);
-         }
+         annotations.put(annotationType, redefined);
       }
    }
 
-   /*
-    * public void undefine(Class<? extends Annotation> annotationType) {
-    * annotations.put(annotationType, null); }
-    */
+   public void undefine(Class<? extends Annotation> annotationType)
+   {
+      annotations.put(annotationType, null);
+   }
 
    public void define(Annotation ann)
    {
@@ -124,9 +123,10 @@ public abstract class Reannotated implements Annotated
       {
          throw new IllegalArgumentException("annotationType argument must not be null");
       }
-      Annotation ann = annotations.get(annotationType);
-      if (ann != null)
+
+      if (annotations.containsKey(annotationType))
       {
+         Annotation ann = annotations.get(annotationType);
          return annotationType.cast(ann);
       }
       else
@@ -152,7 +152,11 @@ public abstract class Reannotated implements Annotated
 
    public boolean isAnnotationPresent(Class<? extends Annotation> annotationType)
    {
-      return annotations.containsKey(annotationType) || delegate().isAnnotationPresent(annotationType);
+      if (annotations.containsKey(annotationType))
+      {
+         return annotations.get(annotationType) != null;
+      }
+      return delegate().isAnnotationPresent(annotationType);
    }
 
 }
