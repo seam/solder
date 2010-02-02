@@ -2,13 +2,13 @@
    <parent>
       <artifactId>weld-extensions-parent</artifactId>
       <groupId>org.jboss.weld</groupId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.1-SNAPSHOT</version>
       <relativePath>../parent/pom.xml</relativePath>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.weld</groupId>
-   <artifactId>weld-extensions</artifactId>
-   
+   <artifactId>weld-extensions-core</artifactId>
+   <version>1.0.1-SNAPSHOT</version>
    <!-- metadata -->
    <name>Weld Extensions</name>
    

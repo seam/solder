@@ -35,7 +35,7 @@ public class LoggerInjectionTest extends AbstractWeldTest
    @Test
    public void testBasicLogInjection()
    {
-      Sparrow bird = getCurrentManager().getInstanceByType(Sparrow.class);
+      Sparrow bird = getReference(Sparrow.class);
       TestLoggerFactory.INSTANCE.getLogger("").reset();
       bird.generateLogMessage();
       assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
@@ -45,7 +45,7 @@ public class LoggerInjectionTest extends AbstractWeldTest
    @Test
    public void testCategorySpecifiedLogger()
    {
-      Finch bird = getCurrentManager().getInstanceByType(Finch.class);
+      Finch bird = getReference(Finch.class);
       TestLoggerFactory.INSTANCE.getLogger("").reset();
       bird.generateLogMessage();
       assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
