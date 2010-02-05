@@ -148,7 +148,7 @@ public class CoreExtension implements Extension
    private String getPackageName(Package pkg)
    {
       String packageName = pkg.getAnnotation(Named.class).value();
-      if (packageName.isEmpty())
+      if (packageName.length() == 0)
       {
          packageName = pkg.getName();
       }
@@ -158,7 +158,7 @@ public class CoreExtension implements Extension
    private <X> String getName(Annotated annotated, String defaultName)
    {
       String beanName = annotated.getAnnotation(Named.class).value();
-      if (beanName.isEmpty())
+      if (beanName.length() == 0)
       {
          beanName = defaultName.substring(0, 1).toLowerCase() + defaultName.substring(1);
       }

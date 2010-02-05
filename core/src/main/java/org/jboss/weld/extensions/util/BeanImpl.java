@@ -47,7 +47,7 @@ public class BeanImpl<T> implements Bean<T>
       {
          this.name = rtc.getAnnotation(Named.class).value();
          // no name defaulting for constructors
-         if (this.name.isEmpty())
+         if (this.name.length() == 0)
          {
             throw new RuntimeException();
          }
