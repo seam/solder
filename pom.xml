@@ -8,7 +8,7 @@
    <parent>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-parent</artifactId>
-      <version>8</version>
+      <version>9</version>
    </parent>
 
    <name>Weld Extensions Build Aggregator</name>
@@ -17,6 +17,7 @@
       <module>bom</module>
       <module>parent</module>
       <module>core</module>
+      <module>genericbeans</module>
    </modules>
    
    <!-- Minimal metadata -->
