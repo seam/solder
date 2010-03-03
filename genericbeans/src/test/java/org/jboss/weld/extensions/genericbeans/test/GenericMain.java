@@ -1,13 +1,25 @@
 package org.jboss.weld.extensions.genericbeans.test;
 
+import javax.inject.Inject;
+
 import org.jboss.weld.extensions.genericbeans.Generic;
-import org.jboss.weld.extensions.genericbeans.InjectGeneric;
 
 @Generic(TestAnnotation.class)
 public class GenericMain
 {
-   @InjectGeneric
+   @Inject
+   public GenericMain(GenericConstructorArgument args)
+   {
+      constArgs = args;
+   }
+
+   @Inject
    GenericDep dep;
+
+   @Inject
+   NormalBean normalBean;
+
+   GenericConstructorArgument constArgs;
 
    public String getValue()
    {

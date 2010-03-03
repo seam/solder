@@ -13,4 +13,5 @@ public class GenericProducer
    @Produces
    @TestAnnotation("hello2")
    GenericMain main2;
+
 }

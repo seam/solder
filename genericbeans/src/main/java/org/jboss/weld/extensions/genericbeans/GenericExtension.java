@@ -13,10 +13,12 @@ import java.util.Map.Entry;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
@@ -70,11 +72,11 @@ public class GenericExtension implements Extension
             genericBeans.put(an.value(), new HashSet<AnnotatedType<?>>());
          }
          genericBeans.get(an.value()).add(type);
-         // we will install this bean later
+         // we will install (multiple copies of) this bean later
          event.veto();
 
       }
-
+      //make note of any producer fields that produce generic beans
       for (Object f : type.getFields())
       {
          AnnotatedField<?> field = (AnnotatedField<?>) f;
@@ -100,6 +102,9 @@ public class GenericExtension implements Extension
       }
    }
 
+   /**
+    * wraps InjectionTarget to initialise producer fields that produce generic beans
+    */
    public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event, BeanManager beanManager)
    {
       Class javaClass = event.getAnnotatedType().getJavaClass();
@@ -118,6 +123,9 @@ public class GenericExtension implements Extension
       }
    }
 
+   /**
+    * Installs the generic beans. 
+    */
    public void afterBeanDiscovery(@Observes AfterBeanDiscovery event, BeanManager beanManager)
    {
       for (Entry<Class<?>, Set<AnnotatedType<?>>> i : genericBeans.entrySet())
@@ -136,12 +144,8 @@ public class GenericExtension implements Extension
                   for (AnnotatedField<?> f : rt.getFields())
                   {
                      ReannotatedField<?> field = (ReannotatedField<?>) f;
-                     if (field.isAnnotationPresent(InjectGeneric.class))
-                     {
-                        field.define(newQualifier);
-                        field.define(new InjectLiteral());
-                     }
-                     else if (field.isAnnotationPresent(Inject.class))
+
+                     if (field.isAnnotationPresent(Inject.class))
                      {
                         //if this is a configuration injection point
                         if (conc.annotationType().isAssignableFrom(field.getJavaMember().getType()))
@@ -151,17 +155,66 @@ public class GenericExtension implements Extension
                            {
                            });
                         }
+                        else
+                        {
+                           //check to see if we should be injecting a generic bean
+                           //we do this by checking if there are any beans that can be injected into this point
+                           //if there is not then we assume it is a generic injection point
+                           //this has the downside that if it is actually a deployment error then it will confuse the user
+                           Annotation[] qls = getQualifiers(field.getAnnotations(), beanManager);
+                           Set<Bean<?>> beans = beanManager.getBeans(field.getJavaMember().getType(), qls);
+                           if (beans.isEmpty())
+                           {
+                              field.define(newQualifier);
+                           }
+                        }
+                     }
+                     else if (field.isAnnotationPresent(Produces.class))
+                     {
+                        //TODO: register a producer with the appropriate qualifier
                      }
                   }
                   for (AnnotatedMethod<?> m : rt.getMethods())
                   {
-                     for (AnnotatedParameter<?> a : m.getParameters())
+                     //TODO: need to properly handle Observer methods and Disposal methods
+                     if (m.isAnnotationPresent(Produces.class))
                      {
-                        ReannotatedParameter<?> param = (ReannotatedParameter<?>) a;
-                        if (param.isAnnotationPresent(InjectGeneric.class))
+                        //TODO: we need to register the producer bean, so this is not very useful at the moment
+                        for (AnnotatedParameter<?> pm : m.getParameters())
                         {
-                           param.define(newQualifier);
-                           param.define(new InjectLiteral());
+                           ReannotatedParameter<?> param = (ReannotatedParameter<?>) pm;
+
+                           Class paramType = m.getJavaMember().getParameterTypes()[param.getPosition()];
+
+                           //check to see if we should be injecting a generic bean
+                           //we do this by checking if there are any beans that can be injected into this point
+                           //if there is not then we assume it is a generic injection point
+                           //this has the downside that if it is actually a deployment error then it will confuse the user
+                           Annotation[] qls = getQualifiers(param.getAnnotations(), beanManager);
+                           Set<Bean<?>> beans = beanManager.getBeans(paramType, qls);
+                           if (beans.isEmpty())
+                           {
+                              param.define(newQualifier);
+                           }
+                        }
+                     }
+                  }
+
+                  for (AnnotatedConstructor<?> m : rt.getConstructors())
+                  {
+                     if (m.isAnnotationPresent(Inject.class))
+                     {
+                        for (AnnotatedParameter<?> pm : m.getParameters())
+                        {
+                           ReannotatedParameter<?> param = (ReannotatedParameter<?>) pm;
+
+                           Class paramType = m.getJavaMember().getParameterTypes()[param.getPosition()];
+                           Annotation[] qls = getQualifiers(param.getAnnotations(), beanManager);
+                           Set<Bean<?>> beans = beanManager.getBeans(paramType, qls);
+                           if (beans.isEmpty())
+                           {
+                              param.define(newQualifier);
+                           }
                         }
                      }
                   }
@@ -186,6 +239,24 @@ public class GenericExtension implements Extension
          qualifierMap.put(a, qualifier);
       }
       return qualifierMap.get(a);
+   }
+
+   static Annotation[] getQualifiers(Set<Annotation> annotations, BeanManager manager)
+   {
+      List<Annotation> qualifiers = new ArrayList<Annotation>();
+      for (Annotation a : annotations)
+      {
+         if (manager.isQualifier(a.annotationType()))
+         {
+            qualifiers.add(a);
+         }
+      }
+      Annotation[] qls = new Annotation[qualifiers.size()];
+      for (int j = 0; j < qls.length; ++j)
+      {
+         qls[j] = qualifiers.get(j);
+      }
+      return qls;
    }
 
 }

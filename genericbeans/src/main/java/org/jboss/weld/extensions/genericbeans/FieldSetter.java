@@ -32,7 +32,7 @@ public class FieldSetter
       Set<Bean<?>> beans = beanManager.getBeans(field.getType(), qualifier);
       if (beans.size() == 0)
       {
-         throw new RuntimeException("Could not resolve bean for Generic Producer field " + field.getDeclaringClass() + "." + field.getName());
+         throw new RuntimeException("Could not resolve bean for Generic Producer field " + field.getDeclaringClass() + "." + field.getName() + " Type: " + field.getType() + " Qualifiers:" + qualifier);
       }
       if (beans.size() > 1)
       {
