@@ -29,10 +29,10 @@ import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
-import org.jboss.weld.extensions.util.BeanImpl;
 import org.jboss.weld.extensions.util.reannotated.ReannotatedField;
 import org.jboss.weld.extensions.util.reannotated.ReannotatedParameter;
 import org.jboss.weld.extensions.util.reannotated.ReannotatedType;
+import org.jboss.weld.extensions.beans.CustomBeanBuilder;
 
 public class GenericExtension implements Extension
 {
@@ -221,8 +221,8 @@ public class GenericExtension implements Extension
                   InjectionTarget<?> it = beanManager.createInjectionTarget(rt);
 
                   it = new GenericBeanInjectionTargetWrapper(rt, it, conc);
-                  BeanImpl<?> bean = new BeanImpl(it, rt);
-                  event.addBean(bean);
+                  CustomBeanBuilder<?> builder = new CustomBeanBuilder(rt,beanManager,it);
+                  event.addBean(builder.build());
 
                }
             }
