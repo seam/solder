@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedMethod;
@@ -387,6 +388,100 @@ public class NewAnnotatedTypeBuilder<X>
          if (newAn != null)
          {
             builder.add(newAn);
+         }
+      }
+   }
+
+   /**
+    * merges the annotations from an existing AnnoatedType. If they both have the same annotation
+    * on an element overwriteExisting determines which one to keep
+    * @param type
+    * @param overwriteExisting
+    * @return
+    */
+   public NewAnnotatedTypeBuilder<X> mergeAnnotations(AnnotatedType<X> type, boolean overwriteExisting)
+   {
+      mergeAnnotationsOnElement(type, overwriteExisting, typeAnnotations);
+      for (AnnotatedField<? super X> field : type.getFields())
+      {
+         AnnotationBuilder ans = fields.get(field.getJavaMember());
+         if (ans == null)
+         {
+            ans = new AnnotationBuilder();
+            fields.put(field.getJavaMember(), ans);
+         }
+         mergeAnnotationsOnElement(field, overwriteExisting, ans);
+      }
+      for (AnnotatedMethod<? super X> method : type.getMethods())
+      {
+         AnnotationBuilder ans = methods.get(method.getJavaMember());
+         if (ans == null)
+         {
+            ans = new AnnotationBuilder();
+            methods.put(method.getJavaMember(), ans);
+         }
+         mergeAnnotationsOnElement(method, overwriteExisting, ans);
+         for (AnnotatedParameter<? super X> p : method.getParameters())
+         {
+            Map<Integer, AnnotationBuilder> params = methodParameters.get(method.getJavaMember());
+            if (params == null)
+            {
+               params = new HashMap<Integer, AnnotationBuilder>();
+               methodParameters.put(method.getJavaMember(), params);
+            }
+            AnnotationBuilder builder = params.get(p.getPosition());
+            if(builder == null)
+            {
+               builder = new AnnotationBuilder();
+               params.put(p.getPosition(), builder);
+            }
+            mergeAnnotationsOnElement(p, overwriteExisting, builder);
+         }
+      }
+      for (AnnotatedConstructor<? super X> constructor : type.getConstructors())
+      {
+         AnnotationBuilder ans = constructors.get(constructor.getJavaMember());
+         if (ans == null)
+         {
+            ans = new AnnotationBuilder();
+            constructors.put((Constructor) constructor.getJavaMember(), ans);
+         }
+         mergeAnnotationsOnElement(constructor, overwriteExisting, ans);
+         for (AnnotatedParameter<? super X> p : constructor.getParameters())
+         {
+            Map<Integer, AnnotationBuilder> params = constructorParameters.get(constructor.getJavaMember());
+            if (params == null)
+            {
+               params = new HashMap<Integer, AnnotationBuilder>();
+               constructorParameters.put((Constructor) constructor.getJavaMember(), params);
+            }
+            AnnotationBuilder builder = params.get(p.getPosition());
+            if (builder == null)
+            {
+               builder = new AnnotationBuilder();
+               params.put(p.getPosition(), builder);
+            }
+            mergeAnnotationsOnElement(p, overwriteExisting, builder);
+         }
+      }
+      return this;
+   }
+
+   protected void mergeAnnotationsOnElement(Annotated annotated, boolean overwriteExisting, AnnotationBuilder typeAnnotations)
+   {
+      for (Annotation a : annotated.getAnnotations())
+      {
+         if (typeAnnotations.getAnnotation(a.annotationType()) != null)
+         {
+            if (overwriteExisting)
+            {
+               typeAnnotations.remove(a.annotationType());
+               typeAnnotations.add(a);
+            }
+         }
+         else
+         {
+            typeAnnotations.add(a);
          }
       }
    }
