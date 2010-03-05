@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -19,8 +20,22 @@ class AnnotationBuilder
    public AnnotationBuilder add(Annotation a)
    {
       annotationSet.add(a);
-      annotationMap.put(a.getClass(), a);
+      annotationMap.put(a.annotationType(), a);
       return this;
+   }
+
+   public void remove(Class<? extends Annotation> a)
+   {
+      Iterator<Annotation> it = annotationSet.iterator();
+      while (it.hasNext())
+      {
+         Annotation an = it.next();
+         if (a.isAssignableFrom(an.annotationType()))
+         {
+            it.remove();
+         }
+      }
+      annotationMap.remove(a);
    }
 
    public AnnotationStore create()
@@ -53,6 +68,11 @@ class AnnotationBuilder
          add(a);
       }
       return this;
+   }
+
+   public <T extends Annotation> T getAnnotation(Class<T> anType)
+   {
+      return (T) annotationMap.get(anType);
    }
 
 }

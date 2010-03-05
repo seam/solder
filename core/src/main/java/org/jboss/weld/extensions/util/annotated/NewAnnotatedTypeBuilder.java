@@ -8,14 +8,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.enterprise.inject.spi.AnnotatedConstructor;
+import javax.enterprise.inject.spi.AnnotatedField;
+import javax.enterprise.inject.spi.AnnotatedMethod;
+import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
 /**
  * Class for constructing a new AnnotatedType. A new instance of builder must be
  * used for each annotated type.
  * 
- * No annotations will be read from the underlying class definition, all
- * annotations must be added explicitly
+ * In can either be created with no annotations, or the annotations can be read 
+ * from the underlying class or an AnnotatedType
  * 
  * @author Stuart Douglas
  * @author Pete Muir
@@ -33,12 +37,145 @@ public class NewAnnotatedTypeBuilder<X>
 
    public NewAnnotatedTypeBuilder(Class<X> underlying)
    {
+      this(underlying, false);
+   }
+
+   public NewAnnotatedTypeBuilder(Class<X> underlying, boolean readAnnotations)
+   {
       this.underlying = underlying;
+      if (readAnnotations)
+      {
+         for (Annotation a : underlying.getAnnotations())
+         {
+            typeAnnotations.add(a);
+         }
+
+         for (Field f : underlying.getFields())
+         {
+            AnnotationBuilder ab = new AnnotationBuilder();
+            fields.put(f, ab);
+            for (Annotation a : f.getAnnotations())
+            {
+               ab.add(a);
+            }
+         }
+
+         for (Method m : underlying.getMethods())
+         {
+            AnnotationBuilder ab = new AnnotationBuilder();
+            methods.put(m, ab);
+            for (Annotation a : m.getAnnotations())
+            {
+               ab.add(a);
+            }
+            Map<Integer, AnnotationBuilder> mparams = new HashMap<Integer, AnnotationBuilder>();
+            methodParameters.put(m, mparams);
+            for (int i = 0; i < m.getParameterTypes().length; ++i)
+            {
+               AnnotationBuilder mab = new AnnotationBuilder();
+               mparams.put(i, mab);
+               for (Annotation a : m.getParameterAnnotations()[i])
+               {
+                  mab.add(a);
+               }
+            }
+         }
+
+         for (Constructor m : underlying.getConstructors())
+         {
+            AnnotationBuilder ab = new AnnotationBuilder();
+            constructors.put(m, ab);
+            for (Annotation a : m.getAnnotations())
+            {
+               ab.add(a);
+            }
+            Map<Integer, AnnotationBuilder> mparams = new HashMap<Integer, AnnotationBuilder>();
+            constructorParameters.put(m, mparams);
+            for (int i = 0; i < m.getParameterTypes().length; ++i)
+            {
+               AnnotationBuilder mab = new AnnotationBuilder();
+               mparams.put(i, mab);
+               for (Annotation a : m.getParameterAnnotations()[i])
+               {
+                  mab.add(a);
+               }
+            }
+         }
+
+      }
+   }
+
+   public NewAnnotatedTypeBuilder(AnnotatedType<X> type)
+   {
+      this.underlying = type.getJavaClass();
+      for (Annotation a : type.getAnnotations())
+      {
+         typeAnnotations.add(a);
+      }
+
+      for (AnnotatedField<? super X> f : type.getFields())
+      {
+         AnnotationBuilder ab = new AnnotationBuilder();
+         fields.put(f.getJavaMember(), ab);
+         for (Annotation a : f.getAnnotations())
+         {
+            ab.add(a);
+         }
+      }
+
+      for (AnnotatedMethod<? super X> m : type.getMethods())
+      {
+         AnnotationBuilder ab = new AnnotationBuilder();
+         methods.put(m.getJavaMember(), ab);
+         for (Annotation a : m.getAnnotations())
+         {
+            ab.add(a);
+         }
+         Map<Integer, AnnotationBuilder> mparams = new HashMap<Integer, AnnotationBuilder>();
+         methodParameters.put(m.getJavaMember(), mparams);
+         for (AnnotatedParameter<? super X> p : m.getParameters())
+         {
+            AnnotationBuilder mab = new AnnotationBuilder();
+            mparams.put(p.getPosition(), mab);
+            for (Annotation a : p.getAnnotations())
+            {
+               mab.add(a);
+            }
+         }
+      }
+
+      for (AnnotatedConstructor<X> m : type.getConstructors())
+      {
+         AnnotationBuilder ab = new AnnotationBuilder();
+         constructors.put(m.getJavaMember(), ab);
+         for (Annotation a : m.getAnnotations())
+         {
+            ab.add(a);
+         }
+         Map<Integer, AnnotationBuilder> mparams = new HashMap<Integer, AnnotationBuilder>();
+         constructorParameters.put(m.getJavaMember(), mparams);
+         for (AnnotatedParameter<? super X> p : m.getParameters())
+         {
+            AnnotationBuilder mab = new AnnotationBuilder();
+            mparams.put(p.getPosition(), mab);
+            for (Annotation a : p.getAnnotations())
+            {
+               mab.add(a);
+            }
+         }
+      }
+
    }
 
    public NewAnnotatedTypeBuilder<X> addToClass(Annotation a)
    {
       typeAnnotations.add(a);
+      return this;
+   }
+
+   public NewAnnotatedTypeBuilder<X> removeFromClass(Class<? extends Annotation> annotation)
+   {
+      typeAnnotations.remove(annotation);
       return this;
    }
 
@@ -54,6 +191,16 @@ public class NewAnnotatedTypeBuilder<X>
       return this;
    }
 
+   public NewAnnotatedTypeBuilder<X> removeFromField(Field field, Class<? extends Annotation> a)
+   {
+      AnnotationBuilder annotations = fields.get(field);
+      if (annotations != null)
+      {
+         annotations.remove(a);
+      }
+      return this;
+   }
+
    public NewAnnotatedTypeBuilder<X> addToMethod(Method method, Annotation a)
    {
       AnnotationBuilder annotations = methods.get(method);
@@ -63,6 +210,16 @@ public class NewAnnotatedTypeBuilder<X>
          methods.put(method, annotations);
       }
       annotations.add(a);
+      return this;
+   }
+
+   public NewAnnotatedTypeBuilder<X> removeFromMethod(Method method, Class<? extends Annotation> a)
+   {
+      AnnotationBuilder annotations = methods.get(method);
+      if (annotations != null)
+      {
+         annotations.remove(a);
+      }
       return this;
    }
 
@@ -84,6 +241,20 @@ public class NewAnnotatedTypeBuilder<X>
       return this;
    }
 
+   public NewAnnotatedTypeBuilder<X> removeFromMethodParameter(Method method, int parameter, Class<? extends Annotation> a)
+   {
+      Map<Integer, AnnotationBuilder> anmap = methodParameters.get(method);
+      if (anmap != null)
+      {
+         AnnotationBuilder annotations = anmap.get(parameter);
+         if (annotations != null)
+         {
+            annotations.remove(a);
+         }
+      }
+      return this;
+   }
+
    public NewAnnotatedTypeBuilder<X> addToConstructor(Constructor<X> constructor, Annotation a)
    {
       AnnotationBuilder annotations = constructors.get(constructor);
@@ -93,6 +264,16 @@ public class NewAnnotatedTypeBuilder<X>
          constructors.put(constructor, annotations);
       }
       annotations.add(a);
+      return this;
+   }
+
+   public NewAnnotatedTypeBuilder<X> removeFromConstructor(Constructor constructor, Class<? extends Annotation> a)
+   {
+      AnnotationBuilder annotations = constructors.get(constructor);
+      if (annotations != null)
+      {
+         annotations.remove(a);
+      }
       return this;
    }
 
@@ -112,6 +293,102 @@ public class NewAnnotatedTypeBuilder<X>
       }
       annotations.add(a);
       return this;
+   }
+
+   public NewAnnotatedTypeBuilder<X> removeFromConstructorParameter(Constructor<X> constructor, int parameter, Class<? extends Annotation> a)
+   {
+      Map<Integer, AnnotationBuilder> anmap = constructorParameters.get(constructor);
+      if (anmap != null)
+      {
+         AnnotationBuilder annotations = anmap.get(parameter);
+         if (annotations != null)
+         {
+            annotations.remove(a);
+         }
+      }
+      return this;
+   }
+
+   public NewAnnotatedTypeBuilder<X> removeFromAll(Class<? extends Annotation> a)
+   {
+      removeFromClass(a);
+      for (Entry<Field, AnnotationBuilder> e : fields.entrySet())
+      {
+         e.getValue().remove(a);
+      }
+      for (Entry<Method, AnnotationBuilder> e : methods.entrySet())
+      {
+         e.getValue().remove(a);
+         Map<Integer, AnnotationBuilder> params = methodParameters.get(e.getKey());
+         if (params != null)
+         {
+            for (Entry<Integer, AnnotationBuilder> p : params.entrySet())
+            {
+               p.getValue().remove(a);
+            }
+         }
+      }
+      for (Entry<Constructor<X>, AnnotationBuilder> e : constructors.entrySet())
+      {
+         e.getValue().remove(a);
+         Map<Integer, AnnotationBuilder> params = constructorParameters.get(e.getKey());
+         if (params != null)
+         {
+            for (Entry<Integer, AnnotationBuilder> p : params.entrySet())
+            {
+               p.getValue().remove(a);
+            }
+         }
+      }
+      return this;
+   }
+
+   public <T extends Annotation> NewAnnotatedTypeBuilder<X> redefine(Class<T> annotationType, AnnotationRedefiner<T> redefinition)
+   {
+      redefineAnnotationBuilder(annotationType, redefinition, typeAnnotations);
+      for (Entry<Field, AnnotationBuilder> e : fields.entrySet())
+      {
+         redefineAnnotationBuilder(annotationType, redefinition, e.getValue());
+      }
+      for (Entry<Method, AnnotationBuilder> e : methods.entrySet())
+      {
+         redefineAnnotationBuilder(annotationType, redefinition, e.getValue());
+         Map<Integer, AnnotationBuilder> params = methodParameters.get(e.getKey());
+         if (params != null)
+         {
+            for (Entry<Integer, AnnotationBuilder> p : params.entrySet())
+            {
+               redefineAnnotationBuilder(annotationType, redefinition, p.getValue());
+            }
+         }
+      }
+      for (Entry<Constructor<X>, AnnotationBuilder> e : constructors.entrySet())
+      {
+         redefineAnnotationBuilder(annotationType, redefinition, e.getValue());
+         Map<Integer, AnnotationBuilder> params = constructorParameters.get(e.getKey());
+         if (params != null)
+         {
+            for (Entry<Integer, AnnotationBuilder> p : params.entrySet())
+            {
+               redefineAnnotationBuilder(annotationType, redefinition, p.getValue());
+            }
+         }
+      }
+      return this;
+   }
+
+   protected <T extends Annotation> void redefineAnnotationBuilder(Class<T> annotationType, AnnotationRedefiner<T> redefinition, AnnotationBuilder builder)
+   {
+      T an = builder.getAnnotation(annotationType);
+      if(an != null)
+      {
+         builder.remove(annotationType);
+         T newAn = redefinition.redefine(an, builder);
+         if (newAn != null)
+         {
+            builder.add(newAn);
+         }
+      }
    }
 
    public AnnotatedType<X> create()
