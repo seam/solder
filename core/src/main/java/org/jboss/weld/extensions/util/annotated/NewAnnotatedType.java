@@ -83,7 +83,7 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
       }
       for (Entry<Field, AnnotationStore> e : fieldAnnotations.entrySet())
       {
-         if (fset.contains(e.getKey()))
+         if (!fset.contains(e.getKey()))
          {
             fields.add(new NewAnnotatedField<X>(this, e.getKey(), e.getValue()));
          }

@@ -226,6 +226,10 @@ public class NewAnnotatedTypeBuilder<X>
 
    public NewAnnotatedTypeBuilder<X> addToMethodParameter(Method method, int parameter, Annotation a)
    {
+      if (!methods.containsKey(method))
+      {
+         methods.put(method, new AnnotationBuilder());
+      }
       Map<Integer, AnnotationBuilder> anmap = methodParameters.get(method);
       if (anmap == null)
       {
@@ -268,7 +272,7 @@ public class NewAnnotatedTypeBuilder<X>
       return this;
    }
 
-   public NewAnnotatedTypeBuilder<X> removeFromConstructor(Constructor constructor, Class<? extends Annotation> a)
+   public NewAnnotatedTypeBuilder<X> removeFromConstructor(Constructor<?> constructor, Class<? extends Annotation> a)
    {
       AnnotationBuilder annotations = constructors.get(constructor);
       if (annotations != null)
@@ -280,6 +284,10 @@ public class NewAnnotatedTypeBuilder<X>
 
    public NewAnnotatedTypeBuilder<X> addToConstructorParameter(Constructor<X> constructor, int parameter, Annotation a)
    {
+      if (!constructors.containsKey(constructor))
+      {
+         constructors.put(constructor, new AnnotationBuilder());
+      }
       Map<Integer, AnnotationBuilder> anmap = constructorParameters.get(constructor);
       if (anmap == null)
       {
