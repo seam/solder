@@ -11,6 +11,13 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 
+/**
+ * An immutable bean.
+ * 
+ * @author stuart
+ * 
+ * @param <T>
+ */
 public class CustomBean<T> implements Bean<T>
 {
    final Class<?> beanClass;
