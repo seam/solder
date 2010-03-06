@@ -15,7 +15,7 @@ class NewAnnotatedField<X> extends AbstractNewAnnotatedMember<X, Field> implemen
 
    NewAnnotatedField(AnnotatedType<X> declaringType, Field field, AnnotationStore annotations)
    {
-      super(declaringType, field, field.getType(), annotations);
+      super(declaringType, field, field.getType(), annotations, field.getGenericType());
    }
 
 }

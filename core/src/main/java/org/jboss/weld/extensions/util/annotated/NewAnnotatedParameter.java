@@ -16,7 +16,7 @@ class NewAnnotatedParameter<X> extends AbstractNewAnnotatedElement implements An
 
    NewAnnotatedParameter(AnnotatedCallable<X> declaringCallable, Class<?> type, int position, AnnotationStore annotations)
    {
-      super(type, annotations);
+      super(type, annotations, null);
       this.declaringCallable = declaringCallable;
       this.position = position;
    }

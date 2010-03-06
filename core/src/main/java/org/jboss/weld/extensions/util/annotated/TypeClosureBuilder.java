@@ -15,6 +15,12 @@ class TypeClosureBuilder
 
    final Set<Type> types = new HashSet<Type>();
 
+   public TypeClosureBuilder add(Type type)
+   {
+      types.add(type);
+      return this;
+   }
+
    public TypeClosureBuilder add(Class<?> beanType)
    {
       Class<?> c = beanType;

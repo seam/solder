@@ -1,6 +1,7 @@
 package org.jboss.weld.extensions.util.annotated;
 
 import java.lang.reflect.Member;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,9 +21,9 @@ abstract class AbstractNewAnnotatedCallable<X, Y extends Member> extends Abstrac
 
    private final List<AnnotatedParameter<X>> parameters;
 
-   protected AbstractNewAnnotatedCallable(AnnotatedType<X> declaringType, Y member, Class<?> memberType, Class<?>[] parameterTypes, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations)
+   protected AbstractNewAnnotatedCallable(AnnotatedType<X> declaringType, Y member, Class<?> memberType, Class<?>[] parameterTypes, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Type genericType)
    {
-      super(declaringType, member, memberType, annotations);
+      super(declaringType, member, memberType, annotations, genericType);
       this.parameters = getAnnotatedParameters(this, parameterTypes, parameterAnnotations);
    }
 

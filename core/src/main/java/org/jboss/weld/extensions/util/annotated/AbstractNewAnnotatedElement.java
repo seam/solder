@@ -16,13 +16,22 @@ import javax.enterprise.inject.spi.Annotated;
 abstract class AbstractNewAnnotatedElement implements Annotated
 {
 
-   private final Class<?> type;
+   private final Type type;
    private final Set<Type> typeClosure;
    private final AnnotationStore annotations;
 
-   protected AbstractNewAnnotatedElement(Class<?> type, AnnotationStore annotations)
+   protected AbstractNewAnnotatedElement(Class<?> type, AnnotationStore annotations, Type genericType)
    {
       this.typeClosure = new TypeClosureBuilder().add(type).getTypes();
+      if (genericType != null)
+      {
+         typeClosure.add(genericType);
+         this.type = genericType;
+      }
+      else
+      {
+         this.type = type;
+      }
       if (annotations == null)
       {
          this.annotations = new AnnotationStore();
@@ -31,7 +40,6 @@ abstract class AbstractNewAnnotatedElement implements Annotated
       {
          this.annotations = annotations;
       }
-      this.type = type;
    }
 
    public <T extends Annotation> T getAnnotation(Class<T> annotationType)

@@ -15,7 +15,7 @@ class NewAnnotatedConstructor<X> extends AbstractNewAnnotatedCallable<X, Constru
 
    NewAnnotatedConstructor(NewAnnotatedType<X> type, Constructor<?> constructor, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations)
    {
-      super(type, (Constructor<X>) constructor, constructor.getDeclaringClass(), constructor.getParameterTypes(), annotations, parameterAnnotations);
+      super(type, (Constructor<X>) constructor, constructor.getDeclaringClass(), constructor.getParameterTypes(), annotations, parameterAnnotations, null);
    }
 
 }

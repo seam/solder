@@ -39,7 +39,7 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
     */
    NewAnnotatedType(Class<X> clazz, AnnotationStore typeAnnotations, Map<Field, AnnotationStore> fieldAnnotations, Map<Method, AnnotationStore> methodAnnotations, Map<Method, Map<Integer, AnnotationStore>> methodParameterAnnotations, Map<Constructor<X>, AnnotationStore> constructorAnnotations, Map<Constructor<X>, Map<Integer, AnnotationStore>> constructorParameterAnnotations)
    {
-      super(clazz, typeAnnotations);
+      super(clazz, typeAnnotations, null);
       this.javaClass = clazz;
       this.constructors = new HashSet<AnnotatedConstructor<X>>();
       Set<Constructor<?>> cset = new HashSet<Constructor<?>>();
