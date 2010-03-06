@@ -15,6 +15,8 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
+import org.jboss.weld.extensions.util.ReflectionUtils;
+
 /**
  * Class for constructing a new AnnotatedType. A new instance of builder must be
  * used for each annotated type.
@@ -51,7 +53,7 @@ public class NewAnnotatedTypeBuilder<X>
             typeAnnotations.add(a);
          }
 
-         for (Field f : underlying.getFields())
+         for (Field f : ReflectionUtils.getFields(underlying))
          {
             AnnotationBuilder ab = new AnnotationBuilder();
             fields.put(f, ab);
@@ -61,7 +63,7 @@ public class NewAnnotatedTypeBuilder<X>
             }
          }
 
-         for (Method m : underlying.getMethods())
+         for (Method m : ReflectionUtils.getMethods(underlying))
          {
             AnnotationBuilder ab = new AnnotationBuilder();
             methods.put(m, ab);
