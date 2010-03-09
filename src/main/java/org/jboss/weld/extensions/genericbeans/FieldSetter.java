@@ -15,9 +15,9 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class FieldSetter
 {
-   final Field field;
-   final SyntheticQualifier qualifier;
-   final BeanManager beanManager;
+   private final Field field;
+   private final SyntheticQualifier qualifier;
+   private final BeanManager beanManager;
 
    public FieldSetter(BeanManager beanManager, Field field, SyntheticQualifier qualifier)
    {
@@ -38,7 +38,7 @@ public class FieldSetter
       {
          throw new RuntimeException("More than 1 bean resolved for Generic Producer field " + field.getDeclaringClass() + "." + field.getName());
       }
-      Bean bean = beans.iterator().next();
+      Bean<?> bean = beans.iterator().next();
       Object dep = beanManager.getReference(bean, field.getType(), ctx);
       try
       {
