@@ -1,8 +1,11 @@
 package org.jboss.weld.extensions.genericbeans.test;
 
+import org.jboss.testharness.impl.packaging.Artifact;
+import org.jboss.weld.test.AbstractWeldTest;
 import org.testng.annotations.Test;
 
-public class GenericBeanTest extends AbstractTest
+@Artifact
+public class GenericBeanTest extends AbstractWeldTest
 {
    @Test
    public void testGeneric()
