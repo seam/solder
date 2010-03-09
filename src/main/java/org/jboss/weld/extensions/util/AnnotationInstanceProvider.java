@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentMap;
 public class AnnotationInstanceProvider
 {
 
-   protected final ConcurrentMap<Class<?>, Class<?>> cache;
+   private final ConcurrentMap<Class<?>, Class<?>> cache;
    
    public AnnotationInstanceProvider()
    {
