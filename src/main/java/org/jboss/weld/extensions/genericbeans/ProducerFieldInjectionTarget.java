@@ -16,8 +16,8 @@ import javax.enterprise.inject.spi.InjectionTarget;
  */
 public class ProducerFieldInjectionTarget<T> implements InjectionTarget<T>
 {
-   final InjectionTarget<T> delegate;
-   final List<FieldSetter> fieldSetters;
+   private final InjectionTarget<T> delegate;
+   private final List<FieldSetter> fieldSetters;
 
    public ProducerFieldInjectionTarget(InjectionTarget<T> delegate, List<FieldSetter> fieldSetters)
    {

@@ -22,9 +22,22 @@ import org.jboss.weld.extensions.util.reannotated.ReannotatedType;
  */
 public class GenericBeanInjectionTargetWrapper<T> implements InjectionTarget<T>
 {
-   InjectionTarget<T> delegate;
-   Annotation annotation;
-   ReannotatedType<T> annotatedType;
+   
+   private static Set<Field> getFields(Class<?> clazz)
+   {
+      Set<Field> fields = new HashSet<Field>();
+      fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+      Class<?> superClass = clazz.getSuperclass();
+      if (superClass != Object.class)
+      {
+         fields.addAll(getFields(superClass));
+      }
+      return fields;
+   }
+   
+   private final InjectionTarget<T> delegate;
+   private final Annotation annotation;
+   private final ReannotatedType<T> annotatedType;
 
    public GenericBeanInjectionTargetWrapper(ReannotatedType<T> annotatedType, InjectionTarget<T> delegate, Annotation annotation)
    {
@@ -82,23 +95,6 @@ public class GenericBeanInjectionTargetWrapper<T> implements InjectionTarget<T>
    public T produce(CreationalContext<T> ctx)
    {
       return delegate.produce(ctx);
-   }
-
-   public static Set<Field> getFields(Class clazz)
-   {
-      Set<Field> ret = new HashSet<Field>();
-      return getFields(clazz, ret);
-   }
-
-   private static Set<Field> getFields(Class clazz, Set<Field> ret)
-   {
-      ret.addAll(Arrays.asList(clazz.getDeclaredFields()));
-      Class n = clazz.getSuperclass();
-      if (n != Object.class)
-      {
-         return getFields(n);
-      }
-      return ret;
    }
 
 }

@@ -28,31 +28,31 @@ import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
+import org.jboss.weld.extensions.beans.CustomBeanBuilder;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.jboss.weld.extensions.util.reannotated.ReannotatedField;
 import org.jboss.weld.extensions.util.reannotated.ReannotatedParameter;
 import org.jboss.weld.extensions.util.reannotated.ReannotatedType;
-import org.jboss.weld.extensions.beans.CustomBeanBuilder;
 
 public class GenericExtension implements Extension
 {
 
-   AnnotationInstanceProvider annotationProvider = new AnnotationInstanceProvider();
+   private AnnotationInstanceProvider annotationProvider = new AnnotationInstanceProvider();
 
-   Map<Class<?>, Set<AnnotatedType<?>>> genericBeans = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
+   private Map<Class<?>, Set<AnnotatedType<?>>> genericBeans = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
 
-   Map<Class<?>, Map<AnnotatedField<?>, Annotation>> producerFields = new HashMap<Class<?>, Map<AnnotatedField<?>, Annotation>>();
+   private Map<Class<?>, Map<AnnotatedField<?>, Annotation>> producerFields = new HashMap<Class<?>, Map<AnnotatedField<?>, Annotation>>();
 
    /**
     * map of a generic annotation type to all instances of that type found on
     * beans
     */
-   Map<Class<?>, Set<Annotation>> concreteGenerics = new HashMap<Class<?>, Set<Annotation>>();
+   private Map<Class<?>, Set<Annotation>> concreteGenerics = new HashMap<Class<?>, Set<Annotation>>();
 
    /**
     * Map of generic Annotation instance to a SyntheticQualifier
     */
-   Map<Annotation, SyntheticQualifier> qualifierMap = new HashMap<Annotation, SyntheticQualifier>();
+   private Map<Annotation, SyntheticQualifier> qualifierMap = new HashMap<Annotation, SyntheticQualifier>();
 
    long count = 0;
 
@@ -107,7 +107,7 @@ public class GenericExtension implements Extension
     */
    public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event, BeanManager beanManager)
    {
-      Class javaClass = event.getAnnotatedType().getJavaClass();
+      Class<?> javaClass = event.getAnnotatedType().getJavaClass();
       if (producerFields.containsKey(javaClass))
       {
          Map<AnnotatedField<?>, Annotation> producers = producerFields.get(javaClass);
@@ -184,7 +184,7 @@ public class GenericExtension implements Extension
                         {
                            ReannotatedParameter<?> param = (ReannotatedParameter<?>) pm;
 
-                           Class paramType = m.getJavaMember().getParameterTypes()[param.getPosition()];
+                           Class<?> paramType = m.getJavaMember().getParameterTypes()[param.getPosition()];
 
                            //check to see if we should be injecting a generic bean
                            //we do this by checking if there are any beans that can be injected into this point
@@ -235,7 +235,7 @@ public class GenericExtension implements Extension
    {
       if (!qualifierMap.containsKey(a))
       {
-         SyntheticQualifier qualifier = (SyntheticQualifier) annotationProvider.get(SyntheticQualifier.class, (Map) Collections.singletonMap("value", count++));
+         SyntheticQualifier qualifier = annotationProvider.get(SyntheticQualifier.class, (Map) Collections.singletonMap("value", count++));
          qualifierMap.put(a, qualifier);
       }
       return qualifierMap.get(a);
