@@ -55,46 +55,14 @@
    
    <properties>
       <!-- Testing deps -->
-      <testng.version>5.10</testng.version>
-      <jboss.test.harness.version>1.1.0-CR3</jboss.test.harness.version>
-      <apache.httpclient.version>3.1</apache.httpclient.version>
-      <junit.version>4.7</junit.version>
-      <htmlunit.version>2.4</htmlunit.version>
+      
    </properties>
    
    <!-- Set up local dependecies -->
    
    <dependencyManagement>
       <dependencies>
-         <dependency>
-            <groupId>org.jboss.test-harness</groupId>
-            <artifactId>jboss-test-harness</artifactId>
-            <version>${jboss.test.harness.version}</version>
-         </dependency>
 
-         <dependency>
-            <groupId>org.jboss.test-harness</groupId>
-            <artifactId>jboss-test-harness-jboss-as-50</artifactId>
-            <version>${jboss.test.harness.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.test-harness</groupId>
-            <artifactId>jboss-test-harness-jboss-as-52</artifactId>
-            <version>${jboss.test.harness.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.test-harness</groupId>
-            <artifactId>jboss-test-harness-jboss-embedded</artifactId>
-            <version>${jboss.test.harness.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.test-harness</groupId>
-            <artifactId>jboss-test-harness-tomcat</artifactId>
-            <version>${jboss.test.harness.version}</version>
-         </dependency>
       </dependencies>
    </dependencyManagement>
 

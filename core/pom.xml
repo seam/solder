@@ -20,60 +20,11 @@
       </contributor>
    </contributors>
    
-   <issueManagement>
-      <system>JIRA</system>
-      <url>https://jira.jboss.org/jira/browse/WELDX/component/12312756</url>
-   </issueManagement>
+
    
    <dependencies>
 
-      <dependency>
-         <groupId>org.testng</groupId>
-         <artifactId>testng</artifactId>
-         <scope>test</scope>
-         <classifier>jdk15</classifier>
-         <exclusions>
-         	<exclusion>
-         		<artifactId>junit</artifactId>
-         		<groupId>junit</groupId>
-         	</exclusion>
-         </exclusions>
-      </dependency>
-      
-      <dependency>
-      	 <groupId>javax.enterprise</groupId>
-      	 <artifactId>cdi-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
 
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-api</artifactId>
-      </dependency>
-      
-      <dependency>
-      	<groupId>org.jboss.test-harness</groupId>
-      	<artifactId>jboss-test-harness</artifactId>
-      	<scope>test</scope>
-      </dependency>
-      
-      <dependency>
-      	<groupId>org.jboss.weld</groupId>
-      	<artifactId>weld-core</artifactId>
-      	<scope>test</scope>
-      </dependency>
-      
-      <dependency>
-         <groupId>org.jboss.weld</groupId>
-         <artifactId>weld-core-test</artifactId>
-         <scope>test</scope>
-      </dependency>
-      
-      <dependency>
-         <groupId>org.jboss.ejb3</groupId>
-         <artifactId>jboss-ejb3-api</artifactId>
-         <scope>test</scope>
-      </dependency>
       
    </dependencies>
 
