@@ -1,55 +1,206 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.weld</groupId>
-   <artifactId>weld-extensions-build-aggregator</artifactId>
+   <artifactId>weld-extensions-bom</artifactId>
    <packaging>pom</packaging>
    <version>1.0.1-SNAPSHOT</version>
 
    <parent>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-parent</artifactId>
-      <version>9</version>
+      <version>8</version>
    </parent>
 
-   <name>Weld Extensions Build Aggregator</name>
-   
-   <modules>
-      <module>bom</module>
-      <module>parent</module>
-      <module>core</module>
-      <module>genericbeans</module>
-   </modules>
-   
-   <!-- Minimal metadata -->
-   <description>The build aggregator for Weld Extensions, which takes care of calling the modules which make up Weld Extensions</description>
+   <name>Weld Extensions BOM</name>
+   <url>http://www.seamframework.org/Weld</url>
 
-   <!-- SCM and distribution management -->
+   <description>Portable extensions for CDI</description>
+
+   <issueManagement>
+      <system>JIRA</system>
+      <url>https://jira.jboss.org/jira/browse/WELDX/component/12312756</url>
+   </issueManagement>
+
+   <licenses>
+      <license>
+         <name>Apache License, Version 2.0</name>
+         <distribution>repo</distribution>
+         <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      </license>
+   </licenses>
+
+
+   <developers>
+
+      <developer>
+         <name>Pete Muir</name>
+         <email>pete.muir@jboss.org</email>
+         <organization>Red Hat Inc.</organization>
+         <url>http://in.relation.to/Bloggers/Pete</url>
+      </developer>
+
+      <developer>
+         <name>Stuart Douglas</name>
+      </developer>
+
+   </developers>
+
+   <inceptionYear>2008</inceptionYear>
+
+   <organization>
+      <name>Seam Framework</name>
+      <url>http://seamframework.org</url>
+   </organization>
+
+   <ciManagement>
+      <system>Hudson</system>
+      <url />
+   </ciManagement>
+
+   <properties>
+      <weld.api.version>1.0-SP1</weld.api.version>
+      <weld.core.version>1.0.1-Final</weld.core.version>
+      <slf4j.version>1.5.10</slf4j.version>
+      <testng.version>5.10</testng.version>
+      <jboss.test.harness.version>1.1.0-CR3</jboss.test.harness.version>
+   </properties>
+
+   <!-- Dependency management, including extra repositories if needed -->
+   <repositories>
+      <repository>
+         <id>oss.sonatype.org/jboss-snapshots</id>
+         <name>JBoss (Nexus) Snapshots Repository</name>
+         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </snapshots>
+      </repository>
+   </repositories>
+
+   <!-- Import the BOMs -->
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-api-bom</artifactId>
+            <version>${weld.api.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-core-bom</artifactId>
+            <version>${weld.core.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <classifier>jdk15</classifier>
+            <version>${testng.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-extensions</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness-jboss-as-50</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness-jboss-as-52</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness-jboss-embedded</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.test-harness</groupId>
+            <artifactId>jboss-test-harness-tomcat</artifactId>
+            <version>${jboss.test.harness.version}</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
+   <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <scope>test</scope>
+      <classifier>jdk15</classifier>
+      <exclusions>
+         <exclusion>
+            <artifactId>junit</artifactId>
+            <groupId>junit</groupId>
+         </exclusion>
+      </exclusions>
+   </dependency>
+
+   <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+   </dependency>
+
+   <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+   </dependency>
+
+   <dependency>
+      <groupId>org.jboss.test-harness</groupId>
+      <artifactId>jboss-test-harness</artifactId>
+      <scope>test</scope>
+   </dependency>
+
+   <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-core</artifactId>
+      <scope>test</scope>
+   </dependency>
+
+   <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-core-test</artifactId>
+      <scope>test</scope>
+   </dependency>
+
+   <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-se</artifactId>
+      <scope>test</scope>
+   </dependency>
+
+   <dependency>
+      <groupId>org.jboss.ejb3</groupId>
+      <artifactId>jboss-ejb3-api</artifactId>
+      <scope>test</scope>
+   </dependency>
+
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk</developerConnection>
-      <url>http://fisheye.jboss.org/browse/weld/extensions/trunk</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk/bom</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk/bom</developerConnection>
+      <url>http://fisheye.jboss.org/browse/weld/extensions/trunk/bom</url>
    </scm>
 
-   <!-- Minimal build configuration -->
-   <build>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-release-plugin</artifactId>
-            <version>2.0-beta-9</version>
-            <configuration>
-               <tagBase>https://svn.jboss.org/repos/weld/extensions/tags</tagBase>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <version>2.4</version>
-            <configuration>
-               <skip>true</skip>
-            </configuration>
-         </plugin>
-      </plugins>
-   </build>
 
 </project>
