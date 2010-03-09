@@ -1,4 +1,4 @@
-package org.jboss.weld.test.log;
+package org.jboss.weld.test.extensions.log;
 
 import javax.inject.Inject;
 

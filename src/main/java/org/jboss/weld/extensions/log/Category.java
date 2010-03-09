@@ -1,4 +1,4 @@
-package org.jboss.weld.log;
+package org.jboss.weld.extensions.log;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

@@ -1,8 +1,8 @@
-package org.jboss.weld.test.log;
+package org.jboss.weld.test.extensions.log;
 
 import javax.inject.Inject;
 
-import org.jboss.weld.log.Category;
+import org.jboss.weld.extensions.log.Category;
 import org.slf4j.Logger;
 
 public class Finch

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.weld.test.log;
+package org.jboss.weld.test.extensions.log;
 
 import org.jboss.testharness.impl.packaging.Artifact;
 import org.jboss.testharness.impl.packaging.Classes;
@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author David Allen
  */
 @Artifact
-@Classes(packages = { "org.jboss.weld.log" })
+@Classes(packages = { "org.jboss.weld.extensions.log" })
 public class LoggerInjectionTest extends AbstractWeldTest
 {
    @Test

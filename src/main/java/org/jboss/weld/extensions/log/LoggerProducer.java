@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.weld.log;
+package org.jboss.weld.extensions.log;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
