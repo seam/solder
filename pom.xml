@@ -2,14 +2,14 @@
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.weld</groupId>
-   <artifactId>weld-extensions-bom</artifactId>
+   <artifactId>weld-extensions</artifactId>
    <packaging>jar</packaging>
    <version>1.0.1-SNAPSHOT</version>
 
    <parent>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-parent</artifactId>
-      <version>8</version>
+      <version>9</version>
    </parent>
 
    <name>Weld Extensions BOM</name>
