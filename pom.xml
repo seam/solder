@@ -193,9 +193,9 @@
    </dependencies>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk/bom</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk/bom</developerConnection>
-      <url>http://fisheye.jboss.org/browse/weld/extensions/trunk/bom</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk/connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk</developerConnection>
+      <url>http://fisheye.jboss.org/browse/weld/extensions/trunk</url>
    </scm>
 
 
