@@ -12,7 +12,7 @@
       <version>9</version>
    </parent>
 
-   <name>Weld Extensions BOM</name>
+   <name>Weld Extensions</name>
    <url>http://www.seamframework.org/Weld</url>
 
    <description>Portable extensions for CDI</description>
