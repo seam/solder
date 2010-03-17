@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.genericbeans.test;
+package org.jboss.weld.test.extensions.genericbeans;
 
 import org.jboss.testharness.impl.packaging.Artifact;
 import org.jboss.weld.test.AbstractWeldTest;

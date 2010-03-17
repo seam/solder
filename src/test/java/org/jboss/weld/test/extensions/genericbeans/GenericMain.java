@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.genericbeans.test;
+package org.jboss.weld.test.extensions.genericbeans;
 
 import javax.inject.Inject;
 
