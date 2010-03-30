@@ -3,6 +3,7 @@ package org.jboss.weld.extensions.util.annotated;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -37,9 +38,9 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
     * If annotation have been added to other methods as well we add them to
     * 
     */
-   NewAnnotatedType(Class<X> clazz, AnnotationStore typeAnnotations, Map<Field, AnnotationStore> fieldAnnotations, Map<Method, AnnotationStore> methodAnnotations, Map<Method, Map<Integer, AnnotationStore>> methodParameterAnnotations, Map<Constructor<X>, AnnotationStore> constructorAnnotations, Map<Constructor<X>, Map<Integer, AnnotationStore>> constructorParameterAnnotations)
+   NewAnnotatedType(Class<X> clazz, AnnotationStore typeAnnotations, Map<Field, AnnotationStore> fieldAnnotations, Map<Method, AnnotationStore> methodAnnotations, Map<Method, Map<Integer, AnnotationStore>> methodParameterAnnotations, Map<Constructor<X>, AnnotationStore> constructorAnnotations, Map<Constructor<X>, Map<Integer, AnnotationStore>> constructorParameterAnnotations, Map<Field, Type> fieldTypes)
    {
-      super(clazz, typeAnnotations, null);
+      super(clazz, typeAnnotations, null, null);
       this.javaClass = clazz;
       this.constructors = new HashSet<AnnotatedConstructor<X>>();
       Set<Constructor<?>> cset = new HashSet<Constructor<?>>();
@@ -77,7 +78,7 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
       this.fields = new HashSet<AnnotatedField<? super X>>();
       for (Field f : clazz.getFields())
       {
-         NewAnnotatedField<X> b = new NewAnnotatedField<X>(this, f, fieldAnnotations.get(f));
+         NewAnnotatedField<X> b = new NewAnnotatedField<X>(this, f, fieldAnnotations.get(f), fieldTypes.get(f));
          fields.add(b);
          fset.add(f);
       }
@@ -85,7 +86,7 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
       {
          if (!fset.contains(e.getKey()))
          {
-            fields.add(new NewAnnotatedField<X>(this, e.getKey(), e.getValue()));
+            fields.add(new NewAnnotatedField<X>(this, e.getKey(), e.getValue(), fieldTypes.get(e.getKey())));
          }
       }
    }

@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,6 +38,8 @@ public class NewAnnotatedTypeBuilder<X>
    private Map<Constructor<X>, Map<Integer, AnnotationBuilder>> constructorParameters = new HashMap<Constructor<X>, Map<Integer, AnnotationBuilder>>();
    private AnnotationBuilder typeAnnotations = new AnnotationBuilder();
    private Class<X> underlying;
+
+   private Map<Field, Type> fieldTypes = new HashMap<Field, Type>();
 
    public NewAnnotatedTypeBuilder(Class<X> underlying)
    {
@@ -537,7 +540,12 @@ public class NewAnnotatedTypeBuilder<X>
          }
       }
 
-      return new NewAnnotatedType<X>(underlying, typeAnnotations.create(), fieldAnnotations, methodAnnotations, methodParameterAnnnotations, constructorAnnotations, constructorParameterAnnnotations);
+      return new NewAnnotatedType<X>(underlying, typeAnnotations.create(), fieldAnnotations, methodAnnotations, methodParameterAnnnotations, constructorAnnotations, constructorParameterAnnnotations, fieldTypes);
+   }
+
+   public void overrideFieldType(Field field, Type type)
+   {
+      fieldTypes.put(field, type);
    }
 
 }

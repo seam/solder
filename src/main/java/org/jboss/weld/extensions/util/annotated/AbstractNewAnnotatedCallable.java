@@ -23,7 +23,7 @@ abstract class AbstractNewAnnotatedCallable<X, Y extends Member> extends Abstrac
 
    protected AbstractNewAnnotatedCallable(AnnotatedType<X> declaringType, Y member, Class<?> memberType, Class<?>[] parameterTypes, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Type genericType)
    {
-      super(declaringType, member, memberType, annotations, genericType);
+      super(declaringType, member, memberType, annotations, genericType, null);
       this.parameters = getAnnotatedParameters(this, parameterTypes, parameterAnnotations);
    }
 

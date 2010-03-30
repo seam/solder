@@ -17,9 +17,9 @@ abstract class AbstractNewAnnotatedMember<X, M extends Member> extends AbstractN
    private final AnnotatedType<X> declaringType;
    private final M javaMember;
 
-   protected AbstractNewAnnotatedMember(AnnotatedType<X> declaringType, M member, Class<?> memberType, AnnotationStore annotations, Type genericType)
+   protected AbstractNewAnnotatedMember(AnnotatedType<X> declaringType, M member, Class<?> memberType, AnnotationStore annotations, Type genericType, Type overridenType)
    {
-      super(memberType, annotations, genericType);
+      super(memberType, annotations, genericType, overridenType);
       this.declaringType = declaringType;
       this.javaMember = member;
    }

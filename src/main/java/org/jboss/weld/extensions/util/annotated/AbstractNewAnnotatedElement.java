@@ -20,18 +20,29 @@ abstract class AbstractNewAnnotatedElement implements Annotated
    private final Set<Type> typeClosure;
    private final AnnotationStore annotations;
 
-   protected AbstractNewAnnotatedElement(Class<?> type, AnnotationStore annotations, Type genericType)
+   protected AbstractNewAnnotatedElement(Class<?> type, AnnotationStore annotations, Type genericType, Type overridenType)
    {
-      this.typeClosure = new TypeClosureBuilder().add(type).getTypes();
-      if (genericType != null)
+
+      if (overridenType == null)
       {
-         typeClosure.add(genericType);
-         this.type = genericType;
+         this.typeClosure = new TypeClosureBuilder().add(type).getTypes();
+         if (genericType != null)
+         {
+            typeClosure.add(genericType);
+            this.type = genericType;
+         }
+         else
+         {
+            this.type = type;
+         }
       }
       else
       {
-         this.type = type;
+         this.type = overridenType;
+         this.typeClosure = Collections.singleton(overridenType);
       }
+
+
       if (annotations == null)
       {
          this.annotations = new AnnotationStore();
@@ -66,5 +77,5 @@ abstract class AbstractNewAnnotatedElement implements Annotated
    {
       return type;
    }
-   
+
 }
