@@ -40,6 +40,8 @@ public class NewAnnotatedTypeBuilder<X>
    private Class<X> underlying;
 
    private Map<Field, Type> fieldTypes = new HashMap<Field, Type>();
+   private Map<Method, Map<Integer, Type>> methodParameterTypes = new HashMap<Method, Map<Integer, Type>>();
+   private Map<Constructor<?>, Map<Integer, Type>> constructorParameterTypes = new HashMap<Constructor<?>, Map<Integer, Type>>();
 
    public NewAnnotatedTypeBuilder(Class<X> underlying)
    {
@@ -540,12 +542,34 @@ public class NewAnnotatedTypeBuilder<X>
          }
       }
 
-      return new NewAnnotatedType<X>(underlying, typeAnnotations.create(), fieldAnnotations, methodAnnotations, methodParameterAnnnotations, constructorAnnotations, constructorParameterAnnnotations, fieldTypes);
+      return new NewAnnotatedType<X>(underlying, typeAnnotations.create(), fieldAnnotations, methodAnnotations, methodParameterAnnnotations, constructorAnnotations, constructorParameterAnnnotations, fieldTypes, methodParameterTypes, constructorParameterTypes);
    }
 
    public void overrideFieldType(Field field, Type type)
    {
       fieldTypes.put(field, type);
+   }
+
+   public void overrideMethodParameterType(Method method, Type type, int position)
+   {
+      Map<Integer, Type> t = methodParameterTypes.get(method);
+      if (t == null)
+      {
+         t = new HashMap<Integer, Type>();
+         methodParameterTypes.put(method, t);
+      }
+      t.put(position, type);
+   }
+
+   public void overrideConstructorParameterType(Constructor<?> constructor, Type type, int position)
+   {
+      Map<Integer, Type> t = constructorParameterTypes.get(constructor);
+      if (t == null)
+      {
+         t = new HashMap<Integer, Type>();
+         constructorParameterTypes.put(constructor, t);
+      }
+      t.put(position, type);
    }
 
 }

@@ -38,7 +38,7 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
     * If annotation have been added to other methods as well we add them to
     * 
     */
-   NewAnnotatedType(Class<X> clazz, AnnotationStore typeAnnotations, Map<Field, AnnotationStore> fieldAnnotations, Map<Method, AnnotationStore> methodAnnotations, Map<Method, Map<Integer, AnnotationStore>> methodParameterAnnotations, Map<Constructor<X>, AnnotationStore> constructorAnnotations, Map<Constructor<X>, Map<Integer, AnnotationStore>> constructorParameterAnnotations, Map<Field, Type> fieldTypes)
+   NewAnnotatedType(Class<X> clazz, AnnotationStore typeAnnotations, Map<Field, AnnotationStore> fieldAnnotations, Map<Method, AnnotationStore> methodAnnotations, Map<Method, Map<Integer, AnnotationStore>> methodParameterAnnotations, Map<Constructor<X>, AnnotationStore> constructorAnnotations, Map<Constructor<X>, Map<Integer, AnnotationStore>> constructorParameterAnnotations, Map<Field, Type> fieldTypes, Map<Method, Map<Integer, Type>> methodParameterTypes, Map<Constructor<?>, Map<Integer, Type>> constructorParameterTypes)
    {
       super(clazz, typeAnnotations, null, null);
       this.javaClass = clazz;
@@ -48,7 +48,7 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
       Set<Field> fset = new HashSet<Field>();
       for (Constructor<?> c : clazz.getConstructors())
       {
-         NewAnnotatedConstructor<X> nc = new NewAnnotatedConstructor<X>(this, c, constructorAnnotations.get(c), constructorParameterAnnotations.get(c));
+         NewAnnotatedConstructor<X> nc = new NewAnnotatedConstructor<X>(this, c, constructorAnnotations.get(c), constructorParameterAnnotations.get(c), constructorParameterTypes.get(c));
          constructors.add(nc);
          cset.add(c);
       }
@@ -56,14 +56,14 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
       {
          if (!cset.contains(c.getKey()))
          {
-            NewAnnotatedConstructor<X> nc = new NewAnnotatedConstructor<X>(this, c.getKey(), c.getValue(), constructorParameterAnnotations.get(c.getKey()));
+            NewAnnotatedConstructor<X> nc = new NewAnnotatedConstructor<X>(this, c.getKey(), c.getValue(), constructorParameterAnnotations.get(c.getKey()), constructorParameterTypes.get(c.getKey()));
             constructors.add(nc);
          }
       }
       this.methods = new HashSet<AnnotatedMethod<? super X>>();
       for (Method m : clazz.getMethods())
       {
-         NewAnnotatedMethod<X> met = new NewAnnotatedMethod<X>(this, m, methodAnnotations.get(m), methodParameterAnnotations.get(m));
+         NewAnnotatedMethod<X> met = new NewAnnotatedMethod<X>(this, m, methodAnnotations.get(m), methodParameterAnnotations.get(m), methodParameterTypes.get(m));
          methods.add(met);
          mset.add(m);
       }
@@ -71,7 +71,7 @@ class NewAnnotatedType<X> extends AbstractNewAnnotatedElement implements Annotat
       {
          if (!mset.contains(c.getKey()))
          {
-            NewAnnotatedMethod<X> nc = new NewAnnotatedMethod<X>(this, c.getKey(), c.getValue(), methodParameterAnnotations.get(c.getKey()));
+            NewAnnotatedMethod<X> nc = new NewAnnotatedMethod<X>(this, c.getKey(), c.getValue(), methodParameterAnnotations.get(c.getKey()), methodParameterTypes.get(c.getKey()));
             methods.add(nc);
          }
       }
