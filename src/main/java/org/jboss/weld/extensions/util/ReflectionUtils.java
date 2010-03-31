@@ -19,7 +19,7 @@ public class ReflectionUtils
    {
       HashSet<Field> ret = new HashSet<Field>();
       Class<?> p = clazz;
-      while (p != Object.class)
+      while (p != null && p != Object.class)
       {
          for (Field a : p.getDeclaredFields())
          {
@@ -33,7 +33,7 @@ public class ReflectionUtils
    public static Field getField(Class<?> parent, String name)
    {
       Class<?> p = parent;
-      while (p != Object.class)
+      while (p != null && p != Object.class)
       {
          try
          {
@@ -51,7 +51,7 @@ public class ReflectionUtils
    public static boolean methodExists(Class<?> parent, String name)
    {
       Class<?> p = parent;
-      while (p != Object.class)
+      while (p != null && p != Object.class)
       {
          for (Method m : p.getDeclaredMethods())
          {
@@ -69,7 +69,7 @@ public class ReflectionUtils
    {
       HashSet<Method> ret = new HashSet<Method>();
       Class<?> p = clazz;
-      while (p != Object.class)
+      while (p != null && p != Object.class)
       {
          for (Method a : p.getDeclaredMethods())
          {
@@ -83,7 +83,7 @@ public class ReflectionUtils
    public static Method getMethod(Class<?> parent, String name, Class<?>... args)
    {
       Class<?> p = parent;
-      while (p != Object.class)
+      while (p != null && p != Object.class)
       {
          try
          {
@@ -101,7 +101,7 @@ public class ReflectionUtils
    public static Constructor<?> getConstructor(Class<?> parent, Class<?>... args)
    {
       Class<?> p = parent;
-      while (p != Object.class)
+      while (p != null && p != Object.class)
       {
          try
          {
