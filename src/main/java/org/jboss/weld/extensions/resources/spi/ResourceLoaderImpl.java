@@ -16,6 +16,9 @@ public class ResourceLoaderImpl implements ResourceLoader
 
    private static final Logger log = LoggerFactory.getLogger("org.jboss.weld.extensions.resources");
    
+   private ResourceLoaderImpl()
+   {
+   }
 
    public InputStream getResourceAsStream(String name)
    {
