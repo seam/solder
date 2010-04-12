@@ -3,6 +3,7 @@ package org.jboss.weld.extensions.util.annotated;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.enterprise.inject.spi.Annotated;
@@ -70,7 +71,7 @@ abstract class AbstractNewAnnotatedElement implements Annotated
 
    public Set<Type> getTypeClosure()
    {
-      return Collections.unmodifiableSet(typeClosure);
+      return new HashSet<Type>(typeClosure);
    }
 
    public Type getBaseType()
