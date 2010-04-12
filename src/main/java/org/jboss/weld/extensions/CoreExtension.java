@@ -34,6 +34,12 @@ public class CoreExtension implements Extension
 
    <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager bm)
    {
+      if (pat.getAnnotatedType().isAnnotationPresent(Veto.class))
+      {
+         pat.veto();
+         return;
+      }
+
       final AnnotatedType<X> at = pat.getAnnotatedType();
 
       ReannotatedType<X> rt = new ReannotatedType<X>(at);
