@@ -21,10 +21,10 @@ abstract class AbstractNewAnnotatedCallable<X, Y extends Member> extends Abstrac
 
    private final List<AnnotatedParameter<X>> parameters;
 
-   protected AbstractNewAnnotatedCallable(AnnotatedType<X> declaringType, Y member, Class<?> memberType, Class<?>[] parameterTypes, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Type genericType, Map<Integer, Type> parameterTypeOverrides)
+   protected AbstractNewAnnotatedCallable(AnnotatedType<X> declaringType, Y member, Class<?> memberType, Class<?>[] parameterTypes, Type[] genericTypes, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Type genericType, Map<Integer, Type> parameterTypeOverrides)
    {
       super(declaringType, member, memberType, annotations, genericType, null);
-      this.parameters = getAnnotatedParameters(this, parameterTypes, parameterAnnotations, parameterTypeOverrides);
+      this.parameters = getAnnotatedParameters(this, parameterTypes, genericTypes, parameterAnnotations, parameterTypeOverrides);
    }
 
    public List<AnnotatedParameter<X>> getParameters()
@@ -38,7 +38,7 @@ abstract class AbstractNewAnnotatedCallable<X, Y extends Member> extends Abstrac
 
    }  
    
-   private static <X, Y extends Member> List<AnnotatedParameter<X>> getAnnotatedParameters(AbstractNewAnnotatedCallable<X, Y> callable, Class<?>[] parameterTypes, Map<Integer, AnnotationStore> parameterAnnotations, Map<Integer, Type> parameterTypeOverrides)
+   private static <X, Y extends Member> List<AnnotatedParameter<X>> getAnnotatedParameters(AbstractNewAnnotatedCallable<X, Y> callable, Class<?>[] parameterTypes, Type[] genericTypes, Map<Integer, AnnotationStore> parameterAnnotations, Map<Integer, Type> parameterTypeOverrides)
    {
       List<AnnotatedParameter<X>> parameters = new ArrayList<AnnotatedParameter<X>>();
       int len = parameterTypes.length;
@@ -54,7 +54,7 @@ abstract class AbstractNewAnnotatedCallable<X, Y extends Member> extends Abstrac
          {
             over = parameterTypeOverrides.get(i);
          }
-         NewAnnotatedParameter<X> p = new NewAnnotatedParameter<X>(callable, parameterTypes[i], i, builder.create(), over);
+         NewAnnotatedParameter<X> p = new NewAnnotatedParameter<X>(callable, parameterTypes[i], i, builder.create(), genericTypes[i], over);
          parameters.add(p);
       }
       return parameters;

@@ -16,7 +16,7 @@ class NewAnnotatedParameter<X> extends AbstractNewAnnotatedElement implements An
    private final int position;
    private final AnnotatedCallable<X> declaringCallable;
 
-   NewAnnotatedParameter(AnnotatedCallable<X> declaringCallable, Class<?> type, int position, AnnotationStore annotations, Type typeOverride)
+   NewAnnotatedParameter(AnnotatedCallable<X> declaringCallable, Class<?> type, int position, AnnotationStore annotations, Type genericType, Type typeOverride)
    {
       super(type, annotations, null, typeOverride);
       this.declaringCallable = declaringCallable;

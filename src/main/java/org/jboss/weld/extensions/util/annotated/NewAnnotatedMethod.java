@@ -16,7 +16,7 @@ class NewAnnotatedMethod<X> extends AbstractNewAnnotatedCallable<X, Method> impl
 {
    NewAnnotatedMethod(AnnotatedType<X> type, Method method, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Map<Integer, Type> parameterTypeOverrides)
    {
-      super(type, method, method.getReturnType(), method.getParameterTypes(), annotations, parameterAnnotations, method.getGenericReturnType(), parameterTypeOverrides);
+      super(type, method, method.getReturnType(), method.getParameterTypes(), method.getGenericParameterTypes(), annotations, parameterAnnotations, method.getGenericReturnType(), parameterTypeOverrides);
    }
 
 }
