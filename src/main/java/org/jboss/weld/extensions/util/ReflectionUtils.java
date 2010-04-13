@@ -115,4 +115,19 @@ public class ReflectionUtils
       }
       return null;
    }
+
+   public static Set<Constructor<?>> getConstructors(Class<?> clazz)
+   {
+      HashSet<Constructor<?>> ret = new HashSet();
+      Class<?> p = clazz;
+      while (p != null && p != Object.class)
+      {
+         for (Constructor<?> c : p.getDeclaredConstructors())
+         {
+            ret.add(c);
+         }
+         p = p.getSuperclass();
+      }
+      return ret;
+   }
 }
