@@ -1,2 +1,3 @@
 org.jboss.weld.extensions.genericbeans.GenericExtension
 org.jboss.weld.extensions.resources.servlet.ServletResourceExtension
+org.jboss.weld.extensions.beanid.IdentifiableBeanExtension
