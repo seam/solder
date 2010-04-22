@@ -12,9 +12,8 @@ public class AnnotatedTypeIdentifier
 {
    @Inject IdentifiableBeanExtension beans;
    
-   public AnnotatedType<?> getAnnotatedType(IdentifiableBean instance)
+   public AnnotatedType<?> getAnnotatedType(Object instance)
    {
-      long id = instance.getBeanId();
-      return beans.getAnnotatedType(id);
+      return beans.getAnnotatedType(instance);
    }
 }

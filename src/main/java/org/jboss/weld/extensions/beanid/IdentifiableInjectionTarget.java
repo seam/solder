@@ -1,8 +1,10 @@
 package org.jboss.weld.extensions.beanid;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 /**
@@ -15,19 +17,21 @@ public class IdentifiableInjectionTarget<T> implements InjectionTarget<T>
 {
    InjectionTarget<T> delegate;
    
-   long id;
+   AnnotatedType<?> type;
    
-   IdentifiableInjectionTarget(InjectionTarget<T> delegate, long id)
+   Map<Object, AnnotatedType<?>> typeMap;
+   
+   IdentifiableInjectionTarget(InjectionTarget<T> delegate, AnnotatedType<?> type,Map<Object, AnnotatedType<?>> typeMap)
    {
       this.delegate = delegate;
-      this.id=id;
+      this.type=type;
+      this.typeMap=typeMap;
    }
    
    
    public void inject(T instance, CreationalContext<T> ctx)
    {
-      IdentifiableBean bean =(IdentifiableBean)instance;
-      bean.setBeanId(id);
+      typeMap.put(instance, type);
       delegate.inject(instance, ctx);
    }
 
@@ -43,6 +47,7 @@ public class IdentifiableInjectionTarget<T> implements InjectionTarget<T>
 
    public void dispose(T instance)
    {
+      typeMap.remove(instance);
       delegate.dispose(instance);
    }
 
