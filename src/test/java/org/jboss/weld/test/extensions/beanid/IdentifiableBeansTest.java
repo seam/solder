@@ -16,7 +16,6 @@ public class IdentifiableBeansTest extends AbstractWeldTest
    @Test
    public void testBeanIdentifiers()
    {
-      //TODO: This needs to be split up into lots of little tests
       IdentifiableBean bean = getReference(IdentifiableBean.class);
       AnnotatedTypeIdentifier identifier  = getReference(AnnotatedTypeIdentifier.class,new AnnotationLiteral<Default>()
       {
