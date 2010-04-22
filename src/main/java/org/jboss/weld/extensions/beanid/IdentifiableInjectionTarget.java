@@ -20,9 +20,9 @@ public class IdentifiableInjectionTarget<T> implements InjectionTarget<T>
    
    AnnotatedType<?> type;
    
-   Map<IdentityWrapper, AnnotatedType<?>> typeMap;
+   Map<Object, AnnotatedType<?>> typeMap;
    
-   IdentifiableInjectionTarget(InjectionTarget<T> delegate, AnnotatedType<?> type, Map<IdentityWrapper, AnnotatedType<?>> typeMap)
+   IdentifiableInjectionTarget(InjectionTarget<T> delegate, AnnotatedType<?> type, Map<Object, AnnotatedType<?>> typeMap)
    {
       this.delegate = delegate;
       this.type=type;
@@ -32,7 +32,7 @@ public class IdentifiableInjectionTarget<T> implements InjectionTarget<T>
    
    public void inject(T instance, CreationalContext<T> ctx)
    {
-      typeMap.put(new IdentityWrapper(instance), type);
+      typeMap.put(instance, type);
       delegate.inject(instance, ctx);
    }
 
@@ -48,7 +48,7 @@ public class IdentifiableInjectionTarget<T> implements InjectionTarget<T>
 
    public void dispose(T instance)
    {
-      typeMap.remove(new IdentityWrapper(instance));
+      typeMap.remove(instance);
       delegate.dispose(instance);
    }
 
