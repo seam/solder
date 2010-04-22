@@ -20,7 +20,7 @@ import javax.enterprise.inject.spi.ProcessInjectionTarget;
  */
 public class IdentifiableBeanExtension implements Extension
 {
-   Map<Object, AnnotatedType<?>> types = Collections.synchronizedMap(new WeakHashMap<Object, AnnotatedType<?>>(1000));
+   Map<IdentityWrapper, AnnotatedType<?>> types = Collections.synchronizedMap(new WeakHashMap<IdentityWrapper, AnnotatedType<?>>(1000));
 
    public void processInjectionTarget(@Observes ProcessInjectionTarget<?> event)
    {
@@ -55,7 +55,7 @@ public class IdentifiableBeanExtension implements Extension
    
    public AnnotatedType<?> getAnnotatedType(Object instance)
    {
-      return types.get(instance);
+      return types.get(new IdentityWrapper(instance));
    }
    
 }

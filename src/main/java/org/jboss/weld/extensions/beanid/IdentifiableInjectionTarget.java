@@ -8,7 +8,8 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 /**
- * wrapper around InjectionTarget that sets a bean id
+ * wrapper around InjectionTarget that maps the instance to it's annotated type
+ * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  *
  * @param <T>
@@ -19,9 +20,9 @@ public class IdentifiableInjectionTarget<T> implements InjectionTarget<T>
    
    AnnotatedType<?> type;
    
-   Map<Object, AnnotatedType<?>> typeMap;
+   Map<IdentityWrapper, AnnotatedType<?>> typeMap;
    
-   IdentifiableInjectionTarget(InjectionTarget<T> delegate, AnnotatedType<?> type,Map<Object, AnnotatedType<?>> typeMap)
+   IdentifiableInjectionTarget(InjectionTarget<T> delegate, AnnotatedType<?> type, Map<IdentityWrapper, AnnotatedType<?>> typeMap)
    {
       this.delegate = delegate;
       this.type=type;
@@ -31,7 +32,7 @@ public class IdentifiableInjectionTarget<T> implements InjectionTarget<T>
    
    public void inject(T instance, CreationalContext<T> ctx)
    {
-      typeMap.put(instance, type);
+      typeMap.put(new IdentityWrapper(instance), type);
       delegate.inject(instance, ctx);
    }
 
@@ -47,7 +48,7 @@ public class IdentifiableInjectionTarget<T> implements InjectionTarget<T>
 
    public void dispose(T instance)
    {
-      typeMap.remove(instance);
+      typeMap.remove(new IdentityWrapper(instance));
       delegate.dispose(instance);
    }
 
