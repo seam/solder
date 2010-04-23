@@ -41,7 +41,7 @@ public interface BeanManagerProvider
    /**
     * An integer precedence value that indicates how favorable the implementation
     * considers itself amongst alternatives. A higher value is a higher
-    * precedence.
+    * precedence. If two implementations have the save precedence, the order is undetermined.
     */
    public abstract int getPrecedence();
 }

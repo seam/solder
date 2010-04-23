@@ -40,7 +40,7 @@ public class DefaultJndiBeanManagerProvider extends AbstractJndiBeanManagerProvi
 
    public int getPrecedence()
    {
-      return 10;
+      return 11;
    }
 
 }

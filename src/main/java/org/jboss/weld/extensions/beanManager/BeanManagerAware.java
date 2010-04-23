@@ -49,28 +49,28 @@ public class BeanManagerAware
 {
    private BeanManager beanManager;
 
-   private static final List<BeanManagerProvider> beanManagerProviders = new ArrayList<BeanManagerProvider>();
+   private final List<BeanManagerProvider> beanManagerProviders = new ArrayList<BeanManagerProvider>();
 
-   static
+   public BeanManagerAware() 
    {
       loadServices();
-      Collections.sort(beanManagerProviders, new ProviderWeightSorter());
+      Collections.sort(beanManagerProviders, new ProviderWeightSorter());   
    }
-
-   private static class ProviderWeightSorter implements Comparator<BeanManagerProvider>
-   {
-      public int compare(BeanManagerProvider provider1, BeanManagerProvider provider2)
-      {
-         return Integer.valueOf(provider1.getPrecedence()).compareTo(Integer.valueOf(provider2.getPrecedence()));
-      }
-   }
-
-   private static void loadServices()
+   
+   private void loadServices()
    {
       Iterator<BeanManagerProvider> providers = DefaultServiceLoader.load(BeanManagerProvider.class).iterator();
       while (providers.hasNext())
       {
          beanManagerProviders.add(providers.next());
+      }
+   }
+   
+   private class ProviderWeightSorter implements Comparator<BeanManagerProvider>
+   {
+      public int compare(BeanManagerProvider provider1, BeanManagerProvider provider2)
+      {
+         return Integer.valueOf(provider1.getPrecedence()).compareTo(Integer.valueOf(provider2.getPrecedence()));
       }
    }
 

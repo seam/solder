@@ -39,7 +39,7 @@ public class JBossJndiBeanManagerProvider extends AbstractJndiBeanManagerProvide
 
    public int getPrecedence()
    {
-      return 11;
+      return 10;
    }
 
 }
