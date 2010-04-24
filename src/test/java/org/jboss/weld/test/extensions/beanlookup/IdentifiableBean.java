@@ -1,4 +1,4 @@
-package org.jboss.weld.test.extensions.beanid;
+package org.jboss.weld.test.extensions.beanlookup;
 @IdentifiableInterceptorBinding
 public class IdentifiableBean
 {

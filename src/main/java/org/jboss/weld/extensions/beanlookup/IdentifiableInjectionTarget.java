@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.beanid;
+package org.jboss.weld.extensions.beanlookup;
 
 import java.util.Map;
 import java.util.Set;

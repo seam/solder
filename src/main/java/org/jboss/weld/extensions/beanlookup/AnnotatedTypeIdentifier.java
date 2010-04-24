@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.beanid;
+package org.jboss.weld.extensions.beanlookup;
 
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.inject.Inject;

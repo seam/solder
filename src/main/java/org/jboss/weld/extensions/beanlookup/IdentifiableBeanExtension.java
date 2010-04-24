@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.beanid;
+package org.jboss.weld.extensions.beanlookup;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
