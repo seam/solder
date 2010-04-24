@@ -51,26 +51,21 @@ public class BeanManagerAware
 
    private final List<BeanManagerProvider> beanManagerProviders = new ArrayList<BeanManagerProvider>();
 
-   public BeanManagerAware() 
-   {
-      loadServices();
-      Collections.sort(beanManagerProviders, new ProviderWeightSorter());   
-   }
-   
    private void loadServices()
    {
+      beanManagerProviders.clear();
       Iterator<BeanManagerProvider> providers = DefaultServiceLoader.load(BeanManagerProvider.class).iterator();
       while (providers.hasNext())
       {
          beanManagerProviders.add(providers.next());
       }
    }
-   
+
    private class ProviderWeightSorter implements Comparator<BeanManagerProvider>
    {
       public int compare(BeanManagerProvider provider1, BeanManagerProvider provider2)
       {
-         return Integer.valueOf(provider1.getPrecedence()).compareTo(Integer.valueOf(provider2.getPrecedence()));
+         return -1 * Integer.valueOf(provider1.getPrecedence()).compareTo(Integer.valueOf(provider2.getPrecedence()));
       }
    }
 
@@ -78,19 +73,42 @@ public class BeanManagerAware
    {
       if (beanManager == null)
       {
+         if (beanManagerProviders.isEmpty())
+         {
+            loadServices();
+            Collections.sort(beanManagerProviders, new ProviderWeightSorter());
+         }
          beanManager = lookupBeanManager();
       }
       if (beanManager == null)
       {
-         throw new IllegalStateException("Could not locate a BeanManager from the providers " + beanManagerProviders);
+         throw new IllegalStateException("Could not locate a BeanManager from the providers " + providersToString());
       }
       return beanManager;
+   }
+
+   private String providersToString()
+   {
+      StringBuffer out = new StringBuffer();
+      int i = 0;
+      for (BeanManagerProvider provider : beanManagerProviders)
+      {
+         if (i > 0)
+         {
+            out.append(", ");
+         }
+         out.append(provider.getClass().getName());
+         out.append("(");
+         out.append(provider.getPrecedence());
+         out.append(")");
+         i++;
+      }
+      return out.toString();
    }
 
    private BeanManager lookupBeanManager()
    {
       BeanManager beanManager = null;
-
       for (BeanManagerProvider provider : beanManagerProviders)
       {
          beanManager = provider.getBeanManager();
