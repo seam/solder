@@ -18,7 +18,7 @@ import org.jboss.weld.extensions.Resource;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 
 /**
- * The ResourceLoader allows dynamic loading of managed resources.
+ * The ResourceProvider allows dynamic loading of managed resources.
  * 
  * If a input stream is loaded, it will be automatically closed when the InputStream goes 
  * out of scope. If a URL is used to create an input stream, the application is responsible 

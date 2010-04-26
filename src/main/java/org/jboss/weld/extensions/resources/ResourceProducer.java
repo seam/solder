@@ -12,26 +12,40 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.Resource;
-import org.jboss.weld.extensions.resources.spi.ResourceLoader;
 
-public class ResourceProducer
+/**
+ * Resource producer allows injecting of resources
+ * 
+ * @author pmuir
+ *
+ */
+class ResourceProducer
 {
    
-   private final ResourceLoader loader;
+   private final ResourceLoaderManager resourceLoaderManager;
    
    @Inject
-   private ResourceProducer(ResourceLoader loader)
+   ResourceProducer(ResourceLoaderManager resourceLoaderManager)
    {
-      this.loader = loader;
+      this.resourceLoaderManager = resourceLoaderManager;
    }
    
    @Produces @Resource("")
-   protected InputStream loadResourceStream(InjectionPoint injectionPoint) throws IOException
+   InputStream loadResourceStream(InjectionPoint injectionPoint) throws IOException
    {
-      return loader.getResourceAsStream(getName(injectionPoint));
+      String name = getName(injectionPoint);
+      for (ResourceLoader loader : resourceLoaderManager.getResourceLoaders())
+      {
+         InputStream is = loader.getResourceAsStream(name);
+         if (is != null)
+         {
+            return is;
+         }
+      }
+      return null;
    }
    
-   protected void closeResourceStream(@Disposes @Resource("") InputStream inputStream) throws IOException
+   void closeResourceStream(@Disposes @Resource("") InputStream inputStream) throws IOException
    {
       try
       {
@@ -44,9 +58,18 @@ public class ResourceProducer
    }
    
    @Produces @Resource("")
-   protected URL loadResource(InjectionPoint injectionPoint)
+   URL loadResource(InjectionPoint injectionPoint)
    {
-      return loader.getResource(getName(injectionPoint));
+      String name = getName(injectionPoint);
+      for (ResourceLoader loader : resourceLoaderManager.getResourceLoaders())
+      {
+         URL url = loader.getResource(name);
+         if (url != null)
+         {
+            return url;
+         }
+      }
+      return null;
    }
    
    private String getName(InjectionPoint ip)

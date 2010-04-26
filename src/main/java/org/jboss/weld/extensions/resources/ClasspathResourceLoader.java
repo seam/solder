@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.resources.spi;
+package org.jboss.weld.extensions.resources;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,16 +7,15 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jboss.weld.extensions.resources.ResourceProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ResourceLoaderImpl implements ResourceLoader
+class ClasspathResourceLoader implements ResourceLoader
 {
 
    private static final Logger log = LoggerFactory.getLogger("org.jboss.weld.extensions.resources");
    
-   protected ResourceLoaderImpl()
+   ClasspathResourceLoader()
    {
    }
 
@@ -114,6 +113,11 @@ public class ResourceLoaderImpl implements ResourceLoader
          }
       }
       return urls;
+   }
+   
+   public int getPrecedence()
+   {
+      return 10;
    }
 
    private static String getStrippedName(String name)

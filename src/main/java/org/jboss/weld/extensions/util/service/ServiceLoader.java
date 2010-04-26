@@ -20,6 +20,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -47,11 +49,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@avalon.apache.org">Avalon Development Team</a>
  * @author Nicklas Karlsson
  */
-public class DefaultServiceLoader<S> implements Iterable<S>
+public class ServiceLoader<S> implements Iterable<S>
 {
    private static final String SERVICES = "META-INF/services";
 
-   private static final Logger log = LoggerFactory.getLogger(DefaultServiceLoader.class);
+   private static final Logger log = LoggerFactory.getLogger(ServiceLoader.class);
 
    /**
     * Creates a new service loader for the given service type, using the current
@@ -69,23 +71,9 @@ public class DefaultServiceLoader<S> implements Iterable<S>
     * @param service The interface or abstract class representing the service
     * @return A new service loader
     */
-   public static <S> DefaultServiceLoader<S> load(Class<S> service)
+   public static <S> ServiceLoader<S> load(Class<S> service)
    {
-      return load(SERVICES, service, Thread.currentThread().getContextClassLoader());
-   }
-
-   public static <S> DefaultServiceLoader<S> load(String directoryName, Class<S> service)
-   {
-      return load(directoryName, service, Thread.currentThread().getContextClassLoader());
-   }
-
-   public static <S> DefaultServiceLoader<S> load(String directoryName, Class<S> service, ClassLoader loader)
-   {
-      if (loader == null)
-      {
-         loader = service.getClassLoader();
-      }
-      return new DefaultServiceLoader<S>(directoryName, service, loader);
+      return load(service, Thread.currentThread().getContextClassLoader());
    }
 
    /**
@@ -97,9 +85,13 @@ public class DefaultServiceLoader<S> implements Iterable<S>
     *           (or, failing that, the bootstrap class loader) is to be used
     * @return A new service loader
     */
-   public static <S> DefaultServiceLoader<S> load(Class<S> service, ClassLoader loader)
+   public static <S> ServiceLoader<S> load(Class<S> service, ClassLoader loader)
    {
-      return load(SERVICES, service, loader);
+      if (loader == null)
+      {
+         loader = service.getClassLoader();
+      }
+      return new ServiceLoader<S>(service, loader);
    }
 
    /**
@@ -123,7 +115,7 @@ public class DefaultServiceLoader<S> implements Iterable<S>
     * @param service The interface or abstract class representing the service
     * @return A new service loader
     */
-   public static <S> DefaultServiceLoader<S> loadInstalled(Class<S> service)
+   public static <S> ServiceLoader<S> loadInstalled(Class<S> service)
    {
       throw new UnsupportedOperationException("Not implemented");
    }
@@ -134,10 +126,10 @@ public class DefaultServiceLoader<S> implements Iterable<S>
 
    private Set<S> providers;
 
-   private DefaultServiceLoader(String prefix, Class<S> service, ClassLoader loader)
+   private ServiceLoader(Class<S> service, ClassLoader loader)
    {
       this.loader = loader;
-      this.serviceFile = prefix + "/" + service.getName();
+      this.serviceFile = SERVICES + "/" + service.getName();
       this.expectedType = service;
    }
 
@@ -259,7 +251,7 @@ public class DefaultServiceLoader<S> implements Iterable<S>
       }
       catch (ClassCastException e)
       {
-         log.warn("Service class " + serviceClassName + " didn't implement the Extension interface");
+         throw new RuntimeException("Service class " + serviceClassName + " didn't implement the Extension interface");
       }
       return serviceClass;
    }
@@ -268,14 +260,40 @@ public class DefaultServiceLoader<S> implements Iterable<S>
    {
       try
       {
-         // FIXME: SM compatible instatiation
-         return serviceClass.newInstance();
+         // TODO Support the SM
+         Constructor<? extends S> constructor = serviceClass.getDeclaredConstructor();
+         constructor.setAccessible(true);
+         return constructor.newInstance();
       }
-      catch (Exception e)
+      catch (NoClassDefFoundError e) 
       {
          log.warn("Could not instantiate service class " + serviceClass.getName(), e);
+         return null;
       }
-      return null;
+      catch (InvocationTargetException e)
+      {
+         throw new RuntimeException("Error instantiating " + serviceClass, e.getCause());
+      }
+      catch (IllegalArgumentException e)
+      {
+         throw new RuntimeException("Error instantiating " + serviceClass, e);
+      }
+      catch (InstantiationException e)
+      {
+         throw new RuntimeException("Error instantiating " + serviceClass, e);
+      }
+      catch (IllegalAccessException e)
+      {
+         throw new RuntimeException("Error instantiating " + serviceClass, e);
+      }
+      catch (SecurityException e)
+      {
+         throw new RuntimeException("Error instantiating " + serviceClass, e);
+      }
+      catch (NoSuchMethodException e)
+      {
+         throw new RuntimeException("Error instantiating " + serviceClass, e);
+      }
    }
 
    /**

@@ -23,13 +23,15 @@ package org.jboss.weld.extensions.beanManager;
 
 import javax.enterprise.inject.spi.BeanManager;
 
+import org.jboss.weld.extensions.util.Sortable;
+
 /**
  * Provider for obtaining a BeanManager
  * 
  * @author Nicklas Karlsson
  * 
  */
-public interface BeanManagerProvider
+public interface BeanManagerProvider extends Sortable
 {
    /**
     * Try to obtain a BeanManager
@@ -37,11 +39,4 @@ public interface BeanManagerProvider
     * @return The BeanManager (or null if non found at this location)
     */
    public abstract BeanManager getBeanManager();
-
-   /**
-    * An integer precedence value that indicates how favorable the implementation
-    * considers itself amongst alternatives. A higher value is a higher
-    * precedence. If two implementations have the save precedence, the order is undetermined.
-    */
-   public abstract int getPrecedence();
 }

@@ -23,7 +23,6 @@ package org.jboss.weld.extensions.beanManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,7 +30,8 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.util.service.DefaultServiceLoader;
+import org.jboss.weld.extensions.util.Sortable;
+import org.jboss.weld.extensions.util.service.ServiceLoader;
 
 /**
  * Super-class for non-CDI-native components that need a reference to the
@@ -54,18 +54,10 @@ public class BeanManagerAware
    private void loadServices()
    {
       beanManagerProviders.clear();
-      Iterator<BeanManagerProvider> providers = DefaultServiceLoader.load(BeanManagerProvider.class).iterator();
+      Iterator<BeanManagerProvider> providers = ServiceLoader.load(BeanManagerProvider.class).iterator();
       while (providers.hasNext())
       {
          beanManagerProviders.add(providers.next());
-      }
-   }
-
-   private class ProviderWeightSorter implements Comparator<BeanManagerProvider>
-   {
-      public int compare(BeanManagerProvider provider1, BeanManagerProvider provider2)
-      {
-         return -1 * Integer.valueOf(provider1.getPrecedence()).compareTo(Integer.valueOf(provider2.getPrecedence()));
       }
    }
 
@@ -76,7 +68,7 @@ public class BeanManagerAware
          if (beanManagerProviders.isEmpty())
          {
             loadServices();
-            Collections.sort(beanManagerProviders, new ProviderWeightSorter());
+            Collections.sort(beanManagerProviders, new Sortable.Comparator());
          }
          beanManager = lookupBeanManager();
       }
