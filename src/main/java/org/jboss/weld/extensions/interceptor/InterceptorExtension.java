@@ -14,13 +14,13 @@ public class InterceptorExtension implements Extension
    
    private final Collection<Class<?>> enabledInterceptors;
    
-   public InterceptorExtension()
+   InterceptorExtension()
    {
       this.enabledInterceptors = Collections.synchronizedSet(new HashSet<Class<?>>());
    }
 
    @SuppressWarnings("unused")
-   public void observeInterceptors(@Observes ProcessBean<?> pmb)
+   void observeInterceptors(@Observes ProcessBean<?> pmb)
    {
       if (pmb.getBean() instanceof Interceptor<?>)
       {
@@ -28,7 +28,7 @@ public class InterceptorExtension implements Extension
       }
    }
    
-   public Collection<Class<?>> getEnabledInterceptors()
+   Collection<Class<?>> getEnabledInterceptors()
    {
       return enabledInterceptors;
    }
