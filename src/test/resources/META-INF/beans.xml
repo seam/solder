@@ -2,7 +2,7 @@
    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
 
    <interceptors>
-      <class>org.jboss.weld.test.extensions.interceptor.FooInterceptor</class>
+      <class>org.jboss.weld.extensions.test.interceptor.FooInterceptor</class>
    </interceptors>
 
 </beans>
