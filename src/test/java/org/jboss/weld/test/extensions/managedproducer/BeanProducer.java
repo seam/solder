@@ -18,7 +18,7 @@ package org.jboss.weld.test.extensions.managedproducer;
 
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.weld.extensions.annotations.ManagedProducer;
+import org.jboss.weld.extensions.ManagedProducer;
 
 public class BeanProducer
 {

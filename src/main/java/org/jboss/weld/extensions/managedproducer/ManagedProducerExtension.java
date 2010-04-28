@@ -26,7 +26,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
-import org.jboss.weld.extensions.annotations.ManagedProducer;
+import org.jboss.weld.extensions.ManagedProducer;
 
 /**
  * An extension that allows the use of @ManagedProducer methods
