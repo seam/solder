@@ -14,22 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.beanlookup;
+package org.jboss.weld.extensions.bean.lookup;
 
-import javax.enterprise.inject.spi.AnnotatedType;
-import javax.inject.Inject;
-
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 /**
- * Class that can lookup an AnnotatedType from an instance of a bean
+ * annotation that should be applied to an interceptor binding to signify that it requires access to AnnotatedType information
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  *
  */
-public class AnnotatedTypeIdentifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface RequiresIdentification
 {
-   @Inject IdentifiableBeanExtension beans;
    
-   public AnnotatedType<?> getAnnotatedType(Object instance)
-   {
-      return beans.getAnnotatedType(instance);
-   }
 }

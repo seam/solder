@@ -22,7 +22,7 @@ import javax.enterprise.util.AnnotationLiteral;
 
 import org.jboss.testharness.impl.packaging.Artifact;
 import org.jboss.testharness.impl.packaging.Classes;
-import org.jboss.weld.extensions.beanlookup.AnnotatedTypeIdentifier;
+import org.jboss.weld.extensions.bean.lookup.AnnotatedTypeIdentifier;
 import org.jboss.weld.test.AbstractWeldTest;
 import org.testng.annotations.Test;
 @Artifact
