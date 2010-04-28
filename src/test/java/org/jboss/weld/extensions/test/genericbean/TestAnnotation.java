@@ -14,9 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbeans;
+package org.jboss.weld.extensions.test.genericbean;
 
-public class NormalBean
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import org.jboss.weld.extensions.genericbean.GenericAnnotation;
+
+@Retention(RetentionPolicy.RUNTIME)
+@GenericAnnotation
+public @interface TestAnnotation
 {
-
+   String value();
 }

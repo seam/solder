@@ -14,20 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbeans;
+package org.jboss.weld.extensions.test.genericbean;
 
-import javax.enterprise.inject.Produces;
-
-public class GenericProducer
+public class NormalBean
 {
-   @SomeQualifier(1)
-   @Produces
-   @TestAnnotation("hello1")
-   GenericMain main1;
-
-   @SomeQualifier(2)
-   @Produces
-   @TestAnnotation("hello2")
-   GenericMain main2;
 
 }

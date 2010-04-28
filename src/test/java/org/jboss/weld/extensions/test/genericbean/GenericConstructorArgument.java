@@ -14,26 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.interceptor;
+package org.jboss.weld.extensions.test.genericbean;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.testharness.impl.packaging.Classes;
-import org.jboss.weld.extensions.interceptor.Interceptors;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import javax.inject.Inject;
 
-@Artifact
-@Classes(Interceptors.class)
-public class InterceptorsTest extends AbstractWeldTest
+import org.jboss.weld.extensions.genericbean.Generic;
+
+@Generic(TestAnnotation.class)
+public class GenericConstructorArgument
 {
-   
-   @Test
-   public void testInterceptorResolvable()
+   @Inject
+   TestAnnotation data;
+
+   public String getValue()
    {
-      assert getReference(Interceptors.class).isInterceptorEnabled(FooInterceptor.class);
-      // Waiting on WELD-503
-    //  assert !getReference(Interceptors.class).isInterceptorEnabled(BarInterceptor.class);
-      
+      return data.value();
    }
 
 }

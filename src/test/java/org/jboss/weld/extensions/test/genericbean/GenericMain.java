@@ -14,22 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.resources;
+package org.jboss.weld.extensions.test.genericbean;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.resourceLoader.ResourceProvider;
+import org.jboss.weld.extensions.genericbean.Generic;
 
-@RequestScoped
-public class ResourceClient
+@Generic(TestAnnotation.class)
+public class GenericMain
 {
-   
-   @Inject ResourceProvider resourceProvider;
-
-   public ResourceProvider getResourceProvider()
+   @Inject
+   public GenericMain(GenericConstructorArgument args)
    {
-      return resourceProvider;
+      constArgs = args;
    }
-   
+
+   @Inject
+   GenericDep dep;
+
+   @Inject
+   NormalBean normalBean;
+
+   GenericConstructorArgument constArgs;
+
+   public String getValue()
+   {
+      return dep.getValue();
+   }
+
+   public TestAnnotation getNoData()
+   {
+      return dep.getNoData();
+   }
 }

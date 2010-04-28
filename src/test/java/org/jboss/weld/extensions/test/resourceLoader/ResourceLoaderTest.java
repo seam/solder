@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.weld.extensions.test.resources;
+package org.jboss.weld.extensions.test.resourceLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ import org.jboss.weld.test.AbstractWeldTest;
 import org.testng.annotations.Test;
 
 @Artifact
-@Classes(packages = {"org.jboss.weld.extensions.resources.spi", "org.jboss.weld.extensions.resources"})
+@Classes(packages = {"org.jboss.weld.extensions.resourceLoader"})
 public class ResourceLoaderTest extends AbstractWeldTest
 {
 
@@ -39,6 +39,7 @@ public class ResourceLoaderTest extends AbstractWeldTest
    public void testLoadsStream() throws Throwable
    {
       InputStream stream = getReference(ResourceClient.class).getResourceProvider().loadResourceStream("com/acme/foo1");
+      assert stream != null;
       assert stream.available() > 0;
       InputStreamReader reader = new InputStreamReader(stream);
       char[] chars = new char[4];
@@ -50,6 +51,7 @@ public class ResourceLoaderTest extends AbstractWeldTest
    public void testLoadsURLs() throws Throwable
    {
       URL url = getReference(ResourceClient.class).getResourceProvider().loadResource("com/acme/foo1");
+      assert url != null;
       InputStream stream = url.openStream();
       assert stream.available() > 0;
       InputStreamReader reader = new InputStreamReader(stream);
@@ -63,6 +65,7 @@ public class ResourceLoaderTest extends AbstractWeldTest
    public void testInitialSlashIgnored() throws Throwable
    {
       URL url = getReference(ResourceClient.class).getResourceProvider().loadResource("/com/acme/foo1");
+      assert url != null;
       InputStream stream = url.openStream();
       assert stream.available() > 0;
       InputStreamReader reader = new InputStreamReader(stream);

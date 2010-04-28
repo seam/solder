@@ -14,36 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbeans;
+package org.jboss.weld.extensions.test.interceptor;
 
-import javax.inject.Inject;
+import org.jboss.testharness.impl.packaging.Artifact;
+import org.jboss.testharness.impl.packaging.Classes;
+import org.jboss.weld.extensions.interceptor.Interceptors;
+import org.jboss.weld.test.AbstractWeldTest;
+import org.testng.annotations.Test;
 
-import org.jboss.weld.extensions.genericbean.Generic;
-
-@Generic(TestAnnotation.class)
-public class GenericMain
+@Artifact
+@Classes(Interceptors.class)
+public class InterceptorTest extends AbstractWeldTest
 {
-   @Inject
-   public GenericMain(GenericConstructorArgument args)
+   
+   // Disabled, needs a snapshot of Weld to work
+   @Test(enabled=false)
+   public void testInterceptorResolvable()
    {
-      constArgs = args;
+      assert getReference(Interceptors.class).isInterceptorEnabled(FooInterceptor.class);
+      // Waiting on WELD-503
+    //  assert !getReference(Interceptors.class).isInterceptorEnabled(BarInterceptor.class);
+      
    }
 
-   @Inject
-   GenericDep dep;
-
-   @Inject
-   NormalBean normalBean;
-
-   GenericConstructorArgument constArgs;
-
-   public String getValue()
-   {
-      return dep.getValue();
-   }
-
-   public TestAnnotation getNoData()
-   {
-      return dep.getNoData();
-   }
 }

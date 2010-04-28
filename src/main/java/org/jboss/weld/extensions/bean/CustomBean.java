@@ -120,5 +120,11 @@ public class CustomBean<T> implements Bean<T>
    {
       beanLifecycle.destroy(this, arg0, arg1);
    }
+   
+   @Override
+   public String toString()
+   {
+      return new StringBuilder().append("Custom Bean with bean class ").append(beanClass).append(" and qualifiers ").append(qualifiers).toString();
+   }
 
 }

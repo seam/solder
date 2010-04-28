@@ -14,16 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbeans;
+package org.jboss.weld.extensions.test.resourceLoader;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
-import org.jboss.weld.extensions.genericbean.GenericAnnotation;
+import org.jboss.weld.extensions.resourceLoader.ResourceProvider;
 
-@Retention(RetentionPolicy.RUNTIME)
-@GenericAnnotation
-public @interface TestAnnotation
+@RequestScoped
+public class ResourceClient
 {
-   String value();
+   
+   @Inject ResourceProvider resourceProvider;
+
+   public ResourceProvider getResourceProvider()
+   {
+      return resourceProvider;
+   }
+   
 }
