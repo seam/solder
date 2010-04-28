@@ -14,18 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.genericbeans;
+package org.jboss.weld.extensions.genericbean;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * synthetic qualifier that is added to Generic beans to signify configuration annotation injection points
+ * used to mark where a generic bean should be inejcted in place of the normal
+ * @Inject, this may not be required in the future
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface InjectConfiguration
+@Target( { ElementType.FIELD, ElementType.PARAMETER })
+public @interface InjectGeneric
 {
+
 }

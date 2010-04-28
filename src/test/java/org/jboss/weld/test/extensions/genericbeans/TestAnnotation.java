@@ -19,7 +19,7 @@ package org.jboss.weld.test.extensions.genericbeans;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.jboss.weld.extensions.genericbeans.GenericAnnotation;
+import org.jboss.weld.extensions.genericbean.GenericAnnotation;
 
 @Retention(RetentionPolicy.RUNTIME)
 @GenericAnnotation

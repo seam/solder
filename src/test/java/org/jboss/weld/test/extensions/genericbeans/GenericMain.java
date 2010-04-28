@@ -18,7 +18,7 @@ package org.jboss.weld.test.extensions.genericbeans;
 
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.genericbeans.Generic;
+import org.jboss.weld.extensions.genericbean.Generic;
 
 @Generic(TestAnnotation.class)
 public class GenericMain

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.genericbeans;
+package org.jboss.weld.extensions.genericbean;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,14 +22,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a generic bean
+ * Must be applied to any annotation that is used as a value in @Generic, this
+ * may not be needed in the future
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.TYPE })
-public @interface Generic
+public @interface GenericAnnotation
 {
-   Class<?> value();
+
 }
