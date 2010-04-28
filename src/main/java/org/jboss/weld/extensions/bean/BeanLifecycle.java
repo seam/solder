@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.beans;
+package org.jboss.weld.extensions.bean;
 
 import javax.enterprise.context.spi.CreationalContext;
 
 /**
- * Hanlder for the create/destroy methods of CustomBean
+ * Handler for the create/destroy methods of CustomBean
  * 
  * @author stuart
  * 

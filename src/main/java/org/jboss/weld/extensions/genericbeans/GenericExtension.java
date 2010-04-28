@@ -44,7 +44,7 @@ import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.beans.CustomBeanBuilder;
+import org.jboss.weld.extensions.bean.CustomBeanBuilder;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.jboss.weld.extensions.util.reannotated.ReannotatedField;
 import org.jboss.weld.extensions.util.reannotated.ReannotatedParameter;

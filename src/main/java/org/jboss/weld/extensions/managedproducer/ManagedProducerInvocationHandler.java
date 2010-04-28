@@ -34,7 +34,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.weld.extensions.beans.CustomInjectionPoint;
+import org.jboss.weld.extensions.bean.CustomInjectionPoint;
 
 public class ManagedProducerInvocationHandler<T> implements InvocationHandler
 {
