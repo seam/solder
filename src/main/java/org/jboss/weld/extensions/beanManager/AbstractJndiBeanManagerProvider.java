@@ -26,7 +26,7 @@ import javax.naming.NamingException;
  * @author Nicklas Karlsson
  *
  */
-public abstract class AbstractJndiBeanManagerProvider implements BeanManagerProvider
+abstract class AbstractJndiBeanManagerProvider implements BeanManagerProvider
 {
    public BeanManager getBeanManager()
    {

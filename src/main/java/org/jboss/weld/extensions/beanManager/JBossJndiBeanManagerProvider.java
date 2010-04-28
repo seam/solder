@@ -23,7 +23,7 @@ import javax.enterprise.inject.spi.Extension;
  *  
  * @author Nicklas Karlsson
  */
-public class JBossJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider implements Extension
+class JBossJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider implements Extension
 {
 
    @Override
