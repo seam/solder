@@ -61,7 +61,7 @@
       <weld.api.version>1.0-SP1</weld.api.version>
       <weld.core.version>1.0.1-Final</weld.core.version>
       <slf4j.version>1.5.10</slf4j.version>
-      <testng.version>5.10</testng.version>
+      <testng.version>5.12.1</testng.version>
       <jboss.test.harness.version>1.1.0-CR3</jboss.test.harness.version>
    </properties>
 
@@ -101,7 +101,6 @@
          <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <classifier>jdk15</classifier>
             <version>${testng.version}</version>
          </dependency>
          <dependency>
@@ -146,7 +145,6 @@
          <groupId>org.testng</groupId>
          <artifactId>testng</artifactId>
          <scope>test</scope>
-         <classifier>jdk15</classifier>
          <exclusions>
             <exclusion>
                <artifactId>junit</artifactId>
