@@ -14,12 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.genericbean;
+package org.jboss.weld.extensions.test.bean.generic;
 
-import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Inject;
+import javax.enterprise.inject.Produces;
 
-public class InjectLiteral extends AnnotationLiteral<Inject> implements Inject
+public class GenericProducer
 {
+   @SomeQualifier(1)
+   @Produces
+   @TestAnnotation("hello1")
+   GenericMain main1;
+
+   @SomeQualifier(2)
+   @Produces
+   @TestAnnotation("hello2")
+   GenericMain main2;
 
 }

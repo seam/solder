@@ -14,21 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbean;
+package org.jboss.weld.extensions.bean.generic;
 
-import javax.inject.Inject;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jboss.weld.extensions.genericbean.Generic;
-
-@Generic(TestAnnotation.class)
-public class GenericConstructorArgument
+/**
+ * Must be applied to any annotation that is used as a value in @Generic, this
+ * may not be needed in the future
+ * 
+ * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * 
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE })
+public @interface GenericAnnotation
 {
-   @Inject
-   TestAnnotation data;
-
-   public String getValue()
-   {
-      return data.value();
-   }
 
 }

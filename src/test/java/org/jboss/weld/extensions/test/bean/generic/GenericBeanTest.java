@@ -14,16 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbean;
+package org.jboss.weld.extensions.test.bean.generic;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import org.jboss.testharness.impl.packaging.Artifact;
+import org.jboss.weld.test.AbstractWeldTest;
+import org.testng.annotations.Test;
 
-import javax.inject.Qualifier;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Qualifier
-public @interface SomeQualifier
+@Artifact
+public class GenericBeanTest extends AbstractWeldTest
 {
-   int value();
+   @Test
+   public void testGeneric()
+   {
+      //TODO: This needs to be split up into lots of little tests
+      InjectedBean bean = getReference(InjectedBean.class);
+      assert bean.main1.getValue().equals("hello1");
+      assert bean.main2.getValue().equals("hello2");
+      assert bean.main1.getNoData() == null;
+      assert bean.main2.getNoData() == null;
+      assert bean.main2.normalBean != null;
+   }
 }

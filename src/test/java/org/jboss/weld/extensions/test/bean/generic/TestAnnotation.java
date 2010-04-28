@@ -14,27 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbean;
+package org.jboss.weld.extensions.test.bean.generic;
 
-import javax.inject.Inject;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import org.jboss.weld.extensions.genericbean.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericAnnotation;
 
-@Generic(TestAnnotation.class)
-public class GenericDep
+@Retention(RetentionPolicy.RUNTIME)
+@GenericAnnotation
+public @interface TestAnnotation
 {
-   @Inject
-   TestAnnotation data;
-
-   TestAnnotation noData;
-
-   public String getValue()
-   {
-      return data.value();
-   }
-
-   public TestAnnotation getNoData()
-   {
-      return noData;
-   }
+   String value();
 }

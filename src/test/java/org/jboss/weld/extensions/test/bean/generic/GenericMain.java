@@ -14,20 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbean;
+package org.jboss.weld.extensions.test.bean.generic;
 
-import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
-public class GenericProducer
+import org.jboss.weld.extensions.bean.generic.Generic;
+
+@Generic(TestAnnotation.class)
+public class GenericMain
 {
-   @SomeQualifier(1)
-   @Produces
-   @TestAnnotation("hello1")
-   GenericMain main1;
+   @Inject
+   public GenericMain(GenericConstructorArgument args)
+   {
+      constArgs = args;
+   }
 
-   @SomeQualifier(2)
-   @Produces
-   @TestAnnotation("hello2")
-   GenericMain main2;
+   @Inject
+   GenericDep dep;
 
+   @Inject
+   NormalBean normalBean;
+
+   GenericConstructorArgument constArgs;
+
+   public String getValue()
+   {
+      return dep.getValue();
+   }
+
+   public TestAnnotation getNoData()
+   {
+      return dep.getNoData();
+   }
 }

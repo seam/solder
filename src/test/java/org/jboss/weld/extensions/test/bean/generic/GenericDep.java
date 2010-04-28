@@ -14,22 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.genericbean;
+package org.jboss.weld.extensions.test.bean.generic;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import javax.inject.Inject;
 
-/**
- * Marks a generic bean
- * 
- * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE })
-public @interface Generic
+import org.jboss.weld.extensions.bean.generic.Generic;
+
+@Generic(TestAnnotation.class)
+public class GenericDep
 {
-   Class<?> value();
+   @Inject
+   TestAnnotation data;
+
+   TestAnnotation noData;
+
+   public String getValue()
+   {
+      return data.value();
+   }
+
+   public TestAnnotation getNoData()
+   {
+      return noData;
+   }
 }

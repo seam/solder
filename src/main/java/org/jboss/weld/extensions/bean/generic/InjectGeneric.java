@@ -14,36 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbean;
+package org.jboss.weld.extensions.bean.generic;
 
-import javax.inject.Inject;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jboss.weld.extensions.genericbean.Generic;
-
-@Generic(TestAnnotation.class)
-public class GenericMain
+/**
+ * used to mark where a generic bean should be inejcted in place of the normal
+ * @Inject, this may not be required in the future
+ * 
+ * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * 
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.FIELD, ElementType.PARAMETER })
+public @interface InjectGeneric
 {
-   @Inject
-   public GenericMain(GenericConstructorArgument args)
-   {
-      constArgs = args;
-   }
 
-   @Inject
-   GenericDep dep;
-
-   @Inject
-   NormalBean normalBean;
-
-   GenericConstructorArgument constArgs;
-
-   public String getValue()
-   {
-      return dep.getValue();
-   }
-
-   public TestAnnotation getNoData()
-   {
-      return dep.getNoData();
-   }
 }

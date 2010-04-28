@@ -14,24 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.genericbean;
+package org.jboss.weld.extensions.test.bean.generic;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import javax.inject.Inject;
 
-@Artifact
-public class GenericBeanTest extends AbstractWeldTest
+import org.jboss.weld.extensions.bean.generic.Generic;
+
+@Generic(TestAnnotation.class)
+public class GenericConstructorArgument
 {
-   @Test
-   public void testGeneric()
+   @Inject
+   TestAnnotation data;
+
+   public String getValue()
    {
-      //TODO: This needs to be split up into lots of little tests
-      InjectedBean bean = getReference(InjectedBean.class);
-      assert bean.main1.getValue().equals("hello1");
-      assert bean.main2.getValue().equals("hello2");
-      assert bean.main1.getNoData() == null;
-      assert bean.main2.getNoData() == null;
-      assert bean.main2.normalBean != null;
+      return data.value();
    }
+
 }
