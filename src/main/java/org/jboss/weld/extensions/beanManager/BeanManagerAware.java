@@ -29,14 +29,25 @@ import org.jboss.weld.extensions.util.Sortable;
 import org.jboss.weld.extensions.util.service.ServiceLoader;
 
 /**
- * Super-class for non-CDI-native components that need a reference to the
- * {@link BeanManager}
  * <p>
- * <b>**WARNING**</b> This class is <b>NEVER</b> safe to use outside of specific
- * seam-faces implementation classes, and should be <b>avoided at all costs</b>.
- * If you need a handle to the {@link BeanManager} you should probably register
- * an {@link Extension} instead of using this class; have you tried using @
- * {@link Inject}?
+ * Super-class for non-CDI-native components that need a reference to the
+ * {@link BeanManager}. {@link BeanManagerProvider}s can be registered to allow
+ * third parties to register custom methods of looking up the BeanManager.
+ * </p>
+ * 
+ * <p>
+ * <b>**WARNING**</b> This class is <b>NOT</b> a clever way to get the BeanManager,
+ * and should be <b>avoided at all costs</b>. If you need a handle to the 
+ * {@link BeanManager} you should probably register an {@link Extension} instead of
+ * using this class; have you tried using @{@link Inject}?
+ * </p>
+ * 
+ * <p>
+ * If you think you need to use this class, chat to the community and make sure you
+ * aren't missing an trick!
+ * </p>
+ * 
+ * @see BeanManagerProvider
  * 
  * @author Nicklas Karlsson
  */
@@ -56,6 +67,11 @@ public class BeanManagerAware
       }
    }
 
+   /**
+    * Obtain the {@link BeanManager} from the {@link BeanManagerProvider}s
+    * 
+    * @return the current BeanManager for the bean archive
+    */
    protected BeanManager getBeanManager()
    {
       if (beanManager == null)

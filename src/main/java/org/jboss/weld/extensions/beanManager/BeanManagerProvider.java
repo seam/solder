@@ -21,7 +21,19 @@ import javax.enterprise.inject.spi.BeanManager;
 import org.jboss.weld.extensions.util.Sortable;
 
 /**
- * Provider for obtaining a BeanManager
+ * BeanManagerProvider is an SPI which allows third parties to
+ * register a way of obtaining the BeanManager outside of CDI
+ * managed objects.
+ * 
+ * Built in providers are {@link DefaultJndiBeanManagerProvider}
+ * and {@link JBossJndiBeanManagerProvider}.
+ * 
+ * Providers can specify a precedence, allowing a provider to be a 
+ * "last resort" provider only.
+ * 
+ * Precedence about 100 is reserved for providers that should always
+ * be used. Precedence below 10 is reserved for providers of last
+ * resort.
  * 
  * @author Nicklas Karlsson
  * 
