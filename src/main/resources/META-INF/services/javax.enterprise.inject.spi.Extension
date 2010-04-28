@@ -1,6 +1,6 @@
 org.jboss.weld.extensions.bean.generic.GenericExtension
 org.jboss.weld.extensions.resourceLoader.servlet.ServletResourceExtension
-org.jboss.weld.extensions.beanlookup.IdentifiableBeanExtension
+org.jboss.weld.extensions.bean.lookup.IdentifiableBeanExtension
 org.jboss.weld.extensions.CoreExtension
 org.jboss.weld.extensions.managedproducer.ManagedProducerExtension
 org.jboss.weld.extensions.interceptor.InterceptorExtension

@@ -23,10 +23,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.AnnotatedField;
-import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
+
+import org.jboss.weld.extensions.util.reannotated.ReannotatedField;
+import org.jboss.weld.extensions.util.reannotated.ReannotatedType;
 
 /**
  * injection target wrapper that injects the configuration for generic beans
@@ -52,9 +53,9 @@ public class GenericBeanInjectionTargetWrapper<T> implements InjectionTarget<T>
    
    private final InjectionTarget<T> delegate;
    private final Annotation annotation;
-   private final AnnotatedType<T> annotatedType;
+   private final ReannotatedType<T> annotatedType;
 
-   public GenericBeanInjectionTargetWrapper(AnnotatedType<T> annotatedType, InjectionTarget<T> delegate, Annotation annotation)
+   public GenericBeanInjectionTargetWrapper(ReannotatedType<T> annotatedType, InjectionTarget<T> delegate, Annotation annotation)
    {
       this.annotation = annotation;
       this.delegate = delegate;
@@ -68,7 +69,7 @@ public class GenericBeanInjectionTargetWrapper<T> implements InjectionTarget<T>
 
          if (annotation.annotationType().isAssignableFrom(f.getType()))
          {
-            AnnotatedField<? super T> reannotatedField = annotatedType.getField(f);
+            ReannotatedField<? super T> reannotatedField = annotatedType.getField(f);
             if (reannotatedField.isAnnotationPresent(InjectConfiguration.class))
             {
                try

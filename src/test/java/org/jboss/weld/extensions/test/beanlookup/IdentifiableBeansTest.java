@@ -26,7 +26,7 @@ import org.jboss.weld.extensions.bean.lookup.AnnotatedTypeIdentifier;
 import org.jboss.weld.test.AbstractWeldTest;
 import org.testng.annotations.Test;
 @Artifact
-@Classes(packages = { "org.jboss.weld.extensions.beanlookup" })
+@Classes(packages = { "org.jboss.weld.extensions.bean.lookup" })
 public class IdentifiableBeansTest extends AbstractWeldTest
 {
    @Test
