@@ -19,6 +19,8 @@ package org.jboss.weld.extensions.bean.generic;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import javax.enterprise.util.AnnotationLiteral;
+
 /**
  * synthetic qualifier that is added to Generic beans to signify configuration annotation injection points
  * 
@@ -28,4 +30,14 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface InjectConfiguration
 {
+   
+   public static class InjectConfigurationLiteral extends AnnotationLiteral<InjectConfiguration> implements InjectConfiguration 
+   {
+
+      private static final long serialVersionUID = 5365615929893138969L;
+      
+   }
+   
+   public static final InjectConfiguration INSTANCE = new InjectConfigurationLiteral();
+   
 }

@@ -28,7 +28,7 @@ import java.util.Set;
  * @author Stuart Douglas
  *
  */
-class AnnotationBuilder
+public class AnnotationBuilder
 {
    private HashMap<Class<? extends Annotation>, Annotation> annotationMap = new HashMap<Class<? extends Annotation>, Annotation>();
    private Set<Annotation> annotationSet = new HashSet<Annotation>();
@@ -89,6 +89,17 @@ class AnnotationBuilder
    public <T extends Annotation> T getAnnotation(Class<T> anType)
    {
       return (T) annotationMap.get(anType);
+   }
+   
+   public boolean isAnnotationPresent(Class<?> annotationType)
+   {
+      return annotationMap.containsKey(annotationType);
+   }
+   
+   @Override
+   public String toString()
+   {
+      return annotationSet.toString();
    }
 
 }

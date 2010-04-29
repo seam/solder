@@ -16,11 +16,16 @@
  */
 package org.jboss.weld.extensions.util;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.enterprise.inject.spi.AnnotatedField;
+import javax.enterprise.inject.spi.AnnotatedType;
 
 /**
  * class that provides a way of retrieving all methods and fields from a class
@@ -63,6 +68,32 @@ public class ReflectionUtils
       }
       return null;
    }
+   
+   public static <X> AnnotatedField<? super X> getField(AnnotatedType<X> annotatedType, Field field)
+   {
+      for (AnnotatedField<? super X> annotatedField : annotatedType.getFields())
+      {
+         if (annotatedField.getDeclaringType().getJavaClass().equals(field.getDeclaringClass()) && annotatedField.getJavaMember().getName().equals(field.getName()))
+         {
+            return annotatedField;
+         }
+      }
+      return null;
+   }
+   
+   public static Set<Annotation> getAnnotationsWithMetatype(Set<Annotation> annotations, Class<? extends Annotation> metaAnnotationType)
+   {
+      Set<Annotation> set = new HashSet<Annotation>();
+      for (Annotation annotation : annotations)
+      {
+         if (annotation.annotationType().isAnnotationPresent(metaAnnotationType))
+         {
+            set.add(annotation);
+         }
+      }
+      return set;
+   }
+
 
    public static boolean methodExists(Class<?> parent, String name)
    {
@@ -134,7 +165,7 @@ public class ReflectionUtils
 
    public static Set<Constructor<?>> getConstructors(Class<?> clazz)
    {
-      HashSet<Constructor<?>> ret = new HashSet();
+      HashSet<Constructor<?>> ret = new HashSet<Constructor<?>>();
       Class<?> p = clazz;
       while (p != null && p != Object.class)
       {
@@ -146,4 +177,25 @@ public class ReflectionUtils
       }
       return ret;
    }
+   
+   public static Class<?> getMemberType(Member member)
+   {
+      if (member instanceof Field)
+      {
+         return ((Field) member).getType();
+      }
+      else if (member instanceof Method)
+      {
+         return ((Method) member).getReturnType();
+      }
+      else if (member instanceof Constructor<?>)
+      {
+         return ((Constructor<?>) member).getDeclaringClass();
+      }
+      else
+      {
+         throw new UnsupportedOperationException("Cannot operate on a member of type " + member.getClass());
+      }
+   }
+   
 }

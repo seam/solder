@@ -18,7 +18,7 @@ package org.jboss.weld.extensions.util.annotated;
 
 import java.lang.annotation.Annotation;
 
-public interface AnnotationRedefiner<X extends Annotation>
+public interface AnnotationRedefiner<T extends Annotation, A>
 {
-   public X redefine(X annotation, AnnotationBuilder annotations);
+   public T redefine(T annotation, A annotated, AnnotationBuilder annotations);
 }

@@ -16,37 +16,45 @@
  */
 package org.jboss.weld.extensions;
 
+import static org.jboss.weld.extensions.util.ReflectionUtils.getAnnotationsWithMetatype;
+import static org.jboss.weld.extensions.util.ReflectionUtils.getMemberType;
+
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Qualifier;
 
-import org.jboss.weld.extensions.util.BeanImpl;
-import org.jboss.weld.extensions.util.reannotated.AnnotationRedefinition;
-import org.jboss.weld.extensions.util.reannotated.Reannotated;
-import org.jboss.weld.extensions.util.reannotated.ReannotatedMember;
-import org.jboss.weld.extensions.util.reannotated.ReannotatedType;
+import org.jboss.weld.extensions.Exact.ExactLiteral;
+import org.jboss.weld.extensions.bean.CustomBeanBuilder;
+import org.jboss.weld.extensions.util.annotated.AnnotationBuilder;
+import org.jboss.weld.extensions.util.annotated.MemberAnnotationRedefiner;
+import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
+import org.jboss.weld.extensions.util.annotated.Parameter;
+import org.jboss.weld.extensions.util.annotated.ParameterAnnotationRedefiner;
 
-public class CoreExtension implements Extension
+class CoreExtension implements Extension
 {
 
-   Collection<Bean<?>> additionalBeans = new ArrayList<Bean<?>>();
+   private final Collection<Bean<?>> additionalBeans;
+
+   CoreExtension()
+   {
+      this.additionalBeans = new ArrayList<Bean<?>>();
+   }
 
    <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager bm)
    {
@@ -57,30 +65,23 @@ public class CoreExtension implements Extension
       }
 
       final AnnotatedType<X> at = pat.getAnnotatedType();
-
-      ReannotatedType<X> rt = new ReannotatedType<X>(at);
+      NewAnnotatedTypeBuilder<X> builder = NewAnnotatedTypeBuilder.newInstance(at).readAnnotationsFromUnderlying();
 
       // support for @Named packages
       Package pkg = at.getJavaClass().getPackage();
       if (pkg.isAnnotationPresent(Named.class))
       {
          final String packageName = getPackageName(pkg);
-         if (at.isAnnotationPresent(Named.class))
+
+         builder.redefineMembers(Named.class, new MemberAnnotationRedefiner<Named>()
          {
-            String className = at.getJavaClass().getSimpleName();
-            String beanName = getName(at, className);
-            rt.define(new NamedLiteral(packageName + '.' + beanName));
-         }
-         rt.redefineMembers(Named.class, new AnnotationRedefinition<Named>()
-         {
-            
-            @SuppressWarnings("unchecked")
-            public Named redefine(Named annotation, Reannotated reannotated)
+
+            public Named redefine(Named annotation, Member member, AnnotationBuilder annotations)
             {
-               if (reannotated.isAnnotationPresent(Produces.class))
+               if (annotations.isAnnotationPresent(Produces.class))
                {
-                  String memberName = ((ReannotatedMember<? super X>) reannotated).getJavaMember().getName();
-                  String beanName = getName(reannotated, memberName);
+                  String memberName = member.getName();
+                  String beanName = getName(annotation, memberName);
                   return new NamedLiteral(packageName + '.' + beanName);
                }
                else
@@ -90,26 +91,31 @@ public class CoreExtension implements Extension
             }
 
          });
+
+         if (at.isAnnotationPresent(Named.class))
+         {
+            String className = at.getJavaClass().getSimpleName();
+            String beanName = getName(at.getAnnotation(Named.class), className);
+            builder.addToClass(new NamedLiteral(packageName + '.' + beanName));
+         }
+
       }
 
       // support for @Exact
-      Set<Annotation> qualfiers = rt.getAnnotationsWithMetatype(Qualifier.class);
-      boolean defaultQualifier = qualfiers.isEmpty() || (qualfiers.size() == 1 && qualfiers.iterator().next().annotationType() == Named.class);
-      if (defaultQualifier)
+      Set<Annotation> qualfiers = getAnnotationsWithMetatype(at.getAnnotations(), Qualifier.class);
+      if (qualfiers.isEmpty() || (qualfiers.size() == 1 && qualfiers.iterator().next().annotationType() == Named.class))
       {
-         rt.define(new AnnotationLiteral<Default>()
-         {
-         });
+         builder.addToClass(DefaultLiteral.INSTANCE);
       }
-      rt.define(new ExactLiteral(at.getJavaClass()));
-      rt.redefineMembersAndParameters(Exact.class, new AnnotationRedefinition<Exact>()
+      builder.addToClass(new Exact.ExactLiteral(at.getJavaClass()));
+      builder.redefineMembers(Exact.class, new MemberAnnotationRedefiner<Exact>()
       {
-         
-         public Exact redefine(Exact annotation, Reannotated reannotated)
+
+         public Exact redefine(Exact annotation, Member annotated, AnnotationBuilder annotations)
          {
             if (annotation.value() == void.class)
             {
-               return new ExactLiteral(reannotated.getJavaClass());
+               return new ExactLiteral(getMemberType(annotated));
             }
             else
             {
@@ -118,43 +124,47 @@ public class CoreExtension implements Extension
          }
       });
 
-      pat.setAnnotatedType(rt);
+      builder.redefineMemberParameters(Exact.class, new ParameterAnnotationRedefiner<Exact>()
+      {
+
+         public Exact redefine(Exact annotation, Parameter annotated, AnnotationBuilder annotations)
+         {
+            if (annotation.value() == void.class)
+            {
+               return new ExactLiteral(getMemberType(annotated.getDeclaringMember()));
+            }
+            else
+            {
+               return annotation;
+            }
+         }
+
+      });
+
+      pat.setAnnotatedType(builder.create());
 
       // support for @Constructs
       for (AnnotatedConstructor<X> constructor : at.getConstructors())
       {
          if (constructor.isAnnotationPresent(Constructs.class))
          {
-            ReannotatedType<X> rtc = new ReannotatedType<X>(at);
+            NewAnnotatedTypeBuilder<X> annotatedTypeBuilder = NewAnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).readAnnotationsFromUnderlying();
             // remove class-level @Named annotation
-            rtc.redefine(Named.class, new AnnotationRedefinition<Named>()
+            annotatedTypeBuilder.removeFromClass(Named.class);
+            // remove bean constructors annotated @Inject
+            for (AnnotatedConstructor<X> constructor2 : at.getConstructors())
             {
-               
-               public Named redefine(Named annotation, Reannotated reannotated)
-               {
-                  return null;
-               }
-            });
-            // remove bean constructor annotated @Inject
-            rtc.redefineConstructors(Inject.class, new AnnotationRedefinition<Inject>()
-            {
-               
-               public Inject redefine(Inject annotation, Reannotated reannotated)
-               {
-                  return null;
-               }
-            });
+               annotatedTypeBuilder.removeFromConstructor(constructor2.getJavaMember(), Inject.class);
+            }
             // make the constructor annotated @Constructs the bean constructor
-            rtc.getConstructor(constructor.getJavaMember()).define(new AnnotationLiteral<Inject>()
-            {
-            });
+            annotatedTypeBuilder.addToConstructor(constructor.getJavaMember(), InjectLiteral.INSTANCE);
             // add all the annotations of this constructor to the class
             for (Annotation ann : constructor.getAnnotations())
             {
-               rtc.define(ann);
+               annotatedTypeBuilder.addToClass(ann);
             }
-
-            additionalBeans.add(new BeanImpl<X>(bm.createInjectionTarget(rtc), rtc));
+            AnnotatedType<X> construtsAnnotatedType = builder.create();
+            additionalBeans.add(new CustomBeanBuilder<X>(construtsAnnotatedType, bm).build());
          }
       }
    }
@@ -177,9 +187,9 @@ public class CoreExtension implements Extension
       return packageName;
    }
 
-   private <X> String getName(Annotated annotated, String defaultName)
+   private <X> String getName(Named named, String defaultName)
    {
-      String beanName = annotated.getAnnotation(Named.class).value();
+      String beanName = named.value();
       if (beanName.length() == 0)
       {
          beanName = defaultName.substring(0, 1).toLowerCase() + defaultName.substring(1);
