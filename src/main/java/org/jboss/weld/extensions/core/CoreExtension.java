@@ -38,11 +38,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Qualifier;
 
-import org.jboss.weld.extensions.annotatedType.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.annotatedType.AnnotationBuilder;
-import org.jboss.weld.extensions.annotatedType.MemberAnnotationRedefiner;
-import org.jboss.weld.extensions.annotatedType.Parameter;
-import org.jboss.weld.extensions.annotatedType.ParameterAnnotationRedefiner;
+import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
+import org.jboss.weld.extensions.annotated.AnnotationBuilder;
+import org.jboss.weld.extensions.annotated.MemberAnnotationRedefiner;
+import org.jboss.weld.extensions.annotated.Parameter;
+import org.jboss.weld.extensions.annotated.ParameterAnnotationRedefiner;
 import org.jboss.weld.extensions.bean.CustomBeanBuilder;
 import org.jboss.weld.extensions.core.Exact.ExactLiteral;
 

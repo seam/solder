@@ -43,7 +43,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.annotatedType.AnnotatedTypeBuilder;
+import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.bean.CustomBeanBuilder;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 

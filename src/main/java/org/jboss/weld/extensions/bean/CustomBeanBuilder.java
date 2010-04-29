@@ -29,7 +29,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
 import javax.inject.Named;
 
-import org.jboss.weld.extensions.util.AnnotatedTypeUtils;
+import org.jboss.weld.extensions.annotated.Annotateds;
 
 /**
  * class that can build a bean from an AnnotatedType.
@@ -107,7 +107,7 @@ public class CustomBeanBuilder<T>
          types.add(i);
       }
       beanLifecycle = new SimpleBeanLifecycle<T>(type.getJavaClass(), beanManager);
-      id = CustomBean.class.getName() + ":" + AnnotatedTypeUtils.createTypeId(type);
+      id = CustomBean.class.getName() + ":" + Annotateds.createTypeId(type);
    }
 
    public Bean<T> build()

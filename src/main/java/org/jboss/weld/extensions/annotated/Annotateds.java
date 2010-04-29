@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.util;
+package org.jboss.weld.extensions.annotated;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -40,12 +40,14 @@ import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
 /**
- * Class that can take an AnnotatedType and return a unique string
- * representation of that type
+ * Utilities for working with {@link Annotated}s.
+ * 
+ * Includes utilities to check the equality of {@link Annotated} instances, and
+ * to create unique ids for {@link Annotated} instances.
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  */
-public class AnnotatedTypeUtils
+public class Annotateds
 {
 
    /**
@@ -170,7 +172,7 @@ public class AnnotatedTypeUtils
 
    private static class MethodComparator implements Comparator<Method>
    {
-      
+
       public static final Comparator<Method> INSTANCE = new MethodComparator();
 
       public int compare(Method arg0, Method arg1)
@@ -270,14 +272,14 @@ public class AnnotatedTypeUtils
       {
          return "";
       }
-      
+
       StringBuilder builder = new StringBuilder();
       builder.append('[');
 
       List<Annotation> annotationList = new ArrayList<Annotation>(annotations.size());
       annotationList.addAll(annotations);
       Collections.sort(annotationList, AnnotationComparator.INSTANCE);
-      
+
       for (Annotation a : annotationList)
       {
          builder.append('@');
@@ -461,7 +463,7 @@ public class AnnotatedTypeUtils
       {
          return false;
       }
-      if(!compareAnnotated(m1, m2))
+      if (!compareAnnotated(m1, m2))
       {
          return false;
       }
@@ -556,8 +558,7 @@ public class AnnotatedTypeUtils
 
    }
 
-
-   private AnnotatedTypeUtils()
+   private Annotateds()
    {
    }
 

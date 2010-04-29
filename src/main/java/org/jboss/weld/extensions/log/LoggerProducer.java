@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author David Allen
  *
  */
-public class LoggerProducer
+class LoggerProducer
 {
    
    @Produces
