@@ -14,23 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions;
+package org.jboss.weld.extensions.core;
 
+import javax.enterprise.inject.Default;
 import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Named;
 
-class NamedLiteral extends AnnotationLiteral<Named> implements Named
+class DefaultLiteral extends AnnotationLiteral<Default> implements Default 
 {
-   private static final long serialVersionUID = 2239690880420187044L;
-   final String name;
 
-   NamedLiteral(String name)
-   {
-      this.name = name;
-   }
+   private static final long serialVersionUID = 2768505716290514234L;
+   
+   static final Default INSTANCE = new DefaultLiteral();
+   
+   private DefaultLiteral() {}
 
-   public String value()
-   {
-      return name;
-   }
 }

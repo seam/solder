@@ -14,18 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions;
+package org.jboss.weld.extensions.core;
 
-import javax.enterprise.inject.Default;
 import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Inject;
 
-class DefaultLiteral extends AnnotationLiteral<Default> implements Default 
+class InjectLiteral extends AnnotationLiteral<Inject> implements Inject 
 {
-
-   private static final long serialVersionUID = 2768505716290514234L;
    
-   public static final Default INSTANCE = new DefaultLiteral();
+   private static final long serialVersionUID = 817936051028981316L;
    
-   private DefaultLiteral() {}
+   static final Inject INSTANCE = new InjectLiteral();
+   
+   private InjectLiteral() {}
 
 }

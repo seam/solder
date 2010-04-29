@@ -14,18 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions;
+package org.jboss.weld.extensions.core;
 
-import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Inject;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-class InjectLiteral extends AnnotationLiteral<Inject> implements Inject 
-{
-   
-   private static final long serialVersionUID = 817936051028981316L;
-   
-   public static final Inject INSTANCE = new InjectLiteral();
-   
-   private InjectLiteral() {}
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-}
+/**
+ * Allows a bean to be defined by annotating a constructor instead
+ * of the bean class. There may be multiple beans defined using
+ * <tt>@Constructs</tt> per bean class.
+ * 
+ * @author Gavin King
+ *
+ */
+@Retention(RUNTIME)
+@Target(CONSTRUCTOR)
+@Documented
+public @interface Constructs {}

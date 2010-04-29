@@ -27,7 +27,6 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.Resource;
 
 /**
  * Resource producer allows injecting of resources

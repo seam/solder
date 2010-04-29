@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions;
+package org.jboss.weld.extensions.core;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -26,23 +26,39 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.enterprise.util.Nonbinding;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Qualifier;
 
 /**
- * An injection point qualifier that may be used to specify a resource to inject
+ * An injection point qualifier that may be used to select the exact bean to be
+ * injected, by specifying its implementation class.
  * 
- * @author Pete Muir
+ * @author Gavin King
  * 
  */
 @Retention(RUNTIME)
 @Target( { METHOD, TYPE, FIELD, PARAMETER })
 @Documented
 @Qualifier
-public @interface Resource
+public @interface Exact
 {
+   Class<?> value() default void.class;
    
-   @Nonbinding
-   String value();
-   
+   static class ExactLiteral extends AnnotationLiteral<Exact> implements Exact
+   {
+
+      private static final long serialVersionUID = 4907169607105615674L;
+      
+      final Class<?> clazz;
+
+      ExactLiteral(Class<?> clazz)
+      {
+         this.clazz = clazz;
+      }
+
+      public Class<?> value()
+      {
+         return clazz;
+      }
+   }
 }

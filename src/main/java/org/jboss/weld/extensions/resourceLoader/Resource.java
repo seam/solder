@@ -14,24 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions;
+package org.jboss.weld.extensions.resourceLoader;
 
-import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.enterprise.util.Nonbinding;
+import javax.inject.Qualifier;
+
 /**
- * Allows a bean to be defined by annotating a constructor instead
- * of the bean class. There may be multiple beans defined using
- * <tt>@Constructs</tt> per bean class.
+ * An injection point qualifier that may be used to specify a resource to inject
  * 
- * @author Gavin King
- *
+ * @author Pete Muir
+ * 
  */
 @Retention(RUNTIME)
-@Target(CONSTRUCTOR)
+@Target( { METHOD, TYPE, FIELD, PARAMETER })
 @Documented
-public @interface Constructs {}
+@Qualifier
+public @interface Resource
+{
+   
+   @Nonbinding
+   String value();
+   
+}

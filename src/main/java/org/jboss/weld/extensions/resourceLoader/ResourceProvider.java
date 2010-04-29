@@ -30,7 +30,6 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.Resource;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 
 /**

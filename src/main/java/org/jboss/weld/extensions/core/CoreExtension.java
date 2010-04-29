@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions;
+package org.jboss.weld.extensions.core;
 
 import static org.jboss.weld.extensions.util.ReflectionUtils.getAnnotationsWithMetatype;
 import static org.jboss.weld.extensions.util.ReflectionUtils.getMemberType;
@@ -38,14 +38,23 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Qualifier;
 
-import org.jboss.weld.extensions.Exact.ExactLiteral;
 import org.jboss.weld.extensions.bean.CustomBeanBuilder;
+import org.jboss.weld.extensions.core.Exact.ExactLiteral;
 import org.jboss.weld.extensions.util.annotated.AnnotationBuilder;
 import org.jboss.weld.extensions.util.annotated.MemberAnnotationRedefiner;
 import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
 import org.jboss.weld.extensions.util.annotated.Parameter;
 import org.jboss.weld.extensions.util.annotated.ParameterAnnotationRedefiner;
 
+/**
+ * Extension to install the "core" extensions. Core extensions are those that
+ * add additional abilities to CDI applications via annotations.
+ * 
+ * @author Stuart
+ * @author Pete Muir
+ * @author Gavin King
+ * 
+ */
 class CoreExtension implements Extension
 {
 
@@ -56,19 +65,19 @@ class CoreExtension implements Extension
       this.additionalBeans = new ArrayList<Bean<?>>();
    }
 
-   <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager bm)
+   <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager beanManager)
    {
+      // Support for @Veto
       if (pat.getAnnotatedType().isAnnotationPresent(Veto.class))
       {
          pat.veto();
          return;
       }
 
-      final AnnotatedType<X> at = pat.getAnnotatedType();
-      NewAnnotatedTypeBuilder<X> builder = NewAnnotatedTypeBuilder.newInstance(at).readAnnotationsFromUnderlying();
+      NewAnnotatedTypeBuilder<X> builder = NewAnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).readAnnotationsFromUnderlying();
 
       // support for @Named packages
-      Package pkg = at.getJavaClass().getPackage();
+      Package pkg = pat.getAnnotatedType().getJavaClass().getPackage();
       if (pkg.isAnnotationPresent(Named.class))
       {
          final String packageName = getPackageName(pkg);
@@ -92,22 +101,22 @@ class CoreExtension implements Extension
 
          });
 
-         if (at.isAnnotationPresent(Named.class))
+         if (pat.getAnnotatedType().isAnnotationPresent(Named.class))
          {
-            String className = at.getJavaClass().getSimpleName();
-            String beanName = getName(at.getAnnotation(Named.class), className);
+            String className = pat.getAnnotatedType().getJavaClass().getSimpleName();
+            String beanName = getName(pat.getAnnotatedType().getAnnotation(Named.class), className);
             builder.addToClass(new NamedLiteral(packageName + '.' + beanName));
          }
 
       }
 
       // support for @Exact
-      Set<Annotation> qualfiers = getAnnotationsWithMetatype(at.getAnnotations(), Qualifier.class);
+      Set<Annotation> qualfiers = getAnnotationsWithMetatype(pat.getAnnotatedType().getAnnotations(), Qualifier.class);
       if (qualfiers.isEmpty() || (qualfiers.size() == 1 && qualfiers.iterator().next().annotationType() == Named.class))
       {
          builder.addToClass(DefaultLiteral.INSTANCE);
       }
-      builder.addToClass(new Exact.ExactLiteral(at.getJavaClass()));
+      builder.addToClass(new Exact.ExactLiteral(pat.getAnnotatedType().getJavaClass()));
       builder.redefineMembers(Exact.class, new MemberAnnotationRedefiner<Exact>()
       {
 
@@ -144,7 +153,7 @@ class CoreExtension implements Extension
       pat.setAnnotatedType(builder.create());
 
       // support for @Constructs
-      for (AnnotatedConstructor<X> constructor : at.getConstructors())
+      for (AnnotatedConstructor<X> constructor : pat.getAnnotatedType().getConstructors())
       {
          if (constructor.isAnnotationPresent(Constructs.class))
          {
@@ -152,7 +161,7 @@ class CoreExtension implements Extension
             // remove class-level @Named annotation
             annotatedTypeBuilder.removeFromClass(Named.class);
             // remove bean constructors annotated @Inject
-            for (AnnotatedConstructor<X> constructor2 : at.getConstructors())
+            for (AnnotatedConstructor<X> constructor2 : pat.getAnnotatedType().getConstructors())
             {
                annotatedTypeBuilder.removeFromConstructor(constructor2.getJavaMember(), Inject.class);
             }
@@ -164,7 +173,7 @@ class CoreExtension implements Extension
                annotatedTypeBuilder.addToClass(ann);
             }
             AnnotatedType<X> construtsAnnotatedType = builder.create();
-            additionalBeans.add(new CustomBeanBuilder<X>(construtsAnnotatedType, bm).build());
+            additionalBeans.add(new CustomBeanBuilder<X>(construtsAnnotatedType, beanManager).build());
          }
       }
    }
