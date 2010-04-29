@@ -26,36 +26,37 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
+
 /**
- * extension that allows the AnnotatedType to be retrieved for a given bean 
+ * extension that allows the AnnotatedType to be retrieved for a given bean
  * 
  * This is hopefully a temporary workaround until a spec limitation is removed
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- *
+ * 
  */
 public class IdentifiableBeanExtension implements Extension
 {
    Map<Object, AnnotatedType<?>> types = Collections.synchronizedMap(new WeakHashMap<Object, AnnotatedType<?>>(1000));
 
-   public void processInjectionTarget(@Observes ProcessInjectionTarget<?> event)
+   public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event)
    {
       boolean requiresId = false;
-      for(Annotation a : event.getAnnotatedType().getAnnotations())
+      for (Annotation a : event.getAnnotatedType().getAnnotations())
       {
-         if(a.annotationType().isAnnotationPresent(RequiresIdentification.class))
+         if (a.annotationType().isAnnotationPresent(RequiresIdentification.class))
          {
             requiresId = true;
             break;
          }
       }
-      if(!requiresId)
+      if (!requiresId)
       {
-         for(AnnotatedMethod<?> m : event.getAnnotatedType().getMethods())
+         for (AnnotatedMethod<? super T> m : event.getAnnotatedType().getMethods())
          {
-            for(Annotation a  : m.getAnnotations())
+            for (Annotation a : m.getAnnotations())
             {
-               if(a.annotationType().isAnnotationPresent(RequiresIdentification.class))
+               if (a.annotationType().isAnnotationPresent(RequiresIdentification.class))
                {
                   requiresId = true;
                   break;
@@ -63,15 +64,15 @@ public class IdentifiableBeanExtension implements Extension
             }
          }
       }
-      if(requiresId)
+      if (requiresId)
       {
-         event.setInjectionTarget(new IdentifiableInjectionTarget(event.getInjectionTarget(), event.getAnnotatedType(),types));
+         event.setInjectionTarget(new IdentifiableInjectionTarget<T>(event.getInjectionTarget(), event.getAnnotatedType(), types));
       }
    }
-   
+
    public AnnotatedType<?> getAnnotatedType(Object instance)
    {
       return types.get(instance);
    }
-   
+
 }
