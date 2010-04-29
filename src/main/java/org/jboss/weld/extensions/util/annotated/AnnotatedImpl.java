@@ -30,14 +30,14 @@ import javax.enterprise.inject.spi.Annotated;
  * @author Stuart Douglas
  * 
  */
-abstract class AbstractNewAnnotatedElement implements Annotated
+abstract class AnnotatedImpl implements Annotated
 {
 
    private final Type type;
    private final Set<Type> typeClosure;
    private final AnnotationStore annotations;
 
-   protected AbstractNewAnnotatedElement(Class<?> type, AnnotationStore annotations, Type genericType, Type overridenType)
+   protected AnnotatedImpl(Class<?> type, AnnotationStore annotations, Type genericType, Type overridenType)
    {
 
       if (overridenType == null)

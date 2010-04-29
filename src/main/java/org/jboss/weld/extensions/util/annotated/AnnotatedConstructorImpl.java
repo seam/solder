@@ -27,10 +27,10 @@ import javax.enterprise.inject.spi.AnnotatedConstructor;
  * @author Stuart Douglas
  * 
  */
-class NewAnnotatedConstructor<X> extends AbstractNewAnnotatedCallable<X, Constructor<X>> implements AnnotatedConstructor<X>
+class AnnotatedConstructorImpl<X> extends AnnotatedCallableImpl<X, Constructor<X>> implements AnnotatedConstructor<X>
 {
 
-   NewAnnotatedConstructor(NewAnnotatedType<X> type, Constructor<?> constructor, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Map<Integer, Type> typeOverrides)
+   AnnotatedConstructorImpl(AnnotatedTypeImpl<X> type, Constructor<?> constructor, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Map<Integer, Type> typeOverrides)
    {
 
       super(type, (Constructor<X>) constructor, constructor.getDeclaringClass(), constructor.getParameterTypes(), getGenericArray(constructor), annotations, parameterAnnotations, null, typeOverrides);
@@ -41,7 +41,7 @@ class NewAnnotatedConstructor<X> extends AbstractNewAnnotatedCallable<X, Constru
       Type[] genericTypes = constructor.getGenericParameterTypes();
       // for inner classes genericTypes and parameterTypes can be different
       // length, this is a hack to fix this.
-      // TODO: investigate this behaviour further, on different JVM's and
+      // TODO: investigate this behavior further, on different JVM's and
       // compilers
       if (genericTypes.length + 1 == constructor.getParameterTypes().length)
       {

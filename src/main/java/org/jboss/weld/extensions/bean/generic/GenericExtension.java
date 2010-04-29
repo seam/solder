@@ -45,7 +45,7 @@ import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.CustomBeanBuilder;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
-import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
+import org.jboss.weld.extensions.util.annotated.AnnotatedTypeBuilder;
 
 public class GenericExtension implements Extension
 {
@@ -162,7 +162,7 @@ public class GenericExtension implements Extension
    {
       SyntheticQualifier newQualifier = getQualifierForGeneric(conc);
 
-      NewAnnotatedTypeBuilder<X> builder = NewAnnotatedTypeBuilder.newInstance(at).readAnnotationsFromUnderlying();
+      AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(at).readAnnotationsFromUnderlyingType();
       builder.addToClass(newQualifier);
       for (AnnotatedField<? super X> f : at.getFields())
       {

@@ -45,17 +45,17 @@ class AnnotationStore
       this.annotationSet = new HashSet<Annotation>();
    }
 
-   public <T extends Annotation> T getAnnotation(Class<T> annotationType)
+   <T extends Annotation> T getAnnotation(Class<T> annotationType)
    {
       return annotationType.cast(annotationMap.get(annotationType));
    }
 
-   public Set<Annotation> getAnnotations()
+   Set<Annotation> getAnnotations()
    {
       return Collections.unmodifiableSet(annotationSet);
    }
 
-   public boolean isAnnotationPresent(Class<? extends Annotation> annotationType)
+   boolean isAnnotationPresent(Class<? extends Annotation> annotationType)
    {
       return annotationMap.containsKey(annotationType);
    }

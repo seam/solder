@@ -16,23 +16,37 @@
  */
 package org.jboss.weld.extensions.util.annotated;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Map;
 
-import javax.enterprise.inject.spi.AnnotatedMethod;
-import javax.enterprise.inject.spi.AnnotatedType;
+import javax.enterprise.inject.spi.AnnotatedCallable;
+import javax.enterprise.inject.spi.AnnotatedParameter;
 
 /**
  * 
  * @author Stuart Douglas
  * 
  */
-class NewAnnotatedMethod<X> extends AbstractNewAnnotatedCallable<X, Method> implements AnnotatedMethod<X>
+class AnnotatedParameterImpl<X> extends AnnotatedImpl implements AnnotatedParameter<X>
 {
-   NewAnnotatedMethod(AnnotatedType<X> type, Method method, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Map<Integer, Type> parameterTypeOverrides)
+
+   private final int position;
+   private final AnnotatedCallable<X> declaringCallable;
+
+   AnnotatedParameterImpl(AnnotatedCallable<X> declaringCallable, Class<?> type, int position, AnnotationStore annotations, Type genericType, Type typeOverride)
    {
-      super(type, method, method.getReturnType(), method.getParameterTypes(), method.getGenericParameterTypes(), annotations, parameterAnnotations, method.getGenericReturnType(), parameterTypeOverrides);
+      super(type, annotations, genericType, typeOverride);
+      this.declaringCallable = declaringCallable;
+      this.position = position;
+   }
+
+   public AnnotatedCallable<X> getDeclaringCallable()
+   {
+      return declaringCallable;
+   }
+
+   public int getPosition()
+   {
+      return position;
    }
 
 }

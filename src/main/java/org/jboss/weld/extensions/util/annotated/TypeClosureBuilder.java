@@ -29,23 +29,25 @@ import java.util.Set;
 class TypeClosureBuilder
 {
 
-   final Set<Type> types = new HashSet<Type>();
+   private final Set<Type> types;
+   
+   TypeClosureBuilder()
+   {
+      this.types = new HashSet<Type>();
+   }
 
-   public TypeClosureBuilder add(Type type)
+   TypeClosureBuilder add(Type type)
    {
       types.add(type);
       return this;
    }
 
-   public TypeClosureBuilder add(Class<?> beanType)
+   TypeClosureBuilder add(Class<?> beanType)
    {
-      Class<?> c = beanType;
-      do
+      for (Class<?> c = beanType; c != Object.class && c != null; c = c.getSuperclass())
       {
          types.add(c);
-         c = c.getSuperclass();
       }
-      while (c != null);
       for (Class<?> i : beanType.getInterfaces())
       {
          types.add(i);
@@ -53,7 +55,7 @@ class TypeClosureBuilder
       return this;
    }
 
-   public TypeClosureBuilder addInterfaces(Class<?> beanType)
+   TypeClosureBuilder addInterfaces(Class<?> beanType)
    {
       for (Class<?> i : beanType.getInterfaces())
       {
@@ -62,7 +64,7 @@ class TypeClosureBuilder
       return this;
    }
 
-   public Set<Type> getTypes()
+   Set<Type> getTypes()
    {
       return types;
    }

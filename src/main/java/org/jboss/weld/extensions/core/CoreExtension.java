@@ -42,7 +42,7 @@ import org.jboss.weld.extensions.bean.CustomBeanBuilder;
 import org.jboss.weld.extensions.core.Exact.ExactLiteral;
 import org.jboss.weld.extensions.util.annotated.AnnotationBuilder;
 import org.jboss.weld.extensions.util.annotated.MemberAnnotationRedefiner;
-import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
+import org.jboss.weld.extensions.util.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.util.annotated.Parameter;
 import org.jboss.weld.extensions.util.annotated.ParameterAnnotationRedefiner;
 
@@ -74,7 +74,7 @@ class CoreExtension implements Extension
          return;
       }
 
-      NewAnnotatedTypeBuilder<X> builder = NewAnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).readAnnotationsFromUnderlying();
+      AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).readAnnotationsFromUnderlyingType();
 
       // support for @Named packages
       Package pkg = pat.getAnnotatedType().getJavaClass().getPackage();
@@ -157,7 +157,7 @@ class CoreExtension implements Extension
       {
          if (constructor.isAnnotationPresent(Constructs.class))
          {
-            NewAnnotatedTypeBuilder<X> annotatedTypeBuilder = NewAnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).readAnnotationsFromUnderlying();
+            AnnotatedTypeBuilder<X> annotatedTypeBuilder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).readAnnotationsFromUnderlyingType();
             // remove class-level @Named annotation
             annotatedTypeBuilder.removeFromClass(Named.class);
             // remove bean constructors annotated @Inject

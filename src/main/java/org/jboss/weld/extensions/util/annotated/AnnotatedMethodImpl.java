@@ -16,11 +16,11 @@
  */
 package org.jboss.weld.extensions.util.annotated;
 
-import java.lang.reflect.Member;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Map;
 
-import javax.enterprise.inject.spi.AnnotatedMember;
+import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedType;
 
 /**
@@ -28,31 +28,11 @@ import javax.enterprise.inject.spi.AnnotatedType;
  * @author Stuart Douglas
  * 
  */
-abstract class AbstractNewAnnotatedMember<X, M extends Member> extends AbstractNewAnnotatedElement implements AnnotatedMember<X>
+class AnnotatedMethodImpl<X> extends AnnotatedCallableImpl<X, Method> implements AnnotatedMethod<X>
 {
-   private final AnnotatedType<X> declaringType;
-   private final M javaMember;
-
-   protected AbstractNewAnnotatedMember(AnnotatedType<X> declaringType, M member, Class<?> memberType, AnnotationStore annotations, Type genericType, Type overridenType)
+   AnnotatedMethodImpl(AnnotatedType<X> type, Method method, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Map<Integer, Type> parameterTypeOverrides)
    {
-      super(memberType, annotations, genericType, overridenType);
-      this.declaringType = declaringType;
-      this.javaMember = member;
-   }
-
-   public AnnotatedType<X> getDeclaringType()
-   {
-      return declaringType;
-   }
-
-   public M getJavaMember()
-   {
-      return javaMember;
-   }
-
-   public boolean isStatic()
-   {
-      return Modifier.isStatic(javaMember.getModifiers());
+      super(type, method, method.getReturnType(), method.getParameterTypes(), method.getGenericParameterTypes(), annotations, parameterAnnotations, method.getGenericReturnType(), parameterTypeOverrides);
    }
 
 }

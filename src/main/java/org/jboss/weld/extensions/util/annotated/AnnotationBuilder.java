@@ -30,31 +30,31 @@ import java.util.Set;
  */
 public class AnnotationBuilder
 {
-   private HashMap<Class<? extends Annotation>, Annotation> annotationMap = new HashMap<Class<? extends Annotation>, Annotation>();
-   private Set<Annotation> annotationSet = new HashSet<Annotation>();
+   private final HashMap<Class<? extends Annotation>, Annotation> annotationMap = new HashMap<Class<? extends Annotation>, Annotation>();
+   private final Set<Annotation> annotationSet = new HashSet<Annotation>();
 
-   public AnnotationBuilder add(Annotation a)
+   public AnnotationBuilder add(Annotation annotation)
    {
-      annotationSet.add(a);
-      annotationMap.put(a.annotationType(), a);
+      annotationSet.add(annotation);
+      annotationMap.put(annotation.annotationType(), annotation);
       return this;
    }
 
-   public void remove(Class<? extends Annotation> a)
+   public void remove(Class<? extends Annotation> annotation)
    {
       Iterator<Annotation> it = annotationSet.iterator();
       while (it.hasNext())
       {
          Annotation an = it.next();
-         if (a.isAssignableFrom(an.annotationType()))
+         if (annotation.isAssignableFrom(an.annotationType()))
          {
             it.remove();
          }
       }
-      annotationMap.remove(a);
+      annotationMap.remove(annotation);
    }
 
-   public AnnotationStore create()
+   AnnotationStore create()
    {
       return new AnnotationStore(annotationMap, annotationSet);
    }
