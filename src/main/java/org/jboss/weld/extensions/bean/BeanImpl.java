@@ -34,20 +34,20 @@ import javax.enterprise.inject.spi.InjectionTarget;
  * 
  * @param <T>
  */
-public class CustomBean<T> implements Bean<T>
+class BeanImpl<T> implements Bean<T>
 {
-   final Class<?> beanClass;
-   final InjectionTarget<T> injectionTarget;
-   final String name;
-   final Set<Annotation> qualifiers;
-   final Class<? extends Annotation> scope;
-   final Set<Class<? extends Annotation>> stereotypes;
-   final Set<Type> types;
-   final boolean alternative;
-   final boolean nullable;
-   final BeanLifecycle<T> beanLifecycle;
+   private final Class<?> beanClass;
+   private final InjectionTarget<T> injectionTarget;
+   private final String name;
+   private final Set<Annotation> qualifiers;
+   private final Class<? extends Annotation> scope;
+   private final Set<Class<? extends Annotation>> stereotypes;
+   private final Set<Type> types;
+   private final boolean alternative;
+   private final boolean nullable;
+   private final BeanLifecycle<T> beanLifecycle;
 
-   CustomBean(Class<?> beanClass, InjectionTarget<T> injectionTarget, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, BeanLifecycle<T> beanLifecycle)
+   BeanImpl(Class<?> beanClass, InjectionTarget<T> injectionTarget, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, BeanLifecycle<T> beanLifecycle)
    {
       this.beanClass = beanClass;
       this.injectionTarget = injectionTarget;

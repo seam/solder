@@ -30,15 +30,15 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 
 /**
- * implementation of InjectionPoint that can be used by other extensions
+ * A simple implementation of InjectionPoint
  * 
  * @author stuart
  * 
  */
-public class CustomInjectionPoint implements InjectionPoint
+public class InjectionPointImpl implements InjectionPoint
 {
 
-   public CustomInjectionPoint(AnnotatedField<?> field, Set<Annotation> qualifiers, Bean<?> bean, boolean trans, boolean delegate)
+   public InjectionPointImpl(AnnotatedField<?> field, Set<Annotation> qualifiers, Bean<?> bean, boolean trans, boolean delegate)
    {
       this.annotated = field;
       this.member = field.getJavaMember();
@@ -49,7 +49,7 @@ public class CustomInjectionPoint implements InjectionPoint
       this.bean = bean;
    }
 
-   public CustomInjectionPoint(AnnotatedField<?> field, BeanManager beanManager, Bean<?> bean, boolean trans, boolean delegate)
+   public InjectionPointImpl(AnnotatedField<?> field, BeanManager beanManager, Bean<?> bean, boolean trans, boolean delegate)
    {
       this.annotated = field;
       this.member = field.getJavaMember();
@@ -67,7 +67,7 @@ public class CustomInjectionPoint implements InjectionPoint
       }
    }
 
-   public CustomInjectionPoint(AnnotatedParameter<?> param, Set<Annotation> qualifiers, Bean<?> bean, boolean trans, boolean delegate)
+   public InjectionPointImpl(AnnotatedParameter<?> param, Set<Annotation> qualifiers, Bean<?> bean, boolean trans, boolean delegate)
    {
       this.annotated = param;
       this.member = param.getDeclaringCallable().getJavaMember();
@@ -78,7 +78,7 @@ public class CustomInjectionPoint implements InjectionPoint
       this.type = param.getBaseType();
    }
 
-   public CustomInjectionPoint(AnnotatedParameter<?> param, BeanManager beanManager, Bean<?> bean, boolean trans, boolean delegate)
+   public InjectionPointImpl(AnnotatedParameter<?> param, BeanManager beanManager, Bean<?> bean, boolean trans, boolean delegate)
    {
       this.annotated = param;
       this.member = param.getDeclaringCallable().getJavaMember();

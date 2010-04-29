@@ -37,86 +37,81 @@ import org.jboss.weld.extensions.annotated.Annotateds;
  * @author stuart
  * 
  */
-public class CustomBeanBuilder<T>
+public class BeanBuilder<T>
 {
 
-   final AnnotatedType<T> type;
-   final BeanManager beanManager;
-   InjectionTarget<T> injectionTarget;
-   String name;
-   Set<Annotation> qualifiers;
-   Class<? extends Annotation> scope;
-   Set<Class<? extends Annotation>> stereotypes;
-   Set<Type> types = new HashSet<Type>();
-   boolean alternative = false;
-   boolean nullable = false;
-   BeanLifecycle<T> beanLifecycle;
+   private final AnnotatedType<T> type;
+   private final BeanManager beanManager;
+   private InjectionTarget<T> injectionTarget;
+   private String name;
+   private Set<Annotation> qualifiers;
+   private Class<? extends Annotation> scope;
+   private Set<Class<? extends Annotation>> stereotypes;
+   private Set<Type> types = new HashSet<Type>();
+   private boolean alternative = false;
+   private boolean nullable = false;
+   private BeanLifecycle<T> beanLifecycle;
    boolean passivationCapable;
-   String id;
+   private String id;
 
-   public CustomBeanBuilder(AnnotatedType<T> type, BeanManager beanManager)
-   {
-      this(type, beanManager, beanManager.createInjectionTarget(type));
-   }
-
-   public CustomBeanBuilder(AnnotatedType<T> type, BeanManager beanManager, InjectionTarget<T> injectionTarget)
+   public BeanBuilder(AnnotatedType<T> type, BeanManager beanManager)
    {
       this.type = type;
       this.beanManager = beanManager;
-      this.injectionTarget = injectionTarget;
-      qualifiers = new HashSet<Annotation>();
-      stereotypes = new HashSet<Class<? extends Annotation>>();
-      for (Annotation a : type.getAnnotations())
+   }
+   
+   public BeanBuilder<T> defineBeanFromAnnotatedType()
+   {
+      this.injectionTarget = beanManager.createInjectionTarget(type);
+      this.qualifiers = new HashSet<Annotation>();
+      this.stereotypes = new HashSet<Class<? extends Annotation>>();
+      for (Annotation annotation : type.getAnnotations())
       {
-         if (beanManager.isQualifier(a.annotationType()))
+         if (beanManager.isQualifier(annotation.annotationType()))
          {
-            qualifiers.add(a);
+            this.qualifiers.add(annotation);
          }
-         else if (beanManager.isScope(a.annotationType()))
+         else if (beanManager.isScope(annotation.annotationType()))
          {
-            scope = a.annotationType();
+            this.scope = annotation.annotationType();
          }
-         else if (beanManager.isStereotype(a.annotationType()))
+         else if (beanManager.isStereotype(annotation.annotationType()))
          {
-            stereotypes.add(a.annotationType());
+            this.stereotypes.add(annotation.annotationType());
          }
-         if (a instanceof Named)
+         if (annotation instanceof Named)
          {
-            Named n = (Named) a;
-            name = n.value();
+            this.name = ((Named) annotation).value();
          }
-         if (a instanceof Alternative)
+         if (annotation instanceof Alternative)
          {
-            alternative = true;
+            this.alternative = true;
          }
       }
-      if (scope == null)
+      if (this.scope == null)
       {
-         scope = Dependent.class;
+         this.scope = Dependent.class;
       }
-
-      Class<?> c = type.getJavaClass();
-      do
+      for (Class<?> c = type.getJavaClass(); c != Object.class && c != null; c = c.getSuperclass())
       {
-         types.add(c);
-         c = c.getSuperclass();
+         this.types.add(c);
       }
-      while (c != null);
       for (Class<?> i : type.getJavaClass().getInterfaces())
       {
-         types.add(i);
+         this.types.add(i);
       }
-      beanLifecycle = new SimpleBeanLifecycle<T>(type.getJavaClass(), beanManager);
-      id = CustomBean.class.getName() + ":" + Annotateds.createTypeId(type);
+      this.beanLifecycle = new BeanLifecycleImpl<T>();
+      this.id = BeanImpl.class.getName() + ":" + Annotateds.createTypeId(type);
+      return this;
    }
 
-   public Bean<T> build()
+   public Bean<T> create()
    {
       if (!passivationCapable)
       {
-         return new CustomBean<T>(type.getJavaClass(), injectionTarget, name, qualifiers, scope, stereotypes, types, alternative, nullable, beanLifecycle);
+         return new BeanImpl<T>(type.getJavaClass(), injectionTarget, name, qualifiers, scope, stereotypes, types, alternative, nullable, beanLifecycle);
       }
-      return new PassivationCapableCustomBean<T>(id, type.getJavaClass(), injectionTarget, name, qualifiers, scope, stereotypes, types, alternative, nullable, beanLifecycle);
+      return new PassivationCapableBeanImpl<T>(id, type.getJavaClass(), injectionTarget, name, qualifiers, scope, stereotypes, types, alternative, nullable, beanLifecycle);
 
    }
 
@@ -125,18 +120,20 @@ public class CustomBeanBuilder<T>
       return injectionTarget;
    }
 
-   public void setInjectionTarget(InjectionTarget<T> injectionTarget)
+   public BeanBuilder<T> setInjectionTarget(InjectionTarget<T> injectionTarget)
    {
       this.injectionTarget = injectionTarget;
+      return this;
    }
    public Set<Annotation> getQualifiers()
    {
       return qualifiers;
    }
 
-   public void setQualifiers(Set<Annotation> qualifiers)
+   public BeanBuilder<T> setQualifiers(Set<Annotation> qualifiers)
    {
       this.qualifiers = qualifiers;
+      return this;
    }
 
    public Class<? extends Annotation> getScope()
@@ -144,9 +141,10 @@ public class CustomBeanBuilder<T>
       return scope;
    }
 
-   public void setScope(Class<? extends Annotation> scope)
+   public BeanBuilder<T> setScope(Class<? extends Annotation> scope)
    {
       this.scope = scope;
+      return this;
    }
 
    public Set<Class<? extends Annotation>> getStereotypes()
@@ -154,9 +152,10 @@ public class CustomBeanBuilder<T>
       return stereotypes;
    }
 
-   public void setStereotypes(Set<Class<? extends Annotation>> stereotypes)
+   public BeanBuilder<T> setStereotypes(Set<Class<? extends Annotation>> stereotypes)
    {
       this.stereotypes = stereotypes;
+      return this;
    }
 
    public Set<Type> getTypes()
@@ -164,9 +163,10 @@ public class CustomBeanBuilder<T>
       return types;
    }
 
-   public void setTypes(Set<Type> types)
+   public BeanBuilder<T> setTypes(Set<Type> types)
    {
       this.types = types;
+      return this;
    }
 
    public boolean isAlternative()
@@ -174,9 +174,10 @@ public class CustomBeanBuilder<T>
       return alternative;
    }
 
-   public void setAlternative(boolean alternative)
+   public BeanBuilder<T> setAlternative(boolean alternative)
    {
       this.alternative = alternative;
+      return this;
    }
 
    public boolean isNullable()
@@ -184,9 +185,10 @@ public class CustomBeanBuilder<T>
       return nullable;
    }
 
-   public void setNullable(boolean nullable)
+   public BeanBuilder<T> setNullable(boolean nullable)
    {
       this.nullable = nullable;
+      return this;
    }
 
    public BeanLifecycle<T> getBeanLifecycle()
@@ -194,9 +196,10 @@ public class CustomBeanBuilder<T>
       return beanLifecycle;
    }
 
-   public void setBeanLifecycle(BeanLifecycle<T> beanLifecycle)
+   public BeanBuilder<T> setBeanLifecycle(BeanLifecycle<T> beanLifecycle)
    {
       this.beanLifecycle = beanLifecycle;
+      return this;
    }
 
    public AnnotatedType<T> getType()
@@ -214,9 +217,10 @@ public class CustomBeanBuilder<T>
       return name;
    }
 
-   public void setName(String name)
+   public BeanBuilder<T> setName(String name)
    {
       this.name = name;
+      return this;
    }
 
    public boolean isPassivationCapable()
@@ -224,9 +228,10 @@ public class CustomBeanBuilder<T>
       return passivationCapable;
    }
 
-   public void setPassivationCapable(boolean passivationCapable)
+   public BeanBuilder<T> setPassivationCapable(boolean passivationCapable)
    {
       this.passivationCapable = passivationCapable;
+      return this;
    }
 
    public String getId()
@@ -234,9 +239,10 @@ public class CustomBeanBuilder<T>
       return id;
    }
 
-   public void setId(String id)
+   public BeanBuilder<T> setId(String id)
    {
       this.id = id;
+      return this;
    }
 
 }

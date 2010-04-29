@@ -44,7 +44,7 @@ import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.bean.CustomBeanBuilder;
+import org.jboss.weld.extensions.bean.BeanBuilder;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 
 public class GenericExtension implements Extension
@@ -245,8 +245,8 @@ public class GenericExtension implements Extension
       InjectionTarget<X> it = beanManager.createInjectionTarget(newAnnotatedType);
 
       it = new GenericBeanInjectionTargetWrapper<X>(newAnnotatedType, it, conc);
-      CustomBeanBuilder<X> beanBuilder = new CustomBeanBuilder<X>(newAnnotatedType, beanManager, it);
-      return beanBuilder.build();
+      BeanBuilder<X> beanBuilder = new BeanBuilder<X>(newAnnotatedType, beanManager).defineBeanFromAnnotatedType().setInjectionTarget(it);
+      return beanBuilder.create();
    }
 
    public SyntheticQualifier getQualifierForGeneric(Annotation a)

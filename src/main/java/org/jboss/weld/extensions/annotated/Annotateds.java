@@ -182,6 +182,8 @@ public class Annotateds
    }
 
    private static final char SEPERATOR = ';';
+   
+   private Annotateds() {}
 
    /**
     * Generates a unique signature for an annotated type. Members without
@@ -556,10 +558,6 @@ public class Annotateds
       }
       return true;
 
-   }
-
-   private Annotateds()
-   {
    }
 
 }

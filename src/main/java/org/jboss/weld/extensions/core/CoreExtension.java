@@ -43,7 +43,7 @@ import org.jboss.weld.extensions.annotated.AnnotationBuilder;
 import org.jboss.weld.extensions.annotated.MemberAnnotationRedefiner;
 import org.jboss.weld.extensions.annotated.Parameter;
 import org.jboss.weld.extensions.annotated.ParameterAnnotationRedefiner;
-import org.jboss.weld.extensions.bean.CustomBeanBuilder;
+import org.jboss.weld.extensions.bean.BeanBuilder;
 import org.jboss.weld.extensions.core.Exact.ExactLiteral;
 
 /**
@@ -173,7 +173,7 @@ class CoreExtension implements Extension
                annotatedTypeBuilder.addToClass(ann);
             }
             AnnotatedType<X> construtsAnnotatedType = builder.create();
-            additionalBeans.add(new CustomBeanBuilder<X>(construtsAnnotatedType, beanManager).build());
+            additionalBeans.add(new BeanBuilder<X>(construtsAnnotatedType, beanManager).create());
          }
       }
    }
