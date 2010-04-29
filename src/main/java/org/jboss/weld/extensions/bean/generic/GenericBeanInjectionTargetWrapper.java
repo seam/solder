@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
-import static org.jboss.weld.extensions.util.ReflectionUtils.getField;
+import static org.jboss.weld.extensions.util.Reflections.getField;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

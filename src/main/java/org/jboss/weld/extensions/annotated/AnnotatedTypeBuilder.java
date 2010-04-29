@@ -32,7 +32,7 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
-import org.jboss.weld.extensions.util.ReflectionUtils;
+import org.jboss.weld.extensions.util.Reflections;
 
 /**
  * Class for constructing a new AnnotatedType. A new instance of builder must be
@@ -100,7 +100,7 @@ public class AnnotatedTypeBuilder<X>
          typeAnnotations.add(annotation);
       }
 
-      for (Field field : ReflectionUtils.getFields(underlyingType))
+      for (Field field : Reflections.getFields(underlyingType))
       {
          AnnotationBuilder annotationBuilder = new AnnotationBuilder();
          fields.put(field, annotationBuilder);
@@ -111,7 +111,7 @@ public class AnnotatedTypeBuilder<X>
          }
       }
 
-      for (Method method : ReflectionUtils.getMethods(underlyingType))
+      for (Method method : Reflections.getMethods(underlyingType))
       {
          AnnotationBuilder annotationBuilder = new AnnotationBuilder();
          method.setAccessible(true);

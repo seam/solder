@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.extensions.core;
 
-import static org.jboss.weld.extensions.util.ReflectionUtils.getAnnotationsWithMetatype;
-import static org.jboss.weld.extensions.util.ReflectionUtils.getMemberType;
+import static org.jboss.weld.extensions.util.Reflections.getAnnotationsWithMetatype;
+import static org.jboss.weld.extensions.util.Reflections.getMemberType;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;

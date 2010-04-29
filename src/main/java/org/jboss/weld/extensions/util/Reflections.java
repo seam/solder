@@ -33,8 +33,10 @@ import javax.enterprise.inject.spi.AnnotatedType;
  * @author stuart
  * 
  */
-public class ReflectionUtils
+public class Reflections
 {
+   
+   private Reflections() {}
 
    public static Set<Field> getFields(Class<?> clazz)
    {
