@@ -38,13 +38,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Qualifier;
 
+import org.jboss.weld.extensions.annotatedType.AnnotatedTypeBuilder;
+import org.jboss.weld.extensions.annotatedType.AnnotationBuilder;
+import org.jboss.weld.extensions.annotatedType.MemberAnnotationRedefiner;
+import org.jboss.weld.extensions.annotatedType.Parameter;
+import org.jboss.weld.extensions.annotatedType.ParameterAnnotationRedefiner;
 import org.jboss.weld.extensions.bean.CustomBeanBuilder;
 import org.jboss.weld.extensions.core.Exact.ExactLiteral;
-import org.jboss.weld.extensions.util.annotated.AnnotationBuilder;
-import org.jboss.weld.extensions.util.annotated.MemberAnnotationRedefiner;
-import org.jboss.weld.extensions.util.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.util.annotated.Parameter;
-import org.jboss.weld.extensions.util.annotated.ParameterAnnotationRedefiner;
 
 /**
  * Extension to install the "core" extensions. Core extensions are those that

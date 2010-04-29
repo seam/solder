@@ -14,59 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.util.annotated;
+package org.jboss.weld.extensions.annotatedType;
 
 import java.lang.reflect.Type;
-import java.util.HashSet;
-import java.util.Set;
+
+import javax.enterprise.inject.spi.AnnotatedCallable;
+import javax.enterprise.inject.spi.AnnotatedParameter;
 
 /**
- * A type closure builder
  * 
  * @author Stuart Douglas
  * 
  */
-class TypeClosureBuilder
+class AnnotatedParameterImpl<X> extends AnnotatedImpl implements AnnotatedParameter<X>
 {
 
-   private final Set<Type> types;
-   
-   TypeClosureBuilder()
+   private final int position;
+   private final AnnotatedCallable<X> declaringCallable;
+
+   AnnotatedParameterImpl(AnnotatedCallable<X> declaringCallable, Class<?> type, int position, AnnotationStore annotations, Type genericType, Type typeOverride)
    {
-      this.types = new HashSet<Type>();
+      super(type, annotations, genericType, typeOverride);
+      this.declaringCallable = declaringCallable;
+      this.position = position;
    }
 
-   TypeClosureBuilder add(Type type)
+   public AnnotatedCallable<X> getDeclaringCallable()
    {
-      types.add(type);
-      return this;
+      return declaringCallable;
    }
 
-   TypeClosureBuilder add(Class<?> beanType)
+   public int getPosition()
    {
-      for (Class<?> c = beanType; c != Object.class && c != null; c = c.getSuperclass())
-      {
-         types.add(c);
-      }
-      for (Class<?> i : beanType.getInterfaces())
-      {
-         types.add(i);
-      }
-      return this;
-   }
-
-   TypeClosureBuilder addInterfaces(Class<?> beanType)
-   {
-      for (Class<?> i : beanType.getInterfaces())
-      {
-         types.add(i);
-      }
-      return this;
-   }
-
-   Set<Type> getTypes()
-   {
-      return types;
+      return position;
    }
 
 }

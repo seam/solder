@@ -14,39 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.util.annotated;
+package org.jboss.weld.extensions.annotatedType;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-import javax.enterprise.inject.spi.AnnotatedCallable;
-import javax.enterprise.inject.spi.AnnotatedParameter;
+import javax.enterprise.inject.spi.AnnotatedField;
+import javax.enterprise.inject.spi.AnnotatedType;
 
 /**
  * 
  * @author Stuart Douglas
- * 
+ *
  */
-class AnnotatedParameterImpl<X> extends AnnotatedImpl implements AnnotatedParameter<X>
+class AnnotatedFieldImpl<X> extends AnnotatedMemberImpl<X, Field> implements AnnotatedField<X>
 {
 
-   private final int position;
-   private final AnnotatedCallable<X> declaringCallable;
-
-   AnnotatedParameterImpl(AnnotatedCallable<X> declaringCallable, Class<?> type, int position, AnnotationStore annotations, Type genericType, Type typeOverride)
+   AnnotatedFieldImpl(AnnotatedType<X> declaringType, Field field, AnnotationStore annotations, Type overridenType)
    {
-      super(type, annotations, genericType, typeOverride);
-      this.declaringCallable = declaringCallable;
-      this.position = position;
-   }
-
-   public AnnotatedCallable<X> getDeclaringCallable()
-   {
-      return declaringCallable;
-   }
-
-   public int getPosition()
-   {
-      return position;
+      super(declaringType, field, field.getType(), annotations, field.getGenericType(), overridenType);
    }
 
 }

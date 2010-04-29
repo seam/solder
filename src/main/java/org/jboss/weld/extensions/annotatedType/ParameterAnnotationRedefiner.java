@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.util.annotated;
+package org.jboss.weld.extensions.annotatedType;
 
 import java.lang.annotation.Annotation;
 
