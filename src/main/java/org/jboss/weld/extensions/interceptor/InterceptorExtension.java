@@ -27,26 +27,20 @@ import javax.enterprise.inject.spi.ProcessBean;
 
 public class InterceptorExtension implements Extension
 {
-   
-   private final Collection<Class<?>> enabledInterceptors;
-   
-   InterceptorExtension()
-   {
-      this.enabledInterceptors = Collections.synchronizedSet(new HashSet<Class<?>>());
-   }
 
-   @SuppressWarnings("unused")
-   void observeInterceptors(@Observes ProcessBean<?> pmb)
+   private final Collection<Class<?>> enabledInterceptors = Collections.synchronizedSet(new HashSet<Class<?>>());
+
+   void observeInterceptors(@Observes final ProcessBean<?> pmb)
    {
       if (pmb.getBean() instanceof Interceptor<?>)
       {
          this.enabledInterceptors.add(pmb.getBean().getBeanClass());
       }
    }
-   
+
    Collection<Class<?>> getEnabledInterceptors()
    {
       return enabledInterceptors;
    }
-   
+
 }
