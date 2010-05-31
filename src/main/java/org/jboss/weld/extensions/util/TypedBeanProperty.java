@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * 
  * @author Shane Bryzak
  */
-public class TypedBeanProperty<T> extends AbstractBeanProperty
+public class TypedBeanProperty extends AbstractBeanProperty
 {
    private Class<?> propertyClass;
    
