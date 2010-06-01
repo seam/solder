@@ -1,7 +1,8 @@
-package org.jboss.weld.extensions.util;
+package org.jboss.weld.extensions.util.properties;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
 
 /**
  * A convenience class for working with a typed property (either a field or
@@ -9,13 +10,13 @@ import java.lang.reflect.Method;
  * 
  * @author Shane Bryzak
  */
-public class TypedBeanProperty extends AbstractBeanProperty
+public class TypedBeanProperty<V> extends AbstractBeanProperty<V>
 {   
-   private static class TypedMatcher implements FieldMatcher, MethodMatcher
+   private static class TypedMatcher<V> implements FieldMatcher, MethodMatcher
    {
-      private Class<?> propertyClass;
+      private Class<V> propertyClass;
       
-      public TypedMatcher(Class<?> propertyClass)
+      public TypedMatcher(Class<V> propertyClass)
       {
          if (propertyClass == null)
          {
@@ -36,8 +37,8 @@ public class TypedBeanProperty extends AbstractBeanProperty
       }        
    }
    
-   public TypedBeanProperty(Class<?> cls, Class<?> propertyClass)
+   public TypedBeanProperty(Class<?> targetClass, Class<V> propertyClass)
    {            
-      super(cls, new TypedMatcher(propertyClass), new TypedMatcher(propertyClass));
+      super(targetClass, new TypedMatcher<V>(propertyClass), new TypedMatcher<V>(propertyClass));
    }
 }
