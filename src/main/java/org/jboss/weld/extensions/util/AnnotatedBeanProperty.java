@@ -21,7 +21,7 @@ public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanPro
       boolean matches(Annotation annotation);
    }
    
-   public static class DefaultAnnotationMatcher implements AnnotationMatcher
+   private static class DefaultAnnotationMatcher implements AnnotationMatcher
    {
       public boolean matches(Annotation annotation)
       {
@@ -29,13 +29,13 @@ public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanPro
       }
    }
    
-   private static class AnnotatedFieldMatcher implements FieldMatcher
+   private static class AnnotatedMatcher implements FieldMatcher, MethodMatcher
    {      
       private Class<? extends Annotation> annotationClass;
       private AnnotationMatcher matcher;
       private Annotation match;
       
-      public AnnotatedFieldMatcher(Class<? extends Annotation> annotationClass, 
+      public AnnotatedMatcher(Class<? extends Annotation> annotationClass, 
             AnnotationMatcher matcher)
       {
          this.annotationClass = annotationClass;
@@ -53,25 +53,6 @@ public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanPro
          return false;
       }
       
-      public Annotation getMatch()
-      {
-         return match;
-      }
-   }
-   
-   private static class AnnotatedMethodMatcher implements MethodMatcher
-   {
-      private Class<? extends Annotation> annotationClass;
-      private AnnotationMatcher matcher;
-      private Annotation match;
-      
-      public AnnotatedMethodMatcher(Class<? extends Annotation> annotationClass,
-            AnnotationMatcher matcher)
-      {
-         this.annotationClass = annotationClass;
-         this.matcher = matcher;
-      }
-      
       public boolean matches(Method m)
       {
          if (m.isAnnotationPresent(annotationClass) &&
@@ -81,7 +62,7 @@ public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanPro
             return true;
          }
          return false;
-      }
+      }      
       
       public Annotation getMatch()
       {
@@ -100,16 +81,16 @@ public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanPro
    public AnnotatedBeanProperty(Class<?> cls, Class<T> annotationClass, 
          AnnotationMatcher annotationMatcher)
    {            
-      super(cls, new AnnotatedFieldMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : new DefaultAnnotationMatcher()), 
-            new AnnotatedMethodMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : new DefaultAnnotationMatcher()));
+      super(cls, new AnnotatedMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : new DefaultAnnotationMatcher()), 
+            new AnnotatedMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : new DefaultAnnotationMatcher()));
       
-      if (((AnnotatedFieldMatcher) getFieldMatcher()).getMatch() != null)
+      if (((AnnotatedMatcher) getFieldMatcher()).getMatch() != null)
       {
-         this.annotation = (T) ((AnnotatedFieldMatcher) getFieldMatcher()).getMatch();
+         this.annotation = (T) ((AnnotatedMatcher) getFieldMatcher()).getMatch();
       }
-      else if (((AnnotatedMethodMatcher) getMethodMatcher()).getMatch() != null)
+      else if (((AnnotatedMatcher) getMethodMatcher()).getMatch() != null)
       {
-         this.annotation = (T) ((AnnotatedMethodMatcher) getMethodMatcher()).getMatch();
+         this.annotation = (T) ((AnnotatedMatcher) getMethodMatcher()).getMatch();
       }
    }   
    

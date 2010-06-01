@@ -11,11 +11,11 @@ import java.lang.reflect.Method;
  */
 public class TypedBeanProperty extends AbstractBeanProperty
 {   
-   private static class TypedFieldMatcher implements FieldMatcher
+   private static class TypedMatcher implements FieldMatcher, MethodMatcher
    {
       private Class<?> propertyClass;
       
-      public TypedFieldMatcher(Class<?> propertyClass)
+      public TypedMatcher(Class<?> propertyClass)
       {
          if (propertyClass == null)
          {
@@ -29,30 +29,15 @@ public class TypedBeanProperty extends AbstractBeanProperty
       {
          return propertyClass.equals(f.getType());
       }      
-   }
-   
-   private static class TypedMethodMatcher implements MethodMatcher
-   {
-      private Class<?> propertyClass;
-      
-      public TypedMethodMatcher(Class<?> propertyClass)
-      {
-         if (propertyClass == null)
-         {
-            throw new IllegalArgumentException("propertyClass can not be null.");
-         }
-         
-         this.propertyClass = propertyClass;
-      }
       
       public boolean matches(Method m)
       {
          return propertyClass.equals(m.getReturnType());
-      }      
+      }        
    }
    
    public TypedBeanProperty(Class<?> cls, Class<?> propertyClass)
    {            
-      super(cls, new TypedFieldMatcher(propertyClass), new TypedMethodMatcher(propertyClass));
+      super(cls, new TypedMatcher(propertyClass), new TypedMatcher(propertyClass));
    }
 }
