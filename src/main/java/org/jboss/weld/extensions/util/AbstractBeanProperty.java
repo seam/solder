@@ -57,9 +57,9 @@ public class AbstractBeanProperty
    private boolean isFieldProperty;
    
    /**
-    * Flag indicating whether a valid property has been found
+    * Flag indicating whether the property exists
     */
-   private boolean valid = false;
+   private boolean exists = false;
    
    private Type propertyType;
    
@@ -83,7 +83,7 @@ public class AbstractBeanProperty
          if (fieldMatcher.matches(f))
          {
             setupFieldProperty(f);            
-            valid = true;
+            exists = true;
             return;
          }
       }      
@@ -94,7 +94,7 @@ public class AbstractBeanProperty
          if (fieldMatcher.matches(f)) 
          {
             setupFieldProperty(f);
-            valid = true;
+            exists = true;
             return;
          }
       }
@@ -121,7 +121,7 @@ public class AbstractBeanProperty
                this.propertySetter = getSetterMethod(targetClass, this.name);
                this.propertyType = this.propertyGetter.getGenericReturnType();
                isFieldProperty = false;               
-               valid = true;
+               exists = true;
             }
             else
             {
@@ -209,9 +209,9 @@ public class AbstractBeanProperty
     * 
     * @return
     */
-   public boolean isValid()
+   public boolean exists()
    {
-      return valid;
+      return exists;
    }      
    
    /**
