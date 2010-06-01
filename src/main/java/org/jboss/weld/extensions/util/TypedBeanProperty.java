@@ -10,30 +10,49 @@ import java.lang.reflect.Method;
  * @author Shane Bryzak
  */
 public class TypedBeanProperty extends AbstractBeanProperty
-{
-   private Class<?> propertyClass;
+{   
+   private static class TypedFieldMatcher implements FieldMatcher
+   {
+      private Class<?> propertyClass;
+      
+      public TypedFieldMatcher(Class<?> propertyClass)
+      {
+         if (propertyClass == null)
+         {
+            throw new IllegalArgumentException("propertyClass can not be null.");
+         }
+         
+         this.propertyClass = propertyClass;
+      }
+      
+      public boolean matches(Field f)
+      {
+         return propertyClass.equals(f.getType());
+      }      
+   }
+   
+   private static class TypedMethodMatcher implements MethodMatcher
+   {
+      private Class<?> propertyClass;
+      
+      public TypedMethodMatcher(Class<?> propertyClass)
+      {
+         if (propertyClass == null)
+         {
+            throw new IllegalArgumentException("propertyClass can not be null.");
+         }
+         
+         this.propertyClass = propertyClass;
+      }
+      
+      public boolean matches(Method m)
+      {
+         return propertyClass.equals(m.getReturnType());
+      }      
+   }
    
    public TypedBeanProperty(Class<?> cls, Class<?> propertyClass)
    {            
-      super(cls);
-      
-      if (propertyClass == null)
-      {
-         throw new IllegalArgumentException("propertyClass can not be null.");
-      }
-      
-      this.propertyClass = propertyClass;
+      super(cls, new TypedFieldMatcher(propertyClass), new TypedMethodMatcher(propertyClass));
    }
-
-   @Override
-   protected boolean fieldMatches(Field f)
-   {
-      return propertyClass.equals(f.getType());
-   }
-
-   @Override
-   protected boolean methodMatches(Method m)
-   {
-      return propertyClass.equals(m.getReturnType());
-   }   
 }

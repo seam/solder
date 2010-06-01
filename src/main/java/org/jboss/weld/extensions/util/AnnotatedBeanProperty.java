@@ -14,9 +14,80 @@ import java.lang.reflect.Method;
  */
 public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanProperty
 {   
-   private T annotation;
+   private T annotation;   
    
-   private Class<T> annotationClass;
+   public interface AnnotationMatcher
+   {
+      boolean matches(Annotation annotation);
+   }
+   
+   public static class DefaultAnnotationMatcher implements AnnotationMatcher
+   {
+      public boolean matches(Annotation annotation)
+      {
+         return true;
+      }
+   }
+   
+   private static class AnnotatedFieldMatcher implements FieldMatcher
+   {      
+      private Class<? extends Annotation> annotationClass;
+      private AnnotationMatcher matcher;
+      private Annotation match;
+      
+      public AnnotatedFieldMatcher(Class<? extends Annotation> annotationClass, 
+            AnnotationMatcher matcher)
+      {
+         this.annotationClass = annotationClass;
+         this.matcher = matcher;
+      }
+      
+      public boolean matches(Field f)
+      {
+         if (f.isAnnotationPresent(annotationClass) && 
+               matcher.matches(f.getAnnotation(annotationClass)))
+         {
+            this.match = f.getAnnotation(annotationClass);
+            return true;
+         }
+         return false;
+      }
+      
+      public Annotation getMatch()
+      {
+         return match;
+      }
+   }
+   
+   private static class AnnotatedMethodMatcher implements MethodMatcher
+   {
+      private Class<? extends Annotation> annotationClass;
+      private AnnotationMatcher matcher;
+      private Annotation match;
+      
+      public AnnotatedMethodMatcher(Class<? extends Annotation> annotationClass,
+            AnnotationMatcher matcher)
+      {
+         this.annotationClass = annotationClass;
+         this.matcher = matcher;
+      }
+      
+      public boolean matches(Method m)
+      {
+         if (m.isAnnotationPresent(annotationClass) &&
+               matcher.matches(m.getAnnotation(annotationClass)))
+         {
+            this.match = m.getAnnotation(annotationClass);
+            return true;
+         }
+         return false;
+      }
+      
+      public Annotation getMatch()
+      {
+         return match;
+      }
+   }
    
    /**
     * Default constructor
@@ -25,65 +96,30 @@ public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanPro
     * @param annotationClass The annotation class to scan for. Specified attribute
     * values may be scanned for by providing an implementation of the isMatch() method. 
     */
-   public AnnotatedBeanProperty(Class<?> cls, Class<T> annotationClass)
+   @SuppressWarnings("unchecked")
+   public AnnotatedBeanProperty(Class<?> cls, Class<T> annotationClass, 
+         AnnotationMatcher annotationMatcher)
    {            
-      super(cls);
-      this.annotationClass = annotationClass;
+      super(cls, new AnnotatedFieldMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : new DefaultAnnotationMatcher()), 
+            new AnnotatedMethodMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : new DefaultAnnotationMatcher()));
+      
+      if (((AnnotatedFieldMatcher) getFieldMatcher()).getMatch() != null)
+      {
+         this.annotation = (T) ((AnnotatedFieldMatcher) getFieldMatcher()).getMatch();
+      }
+      else if (((AnnotatedMethodMatcher) getMethodMatcher()).getMatch() != null)
+      {
+         this.annotation = (T) ((AnnotatedMethodMatcher) getMethodMatcher()).getMatch();
+      }
    }   
    
-   protected boolean fieldMatches(Field f)
-   {      
-      if (f.isAnnotationPresent(annotationClass) && 
-            annotationMatches(f.getAnnotation(annotationClass)))
-      {      
-         this.annotation = f.getAnnotation(annotationClass);
-         return true;
-      }
-      else
-      {
-         return false;
-      }
-   }
-   
-   protected boolean methodMatches(Method m)
-   {
-      if (m.isAnnotationPresent(annotationClass) &&
-            annotationMatches(m.getAnnotation(annotationClass)))
-      {
-         this.annotation = m.getAnnotation(annotationClass);
-         return true;
-      }
-      else
-      {
-         return false;
-      }
-   }
-   
    /**
-    * This method may be overridden by a subclass. It can be used to scan 
-    * for an annotation with particular attribute values, or to allow a match
-    * based on more complex logic.  
+    * Returns the annotation instance
     * 
-    * @param annotation The potential match
-    * @return true if the specified annotation is a match
-    */
-   protected boolean annotationMatches(T annotation)
-   {
-      return true;
-   }
-   
-   /**
-    * Returns the annotation type
-    * 
-    * @return The annotation type
+    * @return The annotation instance
     */
    public T getAnnotation()
    {
-      scan();
       return annotation;
-   }
-
-    
-   
- 
+   } 
 }

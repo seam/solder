@@ -11,8 +11,26 @@ import java.lang.reflect.Type;
  * 
  * @author Shane Bryzak
  */
-public abstract class AbstractBeanProperty
+public class AbstractBeanProperty
 {
+   /**
+    * Subclasses should provide an implementation of FieldMatcher to determine 
+    * whether a Field contains the bean property 
+    */
+   interface FieldMatcher 
+   {
+      boolean matches(Field f);
+   }
+   
+   /**
+    * Subclasses should provide an implementation of MethodMatcher to determine
+    * whether a method provides the bean property
+    */
+   interface MethodMatcher
+   {
+      boolean matches(Method m);
+   }
+   
    /**
     * Property field
     */
@@ -31,18 +49,11 @@ public abstract class AbstractBeanProperty
    /**
     * Property name
     */
-   private String name;
+   private String name;   
    
    /**
-    * The class containing the property
+    * Flag indicating whether the bean property value is contained in a field 
     */
-   private Class<?> targetClass;
-   
-   /**
-    * Flag indicating whether the target class has been scanned
-    */
-   private boolean scanned = false;   
-   
    private boolean isFieldProperty;
    
    /**
@@ -50,27 +61,26 @@ public abstract class AbstractBeanProperty
     */
    private boolean valid = false;
    
-   private Type propertyType;   
+   private Type propertyType;
+   
+   private FieldMatcher fieldMatcher;
+   
+   private MethodMatcher methodMatcher;
    
    /**
     * 
     * @param targetClass
     */
-   public AbstractBeanProperty(Class<?> targetClass)
+   public AbstractBeanProperty(Class<?> targetClass, FieldMatcher fieldMatcher, 
+         MethodMatcher methodMatcher)
    {
-      this.targetClass = targetClass;
-   }
-   
-   protected void scan()
-   {
-      if (scanned) return;
-      
-      scanned = true;
+      this.fieldMatcher = fieldMatcher;
+      this.methodMatcher = methodMatcher;
       
       // First check declared fields
       for (Field f : targetClass.getDeclaredFields())
       {
-         if (fieldMatches(f))
+         if (fieldMatcher.matches(f))
          {
             setupFieldProperty(f);            
             valid = true;
@@ -81,7 +91,7 @@ public abstract class AbstractBeanProperty
       // Then check public fields, in case it's inherited
       for (Field f : targetClass.getFields())
       {
-         if (fieldMatches(f)) 
+         if (fieldMatcher.matches(f)) 
          {
             setupFieldProperty(f);
             valid = true;
@@ -92,7 +102,7 @@ public abstract class AbstractBeanProperty
       // Then check public methods (we ignore private methods)
       for (Method m : targetClass.getMethods())
       {
-         if (methodMatches(m))
+         if (methodMatcher.matches(m))
          {
             String methodName = m.getName();
             
@@ -119,12 +129,18 @@ public abstract class AbstractBeanProperty
                      "Method: " + m + " in class: " + targetClass);
             }
          }
-      }        
+      }      
    }
    
-   protected abstract boolean fieldMatches(Field f);
+   public FieldMatcher getFieldMatcher()
+   {
+      return fieldMatcher;
+   }
    
-   protected abstract boolean methodMatches(Method m);
+   public MethodMatcher getMethodMatcher()
+   {
+      return methodMatcher;
+   }
       
    private void setupFieldProperty(Field propertyField)
    {
@@ -146,8 +162,6 @@ public abstract class AbstractBeanProperty
     */
    public void setValue(Object bean, Object value) throws Exception
    {
-      scan();
-      
       if (isFieldProperty)
       {
          setFieldValue(propertyField, bean, value);        
@@ -169,8 +183,6 @@ public abstract class AbstractBeanProperty
     */
    public Object getValue(Object bean) throws Exception
    {
-      scan();
-      
       if (isFieldProperty)
       {
          return getFieldValue(propertyField, bean);  
@@ -188,7 +200,6 @@ public abstract class AbstractBeanProperty
     */
    public Type getPropertyType()
    {
-      scan();
       return propertyType;
    }
    
@@ -200,7 +211,6 @@ public abstract class AbstractBeanProperty
     */
    public boolean isValid()
    {
-      scan();
       return valid;
    }      
    
@@ -213,8 +223,7 @@ public abstract class AbstractBeanProperty
     * @return The name of the property
     */
    public String getName()
-   {
-      scan();      
+   {  
       return name;
    }
    
@@ -240,7 +249,7 @@ public abstract class AbstractBeanProperty
    
    private String buildGetFieldValueErrorMessage(Field field, Object obj)
    {
-      return String.format("Exception reading [%s] field from object [%s].",
+      return String.format("Exception reading [%s] field from object [%s].", 
             field.getName(), obj);
    }
    
