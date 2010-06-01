@@ -29,6 +29,8 @@ public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanPro
       }
    }
    
+   private static final AnnotationMatcher defaultMatcher = new DefaultAnnotationMatcher();
+   
    private static class AnnotatedMatcher implements FieldMatcher, MethodMatcher
    {      
       private Class<? extends Annotation> annotationClass;
@@ -81,8 +83,8 @@ public class AnnotatedBeanProperty<T extends Annotation> extends AbstractBeanPro
    public AnnotatedBeanProperty(Class<?> cls, Class<T> annotationClass, 
          AnnotationMatcher annotationMatcher)
    {            
-      super(cls, new AnnotatedMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : new DefaultAnnotationMatcher()), 
-            new AnnotatedMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : new DefaultAnnotationMatcher()));
+      super(cls, new AnnotatedMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : defaultMatcher), 
+            new AnnotatedMatcher(annotationClass, annotationMatcher != null ? annotationMatcher : defaultMatcher));
       
       if (((AnnotatedMatcher) getFieldMatcher()).getMatch() != null)
       {
