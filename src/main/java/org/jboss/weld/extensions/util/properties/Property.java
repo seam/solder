@@ -53,6 +53,7 @@ public interface Property<V>
     * 
     * @param bean The bean to read the property from
     * @return The property value
+    * @throws ClassCastException if the value is not of the type V
     */
    public V getValue(Object instance);
    

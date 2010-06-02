@@ -13,25 +13,26 @@ import org.jboss.weld.extensions.util.properties.Property;
  * 
  * @author Shane Bryzak
  */
-public class BeanPropertyQuery
+public class PropertyQuery<V>
 {
-   private Class<?> targetClass;
-   private List<BeanPropertyCriteria> criteria = new ArrayList<BeanPropertyCriteria>();
+   private final Class<?> targetClass;
+   private final List<PropertyCriteria> criteria;
    
-   public BeanPropertyQuery(Class<?> targetClass)
+   public PropertyQuery(Class<?> targetClass)
    {
       this.targetClass = targetClass;
+      this.criteria = new ArrayList<PropertyCriteria>();
    }
    
-   public BeanPropertyQuery addCriteria(BeanPropertyCriteria criteria)
+   public PropertyQuery<V> addCriteria(PropertyCriteria criteria)
    {
       this.criteria.add(criteria);
       return this;
    }
    
-   public List<Property<?>> getResultList()
+   public List<Property<V>> getResultList()
    {
-      List<Property<?>> results = new ArrayList<Property<?>>();
+      List<Property<V>> results = new ArrayList<Property<V>>();
 
       Class<?> cls = targetClass;
       while (!cls.equals(Object.class))
@@ -39,11 +40,11 @@ public class BeanPropertyQuery
          // First check declared fields
          for (Field field : cls.getDeclaredFields())
          {
-            for (BeanPropertyCriteria c : criteria)
+            for (PropertyCriteria c : criteria)
             {                     
                if (c.fieldMatches(field))
                {
-                  results.add(Properties.createProperty(field));
+                  results.add(Properties.<V>createProperty(field));
                }
             }
          }
@@ -54,11 +55,11 @@ public class BeanPropertyQuery
       // Then check public methods (we ignore private methods)
       for (Method method : targetClass.getMethods())
       {
-         for (BeanPropertyCriteria c : criteria)
+         for (PropertyCriteria c : criteria)
          {
             if (c.methodMatches(method))
             {
-               results.add(Properties.createProperty(method));
+               results.add(Properties.<V>createProperty(method));
             }
          }
       }      
