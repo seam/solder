@@ -1,6 +1,7 @@
 package org.jboss.weld.extensions.util.properties;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Type;
 
 /**
@@ -39,15 +40,8 @@ public interface Property<V>
     * @return The property type
     */
    Class<V> getJavaClass();   
-   
-   /**
-    * Returns the specified annotation, if it exists on the bean property
-    * 
-    * @param <A>
-    * @param annotationClass
-    * @return
-    */
-   <A extends Annotation> A getAnnotation(Class<A> annotationClass);
+      
+   AnnotatedElement getAnnotatedElement();
    
    /**
     * Returns the property value for the specified bean. The property to be

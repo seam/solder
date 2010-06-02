@@ -4,6 +4,7 @@
 package org.jboss.weld.extensions.util.properties;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
@@ -43,9 +44,9 @@ class FieldProperty<V> implements Property<V>
       return field.getGenericType();
    }
    
-   public <A extends Annotation> A getAnnotation(Class<A> annotationClass)
+   public AnnotatedElement getAnnotatedElement()
    {
-      return field.getAnnotation(annotationClass);
+      return field;
    }
    
    @SuppressWarnings("unchecked")

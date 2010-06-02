@@ -5,6 +5,7 @@ package org.jboss.weld.extensions.util.properties;
 
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -55,9 +56,9 @@ class MethodProperty<V> implements Property<V>
       return getterMethod.getGenericReturnType();
    }
    
-   public <A extends Annotation> A getAnnotation(Class<A> annotationClass)
+   public AnnotatedElement getAnnotatedElement()
    {
-      return getterMethod.getAnnotation(annotationClass);
+      return getterMethod;
    }
    
    public V getValue(Object instance)
