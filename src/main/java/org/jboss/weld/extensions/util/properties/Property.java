@@ -24,23 +24,28 @@ public interface Property<V>
     * 
     * @return The name of the property
     */
-   String getName();
+   public String getName();
    
    /**
     * Returns the property type
     * 
     * @return The property type
     */
-   Type getBaseType();
+   public Type getBaseType();
    
    /**
     * Returns the property type
     * 
     * @return The property type
     */
-   Class<V> getJavaClass();   
-      
-   AnnotatedElement getAnnotatedElement();
+   public Class<V> getJavaClass();   
+   
+   /**
+    * Get the element backing the property
+    * 
+    * @return
+    */
+   public AnnotatedElement getAnnotatedElement();
    
    /**
     * Returns the property value for the specified bean. The property to be
@@ -49,7 +54,7 @@ public interface Property<V>
     * @param bean The bean to read the property from
     * @return The property value
     */
-    V getValue(Object instance);
+   public V getValue(Object instance);
    
    /**
     * This method sets the property value for a specified bean to the specified
@@ -58,5 +63,5 @@ public interface Property<V>
     * @param bean The bean containing the property to set
     * @param value The new property value
     */
-   void setValue(Object instance, V value);   
+   public void setValue(Object instance, V value);   
 }

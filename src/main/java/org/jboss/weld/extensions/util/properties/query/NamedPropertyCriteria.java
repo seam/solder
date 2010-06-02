@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.util.properties;
+package org.jboss.weld.extensions.util.properties.query;
 
 import java.beans.Introspector;
 import java.lang.reflect.Field;

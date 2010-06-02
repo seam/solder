@@ -1,9 +1,12 @@
-package org.jboss.weld.extensions.util.properties;
+package org.jboss.weld.extensions.util.properties.query;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jboss.weld.extensions.util.properties.Properties;
+import org.jboss.weld.extensions.util.properties.Property;
 
 /**
  * Queries a target class for properties that match certain criteria

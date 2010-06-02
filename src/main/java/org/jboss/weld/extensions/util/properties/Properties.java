@@ -21,9 +21,9 @@ public class Properties
     * @param field
     * @return
     */
-   public static <V> Property<V> createProperty(Field field)
+   public static <V> FieldProperty<V> createProperty(Field field)
    {
-      return new FieldProperty<V>(field);
+      return new FieldPropertyImpl<V>(field);
    }
    
    /**
@@ -34,8 +34,8 @@ public class Properties
     * @return
     * @throws IllegalArgumentException if the method does not match JavaBean conventions
     */
-   public static <V> Property<V> createProperty(Method method)
+   public static <V> MethodProperty<V> createProperty(Method method)
    {
-      return new MethodProperty<V>(method);
+      return new MethodPropertyImpl<V>(method);
    }
 }
