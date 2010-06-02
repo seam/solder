@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
  * 
  * @author Shane Bryzak
  */
-public class NamedPropertyCriteria implements BeanPropertyCriteria
+public class NamedPropertyCriteria implements PropertyCriteria
 {
-   private String propertyName;
+   private final String propertyName;
    
    public NamedPropertyCriteria(String propertyName)
    {

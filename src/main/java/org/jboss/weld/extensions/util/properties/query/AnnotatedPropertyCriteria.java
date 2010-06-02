@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
  * 
  * @author Shane Bryzak
  */
-public class AnnotatedPropertyCriteria implements BeanPropertyCriteria
+public class AnnotatedPropertyCriteria implements PropertyCriteria
 {
-   private Class<? extends Annotation> annotationClass;
+   private final Class<? extends Annotation> annotationClass;
    
    public AnnotatedPropertyCriteria(Class<? extends Annotation> annotationClass)
    {

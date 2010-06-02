@@ -8,9 +8,9 @@ import java.lang.reflect.Method;
  * 
  * @author Shane Bryzak
  */
-public class TypedPropertyCriteria implements BeanPropertyCriteria
+public class TypedPropertyCriteria implements PropertyCriteria
 {
-   private Class<?> propertyClass;
+   private final Class<?> propertyClass;
    
    public TypedPropertyCriteria(Class<?> propertyClass)
    {
