@@ -11,6 +11,8 @@ import org.jboss.weld.extensions.util.properties.Property;
 /**
  * Queries a target class for properties that match certain criteria
  * 
+ * @see PropertyQueries
+ * 
  * @author Shane Bryzak
  */
 public class PropertyQuery<V>
