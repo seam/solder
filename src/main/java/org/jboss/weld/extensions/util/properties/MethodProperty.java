@@ -4,12 +4,70 @@
 package org.jboss.weld.extensions.util.properties;
 
 import java.beans.Introspector;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-class MethodProperty<V> implements Property<V>
-{
+/**
+ * A bean property based on the value represented by a getter/setter method pair
+ * 
+ * @author Pete Muir
+ * @author Shane Bryzak
+ */
+class MethodProperty implements Property
+{   
+   private final Method getterMethod;
+   private final String propertyName;
+   private final Method setterMethod;
+
+   public MethodProperty(Method method)
+   {
+      if (method.getName().startsWith("get"))
+      {
+         this.propertyName = Introspector.decapitalize(method.getName().substring(3));
+      }
+      else if (method.getName().startsWith("is"))
+      {
+         this.propertyName = Introspector.decapitalize(method.getName().substring(2));
+      }
+      else
+      {
+         throw new IllegalArgumentException("Invalid accessor method, must start with 'get' or 'is'.  " + "Method: " + method);
+      }
+      this.getterMethod = getGetterMethod(method.getDeclaringClass(), propertyName);
+      this.setterMethod = getSetterMethod(method.getDeclaringClass(), propertyName);      
+   }
+   
+   public String getName()
+   {
+      return propertyName;
+   }
+   
+   public Class<?> getPropertyClass()
+   {
+      return getterMethod.getReturnType();
+   }
+   
+   public Type getBaseType()
+   {
+      return getterMethod.getGenericReturnType();
+   }
+   
+   public <A extends Annotation> A getAnnotation(Class<A> annotationClass)
+   {
+      return getterMethod.getAnnotation(annotationClass);
+   }
+   
+   public Object getValue(Object instance)
+   {
+      return getPropertyClass().cast(invokeMethod(getterMethod, instance));
+   }
+   
+   public void setValue(Object instance, Object value) 
+   {
+      invokeMethod(setterMethod, instance, value);
+   }
    
    private static String buildInvokeMethodErrorMessage(Method method, Object obj, Object... args)
    {
@@ -92,60 +150,5 @@ class MethodProperty<V> implements Property<V>
          }
       }
       throw new IllegalArgumentException("no such getter method: " + clazz.getName() + '.' + name);
-   }
-   
-   private final Method getterMethod;
-   private final String propertyName;
-   private final Method setterMethod;
-
-   MethodProperty(Method method)
-   {
-      if (method.getName().startsWith("get"))
-      {
-         this.propertyName = Introspector.decapitalize(method.getName().substring(3));
-      }
-      else if (method.getName().startsWith("is"))
-      {
-         this.propertyName = Introspector.decapitalize(method.getName().substring(2));
-      }
-      else
-      {
-         throw new IllegalArgumentException("Invalid accessor method, must start with 'get' or 'is'.  " + "Method: " + method);
-      }
-      this.getterMethod = getGetterMethod(method.getDeclaringClass(), propertyName);
-      this.setterMethod = getSetterMethod(method.getDeclaringClass(), propertyName);
-      
-   }
-   
-   public String getName()
-   {
-      return propertyName;
-   }
-   
-   @SuppressWarnings("unchecked")
-   public Class<V> getJavaClass()
-   {
-      return (Class<V>) getterMethod.getReturnType();
-   }
-   
-   public Type getBaseType()
-   {
-      return getterMethod.getGenericReturnType();
-   }
-   
-   public Method getAnnotatedElement()
-   {
-      return getterMethod;
-   }
-   
-   public V getValue(Object instance)
-   {
-      return getJavaClass().cast(invokeMethod(getterMethod, instance));
-   }
-   
-   public void setValue(Object instance, V value) 
-   {
-      invokeMethod(setterMethod, instance, value);
-   }
-   
+   }   
 }

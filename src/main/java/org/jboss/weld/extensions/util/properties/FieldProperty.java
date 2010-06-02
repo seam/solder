@@ -3,13 +3,19 @@
  */
 package org.jboss.weld.extensions.util.properties;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-class FieldProperty<V> implements Property<V>
+/**
+ * A bean property based on the value contained in a field
+ * 
+ * @author Pete Muir
+ * @author Shane Bryzak
+ *
+ */
+class FieldProperty implements Property
 {
-   
-
    private static String buildGetFieldValueErrorMessage(Field field, Object obj)
    {
       return String.format("Exception reading [%s] field from object [%s].", field.getName(), obj);
@@ -22,7 +28,7 @@ class FieldProperty<V> implements Property<V>
    
    private final Field field;
 
-   FieldProperty(Field field)
+   public FieldProperty(Field field)
    {
       this.field = field;
    }
@@ -37,23 +43,22 @@ class FieldProperty<V> implements Property<V>
       return field.getGenericType();
    }
    
-   public Field getAnnotatedElement()
+   public <A extends Annotation> A getAnnotation(Class<A> annotationClass)
    {
-      return field;
+      return field.getAnnotation(annotationClass);
    }
    
-   @SuppressWarnings("unchecked")
-   public Class<V> getJavaClass()
+   public Class<?> getPropertyClass()
    {
-      return (Class<V>) field.getType();
+      return (Class<?>) field.getType();
    }
    
-   public V getValue(Object instance)
+   public Object getValue(Object instance)
    {
       field.setAccessible(true);
       try
       {
-         return getJavaClass().cast(field.get(instance));
+         return getPropertyClass().cast(field.get(instance));
       }
       catch (IllegalAccessException e)
       {
@@ -67,7 +72,7 @@ class FieldProperty<V> implements Property<V>
       }
    }
    
-   public void setValue(Object instance, V value) 
+   public void setValue(Object instance, Object value) 
    {
       field.setAccessible(true);
       try

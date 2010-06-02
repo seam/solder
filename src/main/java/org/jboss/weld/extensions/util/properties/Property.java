@@ -1,6 +1,6 @@
 package org.jboss.weld.extensions.util.properties;
 
-import java.lang.reflect.AnnotatedElement;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 /**
@@ -9,10 +9,11 @@ import java.lang.reflect.Type;
  * @see Properties
  * 
  * @author pmuir
+ * @author Shane Bryzak
  *
  * @param <V>
  */
-public interface Property<V>
+public interface Property
 {
    
    /**
@@ -23,23 +24,30 @@ public interface Property<V>
     * 
     * @return The name of the property
     */
-   public String getName();
+   String getName();
    
    /**
     * Returns the property type
     * 
     * @return The property type
     */
-   public Type getBaseType();
+   Type getBaseType();
    
    /**
     * Returns the property type
     * 
     * @return The property type
     */
-   public Class<V> getJavaClass();
+   Class<?> getPropertyClass();   
    
-   public AnnotatedElement getAnnotatedElement();
+   /**
+    * Returns the specified annotation, if it exists on the bean property
+    * 
+    * @param <A>
+    * @param annotationClass
+    * @return
+    */
+   <A extends Annotation> A getAnnotation(Class<A> annotationClass);
    
    /**
     * Returns the property value for the specified bean. The property to be
@@ -48,7 +56,7 @@ public interface Property<V>
     * @param bean The bean to read the property from
     * @return The property value
     */
-   public V getValue(Object instance);
+    Object getValue(Object instance);
    
    /**
     * This method sets the property value for a specified bean to the specified
@@ -57,6 +65,5 @@ public interface Property<V>
     * @param bean The bean containing the property to set
     * @param value The new property value
     */
-   public void setValue(Object instance, V value);
-   
+   void setValue(Object instance, Object value);   
 }
