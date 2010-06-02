@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
  * @author Shane Bryzak
  *
  */
-class FieldProperty implements Property
+class FieldProperty<V> implements Property<V>
 {
    private static String buildGetFieldValueErrorMessage(Field field, Object obj)
    {
@@ -28,7 +28,7 @@ class FieldProperty implements Property
    
    private final Field field;
 
-   public FieldProperty(Field field)
+   FieldProperty(Field field)
    {
       this.field = field;
    }
@@ -48,17 +48,18 @@ class FieldProperty implements Property
       return field.getAnnotation(annotationClass);
    }
    
-   public Class<?> getPropertyClass()
+   @SuppressWarnings("unchecked")
+   public Class<V> getJavaClass()
    {
-      return (Class<?>) field.getType();
+      return (Class<V>) field.getType();
    }
    
-   public Object getValue(Object instance)
+   public V getValue(Object instance)
    {
       field.setAccessible(true);
       try
       {
-         return getPropertyClass().cast(field.get(instance));
+         return getJavaClass().cast(field.get(instance));
       }
       catch (IllegalAccessException e)
       {
@@ -72,7 +73,7 @@ class FieldProperty implements Property
       }
    }
    
-   public void setValue(Object instance, Object value) 
+   public void setValue(Object instance, V value) 
    {
       field.setAccessible(true);
       try

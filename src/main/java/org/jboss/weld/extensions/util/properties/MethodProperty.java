@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
  * @author Pete Muir
  * @author Shane Bryzak
  */
-class MethodProperty implements Property
+class MethodProperty<V> implements Property<V>
 {   
    private final Method getterMethod;
    private final String propertyName;
@@ -44,9 +44,10 @@ class MethodProperty implements Property
       return propertyName;
    }
    
-   public Class<?> getPropertyClass()
+   @SuppressWarnings("unchecked")
+   public Class<V> getJavaClass()
    {
-      return getterMethod.getReturnType();
+      return (Class<V>) getterMethod.getReturnType();
    }
    
    public Type getBaseType()
@@ -59,9 +60,9 @@ class MethodProperty implements Property
       return getterMethod.getAnnotation(annotationClass);
    }
    
-   public Object getValue(Object instance)
+   public V getValue(Object instance)
    {
-      return getPropertyClass().cast(invokeMethod(getterMethod, instance));
+      return getJavaClass().cast(invokeMethod(getterMethod, instance));
    }
    
    public void setValue(Object instance, Object value) 

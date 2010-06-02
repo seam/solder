@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
  *
  * @param <V>
  */
-public interface Property
+public interface Property<V>
 {
    
    /**
@@ -38,7 +38,7 @@ public interface Property
     * 
     * @return The property type
     */
-   Class<?> getPropertyClass();   
+   Class<V> getJavaClass();   
    
    /**
     * Returns the specified annotation, if it exists on the bean property
@@ -56,7 +56,7 @@ public interface Property
     * @param bean The bean to read the property from
     * @return The property value
     */
-    Object getValue(Object instance);
+    V getValue(Object instance);
    
    /**
     * This method sets the property value for a specified bean to the specified
@@ -65,5 +65,5 @@ public interface Property
     * @param bean The bean containing the property to set
     * @param value The new property value
     */
-   void setValue(Object instance, Object value);   
+   void setValue(Object instance, V value);   
 }
