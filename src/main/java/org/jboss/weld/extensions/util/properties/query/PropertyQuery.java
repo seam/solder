@@ -18,7 +18,7 @@ public class PropertyQuery<V>
    private final Class<?> targetClass;
    private final List<PropertyCriteria> criteria;
    
-   public PropertyQuery(Class<?> targetClass)
+   PropertyQuery(Class<?> targetClass)
    {
       this.targetClass = targetClass;
       this.criteria = new ArrayList<PropertyCriteria>();
