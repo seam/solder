@@ -26,9 +26,9 @@ public class BeanPropertyQuery
       return this;
    }
    
-   public List<Property> getResultList()
+   public List<Property<?>> getResultList()
    {
-      List<Property> results = new ArrayList<Property>();
+      List<Property<?>> results = new ArrayList<Property<?>>();
 
       Class<?> cls = targetClass;
       while (!cls.equals(Object.class))
@@ -40,7 +40,7 @@ public class BeanPropertyQuery
             {                     
                if (c.fieldMatches(field))
                {
-                  results.add(new FieldProperty(field));
+                  results.add(Properties.createProperty(field));
                }
             }
          }
@@ -55,7 +55,7 @@ public class BeanPropertyQuery
          {
             if (c.methodMatches(method))
             {
-               results.add(new MethodProperty(method));
+               results.add(Properties.createProperty(method));
             }
          }
       }      
