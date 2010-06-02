@@ -1,10 +1,6 @@
-/**
- * 
- */
 package org.jboss.weld.extensions.util.properties;
 
 import java.beans.Introspector;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
