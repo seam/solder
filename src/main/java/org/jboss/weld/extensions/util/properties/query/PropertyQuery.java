@@ -9,9 +9,16 @@ import org.jboss.weld.extensions.util.properties.Properties;
 import org.jboss.weld.extensions.util.properties.Property;
 
 /**
- * Queries a target class for properties that match certain criteria
+ * Queries a target class for properties that match certain criteria.  A
+ * property may either be a private or public field, declared by the target 
+ * class or inherited from a superclass, or a public method declared by the
+ * target class or inherited from any of its superclasses.  For properties that
+ * are exposed via a method, the property must be a JavaBean style property, i.e.
+ * it must provide both an accessor and mutator method according to the JavaBean
+ * specification.
  * 
- * @see PropertyQueries
+ * This class is not thread-safe, however the result returned by the
+ * getResultList() method is.
  * 
  * @author Shane Bryzak
  */
