@@ -34,7 +34,7 @@ import javax.enterprise.inject.spi.InjectionTarget;
  * 
  * @param <T>
  */
-class BeanImpl<T> implements Bean<T>
+public class BeanImpl<T> implements Bean<T>
 {
    private final Class<?> beanClass;
    private final InjectionTarget<T> injectionTarget;
