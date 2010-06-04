@@ -11,21 +11,30 @@ import java.lang.reflect.Method;
  */
 public class NamedPropertyCriteria implements PropertyCriteria
 {
-   private final String propertyName;
+   private final String[] propertyNames;
    
-   public NamedPropertyCriteria(String propertyName)
+   public NamedPropertyCriteria(String... propertyNames)
    {
-      this.propertyName = propertyName;
+      this.propertyNames = propertyNames;
    }
    
    public boolean fieldMatches(Field f)
    {
-      return propertyName.equals(f.getName());
+      for (String propertyName : propertyNames)
+      {
+         if (propertyName.equals(f.getName())) return true;
+      }
+      return false;
    }
 
    public boolean methodMatches(Method m)
    {
-      return m.getName().startsWith("get") && 
-         Introspector.decapitalize(m.getName().substring(3)).equals(propertyName);
+      for (String propertyName : propertyNames)
+      {
+         if (m.getName().startsWith("get") && 
+            Introspector.decapitalize(m.getName().substring(3)).equals(propertyName)) return true;
+         
+      }
+      return false;
    }
 }
