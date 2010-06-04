@@ -12,7 +12,7 @@ public class PropertyQueries
     * @param targetClass
     * @return
     */
-   public static <V> PropertyQuery<V> createPropertyQuery(Class<?> targetClass)
+   public static <V> PropertyQuery<V> createQuery(Class<?> targetClass)
    {
       return new PropertyQuery<V>(targetClass);
    }
