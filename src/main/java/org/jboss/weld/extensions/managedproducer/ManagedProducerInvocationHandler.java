@@ -17,7 +17,6 @@
 package org.jboss.weld.extensions.managedproducer;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -25,6 +24,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import javassist.util.proxy.MethodHandler;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.AmbiguousResolutionException;
@@ -36,7 +37,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.weld.extensions.bean.InjectionPointImpl;
 
-public class ManagedProducerInvocationHandler<T> implements InvocationHandler
+public class ManagedProducerInvocationHandler<T> implements MethodHandler
 {
    
    final BeanManager manager;
@@ -82,7 +83,7 @@ public class ManagedProducerInvocationHandler<T> implements InvocationHandler
       this.injectionPoint = injectionPoint;
    }
 
-   public Object invoke(Object proxy, Method m, Object[] args) throws Throwable
+   public Object invoke(Object proxy, Method thisMethod, Method m, Object[] args) throws Throwable
    {
       CreationalContext<?> ctx = manager.createCreationalContext(bean);
       Object[] params = new Object[method.getParameterTypes().length];
@@ -100,7 +101,7 @@ public class ManagedProducerInvocationHandler<T> implements InvocationHandler
       Object base = manager.getReference(mainClassBean, annotatedMethod.getDeclaringType().getJavaClass(), ctx);
       
       Object result = method.invoke(base, params);
-      Object ret = m.invoke(result, args);
+      Object ret = thisMethod.invoke(result, args);
       ctx.release();
       return ret;
    }

@@ -17,14 +17,16 @@
 package org.jboss.weld.extensions.managedproducer;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import javassist.util.proxy.MethodFilter;
+import javassist.util.proxy.ProxyFactory;
+import javassist.util.proxy.ProxyObject;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
@@ -61,9 +63,6 @@ public class ManagedProducerBean<M> implements Bean<M>
 
    final BeanManager manager;
 
-   final Constructor<?> proxyConstructor;
-
-
    final AnnotatedMethod<?> method;
 
    public ManagedProducerBean(AnnotatedMethod<?> method, BeanManager manager)
@@ -96,46 +95,52 @@ public class ManagedProducerBean<M> implements Bean<M>
       }
       // get the bean types
       types = new HashSet<Type>();
-      Set<Class<?>> interfaces = new HashSet<Class<?>>();
+      Set<Class<?>> classes = new HashSet<Class<?>>();
       for (Type t : method.getTypeClosure())
       {
          if (t instanceof Class<?>)
          {
             Class<?> c = (Class<?>) t;
-            if (c.isInterface())
-            {
-               types.add(c);
-               interfaces.add(c);
-            }
+            types.add(c);
+            classes.add(c);
          }
          else if (t instanceof ParameterizedType)
          {
             ParameterizedType p = (ParameterizedType) t;
             Class<?> c = (Class<?>) p.getRawType();
-            if (c.isInterface())
-            {
-               types.add(t);
-            }
+            types.add(t);
          }
       }
       // build the properties
-      Class<?>[] iarray = new Class[interfaces.size()];
+      Class<?>[] iarray = new Class[classes.size()];
       int count = 0;
       this.manager = manager;
-      for (Class<?> c : interfaces)
+      for (Class<?> c : classes)
       {
          iarray[count++] = c;
       }
-      proxyClass = Proxy.getProxyClass(beanClass.getClassLoader(), iarray);
-      try
+      ProxyFactory f = new ProxyFactory();
+      Class<?> retType = method.getJavaMember().getReturnType();
+      if (retType.isInterface())
       {
-         proxyConstructor = proxyClass.getConstructor(new Class[] { InvocationHandler.class });
+         f.setSuperclass(Object.class);
+         Class<?>[] ifaces = { retType };
+         f.setInterfaces(ifaces);
       }
-      catch (Exception e)
+      else
       {
-         throw new RuntimeException(e);
+         f.setSuperclass(retType);
       }
 
+      f.setFilter(new MethodFilter()
+      {
+         public boolean isHandled(Method m)
+         {
+            // ignore finalize()
+            return !m.getName().equals("finalize");
+         }
+      });
+      proxyClass = f.createClass();
 
    }
 
@@ -193,12 +198,13 @@ public class ManagedProducerBean<M> implements Bean<M>
       {
       } };
       Set<Bean<?>> beans = manager.getBeans(InjectionPoint.class, quals);
-      Bean injectionPointBean = (Bean) beans.iterator().next();
+      Bean<?> injectionPointBean = (Bean<?>) beans.iterator().next();
       InjectionPoint injectionPoint = (InjectionPoint) manager.getReference(injectionPointBean, InjectionPoint.class, creationalContext);
       ManagedProducerInvocationHandler<?> hdl = new ManagedProducerInvocationHandler(manager, this.method, this, injectionPoint);
       try
       {
-         M obj = (M) proxyConstructor.newInstance(new Object[] { hdl });
+         M obj = (M) proxyClass.newInstance();
+         ((ProxyObject) obj).setHandler(hdl);
          creationalContext.push(obj);
          return obj;
       }
