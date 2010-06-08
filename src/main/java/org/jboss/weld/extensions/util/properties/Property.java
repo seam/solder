@@ -15,7 +15,6 @@ import java.lang.reflect.Type;
  */
 public interface Property<V>
 {
-   
    /**
     * Returns the name of the property. If the property is a field, then the
     * field name is returned. Otherwise, if the property is a method, then the
@@ -65,4 +64,11 @@ public interface Property<V>
     * @param value The new property value
     */
    public void setValue(Object instance, V value);   
+   
+   /**
+    * Returns the class that declares the property
+    * 
+    * @return
+    */
+   public Class<?> getDeclaringClass();
 }

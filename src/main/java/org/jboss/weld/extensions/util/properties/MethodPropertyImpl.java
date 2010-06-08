@@ -64,7 +64,7 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
       return getJavaClass().cast(invokeMethod(getterMethod, instance));
    }
    
-   public void setValue(Object instance, Object value) 
+   public void setValue(Object instance, V value) 
    {
       invokeMethod(setterMethod, instance, value);
    }
@@ -150,5 +150,11 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
          }
       }
       throw new IllegalArgumentException("no such getter method: " + clazz.getName() + '.' + name);
-   }   
+   }
+
+   public Class<?> getDeclaringClass()
+   {
+      return getterMethod.getDeclaringClass();
+   }
+
 }

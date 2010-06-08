@@ -91,4 +91,9 @@ class FieldPropertyImpl<V> implements FieldProperty<V>
       }
    }
 
+   public Class<?> getDeclaringClass()
+   {
+      return field.getDeclaringClass();
+   }
+
 }
