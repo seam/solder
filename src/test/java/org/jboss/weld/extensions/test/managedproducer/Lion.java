@@ -16,29 +16,25 @@
  */
 package org.jboss.weld.extensions.test.managedproducer;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import org.jboss.weld.extensions.core.Veto;
 
-@Artifact
-public class ManagedProducerTest extends AbstractWeldTest
+@Veto
+public class Lion
 {
-   @Test
-   public void testManagedProducersInjectionPoint()
+   private final String name;
+
+   public Lion()
    {
-      ManagedReciever bean = getReference(ManagedReciever.class);
-      assert bean.bean1.getValue().equals("bean1") : " value: " + bean.bean1.getValue();
-      assert bean.bean2.getValue().equals("bean2") : " value: " + bean.bean1.getValue();
+      name = "default lion";
    }
 
-   @Test
-   public void testManagedProducers()
+   public Lion(String name)
    {
-      Lion lion = getReference(Lion.class);
-      LionTamer lionTamer = getReference(LionTamer.class);
-      assert lion.getName().equals("lion one");
-      lionTamer.changeLion();
-      assert lion.getName().equals("lion two");
+      this.name = name;
    }
 
+   public String getName()
+   {
+      return name;
+   }
 }

@@ -37,7 +37,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 public class ManagedProducerExtension implements Extension
 {
 
-   Set<ManagedProducerBean<?>> beans = new HashSet<ManagedProducerBean<?>>();
+   final private Set<ManagedProducerBean<?>> beans = new HashSet<ManagedProducerBean<?>>();
 
    public void processAnnotatedType(@Observes ProcessAnnotatedType<?> type, BeanManager manager)
    {
@@ -46,8 +46,7 @@ public class ManagedProducerExtension implements Extension
          if (m.isAnnotationPresent(ManagedProducer.class))
          {
             // we have a managed producer
-            // lets make a not of it and register it later
-
+            // lets make a note of it and register it later
             beans.add(new ManagedProducerBean(m, manager));
          }
       }

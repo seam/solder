@@ -37,17 +37,17 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.weld.extensions.bean.InjectionPointImpl;
 
-public class ManagedProducerInvocationHandler<T> implements MethodHandler
+public class ManagedProducerInvocationHandler implements MethodHandler
 {
    
-   final BeanManager manager;
-   final AnnotatedMethod<?> annotatedMethod;
-   final Method method;
-   final Bean<?> bean;
-   final InjectionPoint[] injectionPoints;
-   final Map<Method, Method> methods = Collections.synchronizedMap(new HashMap<Method, Method>());
-   final Bean<?> mainClassBean;
-   final InjectionPoint injectionPoint;
+   final private BeanManager manager;
+   final private AnnotatedMethod<?> annotatedMethod;
+   final private Method method;
+   final private Bean<?> bean;
+   final private InjectionPoint[] injectionPoints;
+   final private Map<Method, Method> methods = Collections.synchronizedMap(new HashMap<Method, Method>());
+   final private Bean<?> mainClassBean;
+   final private InjectionPoint injectionPoint;
 
 
    public ManagedProducerInvocationHandler(BeanManager manager, AnnotatedMethod<?> method, Bean<?> bean, InjectionPoint injectionPoint)

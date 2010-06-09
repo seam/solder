@@ -51,19 +51,19 @@ import javax.inject.Named;
 public class ManagedProducerBean<M> implements Bean<M>
 {
 
-   final Class<?> beanClass;
+   final private Class<?> beanClass;
 
-   final String name;
+   final private String name;
 
-   final Set<Annotation> qualifiers;
+   final private Set<Annotation> qualifiers;
 
-   final Set<Type> types;
+   final private Set<Type> types;
 
-   final Class<?> proxyClass;
+   final private Class<M> proxyClass;
 
-   final BeanManager manager;
+   final private BeanManager manager;
 
-   final AnnotatedMethod<?> method;
+   final private AnnotatedMethod<?> method;
 
    public ManagedProducerBean(AnnotatedMethod<?> method, BeanManager manager)
    {
@@ -200,10 +200,10 @@ public class ManagedProducerBean<M> implements Bean<M>
       Set<Bean<?>> beans = manager.getBeans(InjectionPoint.class, quals);
       Bean<?> injectionPointBean = (Bean<?>) beans.iterator().next();
       InjectionPoint injectionPoint = (InjectionPoint) manager.getReference(injectionPointBean, InjectionPoint.class, creationalContext);
-      ManagedProducerInvocationHandler<?> hdl = new ManagedProducerInvocationHandler(manager, this.method, this, injectionPoint);
+      ManagedProducerInvocationHandler hdl = new ManagedProducerInvocationHandler(manager, this.method, this, injectionPoint);
       try
       {
-         M obj = (M) proxyClass.newInstance();
+         M obj = proxyClass.newInstance();
          ((ProxyObject) obj).setHandler(hdl);
          creationalContext.push(obj);
          return obj;
