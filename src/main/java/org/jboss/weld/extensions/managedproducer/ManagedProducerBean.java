@@ -65,6 +65,10 @@ public class ManagedProducerBean<M> implements Bean<M>
 
    final private AnnotatedMethod<?> method;
 
+   private final static Annotation[] defaultQualifiers = { new AnnotationLiteral<Default>()
+   {
+   } };
+
    public ManagedProducerBean(AnnotatedMethod<?> method, BeanManager manager)
    {
       this.method = method;
@@ -194,10 +198,7 @@ public class ManagedProducerBean<M> implements Bean<M>
 
    public M create(CreationalContext<M> creationalContext)
    {
-      Annotation[] quals = { new AnnotationLiteral<Default>()
-      {
-      } };
-      Set<Bean<?>> beans = manager.getBeans(InjectionPoint.class, quals);
+      Set<Bean<?>> beans = manager.getBeans(InjectionPoint.class, defaultQualifiers);
       Bean<?> injectionPointBean = (Bean<?>) beans.iterator().next();
       InjectionPoint injectionPoint = (InjectionPoint) manager.getReference(injectionPointBean, InjectionPoint.class, creationalContext);
       ManagedProducerInvocationHandler hdl = new ManagedProducerInvocationHandler(manager, this.method, this, injectionPoint);

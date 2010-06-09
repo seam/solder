@@ -19,10 +19,7 @@ package org.jboss.weld.extensions.managedproducer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javassist.util.proxy.MethodHandler;
@@ -45,7 +42,6 @@ public class ManagedProducerInvocationHandler implements MethodHandler
    final private Method method;
    final private Bean<?> bean;
    final private InjectionPoint[] injectionPoints;
-   final private Map<Method, Method> methods = Collections.synchronizedMap(new HashMap<Method, Method>());
    final private Bean<?> mainClassBean;
    final private InjectionPoint injectionPoint;
 
