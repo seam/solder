@@ -43,36 +43,52 @@ public class PropertyQuery<V>
    {
       List<Property<V>> results = new ArrayList<Property<V>>();
 
-      Class<?> cls = targetClass;
+      // First check public methods (we ignore private methods)
+      for (Method method : targetClass.getMethods())
+      {
+         boolean match = true;
+         for (PropertyCriteria c : criteria)
+         {
+            if (!c.methodMatches(method))
+            {
+               match = false;
+            }
+         }
+         if (match) results.add(Properties.<V>createProperty(method));
+      }         
+      
+      Class<?> cls = targetClass;      
       while (!cls.equals(Object.class))
       {
-         // First check declared fields
+         // Now check declared fields
          for (Field field : cls.getDeclaredFields())
          {
+            boolean match = true;
             for (PropertyCriteria c : criteria)
             {                     
-               if (c.fieldMatches(field))
+               if (!c.fieldMatches(field))
                {
-                  results.add(Properties.<V>createProperty(field));
+                  match = false;
                }
             }
+            Property<V> prop = Properties.<V>createProperty(field);
+            
+            if (match && !resultsContainsProperty(results, prop.getName())) results.add(prop);
          }
          
          cls = cls.getSuperclass();
       }
-
-      // Then check public methods (we ignore private methods)
-      for (Method method : targetClass.getMethods())
-      {
-         for (PropertyCriteria c : criteria)
-         {
-            if (c.methodMatches(method))
-            {
-               results.add(Properties.<V>createProperty(method));
-            }
-         }
-      }      
+  
       
       return results;
+   }
+   
+   private boolean resultsContainsProperty(List<Property<V>> results, String propertyName)
+   {
+      for (Property<V> p : results)
+      {
+         if (propertyName.equals(p.getName())) return true;
+      }
+      return false;
    }
 }
