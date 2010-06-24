@@ -43,15 +43,18 @@ public class PropertyQuery<V>
    {
       List<Property<V>> results = new ArrayList<Property<V>>();
 
-      // First check public methods (we ignore private methods)
+      // First check public accessor methods (we ignore private methods)
       for (Method method : targetClass.getMethods())
       {
+         if (!(method.getName().startsWith("is") || method.getName().startsWith("get"))) break;         
+         
          boolean match = true;
          for (PropertyCriteria c : criteria)
          {
             if (!c.methodMatches(method))
             {
                match = false;
+               break;
             }
          }
          if (match) results.add(Properties.<V>createProperty(method));
@@ -69,6 +72,7 @@ public class PropertyQuery<V>
                if (!c.fieldMatches(field))
                {
                   match = false;
+                  break;
                }
             }
             Property<V> prop = Properties.<V>createProperty(field);
