@@ -26,6 +26,7 @@ import java.util.Set;
 
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedType;
+import javax.enterprise.inject.spi.BeanManager;
 
 /**
  * class that provides a way of retrieving all methods and fields from a class
@@ -89,6 +90,19 @@ public class Reflections
       for (Annotation annotation : annotations)
       {
          if (annotation.annotationType().isAnnotationPresent(metaAnnotationType))
+         {
+            set.add(annotation);
+         }
+      }
+      return set;
+   }
+
+   public static Set<Annotation> getQualifiers(Set<Annotation> annotations, BeanManager beanManager)
+   {
+      Set<Annotation> set = new HashSet<Annotation>();
+      for (Annotation annotation : annotations)
+      {
+         if (beanManager.isQualifier(annotation.annotationType()))
          {
             set.add(annotation);
          }

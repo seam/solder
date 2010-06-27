@@ -27,7 +27,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Qualifier;
 
 /**
  * An injection point qualifier that may be used to select the exact bean to be
@@ -39,7 +38,6 @@ import javax.inject.Qualifier;
 @Retention(RUNTIME)
 @Target( { METHOD, TYPE, FIELD, PARAMETER })
 @Documented
-@Qualifier
 public @interface Exact
 {
    Class<?> value() default void.class;

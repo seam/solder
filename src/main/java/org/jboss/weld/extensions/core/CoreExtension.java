@@ -16,19 +16,18 @@
  */
 package org.jboss.weld.extensions.core;
 
-import static org.jboss.weld.extensions.util.Reflections.getAnnotationsWithMetatype;
-import static org.jboss.weld.extensions.util.Reflections.getMemberType;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AnnotatedConstructor;
+import javax.enterprise.inject.spi.AnnotatedField;
+import javax.enterprise.inject.spi.AnnotatedMethod;
+import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -36,15 +35,11 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Qualifier;
 
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.annotated.AnnotationBuilder;
 import org.jboss.weld.extensions.annotated.MemberAnnotationRedefiner;
-import org.jboss.weld.extensions.annotated.Parameter;
-import org.jboss.weld.extensions.annotated.ParameterAnnotationRedefiner;
 import org.jboss.weld.extensions.bean.BeanBuilder;
-import org.jboss.weld.extensions.core.Exact.ExactLiteral;
 
 /**
  * Extension to install the "core" extensions. Core extensions are those that
@@ -74,7 +69,7 @@ class CoreExtension implements Extension
          return;
       }
 
-      AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).readAnnotationsFromUnderlyingType();
+      AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).mergeAnnotations(pat.getAnnotatedType(), true);
 
       // support for @Named packages
       Package pkg = pat.getAnnotatedType().getJavaClass().getPackage();
@@ -84,7 +79,6 @@ class CoreExtension implements Extension
 
          builder.redefineMembers(Named.class, new MemberAnnotationRedefiner<Named>()
          {
-
             public Named redefine(Named annotation, Member member, AnnotationBuilder annotations)
             {
                if (annotations.isAnnotationPresent(Produces.class))
@@ -111,45 +105,39 @@ class CoreExtension implements Extension
       }
 
       // support for @Exact
-      Set<Annotation> qualfiers = getAnnotationsWithMetatype(pat.getAnnotatedType().getAnnotations(), Qualifier.class);
-      if (qualfiers.isEmpty() || (qualfiers.size() == 1 && qualfiers.iterator().next().annotationType() == Named.class))
+      // fields
+      for (AnnotatedField<? super X> f : pat.getAnnotatedType().getFields())
       {
-         builder.addToClass(DefaultLiteral.INSTANCE);
+         if (f.isAnnotationPresent(Exact.class))
+         {
+            Class<?> type = f.getAnnotation(Exact.class).value();
+            builder.overrideFieldType(f.getJavaMember(), type);
+         }
       }
-      builder.addToClass(new Exact.ExactLiteral(pat.getAnnotatedType().getJavaClass()));
-      builder.redefineMembers(Exact.class, new MemberAnnotationRedefiner<Exact>()
+      // method parameters
+      for (AnnotatedMethod<? super X> m : pat.getAnnotatedType().getMethods())
       {
-
-         public Exact redefine(Exact annotation, Member annotated, AnnotationBuilder annotations)
+         for (AnnotatedParameter<? super X> p : m.getParameters())
          {
-            if (annotation.value() == void.class)
+            if (p.isAnnotationPresent(Exact.class))
             {
-               return new ExactLiteral(getMemberType(annotated));
-            }
-            else
-            {
-               return annotation;
+               Class<?> type = p.getAnnotation(Exact.class).value();
+               builder.overrideMethodParameterType(m.getJavaMember(), type, p.getPosition());
             }
          }
-      });
-
-      builder.redefineMemberParameters(Exact.class, new ParameterAnnotationRedefiner<Exact>()
+      }
+      // constructor parameters
+      for (AnnotatedConstructor<X> c : pat.getAnnotatedType().getConstructors())
       {
-
-         public Exact redefine(Exact annotation, Parameter annotated, AnnotationBuilder annotations)
+         for (AnnotatedParameter<? super X> p : c.getParameters())
          {
-            if (annotation.value() == void.class)
+            if (p.isAnnotationPresent(Exact.class))
             {
-               return new ExactLiteral(getMemberType(annotated.getDeclaringMember()));
-            }
-            else
-            {
-               return annotation;
+               Class<?> type = p.getAnnotation(Exact.class).value();
+               builder.overrideConstructorParameterType(c.getJavaMember(), type, p.getPosition());
             }
          }
-
-      });
-
+      }
       pat.setAnnotatedType(builder.create());
 
       // support for @Constructs
@@ -157,7 +145,7 @@ class CoreExtension implements Extension
       {
          if (constructor.isAnnotationPresent(Constructs.class))
          {
-            AnnotatedTypeBuilder<X> annotatedTypeBuilder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).readAnnotationsFromUnderlyingType();
+            AnnotatedTypeBuilder<X> annotatedTypeBuilder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).mergeAnnotations(pat.getAnnotatedType(), true);
             // remove class-level @Named annotation
             annotatedTypeBuilder.removeFromClass(Named.class);
             // remove bean constructors annotated @Inject
