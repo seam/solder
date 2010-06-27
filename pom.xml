@@ -63,6 +63,7 @@
       <slf4j.version>1.5.10</slf4j.version>
       <testng.version>5.12.1</testng.version>
       <jboss.test.harness.version>1.1.0-CR3</jboss.test.harness.version>
+      <servlet.api.version>2.5</servlet.api.version>
    </properties>
 
    <!-- Dependency management, including extra repositories if needed -->
@@ -137,6 +138,12 @@
             <artifactId>jboss-test-harness-tomcat</artifactId>
             <version>${jboss.test.harness.version}</version>
          </dependency>
+         
+         <dependency>
+           <groupId>javax.servlet</groupId>
+           <artifactId>servlet-api</artifactId>
+           <version>${servlet.api.version}</version>
+         </dependency>
       </dependencies>
    </dependencyManagement>
    <dependencies>
@@ -192,6 +199,13 @@
          <groupId>org.jboss.ejb3</groupId>
          <artifactId>jboss-ejb3-api</artifactId>
          <scope>test</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>servlet-api</artifactId>
+         <optional>true</optional>
+         <scope>provided</scope>
       </dependency>
    </dependencies>
 
