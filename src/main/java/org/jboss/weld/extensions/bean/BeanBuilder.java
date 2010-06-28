@@ -23,10 +23,12 @@ import java.util.Set;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Named;
 
 import org.jboss.weld.extensions.annotated.Annotateds;
@@ -62,7 +64,10 @@ public class BeanBuilder<T>
    
    public BeanBuilder<T> defineBeanFromAnnotatedType()
    {
-      this.injectionTarget = beanManager.createInjectionTarget(type);
+      if (!type.getJavaClass().isInterface())
+      {
+         this.injectionTarget = beanManager.createInjectionTarget(type);
+      }
       this.qualifiers = new HashSet<Annotation>();
       this.stereotypes = new HashSet<Class<? extends Annotation>>();
       for (Annotation annotation : type.getAnnotations())
@@ -99,6 +104,12 @@ public class BeanBuilder<T>
       for (Class<?> i : type.getJavaClass().getInterfaces())
       {
          this.types.add(i);
+      }
+      if (qualifiers.isEmpty())
+      {
+         qualifiers.add(new AnnotationLiteral<Default>()
+         {
+         });
       }
       this.beanLifecycle = new BeanLifecycleImpl<T>();
       this.id = BeanImpl.class.getName() + ":" + Annotateds.createTypeId(type);
