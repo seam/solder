@@ -123,7 +123,7 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
             }
          }
       }
-      throw new IllegalArgumentException("no such setter method: " + clazz.getName() + '.' + name);
+      return null;
    }
 
    private static Method getGetterMethod(Class<?> clazz, String name)
@@ -155,6 +155,11 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
    public Class<?> getDeclaringClass()
    {
       return getterMethod.getDeclaringClass();
+   }
+   
+   public boolean isReadOnly()
+   {
+      return setterMethod == null;
    }
 
 }

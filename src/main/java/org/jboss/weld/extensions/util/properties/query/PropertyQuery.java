@@ -52,7 +52,7 @@ public class PropertyQuery<V>
       // First check public accessor methods (we ignore private methods)
       for (Method method : targetClass.getMethods())
       {
-         if (!(method.getName().startsWith("is") || method.getName().startsWith("get"))) break;         
+         if (!(method.getName().startsWith("is") || method.getName().startsWith("get"))) continue;         
          
          boolean match = true;
          for (PropertyCriteria c : criteria)

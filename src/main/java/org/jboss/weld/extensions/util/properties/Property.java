@@ -71,4 +71,11 @@ public interface Property<V>
     * @return
     */
    public Class<?> getDeclaringClass();
+   
+   /**
+    * Indicates whether this is a read-only property
+    * 
+    * @return
+    */
+   boolean isReadOnly();
 }

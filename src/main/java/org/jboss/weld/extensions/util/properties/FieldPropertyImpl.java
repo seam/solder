@@ -96,4 +96,8 @@ class FieldPropertyImpl<V> implements FieldProperty<V>
       return field.getDeclaringClass();
    }
 
+   public boolean isReadOnly()
+   {
+      return false;
+   }
 }
