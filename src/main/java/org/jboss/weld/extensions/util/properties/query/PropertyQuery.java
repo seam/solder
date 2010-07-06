@@ -39,6 +39,12 @@ public class PropertyQuery<V>
       return this;
    }
    
+   public Property<V> getFirstResult()
+   {
+      List<Property<V>> results = getResultList();      
+      return results.isEmpty() ? null : results.get(0);      
+   }
+   
    public List<Property<V>> getResultList()
    {
       List<Property<V>> results = new ArrayList<Property<V>>();
