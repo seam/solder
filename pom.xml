@@ -143,13 +143,6 @@
 	       <scope>test</scope>
 	     </dependency>
 
-         <dependency>
-	       <groupId>org.jboss.arquillian.container</groupId>
-	       <artifactId>arquillian-weld-embedded</artifactId>
-	       <version>${arquillian.version}</version>
-	       <scope>test</scope>
-	     </dependency>
-	     
 	     <dependency>
            <groupId>junit</groupId>
            <artifactId>junit</artifactId>
@@ -230,6 +223,7 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-weld-embedded</artifactId>
+	            <version>${arquillian.version}</version>
                <scope>test</scope>
             </dependency>
       	</dependencies>
@@ -245,6 +239,7 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-jbossas-remote-60</artifactId>
+	            <version>${arquillian.version}</version>
                <scope>test</scope>
             </dependency>
             <dependency>
