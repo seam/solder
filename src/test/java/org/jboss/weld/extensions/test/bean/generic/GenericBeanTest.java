@@ -16,18 +16,31 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import javax.inject.Inject;
 
-@Artifact
-public class GenericBeanTest extends AbstractWeldTest
+import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(Arquillian.class)
+public class GenericBeanTest
 {
+   @Deployment
+   public static Archive<?> deploy()
+   {
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(GenericBeanTest.class.getPackage());
+   }
+
+   @Inject
+   InjectedBean bean;
+
    @Test
    public void testGeneric()
    {
-      //TODO: This needs to be split up into lots of little tests
-      InjectedBean bean = getReference(InjectedBean.class);
       assert bean.main1.getValue().equals("hello1");
       assert bean.main2.getValue().equals("hello2");
       assert bean.main1.getNoData() == null;

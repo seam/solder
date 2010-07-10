@@ -16,23 +16,37 @@
  */
 package org.jboss.weld.extensions.test.core;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import javax.inject.Inject;
+
+import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author Stuart Douglas
  * 
  */
-@Artifact
-public class CoreTest extends AbstractWeldTest
+@RunWith(Arquillian.class)
+public class CoreTest
 {
+
+   @Inject
+   RaceTrack raceTrack;
+
+   @Deployment
+   public static Archive<?> deploy()
+   {
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(CoreTest.class.getPackage());
+   }
+
    @Test
    public void testExact()
    {
-      // TODO: This needs to be split up into lots of little tests
-      RaceTrack bean = getReference(RaceTrack.class);
-      assert bean.dog instanceof Greyhound;
+      assert raceTrack.getDog() instanceof Greyhound;
    }
 
 }

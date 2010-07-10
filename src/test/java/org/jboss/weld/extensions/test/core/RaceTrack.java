@@ -24,5 +24,11 @@ public class RaceTrack
 {
    @Inject
    @Exact(Greyhound.class)
-   Dog dog;
+   private Dog dog;
+
+   public Dog getDog()
+   {
+      return dog;
+   }
+
 }

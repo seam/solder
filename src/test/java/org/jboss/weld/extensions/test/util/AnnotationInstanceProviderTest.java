@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.jboss.weld.extensions.util.NullMemberException;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Test of dynamic annotation creation
@@ -40,7 +40,7 @@ public class AnnotationInstanceProviderTest
    public void testSimpleAnnotationCreation()
    {
       AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
-      SimpleAnnotation an = provider.get(SimpleAnnotation.class, Collections.<String, Object>emptyMap());
+      SimpleAnnotation an = provider.get(SimpleAnnotation.class, Collections.<String, Object> emptyMap());
       assert an != null : "Annotation was null";
       assert an.annotationType() == SimpleAnnotation.class : "Annotation returned wrong result for annotationType()";
       SimpleAnnotation realAn = AnnotatedClass.class.getAnnotation(SimpleAnnotation.class);
@@ -108,7 +108,7 @@ public class AnnotationInstanceProviderTest
    /**
     * Test that an exception is thrown when a member is null
     */
-   @Test(expectedExceptions = NullMemberException.class)
+   @Test(expected = NullMemberException.class)
    public void testNullMemberException()
    {
       AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
@@ -120,8 +120,8 @@ public class AnnotationInstanceProviderTest
    }
 
    /**
-    * Test that an Annotation will use the default values if a member with default 
-    * values is null
+    * Test that an Annotation will use the default values if a member with
+    * default values is null
     */
    @Test
    public void testDefaultValue()

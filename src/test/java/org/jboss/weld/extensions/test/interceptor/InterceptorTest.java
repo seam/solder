@@ -16,25 +16,24 @@
  */
 package org.jboss.weld.extensions.test.interceptor;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.testharness.impl.packaging.Classes;
-import org.jboss.weld.extensions.interceptor.Interceptors;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
-@Artifact
-@Classes(Interceptors.class)
-public class InterceptorTest extends AbstractWeldTest
+//@Artifact
+//@Classes(Interceptors.class)
+public class InterceptorTest // extends AbstractWeldTest
 {
-   
+
    // Disabled, needs a snapshot of Weld to work
-   @Test(enabled=false)
+   // @Test(enabled=false)
+   @Test
    public void testInterceptorResolvable()
    {
-      assert getReference(Interceptors.class).isInterceptorEnabled(FooInterceptor.class);
+      // assert
+      // getReference(Interceptors.class).isInterceptorEnabled(FooInterceptor.class);
       // Waiting on WELD-503
-    //  assert !getReference(Interceptors.class).isInterceptorEnabled(BarInterceptor.class);
-      
+      // assert
+      // !getReference(Interceptors.class).isInterceptorEnabled(BarInterceptor.class);
+      //
    }
 
 }

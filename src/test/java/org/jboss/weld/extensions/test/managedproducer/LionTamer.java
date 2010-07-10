@@ -1,10 +1,9 @@
 package org.jboss.weld.extensions.test.managedproducer;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 import org.jboss.weld.extensions.managedproducer.ManagedProducer;
-
-import com.google.inject.name.Named;
 
 /*
  * JBoss, Home of Professional Open Source

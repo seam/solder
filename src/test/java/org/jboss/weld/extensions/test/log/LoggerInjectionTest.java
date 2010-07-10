@@ -17,37 +17,57 @@
 
 package org.jboss.weld.extensions.test.log;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.testharness.impl.packaging.Classes;
-import org.jboss.weld.test.AbstractWeldTest;
+import javax.inject.Inject;
+
+import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
+import org.jboss.weld.extensions.log.Category;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.impl.TestLoggerFactory;
-import org.testng.annotations.Test;
 
 /**
  * All the tests related to the @Logger binding type and injection.
  * 
  * @author David Allen
  */
-@Artifact
-@Classes(packages = { "org.jboss.weld.extensions.log" })
-public class LoggerInjectionTest extends AbstractWeldTest
+@RunWith(Arquillian.class)
+public class LoggerInjectionTest
 {
+   @Inject
+   Sparrow sparrow;
+
+   @Inject
+   Finch finch;
+
+   @Deployment
+   public static Archive<?> deploy()
+   {
+      JavaArchive a = ShrinkWrap.create("test.jar", JavaArchive.class);
+      a.addPackage(LoggerInjectionTest.class.getPackage());
+      a.addPackage(Category.class.getPackage());
+      a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
+      return a;
+   }
+
    @Test
    public void testBasicLogInjection()
    {
-      Sparrow bird = getReference(Sparrow.class);
       TestLoggerFactory.INSTANCE.getLogger("").reset();
-      bird.generateLogMessage();
+      sparrow.generateLogMessage();
       assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
       assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Sparrow");
    }
-   
+
    @Test
    public void testCategorySpecifiedLogger()
    {
-      Finch bird = getReference(Finch.class);
       TestLoggerFactory.INSTANCE.getLogger("").reset();
-      bird.generateLogMessage();
+      finch.generateLogMessage();
       assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
       assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Finch");
    }

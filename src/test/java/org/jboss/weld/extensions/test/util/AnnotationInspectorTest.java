@@ -1,26 +1,41 @@
 package org.jboss.weld.extensions.test.util;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.weld.extensions.util.AnnotationInspector;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Inject;
 
-@Artifact
-public class AnnotationInspectorTest extends AbstractWeldTest
+import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.weld.extensions.util.AnnotationInspector;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(Arquillian.class)
+public class AnnotationInspectorTest
 {
-   
+   @Deployment
+   public static Archive<?> deploy()
+   {
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(AnnotationInspectorTest.class.getPackage());
+   }
+
+   @Inject
+   BeanManager beanManager;
+
    @Test
    public void testAnnotationOnElement() throws Exception
    {
-      assert AnnotationInspector.isAnnotationPresent(Animals.class.getMethod("dog"), Animal.class, false, getCurrentManager());
-      assert AnnotationInspector.getAnnotation(Animals.class.getMethod("dog"), Animal.class, false, getCurrentManager()).species().equals("Dog");
+      assert AnnotationInspector.isAnnotationPresent(Animals.class.getMethod("dog"), Animal.class, false, beanManager);
+      assert AnnotationInspector.getAnnotation(Animals.class.getMethod("dog"), Animal.class, false, beanManager).species().equals("Dog");
    }
-   
+
    @Test
    public void testAnnotationOnStereotype() throws Exception
    {
-      assert AnnotationInspector.isAnnotationPresent(Animals.class.getMethod("cat"), Animal.class, true, getCurrentManager());
-      assert AnnotationInspector.getAnnotation(Animals.class.getMethod("cat"), Animal.class, true, getCurrentManager()).species().equals("Cat");
+      assert AnnotationInspector.isAnnotationPresent(Animals.class.getMethod("cat"), Animal.class, true, beanManager);
+      assert AnnotationInspector.getAnnotation(Animals.class.getMethod("cat"), Animal.class, true, beanManager).species().equals("Cat");
    }
 
 }

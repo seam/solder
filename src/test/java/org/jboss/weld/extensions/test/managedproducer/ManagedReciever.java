@@ -22,10 +22,20 @@ public class ManagedReciever
 {
    @MPType("bean1")
    @Inject
-   ProducedInterface bean1;
+   private ProducedInterface bean1;
 
    @MPType("bean2")
    @Inject
-   ProducedInterface bean2;
+   private ProducedInterface bean2;
+
+   public ProducedInterface getBean1()
+   {
+      return bean1;
+   }
+
+   public ProducedInterface getBean2()
+   {
+      return bean2;
+   }
 
 }

@@ -16,26 +16,53 @@
  */
 package org.jboss.weld.extensions.test.managedproducer;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-@Artifact
-public class ManagedProducerTest extends AbstractWeldTest
+import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
+import org.jboss.weld.extensions.managedproducer.ManagedProducerExtension;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(Arquillian.class)
+public class ManagedProducerTest
 {
+
+   @Deployment
+   public static Archive<?> deploy()
+   {
+      JavaArchive a = ShrinkWrap.create("test.jar", JavaArchive.class);
+      a.addPackage(ManagedProducerTest.class.getPackage());
+      a.addPackage(ManagedProducerExtension.class.getPackage());
+      a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
+      return a;
+   }
+
+   @Inject
+   ManagedReciever bean;
+
+   @Inject
+   @Named("lion")
+   Lion lion;
+
+   @Inject
+   LionTamer lionTamer;
+
    @Test
    public void testManagedProducersInjectionPoint()
    {
-      ManagedReciever bean = getReference(ManagedReciever.class);
-      assert bean.bean1.getValue().equals("bean1") : " value: " + bean.bean1.getValue();
-      assert bean.bean2.getValue().equals("bean2") : " value: " + bean.bean1.getValue();
+      assert bean.getBean1().getValue().equals("bean1") : " value: " + bean.getBean1().getValue();
+      assert bean.getBean2().getValue().equals("bean2") : " value: " + bean.getBean2().getValue();
    }
 
    @Test
    public void testManagedProducers()
    {
-      Lion lion = getReference(Lion.class);
-      LionTamer lionTamer = getReference(LionTamer.class);
       assert lion.getName().equals("lion one");
       lionTamer.changeLion();
       assert lion.getName().equals("lion two");

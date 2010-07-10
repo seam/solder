@@ -24,21 +24,42 @@ import java.net.URL;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Inject;
 
-import org.jboss.testharness.impl.packaging.Artifact;
-import org.jboss.testharness.impl.packaging.Classes;
-import org.jboss.weld.test.AbstractWeldTest;
-import org.testng.annotations.Test;
+import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
+import org.jboss.weld.extensions.resourceLoader.ResourceProvider;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@Artifact
-@Classes(packages = {"org.jboss.weld.extensions.resourceLoader"})
-public class ResourceLoaderTest extends AbstractWeldTest
+@RunWith(Arquillian.class)
+public class ResourceLoaderTest
 {
+   @Deployment
+   public static Archive<?> deploy()
+   {
+      JavaArchive a = ShrinkWrap.create("test.jar", JavaArchive.class);
+      a.addPackage(ResourceLoaderTest.class.getPackage());
+      a.addPackage(ResourceProvider.class.getPackage());
+      a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
+      return a;
+   }
+
+   @Inject
+   ResourceClient resourceClient;
+
+   @Inject
+   BeanManager beanManager;
 
    @Test
    public void testLoadsStream() throws Throwable
    {
-      InputStream stream = getReference(ResourceClient.class).getResourceProvider().loadResourceStream("com/acme/foo1");
+      InputStream stream = resourceClient.getResourceProvider().loadResourceStream("com/acme/foo1");
       assert stream != null;
       assert stream.available() > 0;
       InputStreamReader reader = new InputStreamReader(stream);
@@ -46,11 +67,11 @@ public class ResourceLoaderTest extends AbstractWeldTest
       reader.read(chars, 0, 4);
       assert new String(chars).equals("foo1");
    }
-   
+
    @Test
    public void testLoadsURLs() throws Throwable
    {
-      URL url = getReference(ResourceClient.class).getResourceProvider().loadResource("com/acme/foo1");
+      URL url = resourceClient.getResourceProvider().loadResource("com/acme/foo1");
       assert url != null;
       InputStream stream = url.openStream();
       assert stream.available() > 0;
@@ -60,11 +81,11 @@ public class ResourceLoaderTest extends AbstractWeldTest
       assert new String(chars).equals("foo1");
       assert url.getFile().endsWith("/com/acme/foo1");
    }
-   
+
    @Test
    public void testInitialSlashIgnored() throws Throwable
    {
-      URL url = getReference(ResourceClient.class).getResourceProvider().loadResource("/com/acme/foo1");
+      URL url = resourceClient.getResourceProvider().loadResource("/com/acme/foo1");
       assert url != null;
       InputStream stream = url.openStream();
       assert stream.available() > 0;
@@ -74,12 +95,12 @@ public class ResourceLoaderTest extends AbstractWeldTest
       assert new String(chars).equals("foo1");
       assert url.getFile().endsWith("com/acme/foo1");
    }
-   
+
    @Test
    public void testStreamsAreCleanedUp() throws Throwable
    {
-      Bean<ResourceClient> bean = getBean(ResourceClient.class);
-      CreationalContext<ResourceClient> creationalContext = getCurrentManager().createCreationalContext(bean);
+      Bean<ResourceClient> bean = (Bean) beanManager.getBeans(ResourceClient.class).iterator().next();
+      CreationalContext<ResourceClient> creationalContext = beanManager.createCreationalContext(bean);
       ResourceClient client = bean.create(creationalContext);
       InputStream stream = client.getResourceProvider().loadResourceStream("/com/acme/foo1");
       assert stream.available() > 0;
@@ -88,15 +109,15 @@ public class ResourceLoaderTest extends AbstractWeldTest
       reader.read(chars, 0, 4);
       assert new String(chars).equals("foo1");
       bean.destroy(client, creationalContext);
-      try 
+      try
       {
          stream.available();
          assert false;
       }
-      catch (IOException e) 
+      catch (IOException e)
       {
          // Expected
       }
    }
-   
+
 }
