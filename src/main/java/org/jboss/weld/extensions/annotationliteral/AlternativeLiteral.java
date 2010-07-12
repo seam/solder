@@ -26,5 +26,7 @@ import javax.enterprise.util.AnnotationLiteral;
  */
 public class AlternativeLiteral extends AnnotationLiteral<Alternative> implements Alternative
 {
+   private static final long serialVersionUID = -6775559481124288825L;
 
+   public static final AlternativeLiteral INSTANCE = new AlternativeLiteral();
 }

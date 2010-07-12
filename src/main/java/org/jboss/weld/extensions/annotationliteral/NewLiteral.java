@@ -26,6 +26,8 @@ import javax.enterprise.util.AnnotationLiteral;
  */
 public class NewLiteral extends AnnotationLiteral<New> implements New
 {
+   private static final long serialVersionUID = 1415328933091019248L;
+
    private final Class<?> value;
 
    public NewLiteral(Class<?> value)
@@ -36,6 +38,11 @@ public class NewLiteral extends AnnotationLiteral<New> implements New
    public Class<?> value()
    {
       return value;
+   }
+
+   public static NewLiteral of(Class<?> value)
+   {
+      return new NewLiteral(value);
    }
 
 }

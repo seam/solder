@@ -28,6 +28,7 @@ import javax.enterprise.util.AnnotationLiteral;
  */
 public class ObservesLiteral extends AnnotationLiteral<Observes> implements Observes
 {
+   private static final long serialVersionUID = 338211360805208962L;
    private final TransactionPhase during;
    private final Reception notifyObserver;
 
@@ -45,6 +46,11 @@ public class ObservesLiteral extends AnnotationLiteral<Observes> implements Obse
    public Reception notifyObserver()
    {
       return notifyObserver;
+   }
+
+   public static ObservesLiteral of(TransactionPhase during, Reception notifyObserver)
+   {
+      return new ObservesLiteral(during, notifyObserver);
    }
 
 }

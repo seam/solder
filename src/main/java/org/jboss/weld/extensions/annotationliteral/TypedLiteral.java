@@ -26,6 +26,8 @@ import javax.enterprise.util.AnnotationLiteral;
  */
 public class TypedLiteral extends AnnotationLiteral<Typed> implements Typed
 {
+   private static final long serialVersionUID = -5651065504705966480L;
+
    private final Class<?>[] value;
 
    public TypedLiteral(Class<?>[] value)
@@ -36,6 +38,11 @@ public class TypedLiteral extends AnnotationLiteral<Typed> implements Typed
    public Class<?>[] value()
    {
       return value;
+   }
+
+   public static TypedLiteral of(Class<?>[] value)
+   {
+      return new TypedLiteral(value);
    }
 
 }

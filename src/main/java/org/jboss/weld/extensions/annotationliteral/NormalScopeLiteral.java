@@ -27,6 +27,8 @@ import javax.enterprise.util.AnnotationLiteral;
 public class NormalScopeLiteral extends AnnotationLiteral<NormalScope> implements NormalScope
 {
 
+   private static final long serialVersionUID = -7952939796914825978L;
+
    private final boolean passivating;
 
    public NormalScopeLiteral(boolean passivating)
@@ -39,4 +41,16 @@ public class NormalScopeLiteral extends AnnotationLiteral<NormalScope> implement
       return passivating;
    }
 
+   public static NormalScopeLiteral of(boolean passivating)
+   {
+      if (passivating)
+      {
+         return PASSIVATING_INSTANCE;
+      }
+      return NON_PASSIVATING_INSTANCE;
+   }
+
+   private final static NormalScopeLiteral PASSIVATING_INSTANCE = new NormalScopeLiteral(true);
+
+   private final static NormalScopeLiteral NON_PASSIVATING_INSTANCE = new NormalScopeLiteral(false);
 }

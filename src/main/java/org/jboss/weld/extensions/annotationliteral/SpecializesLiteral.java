@@ -26,5 +26,7 @@ import javax.enterprise.util.AnnotationLiteral;
  */
 public class SpecializesLiteral extends AnnotationLiteral<Specializes> implements Specializes
 {
+   private static final long serialVersionUID = -4047999133165777219L;
 
+   public static final SpecializesLiteral INSTANCE = new SpecializesLiteral();
 }
