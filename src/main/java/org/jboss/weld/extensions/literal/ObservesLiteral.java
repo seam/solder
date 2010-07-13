@@ -14,9 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
+import javax.enterprise.event.TransactionPhase;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,9 +26,26 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class SessionScopedLiteral extends AnnotationLiteral<SessionScoped> implements SessionScoped
+public class ObservesLiteral extends AnnotationLiteral<Observes> implements Observes
 {
-   private static final long serialVersionUID = 6685344750969701818L;
+   private static final long serialVersionUID = 338211360805208962L;
+   private final TransactionPhase during;
+   private final Reception notifyObserver;
 
-   public static final SessionScopedLiteral INSTANCE = new SessionScopedLiteral();
+   public ObservesLiteral(TransactionPhase during, Reception notifyObserver)
+   {
+      this.during = during;
+      this.notifyObserver = notifyObserver;
+   }
+
+   public TransactionPhase during()
+   {
+      return during;
+   }
+
+   public Reception notifyObserver()
+   {
+      return notifyObserver;
+   }
+
 }

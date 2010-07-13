@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.inject.Stereotype;
 import javax.enterprise.util.AnnotationLiteral;
+import javax.enterprise.util.Nonbinding;
 
 /**
  * 
  * @author Stuart Douglas
  * 
  */
-public class StereotypeLiteral extends AnnotationLiteral<Stereotype> implements Stereotype
+public class NonbindingLiteral extends AnnotationLiteral<Nonbinding> implements Nonbinding
 {
-   private static final long serialVersionUID = 6496685599507738216L;
+   private static final long serialVersionUID = -7557062245283879531L;
 
-   public static final StereotypeLiteral INSTANCE = new StereotypeLiteral();
+   public static final Nonbinding INSTANCE = new NonbindingLiteral();
 }

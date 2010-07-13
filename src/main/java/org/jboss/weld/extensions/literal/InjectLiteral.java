@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Inject;
 
 /**
  * 
  * @author Stuart Douglas
  * 
  */
-public class ConversationScopedLiteral extends AnnotationLiteral<ConversationScoped> implements ConversationScoped
+public class InjectLiteral extends AnnotationLiteral<Inject> implements Inject
 {
-   private static final long serialVersionUID = 5401967809387903628L;
+   private static final long serialVersionUID = -5547537708250537848L;
 
-   public static final ConversationScopedLiteral INSTANCE = new ConversationScopedLiteral();
+   public static final Inject INSTANCE = new InjectLiteral();
 }

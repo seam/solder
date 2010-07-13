@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.inject.Produces;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,9 +24,9 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class ProducesLiteral extends AnnotationLiteral<Produces> implements Produces
+public class DependentLiteral extends AnnotationLiteral<Dependent> implements Dependent
 {
-   private static final long serialVersionUID = -469820656132063897L;
+   private static final long serialVersionUID = 5192230580203842740L;
 
-   public static final ProducesLiteral INSTANCE = new ProducesLiteral();
+   public static final Dependent INSTANCE = new DependentLiteral();
 }

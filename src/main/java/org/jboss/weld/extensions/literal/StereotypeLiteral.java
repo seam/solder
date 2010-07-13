@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Stereotype;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,9 +24,9 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class DefaultLiteral extends AnnotationLiteral<Default> implements Default
+public class StereotypeLiteral extends AnnotationLiteral<Stereotype> implements Stereotype
 {
-   private static final long serialVersionUID = -8137340248362361317L;
+   private static final long serialVersionUID = 6496685599507738216L;
 
-   public static final DefaultLiteral INSTANCE = new DefaultLiteral();
+   public static final Stereotype INSTANCE = new StereotypeLiteral();
 }

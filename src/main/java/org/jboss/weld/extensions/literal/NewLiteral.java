@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.decorator.Delegate;
+import javax.enterprise.inject.New;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,9 +24,20 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class DelegateLiteral extends AnnotationLiteral<Delegate> implements Delegate
+public class NewLiteral extends AnnotationLiteral<New> implements New
 {
-   private static final long serialVersionUID = -533933286126296678L;
+   private static final long serialVersionUID = 1415328933091019248L;
 
-   public static final DelegateLiteral INSTANCE = new DelegateLiteral();
+   private final Class<?> value;
+
+   public NewLiteral(Class<?> value)
+   {
+      this.value = value;
+   }
+
+   public Class<?> value()
+   {
+      return value;
+   }
+
 }

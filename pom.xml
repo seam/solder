@@ -8,7 +8,7 @@
    <parent>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-parent</artifactId>
-      <version>10</version>
+      <version>12</version>
    </parent>
 
    <name>Weld Extensions</name>
@@ -88,12 +88,6 @@
    <dependencyManagement>
       <dependencies>
       
-         <dependency>
-           <groupId>javax.enterprise</groupId>
-           <artifactId>cdi-api</artifactId>
-           <version>${weld.api.version}</version>
-        </dependency>
-        
       	<dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-api-bom</artifactId>
@@ -102,14 +96,6 @@
             <scope>import</scope>
          </dependency>
       
-         <dependency>
-            <groupId>org.jboss.weld</groupId>
-            <artifactId>weld-api-bom</artifactId>
-            <version>${weld.api.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
-         
          <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-core-bom</artifactId>
@@ -154,15 +140,10 @@
    <dependencies>
 
       <dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-	  </dependency>
+         <groupId>javassist</groupId>
+         <artifactId>javassist</artifactId>
+      </dependency>
 		
-      <dependency>
-           <groupId>javax.enterprise</groupId>
-           <artifactId>cdi-api</artifactId>
-      </dependency>   
-         
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>

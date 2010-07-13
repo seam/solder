@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.context.NormalScope;
+import javax.enterprise.inject.Typed;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,33 +24,19 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class NormalScopeLiteral extends AnnotationLiteral<NormalScope> implements NormalScope
+public class TypedLiteral extends AnnotationLiteral<Typed> implements Typed
 {
+   private static final long serialVersionUID = -5651065504705966480L;
 
-   private static final long serialVersionUID = -7952939796914825978L;
+   private final Class<?>[] value;
 
-   private final boolean passivating;
-
-   public NormalScopeLiteral(boolean passivating)
+   public TypedLiteral(Class<?>[] value)
    {
-      this.passivating = passivating;
+      this.value = value;
    }
 
-   public boolean passivating()
+   public Class<?>[] value()
    {
-      return passivating;
+      return value;
    }
-
-   public static NormalScopeLiteral of(boolean passivating)
-   {
-      if (passivating)
-      {
-         return PASSIVATING_INSTANCE;
-      }
-      return NON_PASSIVATING_INSTANCE;
-   }
-
-   private final static NormalScopeLiteral PASSIVATING_INSTANCE = new NormalScopeLiteral(true);
-
-   private final static NormalScopeLiteral NON_PASSIVATING_INSTANCE = new NormalScopeLiteral(false);
 }

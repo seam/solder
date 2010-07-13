@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Default;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,9 +24,9 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class AnyLiteral extends AnnotationLiteral<Any> implements Any
+public class DefaultLiteral extends AnnotationLiteral<Default> implements Default
 {
-   private static final long serialVersionUID = -6858406907917381581L;
-   
-   public static final AnyLiteral INSTANCE = new AnyLiteral();
+   private static final long serialVersionUID = -8137340248362361317L;
+
+   public static final Default INSTANCE = new DefaultLiteral();
 }

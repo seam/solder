@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.util.AnnotationLiteral;
-import javax.enterprise.util.Nonbinding;
 
 /**
  * 
  * @author Stuart Douglas
  * 
  */
-public class NonbindingLiteral extends AnnotationLiteral<Nonbinding> implements Nonbinding
+public class ApplicationScopedLiteral extends AnnotationLiteral<ApplicationScoped> implements ApplicationScoped
 {
-   private static final long serialVersionUID = -7557062245283879531L;
+   private static final long serialVersionUID = 771021755170432223L;
 
-   public static final NonbindingLiteral INSTANCE = new NonbindingLiteral();
+   public static final ApplicationScoped INSTANCE = new ApplicationScopedLiteral();
 }

@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.inject.Model;
+import javax.decorator.Decorator;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,9 +24,9 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class ModelLiteral extends AnnotationLiteral<Model> implements Model
+public class DecoratorLiteral extends AnnotationLiteral<Decorator> implements Decorator
 {
-   private static final long serialVersionUID = -5353345766867563825L;
+   private static final long serialVersionUID = -1928591929455611481L;
 
-   public static final DisposesLiteral INSTANCE = new DisposesLiteral();
+   public static final Decorator INSTANCE = new DecoratorLiteral();
 }

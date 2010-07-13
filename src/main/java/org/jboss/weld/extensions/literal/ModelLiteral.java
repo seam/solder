@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Model;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,9 +24,9 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class RequestScopedLiteral extends AnnotationLiteral<RequestScoped> implements RequestScoped
+public class ModelLiteral extends AnnotationLiteral<Model> implements Model
 {
-   private static final long serialVersionUID = -5604316881255438090L;
+   private static final long serialVersionUID = -5353345766867563825L;
 
-   public static final RequestScopedLiteral INSTANCE = new RequestScopedLiteral();
+   public static final Model INSTANCE = new ModelLiteral();
 }

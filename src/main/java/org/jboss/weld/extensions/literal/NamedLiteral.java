@@ -14,19 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.inject.Alternative;
 import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Named;
 
 /**
  * 
  * @author Stuart Douglas
  * 
  */
-public class AlternativeLiteral extends AnnotationLiteral<Alternative> implements Alternative
+public class NamedLiteral extends AnnotationLiteral<Named> implements Named
 {
-   private static final long serialVersionUID = -6775559481124288825L;
 
-   public static final AlternativeLiteral INSTANCE = new AlternativeLiteral();
+   private static final long serialVersionUID = 6678418208030413302L;
+
+   private final String value;
+
+   public NamedLiteral(String value)
+   {
+      this.value = value;
+   }
+
+   public String value()
+   {
+      return value;
+   }
+
 }

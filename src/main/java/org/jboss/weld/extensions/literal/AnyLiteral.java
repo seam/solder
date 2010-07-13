@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
+import javax.enterprise.inject.Any;
 import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Inject;
 
 /**
  * 
  * @author Stuart Douglas
  * 
  */
-public class InjectLiteral extends AnnotationLiteral<Inject> implements Inject
+public class AnyLiteral extends AnnotationLiteral<Any> implements Any
 {
-   private static final long serialVersionUID = -5547537708250537848L;
-
-   public static final DisposesLiteral INSTANCE = new DisposesLiteral();
+   private static final long serialVersionUID = -6858406907917381581L;
+   
+   public static final Any INSTANCE = new AnyLiteral();
 }

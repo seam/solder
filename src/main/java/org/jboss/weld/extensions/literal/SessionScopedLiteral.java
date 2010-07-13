@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,9 +24,9 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class ApplicationScopedLiteral extends AnnotationLiteral<ApplicationScoped> implements ApplicationScoped
+public class SessionScopedLiteral extends AnnotationLiteral<SessionScoped> implements SessionScoped
 {
-   private static final long serialVersionUID = 771021755170432223L;
+   private static final long serialVersionUID = 6685344750969701818L;
 
-   public static final ApplicationScopedLiteral INSTANCE = new ApplicationScopedLiteral();
+   public static final SessionScoped INSTANCE = new SessionScopedLiteral();
 }

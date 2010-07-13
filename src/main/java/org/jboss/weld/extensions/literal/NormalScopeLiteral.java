@@ -14,11 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
-import javax.enterprise.event.TransactionPhase;
+import javax.enterprise.context.NormalScope;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -26,31 +24,24 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class ObservesLiteral extends AnnotationLiteral<Observes> implements Observes
+public class NormalScopeLiteral extends AnnotationLiteral<NormalScope> implements NormalScope
 {
-   private static final long serialVersionUID = 338211360805208962L;
-   private final TransactionPhase during;
-   private final Reception notifyObserver;
 
-   public ObservesLiteral(TransactionPhase during, Reception notifyObserver)
+   private static final long serialVersionUID = -7952939796914825978L;
+
+   private final boolean passivating;
+
+   private NormalScopeLiteral(boolean passivating)
    {
-      this.during = during;
-      this.notifyObserver = notifyObserver;
+      this.passivating = passivating;
    }
 
-   public TransactionPhase during()
+   public boolean passivating()
    {
-      return during;
+      return passivating;
    }
 
-   public Reception notifyObserver()
-   {
-      return notifyObserver;
-   }
+   public final static NormalScope PASSIVATING_INSTANCE = new NormalScopeLiteral(true);
 
-   public static ObservesLiteral of(TransactionPhase during, Reception notifyObserver)
-   {
-      return new ObservesLiteral(during, notifyObserver);
-   }
-
+   public final static NormalScope NON_PASSIVATING_INSTANCE = new NormalScopeLiteral(false);
 }

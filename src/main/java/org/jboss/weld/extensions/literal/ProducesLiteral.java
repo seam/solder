@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotationliteral;
+package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.inject.New;
+import javax.enterprise.inject.Produces;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
@@ -24,25 +24,9 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas
  * 
  */
-public class NewLiteral extends AnnotationLiteral<New> implements New
+public class ProducesLiteral extends AnnotationLiteral<Produces> implements Produces
 {
-   private static final long serialVersionUID = 1415328933091019248L;
+   private static final long serialVersionUID = -469820656132063897L;
 
-   private final Class<?> value;
-
-   public NewLiteral(Class<?> value)
-   {
-      this.value = value;
-   }
-
-   public Class<?> value()
-   {
-      return value;
-   }
-
-   public static NewLiteral of(Class<?> value)
-   {
-      return new NewLiteral(value);
-   }
-
+   public static final Produces INSTANCE = new ProducesLiteral();
 }
