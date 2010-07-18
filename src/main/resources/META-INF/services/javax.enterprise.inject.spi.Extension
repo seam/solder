@@ -5,3 +5,4 @@ org.jboss.weld.extensions.core.CoreExtension
 org.jboss.weld.extensions.interceptor.InterceptorExtension
 org.jboss.weld.extensions.managedproducer.ManagedProducerExtension
 org.jboss.weld.extensions.autoproxy.AutoProxyExtension
+org.jboss.weld.extensions.defaultbean.DefaultBeanExtension
