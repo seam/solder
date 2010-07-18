@@ -31,6 +31,8 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessBean;
 
 import org.jboss.weld.extensions.literal.DefaultLiteral;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This extension allows you to register a 'Default Bean' for a given type and
@@ -53,6 +55,8 @@ import org.jboss.weld.extensions.literal.DefaultLiteral;
  */
 public class DefaultBeanExtension implements Extension
 {
+
+   Logger log = LoggerFactory.getLogger(DefaultBeanExtension.class);
 
    private static final Set<DefaultBeanDefinition> beans = new HashSet<DefaultBeanDefinition>();
 
@@ -80,6 +84,7 @@ public class DefaultBeanExtension implements Extension
          DefaultBeanDefinition definition = it.next();
          if (definition.matches(event.getBean()))
          {
+            log.info("Preventing install of default bean " + definition.getDefaultBean());
             it.remove();
          }
       }
@@ -89,6 +94,7 @@ public class DefaultBeanExtension implements Extension
    {
       for (DefaultBeanDefinition d : beans)
       {
+         log.info("Installing default bean " + d.getDefaultBean());
          event.addBean(d.getDefaultBean());
       }
    }
