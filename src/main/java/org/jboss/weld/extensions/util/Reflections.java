@@ -36,8 +36,10 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class Reflections
 {
-   
-   private Reflections() {}
+
+   private Reflections()
+   {
+   }
 
    public static Set<Field> getFields(Class<?> clazz)
    {
@@ -71,7 +73,7 @@ public class Reflections
       }
       return null;
    }
-   
+
    public static <X> AnnotatedField<? super X> getField(AnnotatedType<X> annotatedType, Field field)
    {
       for (AnnotatedField<? super X> annotatedField : annotatedType.getFields())
@@ -83,7 +85,7 @@ public class Reflections
       }
       return null;
    }
-   
+
    public static Set<Annotation> getAnnotationsWithMetatype(Set<Annotation> annotations, Class<? extends Annotation> metaAnnotationType)
    {
       Set<Annotation> set = new HashSet<Annotation>();
@@ -109,7 +111,6 @@ public class Reflections
       }
       return set;
    }
-
 
    public static boolean methodExists(Class<?> parent, String name)
    {
@@ -193,7 +194,7 @@ public class Reflections
       }
       return ret;
    }
-   
+
    public static Class<?> getMemberType(Member member)
    {
       if (member instanceof Field)
@@ -213,5 +214,17 @@ public class Reflections
          throw new UnsupportedOperationException("Cannot operate on a member of type " + member.getClass());
       }
    }
-   
+
+   public static Class classForName(String name) throws ClassNotFoundException
+   {
+      try
+      {
+         return Thread.currentThread().getContextClassLoader().loadClass(name);
+      }
+      catch (Exception e)
+      {
+         return Class.forName(name);
+      }
+   }
+
 }
