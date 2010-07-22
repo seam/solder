@@ -61,12 +61,16 @@ public class BeanBuilder<T>
       this.type = type;
       this.beanManager = beanManager;
    }
-   
+
    public BeanBuilder<T> defineBeanFromAnnotatedType()
    {
       if (!type.getJavaClass().isInterface())
       {
          this.injectionTarget = beanManager.createInjectionTarget(type);
+      }
+      else
+      {
+         this.injectionTarget = new DummyInjectionTarget<T>();
       }
       this.qualifiers = new HashSet<Annotation>();
       this.stereotypes = new HashSet<Class<? extends Annotation>>();
@@ -136,6 +140,7 @@ public class BeanBuilder<T>
       this.injectionTarget = injectionTarget;
       return this;
    }
+
    public Set<Annotation> getQualifiers()
    {
       return qualifiers;
