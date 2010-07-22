@@ -60,6 +60,8 @@ public class DefaultBeanExtension implements Extension
 
    private static final Set<DefaultBeanDefinition> beans = new HashSet<DefaultBeanDefinition>();
 
+   private boolean beanDiscoveryOver = false;
+
    /**
     * Adds a default bean with the {@link Default} qualifier
     */
@@ -78,6 +80,10 @@ public class DefaultBeanExtension implements Extension
 
    public void processBean(@Observes ProcessBean<?> event)
    {
+      if (beanDiscoveryOver)
+      {
+         return;
+      }
       Iterator<DefaultBeanDefinition> it = beans.iterator();
       while (it.hasNext())
       {
@@ -92,6 +98,7 @@ public class DefaultBeanExtension implements Extension
 
    public void afterBeanDiscovery(@Observes AfterBeanDiscovery event)
    {
+      beanDiscoveryOver = true;
       for (DefaultBeanDefinition d : beans)
       {
          log.info("Installing default bean " + d.getDefaultBean());
