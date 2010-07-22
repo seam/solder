@@ -227,4 +227,23 @@ public class Reflections
       }
    }
 
+   public static Object invokeAndWrap(Method method, Object target, Object... args)
+   {
+      try
+      {
+         return method.invoke(target, args);
+      }
+      catch (Exception e)
+      {
+         if (e instanceof RuntimeException)
+         {
+            throw (RuntimeException) e;
+         }
+         else
+         {
+            throw new RuntimeException("exception invoking: " + method.getName(), e);
+         }
+      }
+   }
+
 }
