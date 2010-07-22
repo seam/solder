@@ -24,6 +24,8 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
+import org.jboss.weld.extensions.literal.DefaultLiteral;
+
 /**
  * Utility class to resolve and acquire references to Beans
  * 
@@ -55,6 +57,26 @@ public class BeanResolver
    }
 
    /**
+    * Resolves a bean with the qualifier @Default
+    * 
+    */
+   public static Bean<?> resolveDefaultBean(Type beanType, BeanManager manager) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   {
+      Annotation[] qualifiers = new Annotation[1];
+      qualifiers[0] = DefaultLiteral.INSTANCE;
+      Set<Bean<?>> beans = manager.getBeans(beanType, qualifiers);
+      if (beans.size() == 0)
+      {
+         throw new BeanNotFoundException(beanType, qualifiers);
+      }
+      if (beans.size() != 1)
+      {
+         throw new AmbiguousBeanException(beanType, qualifiers, beans);
+      }
+      return beans.iterator().next();
+   }
+
+   /**
     * gets a reference to a bean with the given type and qualifiers
     */
    public static Object getReference(Type beanType, Annotation[] qualifiers, BeanManager manager) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
@@ -71,4 +93,23 @@ public class BeanResolver
    {
       return (T) getReference((Type) beanType, qualifiers, manager);
    }
+
+   /**
+    * gets a reference to a bean with the given type and qualifier @Default
+    */
+   public static Object getDefaultReference(Type beanType, BeanManager manager) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   {
+      Bean<?> bean = resolveDefaultBean(beanType, manager);
+      CreationalContext<?> context = manager.createCreationalContext(bean);
+      return manager.getReference(bean, beanType, context);
+   }
+
+   /**
+    * gets a reference to a bean with the given type and qualifier @Default
+    */
+   public static <T> T getDefaultReference(Class<T> beanType, BeanManager manager) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   {
+      return (T) getDefaultReference((Type) beanType, manager);
+   }
+
 }
