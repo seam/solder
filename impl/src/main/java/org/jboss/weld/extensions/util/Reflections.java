@@ -217,11 +217,11 @@ public class Reflections
 
    public static Class classForName(String name) throws ClassNotFoundException
    {
-      try
+      if (Thread.currentThread().getContextClassLoader() != null)
       {
          return Thread.currentThread().getContextClassLoader().loadClass(name);
       }
-      catch (Exception e)
+      else
       {
          return Class.forName(name);
       }
