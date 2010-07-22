@@ -42,7 +42,7 @@ public class BeanResolver
     * Resolves a bean
     * 
     */
-   public static Bean<?> resolveBean(Type beanType, Annotation[] qualifiers, BeanManager manager) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   public static Bean<?> resolveBean(Type beanType, BeanManager manager, Annotation... qualifiers) throws AmbiguousBeanException, BeanNotFoundException
    {
       Set<Bean<?>> beans = manager.getBeans(beanType, qualifiers);
       if (beans.size() == 0)
@@ -60,7 +60,7 @@ public class BeanResolver
     * Resolves a bean with the qualifier @Default
     * 
     */
-   public static Bean<?> resolveDefaultBean(Type beanType, BeanManager manager) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   public static Bean<?> resolveDefaultBean(Type beanType, BeanManager manager) throws AmbiguousBeanException, BeanNotFoundException
    {
       Annotation[] qualifiers = new Annotation[1];
       qualifiers[0] = DefaultLiteral.INSTANCE;
@@ -79,9 +79,9 @@ public class BeanResolver
    /**
     * gets a reference to a bean with the given type and qualifiers
     */
-   public static Object getReference(Type beanType, BeanManager manager, Annotation... qualifiers) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   public static Object getReference(Type beanType, BeanManager manager, Annotation... qualifiers) throws AmbiguousBeanException, BeanNotFoundException
    {
-      Bean<?> bean = resolveBean(beanType, qualifiers, manager);
+      Bean<?> bean = resolveBean(beanType, manager, qualifiers);
       CreationalContext<?> context = manager.createCreationalContext(bean);
       return manager.getReference(bean, beanType, context);
    }
@@ -89,7 +89,7 @@ public class BeanResolver
    /**
     * gets a reference to a bean with the given type and qualifiers
     */
-   public static <T> T getReference(Class<T> beanType, BeanManager manager, Annotation... qualifiers) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   public static <T> T getReference(Class<T> beanType, BeanManager manager, Annotation... qualifiers) throws AmbiguousBeanException, BeanNotFoundException
    {
       return (T) getReference((Type) beanType, manager, qualifiers);
    }
@@ -97,7 +97,7 @@ public class BeanResolver
    /**
     * gets a reference to a bean with the given type and qualifier @Default
     */
-   public static Object getDefaultReference(Type beanType, BeanManager manager) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   public static Object getDefaultReference(Type beanType, BeanManager manager) throws AmbiguousBeanException, BeanNotFoundException
    {
       Bean<?> bean = resolveDefaultBean(beanType, manager);
       CreationalContext<?> context = manager.createCreationalContext(bean);
@@ -107,7 +107,7 @@ public class BeanResolver
    /**
     * gets a reference to a bean with the given type and qualifier @Default
     */
-   public static <T> T getDefaultReference(Class<T> beanType, BeanManager manager) throws AmbiguousBeanException, BeanResolutionException, BeanNotFoundException
+   public static <T> T getDefaultReference(Class<T> beanType, BeanManager manager) throws AmbiguousBeanException, BeanNotFoundException
    {
       return (T) getDefaultReference((Type) beanType, manager);
    }
