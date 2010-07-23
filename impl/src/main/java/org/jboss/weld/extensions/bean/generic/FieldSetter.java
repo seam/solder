@@ -17,9 +17,9 @@
 package org.jboss.weld.extensions.bean.generic;
 
 import java.lang.reflect.Field;
-import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.UnsatisfiedResolutionException;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
@@ -45,20 +45,15 @@ public class FieldSetter
 
    public void set(Object instance, CreationalContext<?> ctx)
    {
-      Set<Bean<?>> beans = beanManager.getBeans(field.getType(), qualifier);
-      if (beans.size() == 0)
+      Bean<?> bean = beanManager.resolve(beanManager.getBeans(field.getType(), qualifier));
+      if (bean == null)
       {
-         throw new RuntimeException("Could not resolve bean for Generic Producer field " + field.getDeclaringClass() + "." + field.getName() + " Type: " + field.getType() + " Qualifiers:" + qualifier);
+         throw new UnsatisfiedResolutionException("Could not resolve bean for Generic Producer field " + field.getDeclaringClass() + "." + field.getName() + " Type: " + field.getType() + " Qualifiers:" + qualifier);
       }
-      if (beans.size() > 1)
-      {
-         throw new RuntimeException("More than 1 bean resolved for Generic Producer field " + field.getDeclaringClass() + "." + field.getName());
-      }
-      Bean<?> bean = beans.iterator().next();
-      Object dep = beanManager.getReference(bean, field.getType(), ctx);
+      Object value = beanManager.getReference(bean, field.getType(), ctx);
       try
       {
-         field.set(instance, dep);
+         field.set(instance, value);
       }
       catch (IllegalArgumentException e)
       {
