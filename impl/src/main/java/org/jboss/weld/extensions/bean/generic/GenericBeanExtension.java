@@ -45,6 +45,7 @@ import javax.inject.Inject;
 
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.bean.BeanBuilder;
+import org.jboss.weld.extensions.util.Synthetic;
 import org.jboss.weld.extensions.util.properties.Properties;
 import org.jboss.weld.extensions.util.properties.Property;
 
@@ -65,19 +66,19 @@ class GenericBeanExtension implements Extension
    // A map of a generic annotation type to all instances of that type found on beans
    private final Map<Class<?>, Set<Annotation>> concreteGenerics;
    
-   private final SyntheticQualifierManager syntheticQualifierManager;
+   private final Synthetic.Provider syntheticProvider;
 
    GenericBeanExtension()
    {
       this.genericBeans = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
       this.producerFields = new HashMap<Class<?>, Map<Member, Annotation>>();
       this.concreteGenerics = new HashMap<Class<?>, Set<Annotation>>();
-      this.syntheticQualifierManager = new SyntheticQualifierManager();
+      this.syntheticProvider = new Synthetic.Provider("org.jboss.weld.extensions.bean.generic");
    }
 
    void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event)
    {
-      event.addQualifier(SyntheticQualifier.class);
+      event.addQualifier(Synthetic.class);
    }
 
    void processAnnotatedType(@Observes ProcessAnnotatedType<?> event)
@@ -160,7 +161,7 @@ class GenericBeanExtension implements Extension
             Property<Object> property = Properties.createProperty(field);
             setters.add(property);
          }
-         ProducerFieldInjectionTarget<T> it = new ProducerFieldInjectionTarget<T>(event.getInjectionTarget(), beanManager, setters, producers, syntheticQualifierManager);
+         ProducerFieldInjectionTarget<T> it = new ProducerFieldInjectionTarget<T>(event.getInjectionTarget(), beanManager, setters, producers, syntheticProvider);
          event.setInjectionTarget(it);
       }
       
@@ -189,7 +190,7 @@ class GenericBeanExtension implements Extension
 
    private <X> Bean<X> redefineType(AnnotatedType<X> at, Annotation conc, BeanManager beanManager)
    {
-      SyntheticQualifier newQualifier = syntheticQualifierManager.getQualifierForGeneric(conc);
+      Synthetic newQualifier = syntheticProvider.get(conc);
 
       AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(at).readAnnotationsFromUnderlyingType();
       builder.addToClass(newQualifier);

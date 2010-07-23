@@ -28,6 +28,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
 
 import org.jboss.weld.extensions.bean.ForwardingInjectionTarget;
+import org.jboss.weld.extensions.util.Synthetic;
 import org.jboss.weld.extensions.util.properties.Property;
 
 /**
@@ -44,15 +45,15 @@ public class ProducerFieldInjectionTarget<T> extends ForwardingInjectionTarget<T
    private final BeanManager beanManager;
    private final List<Property<Object>> properties;
    private final Map<Member, Annotation> producers;
-   private final SyntheticQualifierManager syntheticQualifierManager;
+   private final Synthetic.Provider syntheticProvider;
 
-   public ProducerFieldInjectionTarget(InjectionTarget<T> delegate, BeanManager beanManager, List<Property<Object>> properties, Map<Member, Annotation> producers, SyntheticQualifierManager syntheticQualifierManager)
+   public ProducerFieldInjectionTarget(InjectionTarget<T> delegate, BeanManager beanManager, List<Property<Object>> properties, Map<Member, Annotation> producers, Synthetic.Provider syntheticProvider)
    {
       this.delegate = delegate;
       this.beanManager = beanManager;
       this.properties = properties;
       this.producers = producers;
-      this.syntheticQualifierManager = syntheticQualifierManager;
+      this.syntheticProvider = syntheticProvider;
    }
    
    @Override
@@ -66,7 +67,7 @@ public class ProducerFieldInjectionTarget<T> extends ForwardingInjectionTarget<T
    {
       for (Property<Object> property: properties)
       {
-         SyntheticQualifier qualifier = syntheticQualifierManager.getQualifierForGeneric(producers.get(property.getMember()));
+         Synthetic qualifier = syntheticProvider.get(producers.get(property.getMember()));
          Bean<?> bean = beanManager.resolve(beanManager.getBeans(property.getBaseType(), qualifier));
          if (bean == null)
          {
