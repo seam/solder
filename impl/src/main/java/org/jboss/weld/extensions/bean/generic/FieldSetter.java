@@ -29,18 +29,18 @@ import javax.enterprise.inject.spi.BeanManager;
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  */
-public class FieldSetter
+class FieldSetter
 {
    private final Field field;
    private final SyntheticQualifier qualifier;
    private final BeanManager beanManager;
 
-   public FieldSetter(BeanManager beanManager, Field field, SyntheticQualifier qualifier)
+   FieldSetter(BeanManager beanManager, Field field, SyntheticQualifier qualifier)
    {
       this.field = field;
+      this.field.setAccessible(true);
       this.qualifier = qualifier;
       this.beanManager = beanManager;
-      field.setAccessible(true);
    }
 
    public void set(Object instance, CreationalContext<?> ctx)
