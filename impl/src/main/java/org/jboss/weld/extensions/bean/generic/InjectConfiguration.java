@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
- * synthetic qualifier that is added to Generic beans to signify configuration annotation injection points
+ * Annotation used to indicate {@link GenericConfiguration} injection points
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 

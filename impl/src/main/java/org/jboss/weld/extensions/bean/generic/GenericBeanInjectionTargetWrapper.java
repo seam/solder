@@ -16,13 +16,11 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
+import static org.jboss.weld.extensions.util.Reflections.getAllFields;
 import static org.jboss.weld.extensions.util.Reflections.getField;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.AnnotatedField;
@@ -40,18 +38,6 @@ import org.jboss.weld.extensions.bean.ForwardingInjectionTarget;
  */
 public class GenericBeanInjectionTargetWrapper<T> extends ForwardingInjectionTarget<T>
 {
-   
-   private static Set<Field> getFields(Class<?> clazz)
-   {
-      Set<Field> fields = new HashSet<Field>();
-      fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-      Class<?> superClass = clazz.getSuperclass();
-      if (superClass != Object.class)
-      {
-         fields.addAll(getFields(superClass));
-      }
-      return fields;
-   }
    
    private final InjectionTarget<T> delegate;
    private final Annotation annotation;
@@ -73,7 +59,7 @@ public class GenericBeanInjectionTargetWrapper<T> extends ForwardingInjectionTar
    @Override
    public void inject(T instance, CreationalContext<T> ctx)
    {
-      for (Field f : getFields(instance.getClass()))
+      for (Field f : getAllFields(instance.getClass()))
       {
 
          if (annotation.annotationType().isAssignableFrom(f.getType()))
