@@ -17,20 +17,20 @@
 package org.jboss.weld.extensions.bean.generic;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 
+import org.jboss.weld.extensions.bean.ForwardingInjectionTarget;
+
 /**
- * injection target wrapper used for beans that have generic producer fields
+ * {@link InjectionTarget} wrapper used for beans that have generic producer fields
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  * @param <T>
  */
-public class ProducerFieldInjectionTarget<T> implements InjectionTarget<T>
+public class ProducerFieldInjectionTarget<T> extends ForwardingInjectionTarget<T>
 {
    private final InjectionTarget<T> delegate;
    private final List<FieldSetter> fieldSetters;
@@ -40,39 +40,21 @@ public class ProducerFieldInjectionTarget<T> implements InjectionTarget<T>
       this.delegate = delegate;
       this.fieldSetters = fieldSetters;
    }
+   
+   @Override
+   protected InjectionTarget<T> delegate()
+   {
+      return delegate;
+   }
 
+   @Override
    public void inject(T instance, CreationalContext<T> ctx)
    {
       for (FieldSetter f : fieldSetters)
       {
          f.set(instance, ctx);
       }
-      delegate.inject(instance, ctx);
-   }
-
-   public void postConstruct(T instance)
-   {
-      delegate.postConstruct(instance);
-   }
-
-   public void preDestroy(T instance)
-   {
-      delegate.preDestroy(instance);
-   }
-
-   public void dispose(T instance)
-   {
-      delegate.dispose(instance);
-   }
-
-   public Set<InjectionPoint> getInjectionPoints()
-   {
-      return delegate.getInjectionPoints();
-   }
-
-   public T produce(CreationalContext<T> ctx)
-   {
-      return delegate.produce(ctx);
+      delegate().inject(instance, ctx);
    }
 
 }
