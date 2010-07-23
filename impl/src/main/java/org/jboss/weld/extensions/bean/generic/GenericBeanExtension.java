@@ -103,7 +103,7 @@ class GenericBeanExtension implements Extension
          {
             for (Annotation annotation : field.getAnnotations())
             {
-               if (annotation.annotationType().isAnnotationPresent(GenericAnnotation.class))
+               if (annotation.annotationType().isAnnotationPresent(GenericConfiguration.class))
                {
                   if (!producerFields.containsKey(type.getJavaClass()))
                   {
@@ -127,7 +127,7 @@ class GenericBeanExtension implements Extension
          {
             for (Annotation annotation : method.getAnnotations())
             {
-               if (annotation.annotationType().isAnnotationPresent(GenericAnnotation.class))
+               if (annotation.annotationType().isAnnotationPresent(GenericConfiguration.class))
                {
                   if (!producerFields.containsKey(type.getJavaClass()))
                   {

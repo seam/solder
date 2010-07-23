@@ -22,17 +22,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Must be applied to any annotation that is used as a value in @Generic, this
- * may not be needed in the future
- * 
- * TODO Remove
+ * A meta annotation used to indicate that the annotation is used for
+ * configuration of a generic bean
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.TYPE })
-public @interface GenericAnnotation
+public @interface GenericConfiguration
 {
 
 }
