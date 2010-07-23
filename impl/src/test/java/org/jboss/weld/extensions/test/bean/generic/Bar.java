@@ -33,11 +33,12 @@ public class Bar
    @Inject
    private Garply injectedGarply;
 
+   // A Garply with no @Inject
    private Garply garply;
 
-   public String getValue()
+   public Garply getInjectedGarply()
    {
-      return injectedGarply.value();
+      return injectedGarply;
    }
 
    public Garply getGarply()

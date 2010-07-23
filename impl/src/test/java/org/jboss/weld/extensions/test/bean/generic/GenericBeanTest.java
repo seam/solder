@@ -46,10 +46,19 @@ public class GenericBeanTest
    @Test
    public void testGeneric()
    {
-      assert baz1.getValue().equals("hello1");
-      assert baz2.getValue().equals("hello2");
-      assert baz1.getNoData() == null;
-      assert baz2.getNoData() == null;
-      assert baz2.getNormalBean() != null;
+      // Test that the generic injection wiring is working!
+      assert baz1.getBar() != null;
+      assert baz1.getBar().getInjectedGarply() != null;
+      assert baz1.getBar().getInjectedGarply().value().equals("hello2");
+      assert baz1.getBar().getInjectedGarply().value().equals("hello1");
+      assert baz2.getBar() != null;
+      assert baz2.getBar().getInjectedGarply() != null;
+      assert baz2.getBar().getInjectedGarply().value().equals("hello2");
+      // Check that this isn't affecting annotations on the generic bean without @Inject 
+      assert baz1.getBar().getGarply() == null;
+      assert baz2.getBar().getGarply() == null;
+      // Check that normal bean injection is working correctly!
+      assert baz2.getCorge() != null;
+      assert baz2.getCorge().getName() == "fred";
    }
 }

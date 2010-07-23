@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * A "normal" qualifier
+ * A qualifier
  * 
  * @author pmuir
  *

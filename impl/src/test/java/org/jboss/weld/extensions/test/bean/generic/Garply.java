@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 import org.jboss.weld.extensions.bean.generic.GenericAnnotation;
 
 /**
- * A "generic annotation"
+ * The annotation used to configure a generic bean
  * 
  * @author pmuir
  *

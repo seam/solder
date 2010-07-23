@@ -24,5 +24,10 @@ package org.jboss.weld.extensions.test.bean.generic;
  */
 public class Corge
 {
+   
+   public String getName()
+   {
+      return "fred";
+   }
 
 }

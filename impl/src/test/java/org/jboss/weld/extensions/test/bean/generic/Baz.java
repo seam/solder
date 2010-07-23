@@ -30,32 +30,20 @@ import org.jboss.weld.extensions.bean.generic.Generic;
 @Generic(Garply.class)
 public class Baz
 {
-   @Inject
-   public Baz(Foo args)
-   {
-      constArgs = args;
-   }
 
    @Inject
-   private Bar dep;
+   private Bar bar;
 
    @Inject
-   private Corge normalBean;
+   private Corge corge;
 
-   private Foo constArgs;
-
-   public String getValue()
+   public Bar getBar()
    {
-      return dep.getValue();
-   }
-
-   public Garply getNoData()
-   {
-      return dep.getGarply();
+      return bar;
    }
    
-   public Corge getNormalBean()
+   public Corge getCorge()
    {
-      return normalBean;
+      return corge;
    }
 }
