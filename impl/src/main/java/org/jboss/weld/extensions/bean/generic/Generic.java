@@ -16,20 +16,22 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a generic bean
+ * Defines a set of generic beans which can inject the specified configuration annotation
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * @author Pete Muir
  * 
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE })
-public @interface GenericBean
+@Retention( RUNTIME )
+@Target( TYPE )
+public @interface Generic
 {
    Class<?> value();
 }

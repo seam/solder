@@ -77,9 +77,9 @@ public class GenericExtension implements Extension
    public void processAnnotatedType(@Observes ProcessAnnotatedType<?> event)
    {
       AnnotatedType<?> type = event.getAnnotatedType();
-      if (type.isAnnotationPresent(GenericBean.class))
+      if (type.isAnnotationPresent(Generic.class))
       {
-         GenericBean an = type.getAnnotation(GenericBean.class);
+         Generic an = type.getAnnotation(Generic.class);
          if (!genericBeans.containsKey(an.value()))
          {
             genericBeans.put(an.value(), new HashSet<AnnotatedType<?>>());
