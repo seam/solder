@@ -57,10 +57,10 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
    
    private static class SerializationProxy
    {
-      private final Map<String, Object> valueMap;
+      private final Map<String, ?> valueMap;
       private final Class<? extends Annotation> annotationType;
       
-      private SerializationProxy(Map<String, Object> valueMap, Class<? extends Annotation> annotationType)
+      private SerializationProxy(Map<String, ?> valueMap, Class<? extends Annotation> annotationType)
       {
          this.valueMap = valueMap;
          this.annotationType = annotationType;
@@ -81,7 +81,7 @@ class AnnotationInvocationHandler implements InvocationHandler, Serializable
 
    private final Method[] members;
 
-   AnnotationInvocationHandler(Map<String, Object> values, Class<? extends Annotation> annotationType)
+   AnnotationInvocationHandler(Map<String, ?> values, Class<? extends Annotation> annotationType)
    {
       this.valueMap = new HashMap<String, Object>();
       valueMap.putAll(values);

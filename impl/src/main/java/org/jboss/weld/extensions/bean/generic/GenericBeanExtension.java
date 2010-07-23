@@ -17,8 +17,8 @@
 package org.jboss.weld.extensions.bean.generic;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,70 +45,99 @@ import javax.inject.Inject;
 
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.bean.BeanBuilder;
-import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
+import org.jboss.weld.extensions.util.properties.Properties;
+import org.jboss.weld.extensions.util.properties.Property;
 
-public class GenericExtension implements Extension
+/**
+ * Extension that wires in Generic Beans
+ * 
+ * @author Pete Muir
+ * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * 
+ */
+class GenericBeanExtension implements Extension
 {
 
-   private AnnotationInstanceProvider annotationProvider = new AnnotationInstanceProvider();
+   private final Map<Class<?>, Set<AnnotatedType<?>>> genericBeans;
 
-   private Map<Class<?>, Set<AnnotatedType<?>>> genericBeans = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
+   private final Map<Class<?>, Map<Member, Annotation>> producerFields;
 
-   private Map<Class<?>, Map<AnnotatedField<?>, Annotation>> producerFields = new HashMap<Class<?>, Map<AnnotatedField<?>, Annotation>>();
+   // A map of a generic annotation type to all instances of that type found on beans
+   private final Map<Class<?>, Set<Annotation>> concreteGenerics;
+   
+   private final SyntheticQualifierManager syntheticQualifierManager;
 
-   /**
-    * map of a generic annotation type to all instances of that type found on
-    * beans
-    */
-   private Map<Class<?>, Set<Annotation>> concreteGenerics = new HashMap<Class<?>, Set<Annotation>>();
+   GenericBeanExtension()
+   {
+      this.genericBeans = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
+      this.producerFields = new HashMap<Class<?>, Map<Member, Annotation>>();
+      this.concreteGenerics = new HashMap<Class<?>, Set<Annotation>>();
+      this.syntheticQualifierManager = new SyntheticQualifierManager();
+   }
 
-   /**
-    * Map of generic Annotation instance to a SyntheticQualifier
-    */
-   private Map<Annotation, SyntheticQualifier> qualifierMap = new HashMap<Annotation, SyntheticQualifier>();
-
-   long count = 0;
-
-   public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event)
+   void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event)
    {
       event.addQualifier(SyntheticQualifier.class);
    }
 
-   public void processAnnotatedType(@Observes ProcessAnnotatedType<?> event)
+   void processAnnotatedType(@Observes ProcessAnnotatedType<?> event)
    {
       AnnotatedType<?> type = event.getAnnotatedType();
       if (type.isAnnotationPresent(Generic.class))
       {
-         Generic an = type.getAnnotation(Generic.class);
-         if (!genericBeans.containsKey(an.value()))
+         Generic generic = type.getAnnotation(Generic.class);
+         if (!genericBeans.containsKey(generic.value()))
          {
-            genericBeans.put(an.value(), new HashSet<AnnotatedType<?>>());
+            genericBeans.put(generic.value(), new HashSet<AnnotatedType<?>>());
          }
-         genericBeans.get(an.value()).add(type);
+         genericBeans.get(generic.value()).add(type);
          // we will install (multiple copies of) this bean later
          event.veto();
 
       }
       // make note of any producer fields that produce generic beans
-      for (Object f : type.getFields())
+      for (AnnotatedField<?> field : type.getFields())
       {
-         AnnotatedField<?> field = (AnnotatedField<?>) f;
          if (field.isAnnotationPresent(Produces.class))
          {
-            for (Annotation a : field.getAnnotations())
+            for (Annotation annotation : field.getAnnotations())
             {
-               if (a.annotationType().isAnnotationPresent(GenericAnnotation.class))
+               if (annotation.annotationType().isAnnotationPresent(GenericAnnotation.class))
                {
                   if (!producerFields.containsKey(type.getJavaClass()))
                   {
-                     producerFields.put(type.getJavaClass(), new HashMap<AnnotatedField<?>, Annotation>());
+                     producerFields.put(type.getJavaClass(), new HashMap<Member, Annotation>());
                   }
-                  if (!concreteGenerics.containsKey(a.annotationType()))
+                  if (!concreteGenerics.containsKey(annotation.annotationType()))
                   {
-                     concreteGenerics.put(a.annotationType(), new HashSet<Annotation>());
+                     concreteGenerics.put(annotation.annotationType(), new HashSet<Annotation>());
                   }
-                  producerFields.get(type.getJavaClass()).put(field, a);
-                  concreteGenerics.get(a.annotationType()).add(a);
+                  producerFields.get(type.getJavaClass()).put(field.getJavaMember(), annotation);
+                  concreteGenerics.get(annotation.annotationType()).add(annotation);
+               }
+            }
+         }
+      }
+      
+      // make note of any producer method that produce generic beans
+      for (AnnotatedMethod<?> method : type.getMethods())
+      {
+         if (method.isAnnotationPresent(Produces.class))
+         {
+            for (Annotation annotation : method.getAnnotations())
+            {
+               if (annotation.annotationType().isAnnotationPresent(GenericAnnotation.class))
+               {
+                  if (!producerFields.containsKey(type.getJavaClass()))
+                  {
+                     producerFields.put(type.getJavaClass(), new HashMap<Member, Annotation>());
+                  }
+                  if (!concreteGenerics.containsKey(annotation.annotationType()))
+                  {
+                     concreteGenerics.put(annotation.annotationType(), new HashSet<Annotation>());
+                  }
+                  producerFields.get(type.getJavaClass()).put(method.getJavaMember(), annotation);
+                  concreteGenerics.get(annotation.annotationType()).add(annotation);
                }
             }
          }
@@ -119,22 +148,22 @@ public class GenericExtension implements Extension
     * wraps InjectionTarget to initialise producer fields that produce generic
     * beans
     */
-   public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event, BeanManager beanManager)
+   <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event, BeanManager beanManager)
    {
       Class<?> javaClass = event.getAnnotatedType().getJavaClass();
       if (producerFields.containsKey(javaClass))
       {
-         Map<AnnotatedField<?>, Annotation> producers = producerFields.get(javaClass);
-         List<FieldSetter> setters = new ArrayList<FieldSetter>();
-         for (AnnotatedField<?> a : producers.keySet())
+         Map<Member, Annotation> producers = producerFields.get(javaClass);
+         List<Property<Object>> setters = new ArrayList<Property<Object>>();
+         for (Member field : producers.keySet())
          {
-            SyntheticQualifier qual = this.getQualifierForGeneric(producers.get(a));
-            FieldSetter f = new FieldSetter(beanManager, a.getJavaMember(), qual);
-            setters.add(f);
+            Property<Object> property = Properties.createProperty(field);
+            setters.add(property);
          }
-         ProducerFieldInjectionTarget<T> it = new ProducerFieldInjectionTarget<T>(event.getInjectionTarget(), setters);
+         ProducerFieldInjectionTarget<T> it = new ProducerFieldInjectionTarget<T>(event.getInjectionTarget(), beanManager, setters, producers, syntheticQualifierManager);
          event.setInjectionTarget(it);
       }
+      
    }
 
    /**
@@ -160,7 +189,7 @@ public class GenericExtension implements Extension
 
    private <X> Bean<X> redefineType(AnnotatedType<X> at, Annotation conc, BeanManager beanManager)
    {
-      SyntheticQualifier newQualifier = getQualifierForGeneric(conc);
+      SyntheticQualifier newQualifier = syntheticQualifierManager.getQualifierForGeneric(conc);
 
       AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(at).readAnnotationsFromUnderlyingType();
       builder.addToClass(newQualifier);
@@ -247,16 +276,6 @@ public class GenericExtension implements Extension
       it = new GenericBeanInjectionTargetWrapper<X>(newAnnotatedType, it, conc);
       BeanBuilder<X> beanBuilder = new BeanBuilder<X>(newAnnotatedType, beanManager).defineBeanFromAnnotatedType().setInjectionTarget(it);
       return beanBuilder.create();
-   }
-
-   public SyntheticQualifier getQualifierForGeneric(Annotation a)
-   {
-      if (!qualifierMap.containsKey(a))
-      {
-         SyntheticQualifier qualifier = annotationProvider.get(SyntheticQualifier.class, (Map) Collections.singletonMap("value", count++));
-         qualifierMap.put(a, qualifier);
-      }
-      return qualifierMap.get(a);
    }
 
    static Annotation[] getQualifiers(Set<Annotation> annotations, BeanManager manager)

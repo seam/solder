@@ -46,7 +46,7 @@ public class AnnotationInstanceProvider
     * Returns an instance of the given annotation type with member values
     * specified in the map.
     */
-   public <T extends Annotation> T get(Class<T> annotation, Map<String, Object> values)
+   public <T extends Annotation> T get(Class<T> annotation, Map<String, ?> values)
    {
       if (annotation == null)
       {

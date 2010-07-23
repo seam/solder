@@ -4,6 +4,7 @@
 package org.jboss.weld.extensions.util.properties;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 
 /**
@@ -43,6 +44,11 @@ class FieldPropertyImpl<V> implements FieldProperty<V>
    }
 
    public Field getAnnotatedElement()
+   {
+      return field;
+   }
+   
+   public Member getMember()
    {
       return field;
    }
@@ -99,5 +105,23 @@ class FieldPropertyImpl<V> implements FieldProperty<V>
    public boolean isReadOnly()
    {
       return false;
+   }
+   
+   @Override
+   public String toString()
+   {
+      return field.toString();
+   }
+   
+   @Override
+   public int hashCode()
+   {
+      return field.hashCode();
+   }
+   
+   @Override
+   public boolean equals(Object obj)
+   {
+      return field.equals(obj);
    }
 }

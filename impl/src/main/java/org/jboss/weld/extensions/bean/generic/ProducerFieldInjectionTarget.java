@@ -16,12 +16,19 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Member;
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.UnsatisfiedResolutionException;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
 
 import org.jboss.weld.extensions.bean.ForwardingInjectionTarget;
+import org.jboss.weld.extensions.util.properties.Property;
 
 /**
  * {@link InjectionTarget} wrapper used for beans that have generic producer fields
@@ -33,12 +40,19 @@ import org.jboss.weld.extensions.bean.ForwardingInjectionTarget;
 public class ProducerFieldInjectionTarget<T> extends ForwardingInjectionTarget<T>
 {
    private final InjectionTarget<T> delegate;
-   private final List<FieldSetter> fieldSetters;
+   
+   private final BeanManager beanManager;
+   private final List<Property<Object>> properties;
+   private final Map<Member, Annotation> producers;
+   private final SyntheticQualifierManager syntheticQualifierManager;
 
-   public ProducerFieldInjectionTarget(InjectionTarget<T> delegate, List<FieldSetter> fieldSetters)
+   public ProducerFieldInjectionTarget(InjectionTarget<T> delegate, BeanManager beanManager, List<Property<Object>> properties, Map<Member, Annotation> producers, SyntheticQualifierManager syntheticQualifierManager)
    {
       this.delegate = delegate;
-      this.fieldSetters = fieldSetters;
+      this.beanManager = beanManager;
+      this.properties = properties;
+      this.producers = producers;
+      this.syntheticQualifierManager = syntheticQualifierManager;
    }
    
    @Override
@@ -50,9 +64,16 @@ public class ProducerFieldInjectionTarget<T> extends ForwardingInjectionTarget<T
    @Override
    public void inject(T instance, CreationalContext<T> ctx)
    {
-      for (FieldSetter f : fieldSetters)
+      for (Property<Object> property: properties)
       {
-         f.set(instance, ctx);
+         SyntheticQualifier qualifier = syntheticQualifierManager.getQualifierForGeneric(producers.get(property.getMember()));
+         Bean<?> bean = beanManager.resolve(beanManager.getBeans(property.getBaseType(), qualifier));
+         if (bean == null)
+         {
+            throw new UnsatisfiedResolutionException("Could not resolve bean for Generic Producer " + property.toString() + ". Type: " + property.getJavaClass() + " Qualifiers:" + qualifier);
+         }
+         Object value = beanManager.getReference(bean, property.getBaseType(), ctx);
+         property.setValue(instance, value);
       }
       delegate().inject(instance, ctx);
    }

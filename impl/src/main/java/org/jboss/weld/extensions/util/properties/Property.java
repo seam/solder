@@ -1,6 +1,7 @@
 package org.jboss.weld.extensions.util.properties;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 
 /**
@@ -40,11 +41,18 @@ public interface Property<V>
    public Class<V> getJavaClass();   
    
    /**
-    * Get the element backing the property
+    * Get the element responsible for retrieving the property value
     * 
     * @return
     */
    public AnnotatedElement getAnnotatedElement();
+   
+   /**
+    * Get the member responsible for retrieving the property value
+    * 
+    * @return
+    */
+   public Member getMember();
    
    /**
     * Returns the property value for the specified bean. The property to be

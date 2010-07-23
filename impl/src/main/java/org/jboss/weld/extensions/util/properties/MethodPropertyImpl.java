@@ -3,8 +3,10 @@
  */
 package org.jboss.weld.extensions.util.properties;
 
+import static org.jboss.weld.extensions.util.Reflections.invokeMethod;
+
 import java.beans.Introspector;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
@@ -59,6 +61,11 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
       return getterMethod;
    }
    
+   public Member getMember()
+   {
+      return getterMethod;
+   }
+   
    public V getValue(Object instance)
    {
       return getJavaClass().cast(invokeMethod(getterMethod, instance));
@@ -67,46 +74,6 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
    public void setValue(Object instance, V value) 
    {
       invokeMethod(setterMethod, instance, value);
-   }
-   
-   private static String buildInvokeMethodErrorMessage(Method method, Object obj, Object... args)
-   {
-      StringBuilder message = new StringBuilder(String.format("Exception invoking method [%s] on object [%s], using arguments [", method.getName(), obj));
-      if (args != null)
-         for (int i = 0; i < args.length; i++)
-            message.append((i > 0 ? "," : "") + args[i]);
-      message.append("]");
-      return message.toString();
-   }
-   
-   private static Object invokeMethod(Method method, Object obj, Object... args)
-   {
-      try
-      {
-         return method.invoke(obj, args);
-      }
-      catch (IllegalAccessException ex)
-      {
-         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), ex);
-      }
-      catch (IllegalArgumentException ex)
-      {
-         throw new IllegalArgumentException(buildInvokeMethodErrorMessage(method, obj, args), ex.getCause());
-      }
-      catch (InvocationTargetException ex)
-      {
-         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), ex);
-      }
-      catch (NullPointerException ex)
-      {
-         NullPointerException ex2 = new NullPointerException(buildInvokeMethodErrorMessage(method, obj, args));
-         ex2.initCause(ex.getCause());
-         throw ex2;
-      }
-      catch (ExceptionInInitializerError e)
-      {
-         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), e);
-      }
    }
    
    private static Method getSetterMethod(Class<?> clazz, String name)
@@ -160,6 +127,48 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
    public boolean isReadOnly()
    {
       return setterMethod == null;
+   }
+   
+   @Override
+   public String toString()
+   {
+      StringBuilder builder = new StringBuilder();
+      if (isReadOnly())
+      {
+         builder.append("read-only ").append(setterMethod.toString()).append("; ");
+      }
+      builder.append(getterMethod.toString());
+      return builder.toString();
+   }
+   
+   @Override
+   public int hashCode()
+   {
+      int hash = 1;
+      hash = hash * 31 + (setterMethod == null ? 0 : setterMethod.hashCode());
+      hash = hash * 31 + getterMethod.hashCode();
+      return hash;
+   }
+   
+   @Override
+   public boolean equals(Object obj)
+   {
+      if (obj instanceof MethodPropertyImpl<?>)
+      {
+         MethodPropertyImpl<?> that = (MethodPropertyImpl<?>) obj;
+         if (this.setterMethod == null)
+         {
+            return that.setterMethod == null && this.getterMethod.equals(that.getterMethod);
+         }
+         else
+         {
+            return this.setterMethod.equals(that.setterMethod) && this.getterMethod.equals(that.getterMethod);
+         }
+      }
+      else
+      {
+         return false;
+      }
    }
 
 }

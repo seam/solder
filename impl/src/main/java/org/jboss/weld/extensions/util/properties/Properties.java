@@ -1,6 +1,7 @@
 package org.jboss.weld.extensions.util.properties;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 /**
@@ -37,5 +38,29 @@ public class Properties
    public static <V> MethodProperty<V> createProperty(Method method)
    {
       return new MethodPropertyImpl<V>(method);
+   }
+   
+   /**
+    * Create a JavaBean style property from the specified member
+    * 
+    * @param <V>
+    * @param member
+    * @return
+    * @throws IllegalArgumentException if the method does not match JavaBean conventions
+    */
+   public static <V> Property<V> createProperty(Member member)
+   {
+      if (member instanceof Method)
+      {
+         return new MethodPropertyImpl<V>(Method.class.cast(member));
+      }
+      else if (member instanceof Field)
+      {
+         return new FieldPropertyImpl<V>(Field.class.cast(member));
+      }
+      else
+      {
+         throw new IllegalArgumentException("Cannot make a property of " + member + " - it is neither a method or a field");
+      }
    }
 }

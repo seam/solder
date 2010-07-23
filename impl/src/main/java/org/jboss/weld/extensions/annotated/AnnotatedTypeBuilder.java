@@ -100,7 +100,7 @@ public class AnnotatedTypeBuilder<X>
          typeAnnotations.add(annotation);
       }
 
-      for (Field field : Reflections.getFields(underlyingType))
+      for (Field field : Reflections.getAllFields(underlyingType))
       {
          AnnotationBuilder annotationBuilder = new AnnotationBuilder();
          fields.put(field, annotationBuilder);
@@ -111,7 +111,7 @@ public class AnnotatedTypeBuilder<X>
          }
       }
 
-      for (Method method : Reflections.getMethods(underlyingType))
+      for (Method method : Reflections.getAllMethods(underlyingType))
       {
          AnnotationBuilder annotationBuilder = new AnnotationBuilder();
          method.setAccessible(true);
