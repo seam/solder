@@ -161,6 +161,7 @@ class GenericBeanExtension implements Extension
          List<Property<Object>> setters = new ArrayList<Property<Object>>();
          for (Member member : producersOnClass.keySet())
          {
+            // TODO Need a producer method property really
             Property<Object> property = Properties.createProperty(member);
             setters.add(property);
          }
@@ -192,6 +193,7 @@ class GenericBeanExtension implements Extension
       }
    }
 
+   // TODO Do we need to do something this complex, can't we just register the relevant beans?
    private <X> Bean<X> redefineType(AnnotatedType<X> annotatedType, Annotation concrete, BeanManager beanManager)
    {
       Synthetic syntheticQualifier = syntheticProvider.get(concrete);
