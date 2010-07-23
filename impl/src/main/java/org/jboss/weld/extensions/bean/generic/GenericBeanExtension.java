@@ -194,10 +194,10 @@ class GenericBeanExtension implements Extension
 
    private <X> Bean<X> redefineType(AnnotatedType<X> annotatedType, Annotation concrete, BeanManager beanManager)
    {
-      Synthetic newQualifier = syntheticProvider.get(concrete);
+      Synthetic syntheticQualifier = syntheticProvider.get(concrete);
 
       AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(annotatedType).readAnnotationsFromUnderlyingType();
-      builder.addToClass(newQualifier);
+      builder.addToClass(syntheticQualifier);
       for (AnnotatedField<? super X> field : annotatedType.getFields())
       {
          if (field.isAnnotationPresent(Inject.class))
@@ -222,7 +222,7 @@ class GenericBeanExtension implements Extension
                Set<Bean<?>> beans = beanManager.getBeans(field.getJavaMember().getType(), qualifiers);
                if (beans.isEmpty())
                {
-                  builder.addToField(field.getJavaMember(), newQualifier);
+                  builder.addToField(field.getJavaMember(), syntheticQualifier);
                }
             }
          }
@@ -254,7 +254,7 @@ class GenericBeanExtension implements Extension
                Set<Bean<?>> beans = beanManager.getBeans(paramType, qualifiers);
                if (beans.isEmpty())
                {
-                  builder.addToMethod(method.getJavaMember(), newQualifier);
+                  builder.addToMethod(method.getJavaMember(), syntheticQualifier);
                }
             }
          }
@@ -271,7 +271,7 @@ class GenericBeanExtension implements Extension
                Set<Bean<?>> beans = beanManager.getBeans(paramType, qualifiers);
                if (beans.isEmpty())
                {
-                  builder.addToConstructorParameter(constructor.getJavaMember(), parameter.getPosition(), newQualifier);
+                  builder.addToConstructorParameter(constructor.getJavaMember(), parameter.getPosition(), syntheticQualifier);
                }
             }
          }
