@@ -27,8 +27,9 @@ import java.util.Set;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedType;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
+
+import org.jboss.weld.extensions.bean.ForwardingInjectionTarget;
 
 /**
  * injection target wrapper that injects the configuration for generic beans
@@ -37,7 +38,7 @@ import javax.enterprise.inject.spi.InjectionTarget;
  * 
  * @param <T>
  */
-public class GenericBeanInjectionTargetWrapper<T> implements InjectionTarget<T>
+public class GenericBeanInjectionTargetWrapper<T> extends ForwardingInjectionTarget<T>
 {
    
    private static Set<Field> getFields(Class<?> clazz)
@@ -62,7 +63,14 @@ public class GenericBeanInjectionTargetWrapper<T> implements InjectionTarget<T>
       this.delegate = delegate;
       this.annotatedType = annotatedType;
    }
+   
+   @Override
+   protected InjectionTarget<T> delegate()
+   {
+      return delegate;
+   }
 
+   @Override
    public void inject(T instance, CreationalContext<T> ctx)
    {
       for (Field f : getFields(instance.getClass()))
@@ -86,32 +94,7 @@ public class GenericBeanInjectionTargetWrapper<T> implements InjectionTarget<T>
          }
       }
 
-      delegate.inject(instance, ctx);
-   }
-
-   public void postConstruct(T instance)
-   {
-      delegate.postConstruct(instance);
-   }
-
-   public void preDestroy(T instance)
-   {
-      delegate.preDestroy(instance);
-   }
-
-   public void dispose(T instance)
-   {
-      delegate.dispose(instance);
-   }
-
-   public Set<InjectionPoint> getInjectionPoints()
-   {
-      return delegate.getInjectionPoints();
-   }
-
-   public T produce(CreationalContext<T> ctx)
-   {
-      return delegate.produce(ctx);
+      delegate().inject(instance, ctx);
    }
 
 }
