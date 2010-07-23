@@ -19,6 +19,7 @@ package org.jboss.weld.extensions.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -29,9 +30,10 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 
 /**
- * class that provides a way of retrieving all methods and fields from a class
+ * Utility class for working with Java Reflection
  * 
  * @author stuart
+ * @author Pete Muir
  * 
  */
 public class Reflections
@@ -41,39 +43,59 @@ public class Reflections
    {
    }
 
-   public static Set<Field> getFields(Class<?> clazz)
+   /**
+    * Get all the declared fields on the class hierarchy. This <b>will</b>
+    * return overridden fields.
+    * 
+    * @param clazz The class to search
+    * @return the set of all declared fields or an empty set if there are none
+    */
+   public static Set<Field> getAllFields(Class<?> clazz)
    {
-      HashSet<Field> ret = new HashSet<Field>();
-      Class<?> p = clazz;
-      while (p != null && p != Object.class)
+      HashSet<Field> fields = new HashSet<Field>();
+      for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
-         for (Field a : p.getDeclaredFields())
+         for (Field a : c.getDeclaredFields())
          {
-            ret.add(a);
+            fields.add(a);
          }
-         p = p.getSuperclass();
       }
-      return ret;
+      return fields;
    }
 
-   public static Field getField(Class<?> parent, String name)
+   /**
+    * Search the class hierarchy for a field with the given name. Will return
+    * the nearest match, starting with the class specified and searching up the
+    * hierarchy.
+    * 
+    * @param clazz The class to search
+    * @param name The name of the field to search for
+    * @return The field found, or null if no field is found
+    */
+   public static Field getField(Class<?> clazz, String name)
    {
-      Class<?> p = parent;
-      while (p != null && p != Object.class)
+      for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
          try
          {
-            return p.getDeclaredField(name);
+            return c.getDeclaredField(name);
          }
-         catch (Exception e1)
+         catch (NoSuchFieldException e)
          {
-
+            // No-op, we continue looking up the class hierarchy
          }
-         p = p.getSuperclass();
       }
       return null;
    }
 
+   /**
+    * Search the annotatedType for the field, returning the
+    * {@link AnnotatedField}
+    * 
+    * @param annotatedType The annotatedType to search
+    * @param field the field to search for
+    * @return The {@link AnnotatedField} found, or null if no field is found
+    */
    public static <X> AnnotatedField<? super X> getField(AnnotatedType<X> annotatedType, Field field)
    {
       for (AnnotatedField<? super X> annotatedField : annotatedType.getFields())
@@ -86,7 +108,15 @@ public class Reflections
       return null;
    }
 
-   public static Set<Annotation> getAnnotationsWithMetatype(Set<Annotation> annotations, Class<? extends Annotation> metaAnnotationType)
+   /**
+    * Search for annotations with the specified meta annotation type
+    * 
+    * @param annotations The annotation set to search
+    * @param metaAnnotationType The type of the meta annotation to search for
+    * @return The set of annotations with the specified meta annotation, or an
+    *         empty set if none are found
+    */
+   public static Set<Annotation> getAnnotationsWithMetaAnnotation(Set<Annotation> annotations, Class<? extends Annotation> metaAnnotationType)
    {
       Set<Annotation> set = new HashSet<Annotation>();
       for (Annotation annotation : annotations)
@@ -99,6 +129,15 @@ public class Reflections
       return set;
    }
 
+   /**
+    * Extract any qualifiers from the set of annotations
+    * 
+    * @param annotations The set of annotations to search
+    * @param beanManager The beanManager to use to establish if an annotation is
+    *           a qualifier
+    * @return The qualifiers present in the set, or an empty set if there are
+    *         none
+    */
    public static Set<Annotation> getQualifiers(Set<Annotation> annotations, BeanManager beanManager)
    {
       Set<Annotation> set = new HashSet<Annotation>();
@@ -112,89 +151,128 @@ public class Reflections
       return set;
    }
 
-   public static boolean methodExists(Class<?> parent, String name)
+   /**
+    * Determine if a method exists in a specified class hierarchy
+    * 
+    * @param clazz The class to search
+    * @param name The name of the method
+    * @return true if a method is found, otherwise false
+    */
+   public static boolean methodExists(Class<?> clazz, String name)
    {
-      Class<?> p = parent;
-      while (p != null && p != Object.class)
+      for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
-         for (Method m : p.getDeclaredMethods())
+         for (Method m : c.getDeclaredMethods())
          {
             if (m.getName().equals(name))
             {
                return true;
             }
          }
-         p = p.getSuperclass();
       }
       return false;
    }
 
-   public static Set<Method> getMethods(Class<?> clazz)
+   /**
+    * Get all the declared methods on the class hierarchy. This <b>will</b>
+    * return overridden methods.
+    * 
+    * @param clazz The class to search
+    * @return the set of all declared methods or an empty set if there are none
+    */
+   public static Set<Method> getAllMethods(Class<?> clazz)
    {
-      HashSet<Method> ret = new HashSet<Method>();
-      Class<?> p = clazz;
-      while (p != null && p != Object.class)
+      HashSet<Method> methods = new HashSet<Method>();
+      for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
-         for (Method a : p.getDeclaredMethods())
+         for (Method a : c.getDeclaredMethods())
          {
-            ret.add(a);
+            methods.add(a);
          }
-         p = p.getSuperclass();
       }
-      return ret;
+      return methods;
    }
 
-   public static Method getMethod(Class<?> parent, String name, Class<?>... args)
+   /**
+    * Search the class hierarchy for a method with the given name and arguments.
+    * Will return the nearest match, starting with the class specified and
+    * searching up the hierarchy.
+    * 
+    * @param clazz The class to search
+    * @param name The name of the method to search for
+    * @param args The arguments of the method to search for
+    * @return The method found, or null if no method is found
+    */
+   public static Method getMethod(Class<?> clazz, String name, Class<?>... args)
    {
-      Class<?> p = parent;
-      while (p != null && p != Object.class)
+      for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
          try
          {
-            return p.getDeclaredMethod(name, args);
+            return c.getDeclaredMethod(name, args);
          }
-         catch (Exception e1)
+         catch (NoSuchMethodException e)
          {
-
+            // No-op, continue the search
          }
-         p = p.getSuperclass();
       }
       return null;
    }
 
-   public static Constructor<?> getConstructor(Class<?> parent, Class<?>... args)
+   /**
+    * Search the class hierarchy for a constructor with the given arguments.
+    * Will return the nearest match, starting with the class specified and
+    * searching up the hierarchy.
+    * 
+    * @param clazz The class to search
+    * @param args The arguments of the constructor to search for
+    * @return The constructor found, or null if no constructor is found
+    */
+   public static Constructor<?> getConstructor(Class<?> clazz, Class<?>... args)
    {
-      Class<?> p = parent;
-      while (p != null && p != Object.class)
+      for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
          try
          {
-            return p.getDeclaredConstructor(args);
+            return c.getDeclaredConstructor(args);
          }
-         catch (Exception e1)
+         catch (NoSuchMethodException e)
          {
-
+            // No-op, continue the search
          }
-         p = p.getSuperclass();
       }
       return null;
    }
 
-   public static Set<Constructor<?>> getConstructors(Class<?> clazz)
+   /**
+    * Get all the declared constructors on the class hierarchy. This <b>will</b>
+    * return overridden constructors.
+    * 
+    * @param clazz The class to search
+    * @return the set of all declared constructors or an empty set if there are
+    *         none
+    */
+   public static Set<Constructor<?>> getAllConstructors(Class<?> clazz)
    {
-      HashSet<Constructor<?>> ret = new HashSet<Constructor<?>>();
-      Class<?> p = clazz;
-      while (p != null && p != Object.class)
+      HashSet<Constructor<?>> constructors = new HashSet<Constructor<?>>();
+      for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
-         for (Constructor<?> c : p.getDeclaredConstructors())
+         for (Constructor<?> constructor : c.getDeclaredConstructors())
          {
-            ret.add(c);
+            constructors.add(constructor);
          }
-         p = p.getSuperclass();
       }
-      return ret;
+      return constructors;
    }
 
+   /**
+    * Get the type of the member
+    * 
+    * @param member The member
+    * @return The type of the member
+    * @throws UnsupportedOperationException if the member is not a field,
+    *            method, or constructor
+    */
    public static Class<?> getMemberType(Member member)
    {
       if (member instanceof Field)
@@ -215,7 +293,17 @@ public class Reflections
       }
    }
 
-   public static Class classForName(String name) throws ClassNotFoundException
+   /**
+    * Load a class for the given name.
+    * 
+    * If the Thread Context Class Loader is available, it will be used,
+    * otherwise the classloader used to load {@link Reflections} will be used
+    * 
+    * @param name The name of the class to load
+    * @return The class object
+    * @throws ClassNotFoundException if the class cannot be found
+    */
+   public static Class<?> classForName(String name) throws ClassNotFoundException
    {
       if (Thread.currentThread().getContextClassLoader() != null)
       {
@@ -226,23 +314,43 @@ public class Reflections
          return Class.forName(name);
       }
    }
-
-   public static Object invokeAndWrap(Method method, Object target, Object... args)
+   private static String buildInvokeMethodErrorMessage(Method method, Object obj, Object... args)
+   {
+      StringBuilder message = new StringBuilder(String.format("Exception invoking method [%s] on object [%s], using arguments [", method.getName(), obj));
+      if (args != null)
+         for (int i = 0; i < args.length; i++)
+            message.append((i > 0 ? "," : "") + args[i]);
+      message.append("]");
+      return message.toString();
+   }
+   
+   public static Object invokeMethod(Method method, Object obj, Object... args)
    {
       try
       {
-         return method.invoke(target, args);
+         return method.invoke(obj, args);
       }
-      catch (Exception e)
+      catch (IllegalAccessException ex)
       {
-         if (e instanceof RuntimeException)
-         {
-            throw (RuntimeException) e;
-         }
-         else
-         {
-            throw new RuntimeException("exception invoking: " + method.getName(), e);
-         }
+         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), ex);
+      }
+      catch (IllegalArgumentException ex)
+      {
+         throw new IllegalArgumentException(buildInvokeMethodErrorMessage(method, obj, args), ex.getCause());
+      }
+      catch (InvocationTargetException ex)
+      {
+         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), ex);
+      }
+      catch (NullPointerException ex)
+      {
+         NullPointerException ex2 = new NullPointerException(buildInvokeMethodErrorMessage(method, obj, args));
+         ex2.initCause(ex.getCause());
+         throw ex2;
+      }
+      catch (ExceptionInInitializerError e)
+      {
+         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), e);
       }
    }
 
