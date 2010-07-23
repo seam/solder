@@ -18,7 +18,7 @@ package org.jboss.weld.extensions.test.bean.generic;
 
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericBean;
 
 /**
  * A generic bean
@@ -27,7 +27,7 @@ import org.jboss.weld.extensions.bean.generic.Generic;
  *
  */
 
-@Generic(Garply.class)
+@GenericBean(Garply.class)
 public class Bar
 {
    @Inject
