@@ -1,4 +1,4 @@
-org.jboss.weld.extensions.bean.generic.GenericExtension
+org.jboss.weld.extensions.bean.generic.GenericBeanExtension
 org.jboss.weld.extensions.resourceLoader.servlet.ServletResourceExtension
 org.jboss.weld.extensions.bean.lookup.IdentifiableBeanExtension
 org.jboss.weld.extensions.core.CoreExtension
