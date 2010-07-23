@@ -25,6 +25,8 @@ import java.lang.annotation.Target;
  * Must be applied to any annotation that is used as a value in @Generic, this
  * may not be needed in the future
  * 
+ * TODO Remove
+ * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  */
