@@ -38,6 +38,8 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class Reflections
 {
+   
+   public static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
 
    private Reflections()
    {

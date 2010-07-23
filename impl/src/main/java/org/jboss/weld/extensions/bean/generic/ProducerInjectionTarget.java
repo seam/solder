@@ -38,7 +38,7 @@ import org.jboss.weld.extensions.util.properties.Property;
  * 
  * @param <T>
  */
-public class ProducerFieldInjectionTarget<T> extends ForwardingInjectionTarget<T>
+public class ProducerInjectionTarget<T> extends ForwardingInjectionTarget<T>
 {
    private final InjectionTarget<T> delegate;
    
@@ -47,7 +47,7 @@ public class ProducerFieldInjectionTarget<T> extends ForwardingInjectionTarget<T
    private final Map<Member, Annotation> producers;
    private final Synthetic.Provider syntheticProvider;
 
-   public ProducerFieldInjectionTarget(InjectionTarget<T> delegate, BeanManager beanManager, List<Property<Object>> properties, Map<Member, Annotation> producers, Synthetic.Provider syntheticProvider)
+   public ProducerInjectionTarget(InjectionTarget<T> delegate, BeanManager beanManager, List<Property<Object>> properties, Map<Member, Annotation> producers, Synthetic.Provider syntheticProvider)
    {
       this.delegate = delegate;
       this.beanManager = beanManager;
