@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Qualifier;
 
 /**
  * A synthetic qualifier that can be used to replace other user-supplied configuration at deployment 
@@ -34,9 +33,6 @@ import javax.inject.Qualifier;
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-// even though this is not in a bean archive this is still needed to make
-// BeanImpl work
-@Qualifier
 public @interface Synthetic
 {
    
