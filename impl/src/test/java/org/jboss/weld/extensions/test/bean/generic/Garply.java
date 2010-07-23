@@ -16,19 +16,28 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
-import javax.inject.Inject;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import org.jboss.weld.extensions.bean.generic.Generic;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-@Generic(TestAnnotation.class)
-public class GenericConstructorArgument
+import org.jboss.weld.extensions.bean.generic.GenericAnnotation;
+
+/**
+ * A "generic annotation"
+ * 
+ * @author pmuir
+ *
+ */
+
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+@GenericAnnotation
+public @interface Garply
 {
-   @Inject
-   TestAnnotation data;
-
-   public String getValue()
-   {
-      return data.value();
-   }
-
+   String value();
 }

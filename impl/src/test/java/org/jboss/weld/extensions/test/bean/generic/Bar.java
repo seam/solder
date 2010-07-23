@@ -18,14 +18,30 @@ package org.jboss.weld.extensions.test.bean.generic;
 
 import javax.inject.Inject;
 
-public class InjectedBean
+import org.jboss.weld.extensions.bean.generic.Generic;
+
+/**
+ * A generic bean
+ * 
+ * @author pmuir
+ *
+ */
+
+@Generic(Garply.class)
+public class Bar
 {
    @Inject
-   @SomeQualifier(1)
-   public GenericMain main1;
+   private Garply injectedGarply;
 
-   @Inject
-   @SomeQualifier(2)
-   public GenericMain main2;
+   private Garply garply;
 
+   public String getValue()
+   {
+      return injectedGarply.value();
+   }
+
+   public Garply getGarply()
+   {
+      return garply;
+   }
 }

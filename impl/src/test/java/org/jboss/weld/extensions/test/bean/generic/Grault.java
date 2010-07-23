@@ -16,14 +16,28 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jboss.weld.extensions.bean.generic.GenericAnnotation;
+import javax.inject.Qualifier;
 
-@Retention(RetentionPolicy.RUNTIME)
-@GenericAnnotation
-public @interface TestAnnotation
+/**
+ * A "normal" qualifier
+ * 
+ * @author pmuir
+ *
+ */
+
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+@Qualifier
+public @interface Grault
 {
-   String value();
+   int value();
 }

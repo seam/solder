@@ -16,14 +16,46 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import javax.inject.Inject;
 
-import javax.inject.Qualifier;
+import org.jboss.weld.extensions.bean.generic.Generic;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Qualifier
-public @interface SomeQualifier
+/**
+ * 
+ * 
+ * @author pmuir
+ *
+ */
+
+@Generic(Garply.class)
+public class Baz
 {
-   int value();
+   @Inject
+   public Baz(Foo args)
+   {
+      constArgs = args;
+   }
+
+   @Inject
+   private Bar dep;
+
+   @Inject
+   private Corge normalBean;
+
+   private Foo constArgs;
+
+   public String getValue()
+   {
+      return dep.getValue();
+   }
+
+   public Garply getNoData()
+   {
+      return dep.getGarply();
+   }
+   
+   public Corge getNormalBean()
+   {
+      return normalBean;
+   }
 }

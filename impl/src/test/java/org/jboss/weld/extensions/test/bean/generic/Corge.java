@@ -16,7 +16,13 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
-public class NormalBean
+/**
+ * A normal bean
+ * 
+ * @author pmuir
+ *
+ */
+public class Corge
 {
 
 }

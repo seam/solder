@@ -36,15 +36,20 @@ public class GenericBeanTest
    }
 
    @Inject
-   InjectedBean bean;
+   @Grault(1)
+   private Baz baz1;
+
+   @Inject
+   @Grault(2)
+   private Baz baz2;
 
    @Test
    public void testGeneric()
    {
-      assert bean.main1.getValue().equals("hello1");
-      assert bean.main2.getValue().equals("hello2");
-      assert bean.main1.getNoData() == null;
-      assert bean.main2.getNoData() == null;
-      assert bean.main2.normalBean != null;
+      assert baz1.getValue().equals("hello1");
+      assert baz2.getValue().equals("hello2");
+      assert baz1.getNoData() == null;
+      assert baz2.getNoData() == null;
+      assert baz2.getNormalBean() != null;
    }
 }

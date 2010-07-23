@@ -20,30 +20,22 @@ import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.Generic;
 
-@Generic(TestAnnotation.class)
-public class GenericMain
+/**
+ * A generic bean
+ * 
+ * @author pmuir
+ *
+ */
+
+@Generic(Garply.class)
+public class Foo
 {
    @Inject
-   public GenericMain(GenericConstructorArgument args)
-   {
-      constArgs = args;
-   }
-
-   @Inject
-   GenericDep dep;
-
-   @Inject
-   NormalBean normalBean;
-
-   GenericConstructorArgument constArgs;
+   private Garply data;
 
    public String getValue()
    {
-      return dep.getValue();
+      return data.value();
    }
 
-   public TestAnnotation getNoData()
-   {
-      return dep.getNoData();
-   }
 }

@@ -16,25 +16,25 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
-import javax.inject.Inject;
+import javax.enterprise.inject.Produces;
 
-import org.jboss.weld.extensions.bean.generic.Generic;
-
-@Generic(TestAnnotation.class)
-public class GenericDep
+/**
+ * A producer of Baz's
+ * @author pmuir
+ *
+ */
+public class BazProducer
 {
-   @Inject
-   TestAnnotation data;
+   @SuppressWarnings("unused")
+   @Grault(1)
+   @Produces
+   @Garply("hello1")
+   private Baz baz1;
 
-   TestAnnotation noData;
+   @SuppressWarnings("unused")
+   @Grault(2)
+   @Produces
+   @Garply("hello2")
+   private Baz baz2;
 
-   public String getValue()
-   {
-      return data.value();
-   }
-
-   public TestAnnotation getNoData()
-   {
-      return noData;
-   }
 }
