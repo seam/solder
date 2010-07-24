@@ -18,8 +18,6 @@ package org.jboss.weld.extensions.bean;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.enterprise.context.Dependent;
@@ -28,11 +26,6 @@ import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.weld.extensions.literal.DefaultLiteral;
-import org.jboss.weld.extensions.util.Arrays2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * An immutable bean which provides basic defaulting and checking of arguments.
  * 
@@ -40,22 +33,10 @@ import org.slf4j.LoggerFactory;
  * @author Pete Muir
  * 
  */
-public class BeanImpl<T> implements Bean<T>
+public class BeanImpl<T> extends AbstractImmutableBean<T> implements Bean<T>
 {
 
-   private static final Logger log = LoggerFactory.getLogger(BeanImpl.class);
-
-   private final Class<?> beanClass;
-   private final String name;
-   private final Set<Annotation> qualifiers;
-   private final Class<? extends Annotation> scope;
-   private final Set<Class<? extends Annotation>> stereotypes;
-   private final Set<Type> types;
-   private final boolean alternative;
-   private final boolean nullable;
-   private final BeanLifecycle<T> beanLifecycle;
-   private final Set<InjectionPoint> injectionPoints;
-
+   final BeanLifecycle<T> beanLifecycle;
    /**
     * Create a new, immutable bean. All arguments passed as collections are defensively copied.
     * 
@@ -78,105 +59,10 @@ public class BeanImpl<T> implements Bean<T>
     */
    public BeanImpl(Class<?> beanClass, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, Set<InjectionPoint> injectionPoints, BeanLifecycle<T> beanLifecycle)
    {
-      if (beanClass == null)
-      {
-         throw new IllegalArgumentException("beanClass cannot be null");
-      }
-      this.beanClass = beanClass;
-      this.name = name;
-      if (qualifiers == null)
-      {
-         this.qualifiers = Collections.<Annotation>singleton(DefaultLiteral.INSTANCE);
-         log.trace("No qualifers provided for bean class " + beanClass + ", using singleton set of @Default");
-      }
-      else
-      {
-         this.qualifiers = new HashSet<Annotation>(qualifiers);
-      }
-      if (scope == null)
-      {
-         this.scope = Dependent.class;
-         log.trace("No scope provided for bean class " + beanClass + ", using @Dependent");
-      }
-      else
-      {
-         this.scope = scope;
-      }
-      if (stereotypes == null)
-      {
-         this.stereotypes = Collections.emptySet();
-      }
-      else
-      {
-         this.stereotypes = new HashSet<Class<? extends Annotation>>(stereotypes);
-      }
-      if (types == null)
-      {
-         this.types = Arrays2.<Type>asSet(Object.class, beanClass);
-         log.trace("No types provided for bean class " + beanClass + ", using [java.lang.Object.class, " + beanClass.getName() + ".class]");
-      }
-      else
-      {
-         this.types = new HashSet<Type>(types);
-      }
-      if (injectionPoints == null)
-      {
-         this.injectionPoints = Collections.emptySet();
-      }
-      else
-      {
-         this.injectionPoints = new HashSet<InjectionPoint>(injectionPoints);
-      }
-      this.alternative = alternative;
-      this.nullable = nullable;
+      super(beanClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints);
       this.beanLifecycle = beanLifecycle;
    }
-
-   public Class<?> getBeanClass()
-   {
-      return beanClass;
-   }
-
-   public Set<InjectionPoint> getInjectionPoints()
-   {
-      return injectionPoints;
-   }
-
-   public String getName()
-   {
-      return name;
-   }
-
-   public Set<Annotation> getQualifiers()
-   {
-      return Collections.unmodifiableSet(qualifiers);
-   }
-
-   public Class<? extends Annotation> getScope()
-   {
-      return scope;
-   }
-
-   public Set<Class<? extends Annotation>> getStereotypes()
-   {
-      return Collections.unmodifiableSet(stereotypes);
-   }
-
-   public Set<Type> getTypes()
-   {
-      return Collections.unmodifiableSet(types);
-   }
-
-   public boolean isAlternative()
-   {
-      return alternative;
-   }
-
-   public boolean isNullable()
-   {
-      return nullable;
-   }
-
+   
    public T create(CreationalContext<T> arg0)
    {
       return beanLifecycle.create(this, arg0);
@@ -185,12 +71,6 @@ public class BeanImpl<T> implements Bean<T>
    public void destroy(T arg0, CreationalContext<T> arg1)
    {
       beanLifecycle.destroy(this, arg0, arg1);
-   }
-
-   @Override
-   public String toString()
-   {
-      return new StringBuilder().append("Custom Bean with bean class ").append(beanClass).append(" and qualifiers ").append(qualifiers).toString();
    }
 
 }
