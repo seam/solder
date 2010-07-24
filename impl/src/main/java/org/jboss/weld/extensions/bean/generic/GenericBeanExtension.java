@@ -65,18 +65,21 @@ import org.jboss.weld.extensions.util.properties.Property;
 class GenericBeanExtension implements Extension
 {
 
-   private final Map<Class<?>, Set<AnnotatedType<?>>> genericBeans;
+   private final Map<Class<?>, Set<AnnotatedType<?>>> genericTypes;
 
    private final Map<Class<?>, Map<Member, Annotation>> producers;
 
    // A map of a generic annotation type to all instances of that type found on beans
    private final Map<Class<?>, Set<Annotation>> concreteGenerics;
+   
+   private final Map<Annotation, Bean<?>> genericConfigurationBeans;
 
    private final Synthetic.Provider syntheticProvider;
 
    GenericBeanExtension()
    {
-      this.genericBeans = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
+      this.genericTypes = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
+      this.genericConfigurationBeans = new HashMap<Annotation, Bean<?>>();
       this.producers = new HashMap<Class<?>, Map<Member, Annotation>>();
       this.concreteGenerics = new HashMap<Class<?>, Set<Annotation>>();
       this.syntheticProvider = new Synthetic.Provider("org.jboss.weld.extensions.bean.generic");
@@ -94,11 +97,11 @@ class GenericBeanExtension implements Extension
       if (type.isAnnotationPresent(Generic.class))
       {
          Generic generic = type.getAnnotation(Generic.class);
-         if (!genericBeans.containsKey(generic.value()))
+         if (!genericTypes.containsKey(generic.value()))
          {
-            genericBeans.put(generic.value(), new HashSet<AnnotatedType<?>>());
+            genericTypes.put(generic.value(), new HashSet<AnnotatedType<?>>());
          }
-         genericBeans.get(generic.value()).add(type);
+         genericTypes.get(generic.value()).add(type);
          // we will install (multiple copies of) this bean later
          event.veto();
 
@@ -180,7 +183,7 @@ class GenericBeanExtension implements Extension
     */
    void afterBeanDiscovery(@Observes AfterBeanDiscovery event, BeanManager beanManager)
    {
-      for (Entry<Class<?>, Set<AnnotatedType<?>>> entry : genericBeans.entrySet())
+      for (Entry<Class<?>, Set<AnnotatedType<?>>> entry : genericTypes.entrySet())
       {
          Set<Annotation> concretes = concreteGenerics.get(entry.getKey());
          if (concretes != null)
@@ -189,14 +192,19 @@ class GenericBeanExtension implements Extension
             {
                for (Annotation concrete : concretes)
                {
-                  event.addBean(redefineType(type, concrete, beanManager, event));
+                  event.addBean(createGenericBean(type, concrete, beanManager));
                }
             }
          }
       }
+      // Add all the generic configuration beans, which were created above
+      for (Bean<?> bean : genericConfigurationBeans.values())
+      {
+         event.addBean(bean);
+      }
    }
 
-   private <X> Bean<X> redefineType(AnnotatedType<X> annotatedType, Annotation concrete, BeanManager beanManager, AfterBeanDiscovery event)
+   private <X> Bean<X> createGenericBean(AnnotatedType<X> annotatedType, Annotation concrete, BeanManager beanManager)
    {
       Synthetic genericBeanQualifier = syntheticProvider.get(concrete);
 
@@ -212,9 +220,7 @@ class GenericBeanExtension implements Extension
             // if this is a configuration injection point
             if (concrete.annotationType().isAssignableFrom(getRawType(field.getBaseType())))
             {
-               Synthetic genericConfigurationQualifier = syntheticProvider.get();
-               builder.addToField(field, genericConfigurationQualifier);
-               event.addBean(createConfigurationBean(beanManager, concrete, genericConfigurationQualifier));
+               builder.addToField(field, getGenericConfigurationQualifier(beanManager, concrete));
             }
             // if this is a generic bean injection point
             else if (field.isAnnotationPresent(Inject.class) && field.isAnnotationPresent(GenericBean.class))
@@ -233,9 +239,7 @@ class GenericBeanExtension implements Extension
                // if this is a configuration injection point
                if (concrete.annotationType().isAssignableFrom(getRawType(parameter.getBaseType())))
                {
-                  Synthetic genericConfigurationQualifier = syntheticProvider.get();
-                  builder.addToParameter(parameter, genericConfigurationQualifier);
-                  event.addBean(createConfigurationBean(beanManager, concrete, genericConfigurationQualifier));
+                  builder.addToParameter(parameter, getGenericConfigurationQualifier(beanManager, concrete));
                }
                // if this is a generic bean injection point
                if (parameter.isAnnotationPresent(GenericBean.class))
@@ -256,9 +260,7 @@ class GenericBeanExtension implements Extension
                // if this is a configuration injection point
                if (concrete.annotationType().isAssignableFrom(getRawType(parameter.getBaseType())))
                {
-                  Synthetic genericConfigurationQualifier = syntheticProvider.get();
-                  builder.addToParameter(parameter, genericConfigurationQualifier);
-                  event.addBean(createConfigurationBean(beanManager, concrete, genericConfigurationQualifier));
+                  builder.addToParameter(parameter, getGenericConfigurationQualifier(beanManager, concrete));
                }
                // if this is a generic bean injection point
                if (parameter.isAnnotationPresent(GenericBean.class))
@@ -273,24 +275,34 @@ class GenericBeanExtension implements Extension
       return beanBuilder.create();
    }
 
-   private Bean<Annotation> createConfigurationBean(BeanManager beanManager, final Annotation genericConfiguration, Annotation syntheticQualifier)
+   private Synthetic getGenericConfigurationQualifier(BeanManager beanManager, final Annotation genericConfiguration)
    {
-      // TODO make this passivation capable?
-      BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager).setJavaClass(genericConfiguration.annotationType()).setTypes(Arrays2.<Type> asSet(genericConfiguration.annotationType(), Object.class)).setScope(Dependent.class).setQualifiers(Arrays2.asSet(syntheticQualifier)).setBeanLifecycle(new BeanLifecycle<Annotation>()
+      if (!genericConfigurationBeans.containsKey(genericConfiguration))
       {
-
-         public void destroy(Bean<Annotation> bean, Annotation arg0, CreationalContext<Annotation> arg1)
+         // We don't have a bean created for this generic configuration annotation. Create it, store it to be added later
+         Synthetic syntheticQualifier = syntheticProvider.get(genericConfiguration);
+         // TODO make this passivation capable?
+         BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager).setJavaClass(genericConfiguration.annotationType()).setTypes(Arrays2.<Type> asSet(genericConfiguration.annotationType(), Object.class)).setScope(Dependent.class).setQualifiers(Arrays2.<Annotation>asSet(syntheticQualifier)).setBeanLifecycle(new BeanLifecycle<Annotation>()
          {
-            // No-op
-         }
-
-         public Annotation create(Bean<Annotation> bean, CreationalContext<Annotation> arg0)
-         {
-            return genericConfiguration;
-         }
-      });
-
-      return builder.create();
+   
+            public void destroy(Bean<Annotation> bean, Annotation arg0, CreationalContext<Annotation> arg1)
+            {
+               // No-op
+            }
+   
+            public Annotation create(Bean<Annotation> bean, CreationalContext<Annotation> arg0)
+            {
+               return genericConfiguration;
+            }
+         });
+         genericConfigurationBeans.put(genericConfiguration, builder.create());
+         return syntheticQualifier;
+      }
+      else
+      {
+         // The bean already exists, just return the qualifier
+         return syntheticProvider.get(genericConfiguration);
+      }
    }
 
 }
