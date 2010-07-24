@@ -14,30 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic;
-
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import javax.inject.Qualifier;
+package org.jboss.weld.extensions.test.bean.generic.field;
 
 /**
- * A qualifier
+ * A normal bean
  * 
  * @author pmuir
  *
  */
-
-@Retention(RUNTIME)
-@Target({METHOD, FIELD, PARAMETER, TYPE})
-@Qualifier
-public @interface Foo
+public class Corge
 {
-   int value();
+   
+   public String getName()
+   {
+      return "fred";
+   }
+
 }

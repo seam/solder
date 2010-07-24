@@ -14,30 +14,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic;
+package org.jboss.weld.extensions.test.bean.generic.field;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import javax.inject.Inject;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
+import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericBean;
 
 /**
- * The annotation used to configure a generic bean
+ * A generic bean for the config annotation Message
  * 
  * @author pmuir
  *
  */
 
-@Retention(RUNTIME)
-@Target({METHOD, FIELD, PARAMETER, TYPE})
-@GenericConfiguration
-public @interface Message
+@Generic(Message.class)
+public class Baz
 {
-   String value();
+
+   @Inject @GenericBean
+   private Bar bar;
+
+   @Inject
+   private Corge corge;
+   
+   @Inject 
+   private Message message;
+
+   public Bar getBar()
+   {
+      return bar;
+   }
+   
+   public Corge getCorge()
+   {
+      return corge;
+   }
+   
+   public Message getMessage()
+   {
+      return message;
+   }
 }

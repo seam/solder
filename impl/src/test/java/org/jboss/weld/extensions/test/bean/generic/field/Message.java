@@ -14,20 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic;
+package org.jboss.weld.extensions.test.bean.generic.field;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 
 /**
- * A normal bean
+ * The annotation used to configure a generic bean
  * 
  * @author pmuir
  *
  */
-public class Corge
-{
-   
-   public String getName()
-   {
-      return "fred";
-   }
 
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+@GenericConfiguration
+public @interface Message
+{
+   String value();
 }
