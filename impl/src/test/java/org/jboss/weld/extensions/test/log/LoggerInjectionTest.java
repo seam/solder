@@ -28,7 +28,7 @@ import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
 import org.jboss.weld.extensions.log.Category;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.impl.TestLoggerFactory;
+import org.slf4j.impl.LastMessageLoggerFactory;
 
 /**
  * All the tests related to the @Logger binding type and injection.
@@ -57,18 +57,18 @@ public class LoggerInjectionTest
    @Test
    public void testBasicLogInjection()
    {
-      TestLoggerFactory.INSTANCE.getLogger("").reset();
+      LastMessageLoggerFactory.INSTANCE.getLogger("").reset();
       sparrow.generateLogMessage();
-      assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
-      assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Sparrow");
+      assert LastMessageLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
+      assert LastMessageLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Sparrow");
    }
 
    @Test
    public void testCategorySpecifiedLogger()
    {
-      TestLoggerFactory.INSTANCE.getLogger("").reset();
+      LastMessageLoggerFactory.INSTANCE.getLogger("").reset();
       finch.generateLogMessage();
-      assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
-      assert TestLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Finch");
+      assert LastMessageLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
+      assert LastMessageLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Finch");
    }
 }

@@ -16,18 +16,16 @@
  */
 package org.slf4j.impl;
 
-import org.junit.Ignore;
 import org.slf4j.ILoggerFactory;
 
-@Ignore
-public class TestLoggerFactory implements ILoggerFactory
+public class LastMessageLoggerFactory implements ILoggerFactory
 {
 
-   public final static TestLoggerFactory INSTANCE = new TestLoggerFactory();
+   public final static LastMessageLoggerFactory INSTANCE = new LastMessageLoggerFactory();
 
-   private final TestLogger logger = new TestLogger();
+   private final LastMessageLogger logger = new LastMessageLogger();
 
-   public TestLogger getLogger(String name)
+   public LastMessageLogger getLogger(String name)
    {
       return logger;
    }

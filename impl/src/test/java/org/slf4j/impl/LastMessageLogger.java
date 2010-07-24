@@ -16,14 +16,12 @@
  */
 package org.slf4j.impl;
 
-import org.junit.Ignore;
 import org.slf4j.helpers.MarkerIgnoringBase;
 
 /**
  * A very limited test logger which records the last info message logged
  */
-@Ignore
-public class TestLogger extends MarkerIgnoringBase
+public class LastMessageLogger extends MarkerIgnoringBase
 {
 
    private String lastMessage;
