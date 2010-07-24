@@ -19,7 +19,6 @@ package org.jboss.weld.extensions.bean.generic;
 import static org.jboss.weld.extensions.util.Reflections.getRawType;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,11 +31,11 @@ import java.util.Map.Entry;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedField;
+import javax.enterprise.inject.spi.AnnotatedMember;
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
@@ -45,7 +44,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.ProcessInjectionTarget;
+import javax.enterprise.inject.spi.ProcessProducer;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
@@ -53,8 +52,6 @@ import org.jboss.weld.extensions.bean.BeanBuilder;
 import org.jboss.weld.extensions.bean.BeanLifecycle;
 import org.jboss.weld.extensions.util.Arrays2;
 import org.jboss.weld.extensions.util.Synthetic;
-import org.jboss.weld.extensions.util.properties.Properties;
-import org.jboss.weld.extensions.util.properties.Property;
 
 /**
  * Extension that wires in Generic Beans
@@ -66,14 +63,11 @@ import org.jboss.weld.extensions.util.properties.Property;
 class GenericBeanExtension implements Extension
 {
 
-   // A map of generic configuration types to generic beans
-   private final Map<Class<?>, Set<AnnotatedType<?>>> genericTypes;
-
-   // A map of classes containing producers which produce generic beans
-   private final Map<Class<?>, Map<Member, Annotation>> producers;
+   // A map of generic configuration types to generic bean types
+   private final Map<Class<?>, Set<AnnotatedType<?>>> genericBeanTypes;
 
    // A map of a generic configuration types to all instances of that type found
-   private final Map<Class<?>, Set<Annotation>> concreteGenerics;
+   private final Map<Class<?>, Set<Annotation>> genericConfigurationTypes;
    
    // A map of generic configuration annotations to generic configuration beans
    private final Map<Annotation, Bean<?>> genericConfigurationBeans;
@@ -82,10 +76,9 @@ class GenericBeanExtension implements Extension
 
    GenericBeanExtension()
    {
-      this.genericTypes = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
+      this.genericBeanTypes = new HashMap<Class<?>, Set<AnnotatedType<?>>>();
       this.genericConfigurationBeans = new HashMap<Annotation, Bean<?>>();
-      this.producers = new HashMap<Class<?>, Map<Member, Annotation>>();
-      this.concreteGenerics = new HashMap<Class<?>, Set<Annotation>>();
+      this.genericConfigurationTypes = new HashMap<Class<?>, Set<Annotation>>();
       this.syntheticProvider = new Synthetic.Provider("org.jboss.weld.extensions.bean.generic");
    }
 
@@ -95,91 +88,92 @@ class GenericBeanExtension implements Extension
       event.addQualifier(GenericBean.class);
    }
 
-   void processAnnotatedType(@Observes ProcessAnnotatedType<?> event)
+   <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event)
    {
       AnnotatedType<?> type = event.getAnnotatedType();
       if (type.isAnnotationPresent(Generic.class))
       {
-         Generic generic = type.getAnnotation(Generic.class);
-         if (!genericTypes.containsKey(generic.value()))
-         {
-            genericTypes.put(generic.value(), new HashSet<AnnotatedType<?>>());
-         }
-         genericTypes.get(generic.value()).add(type);
+         addGenericBeanType(type);
          // we will install (multiple copies of) this bean later
          event.veto();
 
       }
-      // make note of any producer fields that produce generic beans
-      for (AnnotatedField<?> field : type.getFields())
+   }
+   
+   private <X> void addGenericBeanType(AnnotatedType<X> type)
+   {
+      Generic generic = type.getAnnotation(Generic.class);
+      if (!genericBeanTypes.containsKey(generic.value()))
       {
-         if (field.isAnnotationPresent(Produces.class))
-         {
-            for (Annotation annotation : field.getAnnotations())
-            {
-               if (annotation.annotationType().isAnnotationPresent(GenericConfiguration.class))
-               {
-                  if (!producers.containsKey(type.getJavaClass()))
-                  {
-                     producers.put(type.getJavaClass(), new HashMap<Member, Annotation>());
-                  }
-                  if (!concreteGenerics.containsKey(annotation.annotationType()))
-                  {
-                     concreteGenerics.put(annotation.annotationType(), new HashSet<Annotation>());
-                  }
-                  producers.get(type.getJavaClass()).put(field.getJavaMember(), annotation);
-                  concreteGenerics.get(annotation.annotationType()).add(annotation);
-               }
-            }
-         }
+         Set<AnnotatedType<?>> annotatedTypes = new HashSet<AnnotatedType<?>>();
+         annotatedTypes.add(type);
+         genericBeanTypes.put(generic.value(), annotatedTypes);
       }
-
-      // make note of any producer method that produce generic beans
-      for (AnnotatedMethod<?> method : type.getMethods())
+      else
       {
-         if (method.isAnnotationPresent(Produces.class))
-         {
-            for (Annotation annotation : method.getAnnotations())
-            {
-               if (annotation.annotationType().isAnnotationPresent(GenericConfiguration.class))
-               {
-                  if (!producers.containsKey(type.getJavaClass()))
-                  {
-                     producers.put(type.getJavaClass(), new HashMap<Member, Annotation>());
-                  }
-                  if (!concreteGenerics.containsKey(annotation.annotationType()))
-                  {
-                     concreteGenerics.put(annotation.annotationType(), new HashSet<Annotation>());
-                  }
-                  producers.get(type.getJavaClass()).put(method.getJavaMember(), annotation);
-                  concreteGenerics.get(annotation.annotationType()).add(annotation);
-               }
-            }
-         }
+         genericBeanTypes.get(generic.value()).add(type);
       }
    }
-
-   /**
-    * wraps InjectionTarget to initialise producer fields that produce generic
-    * beans
-    */
-   <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event, BeanManager beanManager)
+   
+   <T, X> void processProducers(@Observes ProcessProducer<T, X> event, BeanManager beanManager)
    {
-      Class<?> clazz = event.getAnnotatedType().getJavaClass();
-      if (producers.containsKey(clazz))
+      // Only process the producer as a generic producer, if it has an annotation meta-annotated with GenericConfiguration
+      List<Annotation> genericConfigurationAnnotiations = new ArrayList<Annotation>();
+      for (Annotation annotation : event.getAnnotatedMember().getAnnotations())
       {
-         Map<Member, Annotation> producersOnClass = producers.get(clazz);
-         List<Property<Object>> setters = new ArrayList<Property<Object>>();
-         for (Member member : producersOnClass.keySet())
+         if (annotation.annotationType().isAnnotationPresent(GenericConfiguration.class))
          {
-            // TODO Need a producer method property really
-            Property<Object> property = Properties.createProperty(member);
-            setters.add(property);
+            genericConfigurationAnnotiations.add(annotation);
          }
-         ProducerInjectionTarget<T> it = new ProducerInjectionTarget<T>(event.getInjectionTarget(), beanManager, setters, producersOnClass, syntheticProvider);
-         event.setInjectionTarget(it);
       }
-
+      
+      if (genericConfigurationAnnotiations.size() > 1)
+      {
+         throw new IllegalStateException("Can only have one generic configuration annotation on producer " + event.getAnnotatedMember());
+      }
+      else if (genericConfigurationAnnotiations.size() == 1)
+      {
+         Annotation genericConfiguration = genericConfigurationAnnotiations.get(0);
+         replaceProducer(event, genericConfiguration, beanManager);
+         addGenericConfigurationType(genericConfiguration);
+      }
+   }
+   
+   private <X> void addGenericConfigurationType(Annotation genericConfiguration)
+   {
+      Class<? extends Annotation> genericConfigurationType = genericConfiguration.annotationType();
+      if (!genericConfigurationTypes.containsKey(genericConfigurationType))
+      {
+         Set<Annotation> annotations = new HashSet<Annotation>();
+         annotations.add(genericConfiguration);
+         genericConfigurationTypes.put(genericConfigurationType, annotations);
+      }
+      else
+      {
+         genericConfigurationTypes.get(genericConfigurationType).add(genericConfiguration);
+      }
+   }
+   
+   private <T, X> void replaceProducer(ProcessProducer<T, X> event, Annotation genericConfigurationAnnotation, BeanManager beanManager)
+   {
+      // First, check that this producer's type is assignable from a generic bean's type
+      AnnotatedMember<T> annotatedMember = event.getAnnotatedMember();
+      Class<?> memberRawType = getRawType(annotatedMember.getBaseType());
+      for (Entry<Class<?>, Set<AnnotatedType<?>>> entry : genericBeanTypes.entrySet())
+      {
+         for (AnnotatedType<?> annotatedType : entry.getValue())
+         {
+            // TODO should take account of parameterized types
+            if (memberRawType.isAssignableFrom(getRawType(annotatedType.getBaseType())))
+            {
+               // This is the generic bean that this producer is making
+               event.setProducer(new GenericBeanProducer<X>(event.getProducer(), memberRawType, genericConfigurationAnnotation, syntheticProvider, beanManager));
+               // Short-circuit, they're can of course be only one matching generic bean to be produced!
+               return;
+            }
+         }
+      }
+      throw new IllegalStateException("Unable to find a generic bean type for " + event.getAnnotatedMember() + " amongst " + genericBeanTypes);
    }
 
    /**
@@ -187,20 +181,21 @@ class GenericBeanExtension implements Extension
     */
    void afterBeanDiscovery(@Observes AfterBeanDiscovery event, BeanManager beanManager)
    {
-      for (Entry<Class<?>, Set<AnnotatedType<?>>> entry : genericTypes.entrySet())
+      for (Entry<Class<?>, Set<AnnotatedType<?>>> entry : genericBeanTypes.entrySet())
       {
-         Set<Annotation> concretes = concreteGenerics.get(entry.getKey());
-         if (concretes != null)
+         Set<Annotation> genericConfigurations = genericConfigurationTypes.get(entry.getKey());
+         if (genericConfigurations != null)
          {
             for (AnnotatedType<?> type : entry.getValue())
             {
-               for (Annotation concrete : concretes)
+               for (Annotation genericConfiguration : genericConfigurations)
                {
-                  event.addBean(createGenericBean(type, concrete, beanManager));
+                  event.addBean(createGenericBean(type, genericConfiguration, beanManager));
                }
             }
          }
       }
+      
       // Add all the generic configuration beans, which were created above
       for (Bean<?> bean : genericConfigurationBeans.values())
       {
@@ -312,9 +307,9 @@ class GenericBeanExtension implements Extension
    void cleanup(@Observes AfterDeploymentValidation event)
    {
       // Defensively clear maps to help with GC
-      this.concreteGenerics.clear();
+      this.genericConfigurationTypes.clear();
       this.genericConfigurationBeans.clear();
-      this.genericTypes.clear();
+      this.genericBeanTypes.clear();
       // TODO this.producers.clear();
       // TODO this.syntheticProvider.clear();
    }
