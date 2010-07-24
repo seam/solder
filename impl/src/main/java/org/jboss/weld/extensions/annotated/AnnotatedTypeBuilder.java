@@ -32,8 +32,6 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
-import org.jboss.weld.extensions.util.Reflections;
-
 /**
  * Class for constructing a new AnnotatedType. A new instance of builder must be
  * used for each annotated type.
@@ -47,114 +45,32 @@ import org.jboss.weld.extensions.util.Reflections;
  */
 public class AnnotatedTypeBuilder<X>
 {
-   
 
-   public static <X> AnnotatedTypeBuilder<X> newInstance(Class<X> underlying)
-   {
-      return new AnnotatedTypeBuilder<X>(underlying);
-   }
-
-   public static <X> AnnotatedTypeBuilder<X> newInstance(AnnotatedType<X> underlying)
-   {
-      return new AnnotatedTypeBuilder<X>(underlying);
-   }
-   
-   private final Class<X> underlyingType;
+   private Class<X> javaClass;
    private final AnnotationBuilder typeAnnotations;
-   
+
    private final Map<Constructor<?>, AnnotationBuilder> constructors;
    private final Map<Constructor<?>, Map<Integer, AnnotationBuilder>> constructorParameters;
    private Map<Constructor<?>, Map<Integer, Type>> constructorParameterTypes;
-   
+
    private final Map<Field, AnnotationBuilder> fields;
    private final Map<Field, Type> fieldTypes;
-   
+
    private final Map<Method, AnnotationBuilder> methods;
    private final Map<Method, Map<Integer, AnnotationBuilder>> methodParameters;
    private final Map<Method, Map<Integer, Type>> methodParameterTypes;
 
-   protected AnnotatedTypeBuilder(Class<X> underlyingType)
+   public AnnotatedTypeBuilder()
    {
-      this.underlyingType = underlyingType;
       this.typeAnnotations = new AnnotationBuilder();
       this.constructors = new HashMap<Constructor<?>, AnnotationBuilder>();
-      this.constructorParameters = new HashMap<Constructor<?>, Map<Integer,AnnotationBuilder>>();
-      this.constructorParameterTypes = new HashMap<Constructor<?>, Map<Integer,Type>>();
+      this.constructorParameters = new HashMap<Constructor<?>, Map<Integer, AnnotationBuilder>>();
+      this.constructorParameterTypes = new HashMap<Constructor<?>, Map<Integer, Type>>();
       this.fields = new HashMap<Field, AnnotationBuilder>();
       this.fieldTypes = new HashMap<Field, Type>();
       this.methods = new HashMap<Method, AnnotationBuilder>();
-      this.methodParameters = new HashMap<Method, Map<Integer,AnnotationBuilder>>();
-      this.methodParameterTypes = new HashMap<Method, Map<Integer,Type>>();
-   }
-
-   protected AnnotatedTypeBuilder(AnnotatedType<X> underlyingType)
-   {
-      this(underlyingType.getJavaClass());
-
-   }
-
-   public AnnotatedTypeBuilder<X> readAnnotationsFromUnderlyingType()
-   {
-      for (Annotation annotation : underlyingType.getAnnotations())
-      {
-         typeAnnotations.add(annotation);
-      }
-
-      for (Field field : Reflections.getAllFields(underlyingType))
-      {
-         AnnotationBuilder annotationBuilder = new AnnotationBuilder();
-         fields.put(field, annotationBuilder);
-         field.setAccessible(true);
-         for (Annotation annotation : field.getAnnotations())
-         {
-            annotationBuilder.add(annotation);
-         }
-      }
-
-      for (Method method : Reflections.getAllMethods(underlyingType))
-      {
-         AnnotationBuilder annotationBuilder = new AnnotationBuilder();
-         method.setAccessible(true);
-         methods.put(method, annotationBuilder);
-         for (Annotation annotation : method.getAnnotations())
-         {
-            annotationBuilder.add(annotation);
-         }
-         Map<Integer, AnnotationBuilder> parameters = new HashMap<Integer, AnnotationBuilder>();
-         methodParameters.put(method, parameters);
-         for (int i = 0; i < method.getParameterTypes().length; ++i)
-         {
-            AnnotationBuilder parameterAnnotationBuilder = new AnnotationBuilder();
-            parameters.put(i, parameterAnnotationBuilder);
-            for (Annotation annotation : method.getParameterAnnotations()[i])
-            {
-               parameterAnnotationBuilder.add(annotation);
-            }
-         }
-      }
-
-      for (Constructor<?> constructor : underlyingType.getDeclaredConstructors())
-      {
-         AnnotationBuilder annotationBuilder = new AnnotationBuilder();
-         constructor.setAccessible(true);
-         constructors.put(constructor, annotationBuilder);
-         for (Annotation annotation : constructor.getAnnotations())
-         {
-            annotationBuilder.add(annotation);
-         }
-         Map<Integer, AnnotationBuilder> mparams = new HashMap<Integer, AnnotationBuilder>();
-         constructorParameters.put(constructor, mparams);
-         for (int i = 0; i < constructor.getParameterTypes().length; ++i)
-         {
-            AnnotationBuilder parameterAnnotationBuilder = new AnnotationBuilder();
-            mparams.put(i, parameterAnnotationBuilder);
-            for (Annotation annotation : constructor.getParameterAnnotations()[i])
-            {
-               parameterAnnotationBuilder.add(annotation);
-            }
-         }
-      }
-      return this;
+      this.methodParameters = new HashMap<Method, Map<Integer, AnnotationBuilder>>();
+      this.methodParameterTypes = new HashMap<Method, Map<Integer, Type>>();
    }
 
    public AnnotatedTypeBuilder<X> addToClass(Annotation annotation)
@@ -342,7 +258,7 @@ public class AnnotatedTypeBuilder<X>
       }
       return this;
    }
-   
+
    public <T extends Annotation> AnnotatedTypeBuilder<X> redefineMembers(Class<T> annotationType, MemberAnnotationRedefiner<T> redefinition)
    {
       for (Entry<Field, AnnotationBuilder> field : fields.entrySet())
@@ -374,24 +290,41 @@ public class AnnotatedTypeBuilder<X>
    }
 
    /**
-    * merges the annotations from an existing AnnotatedType. If they both have
-    * the same annotation on an element overwriteExisting determines which one
-    * to keep
+    * Reads in from an existing AnnotatedType. Any elements not present are
+    * added. The javaClass will be read in. If the annotation already exists on
+    * that element in the builder the read annotation will be used.
     * 
-    * @param type
-    * @param overwriteExisting
-    * @return
+    * @param type The type to read from
     */
-   public AnnotatedTypeBuilder<X> mergeAnnotations(AnnotatedType<X> type, boolean overwriteExisting)
+   public AnnotatedTypeBuilder<X> readFromType(AnnotatedType<X> type)
    {
-      mergeAnnotationsOnElement(type, overwriteExisting, typeAnnotations);
+      return readFromType(type, true);
+   }
+
+   /**
+    * Reads in from an existing AnnotatedType. Any elements not present are
+    * added. The javaClass will be read in if overwrite is true. If the
+    * annotation already exists on that element in the builder, overwrite
+    * determines whether the original or read annotation will be used.
+    * 
+    * @param type The type to read from
+    * @param overwrite If true, the read annotation will replace any existing
+    *           annotation
+    */
+   public AnnotatedTypeBuilder<X> readFromType(AnnotatedType<X> type, boolean overwrite)
+   {
+      if (javaClass == null || overwrite)
+      {
+         this.javaClass = type.getJavaClass();
+      }
+      mergeAnnotationsOnElement(type, overwrite, typeAnnotations);
       for (AnnotatedField<? super X> field : type.getFields())
-      { 
+      {
          if (fields.get(field.getJavaMember()) == null)
          {
             fields.put(field.getJavaMember(), new AnnotationBuilder());
          }
-         mergeAnnotationsOnElement(field, overwriteExisting, fields.get(field.getJavaMember()));
+         mergeAnnotationsOnElement(field, overwrite, fields.get(field.getJavaMember()));
       }
       for (AnnotatedMethod<? super X> method : type.getMethods())
       {
@@ -399,7 +332,7 @@ public class AnnotatedTypeBuilder<X>
          {
             methods.put(method.getJavaMember(), new AnnotationBuilder());
          }
-         mergeAnnotationsOnElement(method, overwriteExisting, methods.get(method.getJavaMember()));
+         mergeAnnotationsOnElement(method, overwrite, methods.get(method.getJavaMember()));
          for (AnnotatedParameter<? super X> p : method.getParameters())
          {
             if (methodParameters.get(method.getJavaMember()) == null)
@@ -408,9 +341,9 @@ public class AnnotatedTypeBuilder<X>
             }
             if (methodParameters.get(method.getJavaMember()).get(p.getPosition()) == null)
             {
-               methodParameters.get(method.getJavaMember()).put(p.getPosition(),  new AnnotationBuilder());
+               methodParameters.get(method.getJavaMember()).put(p.getPosition(), new AnnotationBuilder());
             }
-            mergeAnnotationsOnElement(p, overwriteExisting, methodParameters.get(method.getJavaMember()).get(p.getPosition()));
+            mergeAnnotationsOnElement(p, overwrite, methodParameters.get(method.getJavaMember()).get(p.getPosition()));
          }
       }
       for (AnnotatedConstructor<? super X> constructor : type.getConstructors())
@@ -419,7 +352,7 @@ public class AnnotatedTypeBuilder<X>
          {
             constructors.put(constructor.getJavaMember(), new AnnotationBuilder());
          }
-         mergeAnnotationsOnElement(constructor, overwriteExisting, constructors.get(constructor.getJavaMember()));
+         mergeAnnotationsOnElement(constructor, overwrite, constructors.get(constructor.getJavaMember()));
          for (AnnotatedParameter<? super X> p : constructor.getParameters())
          {
             if (constructorParameters.get(constructor.getJavaMember()) == null)
@@ -430,7 +363,7 @@ public class AnnotatedTypeBuilder<X>
             {
                constructorParameters.get(constructor.getJavaMember()).put(p.getPosition(), new AnnotationBuilder());
             }
-            mergeAnnotationsOnElement(p, overwriteExisting, constructorParameters.get(constructor.getJavaMember()).get(p.getPosition()));
+            mergeAnnotationsOnElement(p, overwrite, constructorParameters.get(constructor.getJavaMember()).get(p.getPosition()));
          }
       }
       return this;
@@ -496,7 +429,7 @@ public class AnnotatedTypeBuilder<X>
          }
       }
 
-      return new AnnotatedTypeImpl<X>(underlyingType, typeAnnotations.create(), fieldAnnotations, methodAnnotations, methodParameterAnnnotations, constructorAnnotations, constructorParameterAnnnotations, fieldTypes, methodParameterTypes, constructorParameterTypes);
+      return new AnnotatedTypeImpl<X>(javaClass, typeAnnotations.create(), fieldAnnotations, methodAnnotations, methodParameterAnnnotations, constructorAnnotations, constructorParameterAnnnotations, fieldTypes, methodParameterTypes, constructorParameterTypes);
    }
 
    public void overrideFieldType(Field field, Type type)
@@ -520,6 +453,17 @@ public class AnnotatedTypeBuilder<X>
          constructorParameterTypes.put(constructor, new HashMap<Integer, Type>());
       }
       constructorParameterTypes.get(constructor).put(position, type);
+   }
+
+   public Class<X> getJavaClass()
+   {
+      return javaClass;
+   }
+
+   public AnnotatedTypeBuilder<X> setJavaClass(Class<X> javaClass)
+   {
+      this.javaClass = javaClass;
+      return this;
    }
 
 }

@@ -48,9 +48,9 @@ public class GenericBeanTest
    {
       // Test that the generic configuration injection wiring is working!
       assert baz1.getGarply() != null;
-      assert baz1.getGarply().equals("hello1");
+      assert baz1.getGarply().value().equals("hello1");
       assert baz2.getGarply() != null;
-      assert baz2.getGarply().equals("hello2");
+      assert baz2.getGarply().value().equals("hello2");
       assert baz1.getBar() != null;
       assert baz1.getBar().getInjectedGarply() != null;
       assert baz1.getBar().getInjectedGarply().value().equals("hello1");

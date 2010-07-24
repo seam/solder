@@ -69,7 +69,7 @@ class CoreExtension implements Extension
          return;
       }
 
-      AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).mergeAnnotations(pat.getAnnotatedType(), true);
+      AnnotatedTypeBuilder<X> builder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
 
       // support for @Named packages
       Package pkg = pat.getAnnotatedType().getJavaClass().getPackage();
@@ -145,7 +145,7 @@ class CoreExtension implements Extension
       {
          if (constructor.isAnnotationPresent(Constructs.class))
          {
-            AnnotatedTypeBuilder<X> annotatedTypeBuilder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).mergeAnnotations(pat.getAnnotatedType(), true);
+            AnnotatedTypeBuilder<X> annotatedTypeBuilder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
             // remove class-level @Named annotation
             annotatedTypeBuilder.removeFromClass(Named.class);
             // remove bean constructors annotated @Inject
