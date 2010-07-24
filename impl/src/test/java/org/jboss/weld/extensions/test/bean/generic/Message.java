@@ -37,7 +37,7 @@ import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, TYPE})
 @GenericConfiguration
-public @interface Garply
+public @interface Message
 {
    String value();
 }

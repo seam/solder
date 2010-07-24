@@ -94,6 +94,11 @@ public class AnnotatedTypeBuilder<X>
       fields.get(field).add(annotation);
       return this;
    }
+   
+   public AnnotatedTypeBuilder<X> addToField(AnnotatedField<? super X> field, Annotation annotation)
+   {
+      return addToField(field.getJavaMember(), annotation);
+   }
 
    public AnnotatedTypeBuilder<X> removeFromField(Field field, Class<? extends Annotation> annotationType)
    {
@@ -102,6 +107,11 @@ public class AnnotatedTypeBuilder<X>
          fields.get(field).remove(annotationType);
       }
       return this;
+   }
+   
+   public AnnotatedTypeBuilder<X> removeFromField(AnnotatedField<? super X> field, Class<? extends Annotation> annotationType)
+   {
+      return removeFromField(field.getJavaMember(), annotationType);
    }
 
    public AnnotatedTypeBuilder<X> addToMethod(Method method, Annotation annotation)
@@ -113,6 +123,11 @@ public class AnnotatedTypeBuilder<X>
       methods.get(method).add(annotation);
       return this;
    }
+   
+   public AnnotatedTypeBuilder<X> addToMethod(AnnotatedMethod<? super X> method, Annotation annotation)
+   {
+      return addToMethod(method.getJavaMember(), annotation);
+   }
 
    public AnnotatedTypeBuilder<X> removeFromMethod(Method method, Class<? extends Annotation> annotationType)
    {
@@ -121,6 +136,11 @@ public class AnnotatedTypeBuilder<X>
          methods.get(method).remove(annotationType);
       }
       return this;
+   }
+   
+   public AnnotatedTypeBuilder<X> removeFromMethod(AnnotatedMethod<? super X> method, Class<? extends Annotation> annotationType)
+   {
+      return removeFromMethod(method.getJavaMember(), annotationType);
    }
 
    public AnnotatedTypeBuilder<X> addToMethodParameter(Method method, int position, Annotation annotation)
@@ -162,14 +182,24 @@ public class AnnotatedTypeBuilder<X>
       constructors.get(constructor).add(annotation);
       return this;
    }
+   
+   public AnnotatedTypeBuilder<X> addToConstructor(AnnotatedConstructor<X> constructor, Annotation annotation)
+   {
+      return addToConstructor(constructor.getJavaMember(), annotation);
+   }
 
-   public AnnotatedTypeBuilder<X> removeFromConstructor(Constructor<?> constructor, Class<? extends Annotation> annotationType)
+   public AnnotatedTypeBuilder<X> removeFromConstructor(Constructor<X> constructor, Class<? extends Annotation> annotationType)
    {
       if (constructors.get(constructor) != null)
       {
          constructors.get(constructor).remove(annotationType);
       }
       return this;
+   }
+   
+   public AnnotatedTypeBuilder<X> removeFromConstructor(AnnotatedConstructor<X> constructor, Class<? extends Annotation> annotationType)
+   {
+      return removeFromConstructor(constructor.getJavaMember(), annotationType);
    }
 
    public AnnotatedTypeBuilder<X> addToConstructorParameter(Constructor<X> constructor, int position, Annotation annotation)
@@ -200,6 +230,45 @@ public class AnnotatedTypeBuilder<X>
          }
       }
       return this;
+   }
+   
+   
+   public AnnotatedTypeBuilder<X> removeFromParameter(AnnotatedParameter<? super X> parameter, Class<? extends Annotation> annotationType)
+   {
+      if (parameter.getDeclaringCallable().getJavaMember() instanceof Method)
+      {
+         Method method = (Method) parameter.getDeclaringCallable().getJavaMember();
+         return removeFromMethodParameter(method, parameter.getPosition(), annotationType);
+      }
+      if (parameter.getDeclaringCallable().getJavaMember() instanceof Constructor<?>)
+      {
+         @SuppressWarnings("unchecked")
+         Constructor<X> constructor = (Constructor<X>) parameter.getDeclaringCallable().getJavaMember();
+         return removeFromConstructorParameter(constructor, parameter.getPosition(), annotationType);
+      }
+      else
+      {
+         throw new IllegalArgumentException("Cannot remove from parameter " + parameter + " - cannot operate on member " + parameter.getDeclaringCallable().getJavaMember());
+      }
+   }
+   
+   public AnnotatedTypeBuilder<X> addToParameter(AnnotatedParameter<? super X> parameter, Annotation annotation)
+   {
+      if (parameter.getDeclaringCallable().getJavaMember() instanceof Method)
+      {
+         Method method = (Method) parameter.getDeclaringCallable().getJavaMember();
+         return addToMethodParameter(method, parameter.getPosition(), annotation);
+      }
+      if (parameter.getDeclaringCallable().getJavaMember() instanceof Constructor<?>)
+      {
+         @SuppressWarnings("unchecked")
+         Constructor<X> constructor = (Constructor<X>) parameter.getDeclaringCallable().getJavaMember();
+         return addToConstructorParameter(constructor, parameter.getPosition(), annotation);
+      }
+      else
+      {
+         throw new IllegalArgumentException("Cannot remove from parameter " + parameter + " - cannot operate on member " + parameter.getDeclaringCallable().getJavaMember());
+      } 
    }
 
    public AnnotatedTypeBuilder<X> removeFromAll(Class<? extends Annotation> annotationType)
@@ -436,23 +505,49 @@ public class AnnotatedTypeBuilder<X>
    {
       fieldTypes.put(field, type);
    }
+   
+   public void overrideFieldType(AnnotatedField<? super X> field, Type type)
+   {
+      fieldTypes.put(field.getJavaMember(), type);
+   }
 
-   public void overrideMethodParameterType(Method method, Type type, int position)
+   public AnnotatedTypeBuilder<X> overrideMethodParameterType(Method method, int position, Type type)
    {
       if (methodParameterTypes.get(method) == null)
       {
          methodParameterTypes.put(method, new HashMap<Integer, Type>());
       }
       methodParameterTypes.get(method).put(position, type);
+      return this;
    }
 
-   public void overrideConstructorParameterType(Constructor<?> constructor, Type type, int position)
+   public AnnotatedTypeBuilder<X> overrideConstructorParameterType(Constructor<X> constructor, int position, Type type)
    {
       if (constructorParameterTypes.get(constructor) == null)
       {
          constructorParameterTypes.put(constructor, new HashMap<Integer, Type>());
       }
       constructorParameterTypes.get(constructor).put(position, type);
+      return this;
+   }
+   
+   public AnnotatedTypeBuilder<X> overrideParameterType(AnnotatedParameter<? super X> parameter, Type type)
+   {
+      if (parameter.getDeclaringCallable().getJavaMember() instanceof Method)
+      {
+         Method method = (Method) parameter.getDeclaringCallable().getJavaMember();
+         return overrideMethodParameterType(method, parameter.getPosition(), type); 
+      }
+      if (parameter.getDeclaringCallable().getJavaMember() instanceof Constructor<?>)
+      {
+         @SuppressWarnings("unchecked")
+         Constructor<X> constructor = (Constructor<X>) parameter.getDeclaringCallable().getJavaMember();
+         return overrideConstructorParameterType(constructor, parameter.getPosition(), type);
+      }
+      else
+      {
+         throw new IllegalArgumentException("Cannot remove from parameter " + parameter + " - cannot operate on member " + parameter.getDeclaringCallable().getJavaMember());
+      }
    }
 
    public Class<X> getJavaClass()

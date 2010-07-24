@@ -16,9 +16,6 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
-import static org.jboss.weld.extensions.util.Reflections.EMPTY_ANNOTATION_ARRAY;
-import static org.jboss.weld.extensions.util.Reflections.getQualifiers;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
@@ -86,6 +83,7 @@ class GenericBeanExtension implements Extension
    void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event)
    {
       event.addQualifier(Synthetic.class);
+      event.addQualifier(GenericBean.class);
    }
 
    void processAnnotatedType(@Observes ProcessAnnotatedType<?> event)
@@ -201,7 +199,10 @@ class GenericBeanExtension implements Extension
       Synthetic genericBeanQualifier = syntheticProvider.get(concrete);
 
       AnnotatedTypeBuilder<X> builder = new AnnotatedTypeBuilder<X>().readFromType(annotatedType);
+
+      // Add in the synthetic qualifier to the bean
       builder.addToClass(genericBeanQualifier);
+
       for (AnnotatedField<? super X> field : annotatedType.getFields())
       {
          if (field.isAnnotationPresent(Inject.class))
@@ -210,56 +211,27 @@ class GenericBeanExtension implements Extension
             if (concrete.annotationType().isAssignableFrom(field.getJavaMember().getType()))
             {
                Synthetic genericConfigurationQualifier = syntheticProvider.get();
-               builder.addToField(field.getJavaMember(), genericConfigurationQualifier);
+               builder.addToField(field, genericConfigurationQualifier);
                event.addBean(createConfigurationBean(beanManager, concrete, genericConfigurationQualifier));
             }
-            else
+            // if this is a generic bean injection point
+            else if (field.isAnnotationPresent(Inject.class) && field.isAnnotationPresent(GenericBean.class))
             {
-               /*
-                * check to see if we should be injecting a generic bean we do
-                * this by checking if there are any beans that can be injected
-                * into this point if there is not then we assume it is a generic
-                * injection point this has the downside that if it is actually a
-                * deployment error then it will confuse the user
-                */
-               // TODO Improve this
-               Annotation[] qualifiers = getQualifiers(field.getAnnotations(), beanManager).toArray(EMPTY_ANNOTATION_ARRAY);
-               Set<Bean<?>> beans = beanManager.getBeans(field.getJavaMember().getType(), qualifiers);
-               if (beans.isEmpty())
-               {
-                  builder.addToField(field.getJavaMember(), genericBeanQualifier);
-               }
+               builder.removeFromField(field, GenericBean.class);
+               builder.addToField(field, genericBeanQualifier);
             }
          }
-         else if (field.isAnnotationPresent(Produces.class))
-         {
-            // TODO: register a producer with the appropriate qualifier
-         }
       }
-      for (AnnotatedMethod<?> method : annotatedType.getMethods())
+      for (AnnotatedMethod<? super X> method : annotatedType.getMethods())
       {
-         // TODO: need to properly handle Observer methods and Disposal
-         // methods
-         if (method.isAnnotationPresent(Produces.class))
+         if (method.isAnnotationPresent(Inject.class))
          {
-            // TODO: we need to register the producer bean, so this is not
-            // very useful at the moment
-            for (AnnotatedParameter<?> pm : method.getParameters())
+            for (AnnotatedParameter<? super X> parameter : method.getParameters())
             {
-               Class<?> paramType = method.getJavaMember().getParameterTypes()[pm.getPosition()];
-
-               // check to see if we should be injecting a generic bean
-               // we do this by checking if there are any beans that can be
-               // injected into this point
-               // if there is not then we assume it is a generic injection
-               // point
-               // this has the downside that if it is actually a deployment
-               // error then it will confuse the user
-               Annotation[] qualifiers = getQualifiers(pm.getAnnotations(), beanManager).toArray(EMPTY_ANNOTATION_ARRAY);
-               Set<Bean<?>> beans = beanManager.getBeans(paramType, qualifiers);
-               if (beans.isEmpty())
+               if (parameter.isAnnotationPresent(GenericBean.class))
                {
-                  builder.addToMethod(method.getJavaMember(), genericBeanQualifier);
+                  builder.removeFromParameter(parameter, GenericBean.class);
+                  builder.addToParameter(parameter, genericBeanQualifier);
                }
             }
          }
@@ -271,12 +243,10 @@ class GenericBeanExtension implements Extension
          {
             for (AnnotatedParameter<X> parameter : constructor.getParameters())
             {
-               Class<?> paramType = constructor.getJavaMember().getParameterTypes()[parameter.getPosition()];
-               Annotation[] qualifiers = getQualifiers(parameter.getAnnotations(), beanManager).toArray(EMPTY_ANNOTATION_ARRAY);
-               Set<Bean<?>> beans = beanManager.getBeans(paramType, qualifiers);
-               if (beans.isEmpty())
+               if (parameter.isAnnotationPresent(GenericBean.class))
                {
-                  builder.addToConstructorParameter(constructor.getJavaMember(), parameter.getPosition(), genericBeanQualifier);
+                  builder.removeFromParameter(parameter, GenericBean.class);
+                  builder.addToParameter(parameter, genericBeanQualifier);
                }
             }
          }

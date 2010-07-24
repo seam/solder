@@ -16,28 +16,35 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import javax.inject.Qualifier;
+import javax.enterprise.inject.Produces;
 
 /**
- * A qualifier
- * 
+ * A producer of generic beans
  * @author pmuir
  *
  */
-
-@Retention(RUNTIME)
-@Target({METHOD, FIELD, PARAMETER, TYPE})
-@Qualifier
-public @interface Grault
+public class GenericBeanProducer
 {
-   int value();
+   @SuppressWarnings("unused")
+   @Foo(1)
+   @Produces
+   @Message("hello1")
+   private Baz baz1;
+
+   @SuppressWarnings("unused")
+   @Foo(2)
+   @Produces
+   @Message("hello2")
+   private Baz baz2;
+   
+   @Foo(1)
+   @Produces
+   @Message("bye1")
+   private Bar bar1;
+   
+   @Foo(2)
+   @Produces
+   @Message("bye2")
+   private Bar bar2;
+
 }

@@ -16,25 +16,28 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
-import javax.enterprise.inject.Produces;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import javax.inject.Qualifier;
 
 /**
- * A producer of Baz's
+ * A qualifier
+ * 
  * @author pmuir
  *
  */
-public class BazProducer
+
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+@Qualifier
+public @interface Foo
 {
-   @SuppressWarnings("unused")
-   @Grault(1)
-   @Produces
-   @Garply("hello1")
-   private Baz baz1;
-
-   @SuppressWarnings("unused")
-   @Grault(2)
-   @Produces
-   @Garply("hello2")
-   private Baz baz2;
-
+   int value();
 }

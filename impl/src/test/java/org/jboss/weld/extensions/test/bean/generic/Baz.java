@@ -19,26 +19,27 @@ package org.jboss.weld.extensions.test.bean.generic;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericBean;
 
 /**
- * 
+ * A generic bean for the config annotation Garply
  * 
  * @author pmuir
  *
  */
 
-@Generic(Garply.class)
+@Generic(Message.class)
 public class Baz
 {
 
-   @Inject
+   @Inject @GenericBean
    private Bar bar;
 
    @Inject
    private Corge corge;
    
    @Inject 
-   private Garply garply;
+   private Message message;
 
    public Bar getBar()
    {
@@ -50,8 +51,8 @@ public class Baz
       return corge;
    }
    
-   public Garply getGarply()
+   public Message getMessage()
    {
-      return garply;
+      return message;
    }
 }

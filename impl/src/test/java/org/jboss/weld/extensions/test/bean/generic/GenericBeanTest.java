@@ -16,6 +16,10 @@
  */
 package org.jboss.weld.extensions.test.bean.generic;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
@@ -36,32 +40,51 @@ public class GenericBeanTest
    }
 
    @Inject
-   @Grault(1)
+   @Foo(1)
    private Baz baz1;
 
    @Inject
-   @Grault(2)
+   @Foo(2)
    private Baz baz2;
+   
+   @Inject
+   @Foo(1)
+   private Bar bar1;
+   
+   @Inject
+   @Foo(2)
+   private Bar bar2;
 
    @Test
    public void testGeneric()
    {
-      // Test that the generic configuration injection wiring is working!
-      assert baz1.getGarply() != null;
-      assert baz1.getGarply().value().equals("hello1");
-      assert baz2.getGarply() != null;
-      assert baz2.getGarply().value().equals("hello2");
-      assert baz1.getBar() != null;
-      assert baz1.getBar().getInjectedGarply() != null;
-      assert baz1.getBar().getInjectedGarply().value().equals("hello1");
-      assert baz2.getBar() != null;
-      assert baz2.getBar().getInjectedGarply() != null;
-      assert baz2.getBar().getInjectedGarply().value().equals("hello2");
-      // Check that this isn't affecting annotations on the generic bean without @Inject 
-      assert baz1.getBar().getGarply() == null;
-      assert baz2.getBar().getGarply() == null;
       // Check that normal bean injection is working correctly!
-      assert baz2.getCorge() != null;
-      assert baz2.getCorge().getName() == "fred";
+      assertNotNull(baz2.getCorge());
+      assertEquals(baz2.getCorge().getName(), "fred");
+      
+      // Test that the generic configuration injection wiring is working for bar
+      assertNotNull(bar1.getInjectedMessage());
+      assertEquals(bar1.getInjectedMessage().value(), "bye1");
+      assertNotNull(bar2.getInjectedMessage());
+      assertEquals(bar2.getInjectedMessage().value(), "bye2");
+      
+      // Check that the generic configuration injection wiring is working for baz
+      assertNotNull(baz1.getMessage());
+      assertEquals(baz1.getMessage().value(), "hello1");
+      assertNotNull(baz2.getMessage());
+      assertEquals(baz2.getMessage().value(), "hello2");
+      
+      // Check that generic beans can inject each other
+      assertNotNull(baz1.getBar());
+      assertNotNull(baz1.getBar().getInjectedMessage());
+      assertEquals(baz1.getBar().getInjectedMessage().value(), "hello1");
+      assertNotNull(baz2.getBar());
+      assertNotNull(baz2.getBar().getInjectedMessage());
+      assertEquals(baz2.getBar().getInjectedMessage().value(), "hello2");
+      
+      // Check that this isn't affecting annotations on the generic bean without @Inject 
+      assertNull(baz1.getBar().getMessage());
+      assertNull(baz2.getBar().getMessage());
+     
    }
 }

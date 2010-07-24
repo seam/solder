@@ -21,28 +21,28 @@ import javax.inject.Inject;
 import org.jboss.weld.extensions.bean.generic.Generic;
 
 /**
- * A generic bean
+ * A generic bean for the config annotation Message
  * 
  * @author pmuir
  *
  */
 
-@Generic(Garply.class)
+@Generic(Message.class)
 public class Bar
 {
    @Inject
-   private Garply injectedGarply;
+   private Message injectedMessage;
 
-   // A Garply with no @Inject
-   private Garply garply;
+   // A Message with no @Inject
+   private Message message;
 
-   public Garply getInjectedGarply()
+   public Message getInjectedMessage()
    {
-      return injectedGarply;
+      return injectedMessage;
    }
 
-   public Garply getGarply()
+   public Message getMessage()
    {
-      return garply;
+      return message;
    }
 }

@@ -111,7 +111,7 @@ class CoreExtension implements Extension
          if (f.isAnnotationPresent(Exact.class))
          {
             Class<?> type = f.getAnnotation(Exact.class).value();
-            builder.overrideFieldType(f.getJavaMember(), type);
+            builder.overrideFieldType(f, type);
          }
       }
       // method parameters
@@ -122,7 +122,7 @@ class CoreExtension implements Extension
             if (p.isAnnotationPresent(Exact.class))
             {
                Class<?> type = p.getAnnotation(Exact.class).value();
-               builder.overrideMethodParameterType(m.getJavaMember(), type, p.getPosition());
+               builder.overrideParameterType(p, type);
             }
          }
       }
@@ -134,7 +134,7 @@ class CoreExtension implements Extension
             if (p.isAnnotationPresent(Exact.class))
             {
                Class<?> type = p.getAnnotation(Exact.class).value();
-               builder.overrideConstructorParameterType(c.getJavaMember(), type, p.getPosition());
+               builder.overrideParameterType(p, type);
             }
          }
       }
@@ -151,10 +151,10 @@ class CoreExtension implements Extension
             // remove bean constructors annotated @Inject
             for (AnnotatedConstructor<X> constructor2 : pat.getAnnotatedType().getConstructors())
             {
-               annotatedTypeBuilder.removeFromConstructor(constructor2.getJavaMember(), Inject.class);
+               annotatedTypeBuilder.removeFromConstructor(constructor2, Inject.class);
             }
             // make the constructor annotated @Constructs the bean constructor
-            annotatedTypeBuilder.addToConstructor(constructor.getJavaMember(), InjectLiteral.INSTANCE);
+            annotatedTypeBuilder.addToConstructor(constructor, InjectLiteral.INSTANCE);
             // add all the annotations of this constructor to the class
             for (Annotation ann : constructor.getAnnotations())
             {
