@@ -79,9 +79,9 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
-   public AnnotatedTypeBuilder<X> removeFromClass(Class<? extends Annotation> annotation)
+   public AnnotatedTypeBuilder<X> removeFromClass(Class<? extends Annotation> annotationType)
    {
-      typeAnnotations.remove(annotation);
+      typeAnnotations.remove(annotationType);
       return this;
    }
 
@@ -95,11 +95,11 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
-   public AnnotatedTypeBuilder<X> removeFromField(Field field, Class<? extends Annotation> annotation)
+   public AnnotatedTypeBuilder<X> removeFromField(Field field, Class<? extends Annotation> annotationType)
    {
       if (fields.get(field) != null)
       {
-         fields.get(field).remove(annotation);
+         fields.get(field).remove(annotationType);
       }
       return this;
    }
@@ -114,11 +114,11 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
-   public AnnotatedTypeBuilder<X> removeFromMethod(Method method, Class<? extends Annotation> annotation)
+   public AnnotatedTypeBuilder<X> removeFromMethod(Method method, Class<? extends Annotation> annotationType)
    {
       if (methods.get(method) != null)
       {
-         methods.get(method).remove(annotation);
+         methods.get(method).remove(annotationType);
       }
       return this;
    }
@@ -141,13 +141,13 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
-   public AnnotatedTypeBuilder<X> removeFromMethodParameter(Method method, int position, Class<? extends Annotation> annotation)
+   public AnnotatedTypeBuilder<X> removeFromMethodParameter(Method method, int position, Class<? extends Annotation> annotationType)
    {
       if (methodParameters.get(method) != null)
       {
          if (methodParameters.get(method).get(position) != null)
          {
-            methodParameters.get(method).get(position).remove(annotation);
+            methodParameters.get(method).get(position).remove(annotationType);
          }
       }
       return this;
@@ -163,11 +163,11 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
-   public AnnotatedTypeBuilder<X> removeFromConstructor(Constructor<?> constructor, Class<? extends Annotation> annotation)
+   public AnnotatedTypeBuilder<X> removeFromConstructor(Constructor<?> constructor, Class<? extends Annotation> annotationType)
    {
       if (constructors.get(constructor) != null)
       {
-         constructors.get(constructor).remove(annotation);
+         constructors.get(constructor).remove(annotationType);
       }
       return this;
    }
@@ -190,44 +190,44 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
-   public AnnotatedTypeBuilder<X> removeFromConstructorParameter(Constructor<X> constructor, int position, Class<? extends Annotation> annotation)
+   public AnnotatedTypeBuilder<X> removeFromConstructorParameter(Constructor<X> constructor, int position, Class<? extends Annotation> annotationType)
    {
       if (constructorParameters.get(constructor) != null)
       {
          if (constructorParameters.get(constructor).get(position) != null)
          {
-            constructorParameters.get(constructor).get(position).remove(annotation);
+            constructorParameters.get(constructor).get(position).remove(annotationType);
          }
       }
       return this;
    }
 
-   public AnnotatedTypeBuilder<X> removeFromAll(Class<? extends Annotation> annotation)
+   public AnnotatedTypeBuilder<X> removeFromAll(Class<? extends Annotation> annotationType)
    {
-      removeFromClass(annotation);
+      removeFromClass(annotationType);
       for (Entry<Field, AnnotationBuilder> field : fields.entrySet())
       {
-         field.getValue().remove(annotation);
+         field.getValue().remove(annotationType);
       }
       for (Entry<Method, AnnotationBuilder> method : methods.entrySet())
       {
-         method.getValue().remove(annotation);
+         method.getValue().remove(annotationType);
          if (methodParameters.get(method.getKey()) != null)
          {
             for (Entry<Integer, AnnotationBuilder> parameter : methodParameters.get(method.getKey()).entrySet())
             {
-               parameter.getValue().remove(annotation);
+               parameter.getValue().remove(annotationType);
             }
          }
       }
       for (Entry<Constructor<?>, AnnotationBuilder> constructor : constructors.entrySet())
       {
-         constructor.getValue().remove(annotation);
+         constructor.getValue().remove(annotationType);
          if (constructorParameters.get(constructor.getKey()) != null)
          {
             for (Entry<Integer, AnnotationBuilder> parameter : constructorParameters.get(constructor.getKey()).entrySet())
             {
-               parameter.getValue().remove(annotation);
+               parameter.getValue().remove(annotationType);
             }
          }
       }
