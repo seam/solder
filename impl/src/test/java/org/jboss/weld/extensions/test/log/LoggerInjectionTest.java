@@ -25,7 +25,6 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
-import org.jboss.weld.extensions.log.Category;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.impl.LastMessageLoggerFactory;
@@ -49,7 +48,6 @@ public class LoggerInjectionTest
    {
       JavaArchive a = ShrinkWrap.create("test.jar", JavaArchive.class);
       a.addPackage(LoggerInjectionTest.class.getPackage());
-      a.addPackage(Category.class.getPackage());
       a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
       return a;
    }
