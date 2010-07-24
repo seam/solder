@@ -161,7 +161,7 @@ class CoreExtension implements Extension
                annotatedTypeBuilder.addToClass(ann);
             }
             AnnotatedType<X> construtsAnnotatedType = builder.create();
-            additionalBeans.add(new BeanBuilder<X>(construtsAnnotatedType, beanManager).create());
+            additionalBeans.add(new BeanBuilder<X>(beanManager).defineBeanFromAnnotatedType(construtsAnnotatedType).create());
          }
       }
    }

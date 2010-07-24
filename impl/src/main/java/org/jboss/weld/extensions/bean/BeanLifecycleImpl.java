@@ -17,25 +17,32 @@
 package org.jboss.weld.extensions.bean;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.InjectionTarget;
 
-public class BeanLifecycleImpl<T> implements BeanLifecycle<T>
+class BeanLifecycleImpl<T> implements BeanLifecycle<T>
 {
 
-   public BeanLifecycleImpl() {}
+   private final InjectionTarget<T> injectionTarget;
 
-   public T create(BeanImpl<T> bean, CreationalContext<T> creationalContext)
+   BeanLifecycleImpl(InjectionTarget<T> injectionTarget)
    {
-      T instance = bean.getInjectionTarget().produce(creationalContext);
-      bean.getInjectionTarget().inject(instance, creationalContext);
-      bean.getInjectionTarget().postConstruct(instance);
+      this.injectionTarget = injectionTarget;
+   }
+
+   public T create(Bean<T> bean, CreationalContext<T> creationalContext)
+   {
+      T instance = injectionTarget.produce(creationalContext);
+      injectionTarget.inject(instance, creationalContext);
+      injectionTarget.postConstruct(instance);
       return instance;
    }
 
-   public void destroy(BeanImpl<T> bean, T instance, CreationalContext<T> creationalContext)
+   public void destroy(Bean<T> bean, T instance, CreationalContext<T> creationalContext)
    {
       try
       {
-         bean.getInjectionTarget().preDestroy(instance);
+         injectionTarget.preDestroy(instance);
          creationalContext.release();
       }
       catch (Exception e)

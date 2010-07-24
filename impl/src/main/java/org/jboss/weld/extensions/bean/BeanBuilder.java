@@ -23,15 +23,15 @@ import java.util.Set;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Alternative;
-import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
-import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Named;
 
 import org.jboss.weld.extensions.annotated.Annotateds;
+import org.jboss.weld.extensions.literal.DefaultLiteral;
 
 /**
  * class that can build a bean from an AnnotatedType.
@@ -42,38 +42,43 @@ import org.jboss.weld.extensions.annotated.Annotateds;
 public class BeanBuilder<T>
 {
 
-   private final AnnotatedType<T> type;
    private final BeanManager beanManager;
-   private InjectionTarget<T> injectionTarget;
+   
+   private Class<? extends T> javaClass;
    private String name;
    private Set<Annotation> qualifiers;
    private Class<? extends Annotation> scope;
    private Set<Class<? extends Annotation>> stereotypes;
-   private Set<Type> types = new HashSet<Type>();
-   private boolean alternative = false;
-   private boolean nullable = false;
+   private Set<Type> types;
+   private Set<InjectionPoint> injectionPoints;
+   private boolean alternative;
+   private boolean nullable;
    private BeanLifecycle<T> beanLifecycle;
    boolean passivationCapable;
    private String id;
 
-   public BeanBuilder(AnnotatedType<T> type, BeanManager beanManager)
+   public BeanBuilder(BeanManager beanManager)
    {
-      this.type = type;
       this.beanManager = beanManager;
    }
 
-   public BeanBuilder<T> defineBeanFromAnnotatedType()
+   public BeanBuilder<T> defineBeanFromAnnotatedType(AnnotatedType<T> type)
    {
+      this.javaClass = type.getJavaClass();
+      InjectionTarget<T> injectionTarget;
       if (!type.getJavaClass().isInterface())
       {
-         this.injectionTarget = beanManager.createInjectionTarget(type);
+         injectionTarget = beanManager.createInjectionTarget(type);
       }
       else
       {
-         this.injectionTarget = new DummyInjectionTarget<T>();
+         injectionTarget = new DummyInjectionTarget<T>();
       }
+      this.beanLifecycle = new BeanLifecycleImpl<T>(injectionTarget);
+      this.injectionPoints = injectionTarget.getInjectionPoints();
       this.qualifiers = new HashSet<Annotation>();
       this.stereotypes = new HashSet<Class<? extends Annotation>>();
+      this.types = new HashSet<Type>();
       for (Annotation annotation : type.getAnnotations())
       {
          if (beanManager.isQualifier(annotation.annotationType()))
@@ -111,11 +116,8 @@ public class BeanBuilder<T>
       }
       if (qualifiers.isEmpty())
       {
-         qualifiers.add(new AnnotationLiteral<Default>()
-         {
-         });
+         qualifiers.add(DefaultLiteral.INSTANCE);
       }
-      this.beanLifecycle = new BeanLifecycleImpl<T>();
       this.id = BeanImpl.class.getName() + ":" + Annotateds.createTypeId(type);
       return this;
    }
@@ -124,21 +126,9 @@ public class BeanBuilder<T>
    {
       if (!passivationCapable)
       {
-         return new BeanImpl<T>(type.getJavaClass(), injectionTarget, name, qualifiers, scope, stereotypes, types, alternative, nullable, beanLifecycle);
+         return new BeanImpl<T>(javaClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle);
       }
-      return new PassivationCapableBeanImpl<T>(id, type.getJavaClass(), injectionTarget, name, qualifiers, scope, stereotypes, types, alternative, nullable, beanLifecycle);
-
-   }
-
-   public InjectionTarget<T> getInjectionTarget()
-   {
-      return injectionTarget;
-   }
-
-   public BeanBuilder<T> setInjectionTarget(InjectionTarget<T> injectionTarget)
-   {
-      this.injectionTarget = injectionTarget;
-      return this;
+      return new PassivationCapableBeanImpl<T>(id, javaClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle);
    }
 
    public Set<Annotation> getQualifiers()
@@ -218,9 +208,15 @@ public class BeanBuilder<T>
       return this;
    }
 
-   public AnnotatedType<T> getType()
+   public Class<? extends T> getJavaClass()
    {
-      return type;
+      return javaClass;
+   }
+   
+   public BeanBuilder<T> setJavaClass(Class<? extends T> javaClass)
+   {
+      this.javaClass = javaClass;
+      return this;
    }
 
    public BeanManager getBeanManager()
@@ -258,6 +254,17 @@ public class BeanBuilder<T>
    public BeanBuilder<T> setId(String id)
    {
       this.id = id;
+      return this;
+   }
+   
+   public Set<InjectionPoint> getInjectionPoints()
+   {
+      return injectionPoints;
+   }
+   
+   public BeanBuilder<T> setInjectionPoints(Set<InjectionPoint> injectionPoints)
+   {
+      this.injectionPoints = injectionPoints;
       return this;
    }
 

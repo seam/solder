@@ -20,16 +20,16 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Set;
 
-import javax.enterprise.inject.spi.InjectionTarget;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.PassivationCapable;
 
 public class PassivationCapableBeanImpl<T> extends BeanImpl<T> implements PassivationCapable
 {
    private final String id;
 
-   PassivationCapableBeanImpl(String id, Class<?> beanClass, InjectionTarget<T> injectionTarget, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, BeanLifecycle<T> beanLifecycle)
+   PassivationCapableBeanImpl(String id, Class<?> beanClass, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, Set<InjectionPoint> injectionPoints, BeanLifecycle<T> beanLifecycle)
    {
-      super(beanClass, injectionTarget, name, qualifiers, scope, stereotypes, types, alternative, nullable, beanLifecycle);
+      super(beanClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle);
       this.id = id;
    }
 

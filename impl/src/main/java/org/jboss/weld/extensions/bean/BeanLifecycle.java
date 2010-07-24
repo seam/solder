@@ -17,9 +17,12 @@
 package org.jboss.weld.extensions.bean;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.InjectionTarget;
 
 /**
- * Handler for the create/destroy methods of CustomBean
+ * Handler for the create/destroy methods of {@link BeanImpl}. By default, the
+ * {@link InjectionTarget} will be used to create and destroy the bean
  * 
  * @author stuart
  * 
@@ -27,8 +30,8 @@ import javax.enterprise.context.spi.CreationalContext;
  */
 public interface BeanLifecycle<T>
 {
-   public T create(BeanImpl<T> bean, CreationalContext<T> arg0);
+   public T create(Bean<T> bean, CreationalContext<T> arg0);
 
-   public void destroy(BeanImpl<T> bean, T arg0, CreationalContext<T> arg1);
+   public void destroy(Bean<T> bean, T arg0, CreationalContext<T> arg1);
 
 }

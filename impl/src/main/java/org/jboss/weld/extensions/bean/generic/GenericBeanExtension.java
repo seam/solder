@@ -21,6 +21,7 @@ import static org.jboss.weld.extensions.util.Reflections.getQualifiers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import javax.enterprise.context.Dependent;
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
@@ -41,13 +44,14 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.InjectionTarget;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.bean.BeanBuilder;
+import org.jboss.weld.extensions.bean.BeanLifecycle;
+import org.jboss.weld.extensions.util.Arrays2;
 import org.jboss.weld.extensions.util.Synthetic;
 import org.jboss.weld.extensions.util.properties.Properties;
 import org.jboss.weld.extensions.util.properties.Property;
@@ -186,7 +190,7 @@ class GenericBeanExtension implements Extension
             {
                for (Annotation concrete : concretes)
                {
-                  event.addBean(redefineType(type, concrete, beanManager));
+                  event.addBean(redefineType(type, concrete, beanManager, event));
                }
             }
          }
@@ -194,12 +198,12 @@ class GenericBeanExtension implements Extension
    }
 
    // TODO Do we need to do something this complex, can't we just register the relevant beans?
-   private <X> Bean<X> redefineType(AnnotatedType<X> annotatedType, Annotation concrete, BeanManager beanManager)
+   private <X> Bean<X> redefineType(AnnotatedType<X> annotatedType, Annotation concrete, BeanManager beanManager, AfterBeanDiscovery event)
    {
-      Synthetic syntheticQualifier = syntheticProvider.get(concrete);
+      Synthetic genericBeanSyntheticQualifier = syntheticProvider.get(concrete);
 
       AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(annotatedType).readAnnotationsFromUnderlyingType();
-      builder.addToClass(syntheticQualifier);
+      builder.addToClass(genericBeanSyntheticQualifier);
       for (AnnotatedField<? super X> field : annotatedType.getFields())
       {
          if (field.isAnnotationPresent(Inject.class))
@@ -207,8 +211,9 @@ class GenericBeanExtension implements Extension
             // if this is a configuration injection point
             if (concrete.annotationType().isAssignableFrom(field.getJavaMember().getType()))
             {
-               builder.removeFromField(field.getJavaMember(), Inject.class);
-               builder.addToField(field.getJavaMember(), InjectConfiguration.INSTANCE);
+               Synthetic genericConfigurationQualifier = syntheticProvider.get();
+               builder.addToField(field.getJavaMember(), genericConfigurationQualifier);
+               event.addBean(createConfigurationBean(beanManager, concrete, genericConfigurationQualifier));
             }
             else
             {
@@ -224,7 +229,7 @@ class GenericBeanExtension implements Extension
                Set<Bean<?>> beans = beanManager.getBeans(field.getJavaMember().getType(), qualifiers);
                if (beans.isEmpty())
                {
-                  builder.addToField(field.getJavaMember(), syntheticQualifier);
+                  builder.addToField(field.getJavaMember(), genericBeanSyntheticQualifier);
                }
             }
          }
@@ -256,7 +261,7 @@ class GenericBeanExtension implements Extension
                Set<Bean<?>> beans = beanManager.getBeans(paramType, qualifiers);
                if (beans.isEmpty())
                {
-                  builder.addToMethod(method.getJavaMember(), syntheticQualifier);
+                  builder.addToMethod(method.getJavaMember(), genericBeanSyntheticQualifier);
                }
             }
          }
@@ -273,17 +278,38 @@ class GenericBeanExtension implements Extension
                Set<Bean<?>> beans = beanManager.getBeans(paramType, qualifiers);
                if (beans.isEmpty())
                {
-                  builder.addToConstructorParameter(constructor.getJavaMember(), parameter.getPosition(), syntheticQualifier);
+                  builder.addToConstructorParameter(constructor.getJavaMember(), parameter.getPosition(), genericBeanSyntheticQualifier);
                }
             }
          }
       }
-      AnnotatedType<X> newAnnotatedType = builder.create();
-      InjectionTarget<X> it = beanManager.createInjectionTarget(newAnnotatedType);
-
-      it = new GenericBeanInjectionTargetWrapper<X>(newAnnotatedType, it, concrete);
-      BeanBuilder<X> beanBuilder = new BeanBuilder<X>(newAnnotatedType, beanManager).defineBeanFromAnnotatedType().setInjectionTarget(it);
+      BeanBuilder<X> beanBuilder = new BeanBuilder<X>(beanManager).defineBeanFromAnnotatedType(builder.create());
       return beanBuilder.create();
+   }
+   
+   private Bean<Annotation> createConfigurationBean(BeanManager beanManager, final Annotation genericConfiguration, Annotation syntheticQualifier)
+   {
+      BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager)
+         .setJavaClass(genericConfiguration.annotationType())
+         .setTypes(Arrays2.<Type>asSet(genericConfiguration.annotationType(), Object.class))
+         .setScope(Dependent.class)
+         .setQualifiers(Arrays2.asSet(syntheticQualifier))
+         // TODO make this passivation capable?
+         .setBeanLifecycle(new BeanLifecycle<Annotation>()
+         {
+            
+            public void destroy(Bean<Annotation> bean, Annotation arg0, CreationalContext<Annotation> arg1)
+            {
+               // No-op
+            }
+            
+            public Annotation create(Bean<Annotation> bean, CreationalContext<Annotation> arg0)
+            {
+               return genericConfiguration;
+            }
+         });
+      
+      return builder.create();
    }
 
 }

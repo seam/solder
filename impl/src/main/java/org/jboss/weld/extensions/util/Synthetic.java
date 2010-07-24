@@ -26,7 +26,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.enterprise.util.AnnotationLiteral;
 
 /**
- * A synthetic qualifier that can be used to replace other user-supplied configuration at deployment 
+ * A synthetic qualifier that can be used to replace other user-supplied
+ * configuration at deployment
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
@@ -35,18 +36,18 @@ import javax.enterprise.util.AnnotationLiteral;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Synthetic
 {
-   
+
    long index();
-   
+
    String namespace();
-   
+
    public static class SyntheticLiteral extends AnnotationLiteral<Synthetic> implements Synthetic
    {
-      
+
       private final Long index;
-      
+
       private final String namespace;
-      
+
       public SyntheticLiteral(String namespace, Long index)
       {
          this.namespace = namespace;
@@ -57,23 +58,29 @@ public @interface Synthetic
       {
          return index;
       }
-      
+
       public String namespace()
       {
          return namespace;
       }
-      
+
    }
-   
+
+   /**
+    * Provides a unique Synthetic qualifier for the specified namespace
+    * 
+    * @author pmuir
+    * 
+    */
    public static class Provider
    {
-      
+
       //Map of generic Annotation instance to a SyntheticQualifier
       private final Map<Annotation, Synthetic> synthetics;
       private final String namespace;
-      
+
       private AtomicLong count;
-      
+
       public Provider(String namespace)
       {
          this.synthetics = new HashMap<Annotation, Synthetic>();
@@ -81,6 +88,13 @@ public @interface Synthetic
          this.count = new AtomicLong();
       }
 
+      /**
+       * Get a synthetic qualifier. The provided annotation is used to map the
+       * generated qualifier, allowing later retrieval.
+       * 
+       * @param annotation
+       * @return
+       */
       public Synthetic get(Annotation annotation)
       {
          if (!synthetics.containsKey(annotation))
@@ -89,6 +103,17 @@ public @interface Synthetic
          }
          return synthetics.get(annotation);
       }
+
+      /**
+       * Get a synthetic qualifier. The qualifier will not be stored for later
+       * retrieval.
+       * 
+       * @return
+       */
+      public Synthetic get()
+      {
+         return new Synthetic.SyntheticLiteral(namespace, count.getAndIncrement());
+      }
    }
-   
+
 }

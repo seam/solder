@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2010, Red Hat, Inc., and individual contributors
+ * Copyright 2008, Red Hat, Inc., and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -14,44 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic;
+package org.jboss.weld.extensions.util;
 
-import javax.inject.Inject;
-
-import org.jboss.weld.extensions.bean.generic.Generic;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * 
- * 
  * @author pmuir
  *
  */
-
-@Generic(Garply.class)
-public class Baz
+public class Arrays2
 {
-
-   @Inject
-   private Bar bar;
-
-   @Inject
-   private Corge corge;
    
-   @Inject 
-   private Garply garply;
+   private Arrays2() {}
 
-   public Bar getBar()
+   public static <T> Set<T> asSet(T... array)
    {
-      return bar;
+      Set<T> result = new HashSet<T>();
+      for (T a : array)
+      {
+         result.add(a);
+      }
+      return result;
    }
    
-   public Corge getCorge()
-   {
-      return corge;
-   }
-   
-   public Garply getGarply()
-   {
-      return garply;
-   }
 }

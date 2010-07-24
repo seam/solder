@@ -22,22 +22,30 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.InjectionTarget;
+
+import org.jboss.weld.extensions.literal.DefaultLiteral;
+import org.jboss.weld.extensions.util.Arrays2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * An immutable bean.
+ * An immutable bean which provides basic defaulting and checking of arguments.
  * 
  * @author stuart
+ * @author Pete Muir
  * 
- * @param <T>
  */
 public class BeanImpl<T> implements Bean<T>
 {
+
+   private static final Logger log = LoggerFactory.getLogger(BeanImpl.class);
+
    private final Class<?> beanClass;
-   private final InjectionTarget<T> injectionTarget;
    private final String name;
    private final Set<Annotation> qualifiers;
    private final Class<? extends Annotation> scope;
@@ -46,16 +54,79 @@ public class BeanImpl<T> implements Bean<T>
    private final boolean alternative;
    private final boolean nullable;
    private final BeanLifecycle<T> beanLifecycle;
+   private final Set<InjectionPoint> injectionPoints;
 
-   BeanImpl(Class<?> beanClass, InjectionTarget<T> injectionTarget, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, BeanLifecycle<T> beanLifecycle)
+   /**
+    * Create a new, immutable bean. All arguments passed as collections are defensively copied.
+    * 
+    * @param beanClass The Bean class, may not be null
+    * @param name The bean name
+    * @param qualifiers The bean's qualifiers, if null, a singleton set of
+    *           {@link Default} is used
+    * @param scope The bean's scope, if null, the default scope of
+    *           {@link Dependent} is used
+    * @param stereotypes The bean's stereotypes, if null, an empty set is used
+    * @param types The bean's types, if null, the beanClass and {@link Object}
+    *           will be used
+    * @param alternative True if the bean is an alternative
+    * @param nullable True if the bean is nullable
+    * @param injectionPoints the bean's injection points, if null an empty set is used
+    * @param beanLifecycle Handler for {@link #create(CreationalContext)} and
+    *           {@link #destroy(Object, CreationalContext)}
+    * 
+    * @throws IllegalArgumentException if the beanClass is null
+    */
+   public BeanImpl(Class<?> beanClass, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, Set<InjectionPoint> injectionPoints, BeanLifecycle<T> beanLifecycle)
    {
+      if (beanClass == null)
+      {
+         throw new IllegalArgumentException("beanClass cannot be null");
+      }
       this.beanClass = beanClass;
-      this.injectionTarget = injectionTarget;
       this.name = name;
-      this.qualifiers = new HashSet<Annotation>(qualifiers);
-      this.scope = scope;
-      this.stereotypes = new HashSet<Class<? extends Annotation>>(stereotypes);
-      this.types = new HashSet<Type>(types);
+      if (qualifiers == null)
+      {
+         this.qualifiers = Collections.<Annotation>singleton(DefaultLiteral.INSTANCE);
+         log.trace("No qualifers provided for bean class " + beanClass + ", using singleton set of @Default");
+      }
+      else
+      {
+         this.qualifiers = new HashSet<Annotation>(qualifiers);
+      }
+      if (scope == null)
+      {
+         this.scope = Dependent.class;
+         log.trace("No scope provided for bean class " + beanClass + ", using @Dependent");
+      }
+      else
+      {
+         this.scope = scope;
+      }
+      if (stereotypes == null)
+      {
+         this.stereotypes = Collections.emptySet();
+      }
+      else
+      {
+         this.stereotypes = new HashSet<Class<? extends Annotation>>(stereotypes);
+      }
+      if (types == null)
+      {
+         this.types = Arrays2.<Type>asSet(Object.class, beanClass);
+         log.trace("No types provided for bean class " + beanClass + ", using [java.lang.Object.class, " + beanClass.getName() + ".class]");
+      }
+      else
+      {
+         this.types = new HashSet<Type>(types);
+      }
+      if (injectionPoints == null)
+      {
+         this.injectionPoints = Collections.emptySet();
+      }
+      else
+      {
+         this.injectionPoints = new HashSet<InjectionPoint>(injectionPoints);
+      }
       this.alternative = alternative;
       this.nullable = nullable;
       this.beanLifecycle = beanLifecycle;
@@ -68,12 +139,7 @@ public class BeanImpl<T> implements Bean<T>
 
    public Set<InjectionPoint> getInjectionPoints()
    {
-      return injectionTarget.getInjectionPoints();
-   }
-
-   public InjectionTarget<T> getInjectionTarget()
-   {
-      return injectionTarget;
+      return injectionPoints;
    }
 
    public String getName()
@@ -120,7 +186,7 @@ public class BeanImpl<T> implements Bean<T>
    {
       beanLifecycle.destroy(this, arg0, arg1);
    }
-   
+
    @Override
    public String toString()
    {
