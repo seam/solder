@@ -22,6 +22,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -354,6 +356,23 @@ public class Reflections
       {
          throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), e);
       }
+   }
+   
+   @SuppressWarnings("unchecked")
+   public static <T> Class<T> getRawType(Type type)
+   {
+      if (type instanceof Class<?>)
+      {
+         return (Class<T>) type;
+      }
+      else if (type instanceof ParameterizedType)
+      {
+         if (((ParameterizedType) type).getRawType() instanceof Class<?>)
+         {
+            return (Class<T>) ((ParameterizedType) type).getRawType();
+         }
+      }
+      return null;
    }
 
 }

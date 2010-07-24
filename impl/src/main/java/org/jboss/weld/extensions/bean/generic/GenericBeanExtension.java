@@ -16,6 +16,8 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
+import static org.jboss.weld.extensions.util.Reflections.getRawType;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
@@ -208,7 +210,7 @@ class GenericBeanExtension implements Extension
          if (field.isAnnotationPresent(Inject.class))
          {
             // if this is a configuration injection point
-            if (concrete.annotationType().isAssignableFrom(field.getJavaMember().getType()))
+            if (concrete.annotationType().isAssignableFrom(getRawType(field.getBaseType())))
             {
                Synthetic genericConfigurationQualifier = syntheticProvider.get();
                builder.addToField(field, genericConfigurationQualifier);
@@ -228,6 +230,14 @@ class GenericBeanExtension implements Extension
          {
             for (AnnotatedParameter<? super X> parameter : method.getParameters())
             {
+               // if this is a configuration injection point
+               if (concrete.annotationType().isAssignableFrom(getRawType(parameter.getBaseType())))
+               {
+                  Synthetic genericConfigurationQualifier = syntheticProvider.get();
+                  builder.addToParameter(parameter, genericConfigurationQualifier);
+                  event.addBean(createConfigurationBean(beanManager, concrete, genericConfigurationQualifier));
+               }
+               // if this is a generic bean injection point
                if (parameter.isAnnotationPresent(GenericBean.class))
                {
                   builder.removeFromParameter(parameter, GenericBean.class);
@@ -243,6 +253,14 @@ class GenericBeanExtension implements Extension
          {
             for (AnnotatedParameter<X> parameter : constructor.getParameters())
             {
+               // if this is a configuration injection point
+               if (concrete.annotationType().isAssignableFrom(getRawType(parameter.getBaseType())))
+               {
+                  Synthetic genericConfigurationQualifier = syntheticProvider.get();
+                  builder.addToParameter(parameter, genericConfigurationQualifier);
+                  event.addBean(createConfigurationBean(beanManager, concrete, genericConfigurationQualifier));
+               }
+               // if this is a generic bean injection point
                if (parameter.isAnnotationPresent(GenericBean.class))
                {
                   builder.removeFromParameter(parameter, GenericBean.class);
@@ -257,21 +275,20 @@ class GenericBeanExtension implements Extension
 
    private Bean<Annotation> createConfigurationBean(BeanManager beanManager, final Annotation genericConfiguration, Annotation syntheticQualifier)
    {
-      BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager).setJavaClass(genericConfiguration.annotationType()).setTypes(Arrays2.<Type> asSet(genericConfiguration.annotationType(), Object.class)).setScope(Dependent.class).setQualifiers(Arrays2.asSet(syntheticQualifier))
       // TODO make this passivation capable?
-            .setBeanLifecycle(new BeanLifecycle<Annotation>()
-            {
+      BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager).setJavaClass(genericConfiguration.annotationType()).setTypes(Arrays2.<Type> asSet(genericConfiguration.annotationType(), Object.class)).setScope(Dependent.class).setQualifiers(Arrays2.asSet(syntheticQualifier)).setBeanLifecycle(new BeanLifecycle<Annotation>()
+      {
 
-               public void destroy(Bean<Annotation> bean, Annotation arg0, CreationalContext<Annotation> arg1)
-               {
-                  // No-op
-               }
+         public void destroy(Bean<Annotation> bean, Annotation arg0, CreationalContext<Annotation> arg1)
+         {
+            // No-op
+         }
 
-               public Annotation create(Bean<Annotation> bean, CreationalContext<Annotation> arg0)
-               {
-                  return genericConfiguration;
-               }
-            });
+         public Annotation create(Bean<Annotation> bean, CreationalContext<Annotation> arg0)
+         {
+            return genericConfiguration;
+         }
+      });
 
       return builder.create();
    }

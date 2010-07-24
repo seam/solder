@@ -22,7 +22,7 @@ import org.jboss.weld.extensions.bean.generic.Generic;
 import org.jboss.weld.extensions.bean.generic.GenericBean;
 
 /**
- * A generic bean for the config annotation Garply
+ * A generic bean for the config annotation Message
  * 
  * @author pmuir
  *
