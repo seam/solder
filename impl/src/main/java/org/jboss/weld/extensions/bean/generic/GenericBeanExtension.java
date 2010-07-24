@@ -34,6 +34,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedMethod;
@@ -65,13 +66,16 @@ import org.jboss.weld.extensions.util.properties.Property;
 class GenericBeanExtension implements Extension
 {
 
+   // A map of generic configuration types to generic beans
    private final Map<Class<?>, Set<AnnotatedType<?>>> genericTypes;
 
+   // A map of classes containing producers which produce generic beans
    private final Map<Class<?>, Map<Member, Annotation>> producers;
 
-   // A map of a generic annotation type to all instances of that type found on beans
+   // A map of a generic configuration types to all instances of that type found
    private final Map<Class<?>, Set<Annotation>> concreteGenerics;
    
+   // A map of generic configuration annotations to generic configuration beans
    private final Map<Annotation, Bean<?>> genericConfigurationBeans;
 
    private final Synthetic.Provider syntheticProvider;
@@ -303,6 +307,16 @@ class GenericBeanExtension implements Extension
          // The bean already exists, just return the qualifier
          return syntheticProvider.get(genericConfiguration);
       }
+   }
+   
+   void cleanup(@Observes AfterDeploymentValidation event)
+   {
+      // Defensively clear maps to help with GC
+      this.concreteGenerics.clear();
+      this.genericConfigurationBeans.clear();
+      this.genericTypes.clear();
+      // TODO this.producers.clear();
+      // TODO this.syntheticProvider.clear();
    }
 
 }

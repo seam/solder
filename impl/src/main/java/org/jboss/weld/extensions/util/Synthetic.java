@@ -114,6 +114,11 @@ public @interface Synthetic
       {
          return new Synthetic.SyntheticLiteral(namespace, count.getAndIncrement());
       }
+      
+      public void clear()
+      {
+         this.synthetics.clear();
+      }
    }
 
 }
