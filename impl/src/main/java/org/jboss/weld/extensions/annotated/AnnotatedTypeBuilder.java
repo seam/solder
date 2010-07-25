@@ -32,6 +32,8 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
+import org.jboss.weld.extensions.util.Reflections;
+
 /**
  * Class for constructing a new AnnotatedType. A new instance of builder must be
  * used for each annotated type.
@@ -94,7 +96,7 @@ public class AnnotatedTypeBuilder<X>
       fields.get(field).add(annotation);
       return this;
    }
-   
+
    public AnnotatedTypeBuilder<X> addToField(AnnotatedField<? super X> field, Annotation annotation)
    {
       return addToField(field.getJavaMember(), annotation);
@@ -108,7 +110,7 @@ public class AnnotatedTypeBuilder<X>
       }
       return this;
    }
-   
+
    public AnnotatedTypeBuilder<X> removeFromField(AnnotatedField<? super X> field, Class<? extends Annotation> annotationType)
    {
       return removeFromField(field.getJavaMember(), annotationType);
@@ -123,7 +125,7 @@ public class AnnotatedTypeBuilder<X>
       methods.get(method).add(annotation);
       return this;
    }
-   
+
    public AnnotatedTypeBuilder<X> addToMethod(AnnotatedMethod<? super X> method, Annotation annotation)
    {
       return addToMethod(method.getJavaMember(), annotation);
@@ -137,7 +139,7 @@ public class AnnotatedTypeBuilder<X>
       }
       return this;
    }
-   
+
    public AnnotatedTypeBuilder<X> removeFromMethod(AnnotatedMethod<? super X> method, Class<? extends Annotation> annotationType)
    {
       return removeFromMethod(method.getJavaMember(), annotationType);
@@ -182,7 +184,7 @@ public class AnnotatedTypeBuilder<X>
       constructors.get(constructor).add(annotation);
       return this;
    }
-   
+
    public AnnotatedTypeBuilder<X> addToConstructor(AnnotatedConstructor<X> constructor, Annotation annotation)
    {
       return addToConstructor(constructor.getJavaMember(), annotation);
@@ -196,7 +198,7 @@ public class AnnotatedTypeBuilder<X>
       }
       return this;
    }
-   
+
    public AnnotatedTypeBuilder<X> removeFromConstructor(AnnotatedConstructor<X> constructor, Class<? extends Annotation> annotationType)
    {
       return removeFromConstructor(constructor.getJavaMember(), annotationType);
@@ -231,8 +233,7 @@ public class AnnotatedTypeBuilder<X>
       }
       return this;
    }
-   
-   
+
    public AnnotatedTypeBuilder<X> removeFromParameter(AnnotatedParameter<? super X> parameter, Class<? extends Annotation> annotationType)
    {
       if (parameter.getDeclaringCallable().getJavaMember() instanceof Method)
@@ -251,7 +252,7 @@ public class AnnotatedTypeBuilder<X>
          throw new IllegalArgumentException("Cannot remove from parameter " + parameter + " - cannot operate on member " + parameter.getDeclaringCallable().getJavaMember());
       }
    }
-   
+
    public AnnotatedTypeBuilder<X> addToParameter(AnnotatedParameter<? super X> parameter, Annotation annotation)
    {
       if (parameter.getDeclaringCallable().getJavaMember() instanceof Method)
@@ -268,7 +269,7 @@ public class AnnotatedTypeBuilder<X>
       else
       {
          throw new IllegalArgumentException("Cannot remove from parameter " + parameter + " - cannot operate on member " + parameter.getDeclaringCallable().getJavaMember());
-      } 
+      }
    }
 
    public AnnotatedTypeBuilder<X> removeFromAll(Class<? extends Annotation> annotationType)
@@ -438,6 +439,136 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * reads the annotations from an existing java type. Annotations already
+    * present will be overriten
+    * 
+    */
+   public AnnotatedTypeBuilder<X> readFromType(Class<X> underlyingType)
+   {
+      return readFromType(underlyingType, true);
+   }
+
+   /**
+    * reads the annotations from an existing java type. If overwrite is true
+    * then existing annotations will be overwritten
+    * 
+    */
+   public AnnotatedTypeBuilder<X> readFromType(Class<X> underlyingType, boolean overwrite)
+   {
+      if (javaClass == null || overwrite)
+      {
+         this.javaClass = underlyingType;
+      }
+      for (Annotation annotation : underlyingType.getAnnotations())
+      {
+         if (overwrite || !typeAnnotations.isAnnotationPresent(annotation.annotationType()))
+         {
+            typeAnnotations.add(annotation);
+         }
+      }
+
+      for (Field field : Reflections.getAllFields(underlyingType))
+      {
+         AnnotationBuilder annotationBuilder = fields.get(field);
+         if (annotationBuilder == null)
+         {
+            annotationBuilder = new AnnotationBuilder();
+            fields.put(field, annotationBuilder);
+         }
+         field.setAccessible(true);
+         for (Annotation annotation : field.getAnnotations())
+         {
+            if (overwrite || !annotationBuilder.isAnnotationPresent(annotation.annotationType()))
+            {
+               annotationBuilder.add(annotation);
+            }
+         }
+      }
+
+      for (Method method : Reflections.getAllMethods(underlyingType))
+      {
+         AnnotationBuilder annotationBuilder = methods.get(method);
+         if (annotationBuilder == null)
+         {
+            annotationBuilder = new AnnotationBuilder();
+            methods.put(method, annotationBuilder);
+         }
+         method.setAccessible(true);
+         for (Annotation annotation : method.getAnnotations())
+         {
+            if (overwrite || !annotationBuilder.isAnnotationPresent(annotation.annotationType()))
+            {
+               annotationBuilder.add(annotation);
+            }
+         }
+
+         Map<Integer, AnnotationBuilder> parameters = methodParameters.get(method);
+         if (parameters == null)
+         {
+            parameters = new HashMap<Integer, AnnotationBuilder>();
+            methodParameters.put(method, parameters);
+         }
+         for (int i = 0; i < method.getParameterTypes().length; ++i)
+         {
+            AnnotationBuilder parameterAnnotationBuilder = parameters.get(i);
+            if (parameterAnnotationBuilder == null)
+            {
+               parameterAnnotationBuilder = new AnnotationBuilder();
+               parameters.put(i, parameterAnnotationBuilder);
+            }
+            for (Annotation annotation : method.getParameterAnnotations()[i])
+            {
+               if (overwrite || !parameterAnnotationBuilder.isAnnotationPresent(annotation.annotationType()))
+               {
+                  parameterAnnotationBuilder.add(annotation);
+               }
+            }
+         }
+      }
+
+      for (Constructor<?> constructor : underlyingType.getDeclaredConstructors())
+      {
+         AnnotationBuilder annotationBuilder = constructors.get(constructor);
+         if (annotationBuilder == null)
+         {
+            annotationBuilder = new AnnotationBuilder();
+            constructors.put(constructor, annotationBuilder);
+         }
+         constructor.setAccessible(true);
+         for (Annotation annotation : constructor.getAnnotations())
+         {
+            if (overwrite || !annotationBuilder.isAnnotationPresent(annotation.annotationType()))
+            {
+               annotationBuilder.add(annotation);
+            }
+         }
+         Map<Integer, AnnotationBuilder> mparams = constructorParameters.get(constructor);
+         if (mparams == null)
+         {
+            mparams = new HashMap<Integer, AnnotationBuilder>();
+            constructorParameters.put(constructor, mparams);
+         }
+         for (int i = 0; i < constructor.getParameterTypes().length; ++i)
+         {
+            AnnotationBuilder parameterAnnotationBuilder = mparams.get(i);
+            if (parameterAnnotationBuilder == null)
+            {
+               parameterAnnotationBuilder = new AnnotationBuilder();
+               mparams.put(i, parameterAnnotationBuilder);
+            }
+            for (Annotation annotation : constructor.getParameterAnnotations()[i])
+            {
+               if (overwrite || !parameterAnnotationBuilder.isAnnotationPresent(annotation.annotationType()))
+               {
+                  annotationBuilder.add(annotation);
+               }
+            }
+         }
+      }
+      return this;
+   }
+
    protected void mergeAnnotationsOnElement(Annotated annotated, boolean overwriteExisting, AnnotationBuilder typeAnnotations)
    {
       for (Annotation annotation : annotated.getAnnotations())
@@ -505,7 +636,7 @@ public class AnnotatedTypeBuilder<X>
    {
       fieldTypes.put(field, type);
    }
-   
+
    public void overrideFieldType(AnnotatedField<? super X> field, Type type)
    {
       fieldTypes.put(field.getJavaMember(), type);
@@ -530,13 +661,13 @@ public class AnnotatedTypeBuilder<X>
       constructorParameterTypes.get(constructor).put(position, type);
       return this;
    }
-   
+
    public AnnotatedTypeBuilder<X> overrideParameterType(AnnotatedParameter<? super X> parameter, Type type)
    {
       if (parameter.getDeclaringCallable().getJavaMember() instanceof Method)
       {
          Method method = (Method) parameter.getDeclaringCallable().getJavaMember();
-         return overrideMethodParameterType(method, parameter.getPosition(), type); 
+         return overrideMethodParameterType(method, parameter.getPosition(), type);
       }
       if (parameter.getDeclaringCallable().getJavaMember() instanceof Constructor<?>)
       {
