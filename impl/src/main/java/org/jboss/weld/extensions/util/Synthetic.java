@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Qualifier;
 
 /**
  * A synthetic qualifier that can be used to replace other user-supplied
@@ -34,6 +35,7 @@ import javax.enterprise.util.AnnotationLiteral;
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
+@Qualifier
 public @interface Synthetic
 {
 
