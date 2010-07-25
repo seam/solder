@@ -55,10 +55,10 @@ public class GenericBeanTest
    @Foo(2)
    private Bar bar2;
    
-   @Inject @Foo(1)
+   @Inject @Qux @Foo(1)
    private String bar1Message;
    
-   @Inject @Foo(2)
+   @Inject @Qux @Foo(2)
    private String bar2Message;
    
    @Inject @Foo(1)

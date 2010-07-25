@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.Annotated;
@@ -332,22 +333,29 @@ class GenericBeanExtension implements Extension
 
    private <X, T> Bean<T> createGenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, BeanManager beanManager)
    {
-      Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), beanManager);
+      Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean, beanManager);
       return new GenericProducerMethod<T, X>(originalBean, genericConfiguration, method, qualifiers, syntheticProvider, beanManager);
    }
 
    private <X, T> Bean<T> createGenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, BeanManager beanManager)
    {
-      Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), beanManager);
+      Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean, beanManager);
       return new GenericProducerField<T, X>(originalBean, genericConfiguration, field, qualifiers, syntheticProvider, beanManager);
    }
 
-   private static Set<Annotation> getQualifiers(Set<Annotation> annotations, BeanManager beanManager)
+   private static Set<Annotation> getQualifiers(Set<Annotation> annotations, Bean<?> originalBean, BeanManager beanManager)
    {
       Set<Annotation> qualifiers = new HashSet<Annotation>();
       for (Annotation annotation : annotations)
       {
          if (beanManager.isQualifier(annotation.annotationType()))
+         {
+            qualifiers.add(annotation);
+         }
+      }
+      for (Annotation annotation : originalBean.getQualifiers())
+      {
+         if (!annotation.annotationType().equals(Default.class))
          {
             qualifiers.add(annotation);
          }
