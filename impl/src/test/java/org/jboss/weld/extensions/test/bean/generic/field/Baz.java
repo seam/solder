@@ -16,6 +16,7 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.Generic;
@@ -51,6 +52,7 @@ public class Baz
       return corge;
    }
    
+   @Produces
    public Message getMessage()
    {
       return message;

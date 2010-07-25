@@ -57,6 +57,15 @@ public class GenericBeanTest
    
    @Inject @Foo(1)
    private String bar1Message;
+   
+   @Inject @Foo(2)
+   private String bar2Message;
+   
+   @Inject @Foo(1)
+   private Message baz1Message;
+   
+   @Inject @Foo(2)
+   private Message baz2Message;
 
    @Test
    public void testGeneric()
@@ -84,6 +93,13 @@ public class GenericBeanTest
       // Check that producer methods on generic beans are working
       assertNotNull(bar1Message);
       assertEquals(bar1Message, "barbye1");
+      assertNotNull(bar2Message);
+      assertEquals(bar2Message, "barbye2");
+      
+      assertNotNull(baz1Message);
+      assertEquals(baz1Message.value(), "hello1");
+      assertNotNull(baz2Message);
+      assertEquals(baz2Message.value(), "hello2");
      
    }
 }
