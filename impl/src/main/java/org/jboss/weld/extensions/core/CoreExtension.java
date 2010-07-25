@@ -17,7 +17,6 @@
 package org.jboss.weld.extensions.core;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -37,8 +36,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.annotated.AnnotationBuilder;
-import org.jboss.weld.extensions.annotated.MemberAnnotationRedefiner;
+import org.jboss.weld.extensions.annotated.AnnotationRedefiner;
+import org.jboss.weld.extensions.annotated.RedefinitionContext;
 import org.jboss.weld.extensions.bean.BeanBuilder;
 
 /**
@@ -80,19 +79,16 @@ class CoreExtension implements Extension
          {
             builder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
          }
-         builder.redefineMembers(Named.class, new MemberAnnotationRedefiner<Named>()
+         builder.redefine(Named.class, new AnnotationRedefiner<Named>()
          {
-            public Named redefine(Named annotation, Member member, AnnotationBuilder annotations)
+            
+            public void redefine(RedefinitionContext<Named> ctx)
             {
-               if (annotations.isAnnotationPresent(Produces.class))
+               if (ctx.getAnnotatedElement().isAnnotationPresent(Produces.class))
                {
-                  String memberName = member.getName();
-                  String beanName = getName(annotation, memberName);
-                  return new NamedLiteral(packageName + '.' + beanName);
-               }
-               else
-               {
-                  return annotation;
+                  String memberName = ctx.getElementName();
+                  String beanName = getName(ctx.getAnnotatedElement().getAnnotation(Named.class), memberName);
+                  ctx.getAnnotationBuilder().add(new NamedLiteral(packageName + '.' + beanName));
                }
             }
 

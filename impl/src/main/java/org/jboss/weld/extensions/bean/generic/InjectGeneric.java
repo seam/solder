@@ -16,34 +16,40 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.enterprise.util.AnnotationLiteral;
+
 /**
- * Defines a set of generic beans which can inject the specified configuration annotation.
+ * Annotation used to define generic injection points. @Inject is swapped out
+ * for @InjectConfiguration on generic beans for any injection points that are controlled by
+ * the {@link GenericBeanExtension}.
  * 
- * This implementation of generic beans has a number of limitations:
- * 
- * <ul>
- * <li>Only field injection is supported for generic configuration annotations, and @GenericBean</li>
- * <ul>
+ * This is an implementation detail, and should not be referenced outside this
+ * extension.
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
  * 
  */
-@Retention( RUNTIME )
-@Target({ METHOD, FIELD, PARAMETER, TYPE })
-@Documented
-public @interface Generic
+@Retention(RUNTIME)
+@Target( { METHOD, FIELD, CONSTRUCTOR })
+@interface InjectGeneric
 {
-   Class<? extends Annotation> value();
+   
+   static class InjectGenericLiteral extends AnnotationLiteral<InjectGeneric> implements InjectGeneric
+   {
+    
+      private static final long serialVersionUID = -1931707390692943775L;
+      
+   }
+   
+   static final InjectGeneric INSTANCE = new InjectGenericLiteral();
+   
 }

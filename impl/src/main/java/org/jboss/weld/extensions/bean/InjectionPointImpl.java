@@ -37,6 +37,15 @@ import javax.enterprise.inject.spi.InjectionPoint;
  */
 public class InjectionPointImpl implements InjectionPoint
 {
+   
+
+   private final Annotated annotated;
+   private final Member member;
+   private final Bean<?> bean;
+   private final Set<Annotation> qualifiers;
+   private final Type type;
+   private final boolean _transient;
+   private final boolean delegate;
 
    public InjectionPointImpl(AnnotatedField<?> field, Set<Annotation> qualifiers, Bean<?> bean, boolean trans, boolean delegate)
    {
@@ -44,7 +53,7 @@ public class InjectionPointImpl implements InjectionPoint
       this.member = field.getJavaMember();
       this.qualifiers = new HashSet<Annotation>(qualifiers);
       this.type = field.getJavaMember().getGenericType();
-      this.trans = trans;
+      this._transient = trans;
       this.delegate = delegate;
       this.bean = bean;
    }
@@ -55,7 +64,7 @@ public class InjectionPointImpl implements InjectionPoint
       this.member = field.getJavaMember();
       this.qualifiers = new HashSet<Annotation>();
       this.type = field.getJavaMember().getGenericType();
-      this.trans = trans;
+      this._transient = trans;
       this.delegate = delegate;
       this.bean = bean;
       for (Annotation a : field.getAnnotations())
@@ -72,7 +81,7 @@ public class InjectionPointImpl implements InjectionPoint
       this.annotated = param;
       this.member = param.getDeclaringCallable().getJavaMember();
       this.qualifiers = new HashSet<Annotation>(qualifiers);
-      this.trans = trans;
+      this._transient = trans;
       this.delegate = delegate;
       this.bean = bean;
       this.type = param.getBaseType();
@@ -83,7 +92,7 @@ public class InjectionPointImpl implements InjectionPoint
       this.annotated = param;
       this.member = param.getDeclaringCallable().getJavaMember();
       this.qualifiers = new HashSet<Annotation>();
-      this.trans = trans;
+      this._transient = trans;
       this.delegate = delegate;
       this.bean = bean;
       this.type = param.getBaseType();
@@ -95,20 +104,6 @@ public class InjectionPointImpl implements InjectionPoint
          }
       }
    }
-
-   private final Annotated annotated;
-
-   private final Member member;
-
-   private final Bean<?> bean;
-
-   private final Set<Annotation> qualifiers;
-
-   private final Type type;
-
-   private final boolean trans;
-
-   private final boolean delegate;
 
    public Annotated getAnnotated()
    {
@@ -142,7 +137,7 @@ public class InjectionPointImpl implements InjectionPoint
 
    public boolean isTransient()
    {
-      return trans;
+      return _transient;
    }
 
 }

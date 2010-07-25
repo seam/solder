@@ -48,29 +48,5 @@ public class GenericBeanProducer
    @Produces
    @Message("bye2")
    private Bar bar2;
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Message("adios1")
-   private Qux qux1;
-   
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Message("adios2")
-   private Qux qux2;
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Message("aurevoir1")
-   private Garply garply1;
-   
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Message("aurevoir2")
-   private Garply garply2;
 
 }

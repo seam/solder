@@ -40,7 +40,7 @@ public class AnnotationBuilder
       return this;
    }
 
-   public void remove(Class<? extends Annotation> annotation)
+   public AnnotationBuilder remove(Class<? extends Annotation> annotation)
    {
       Iterator<Annotation> it = annotationSet.iterator();
       while (it.hasNext())
@@ -52,6 +52,7 @@ public class AnnotationBuilder
          }
       }
       annotationMap.remove(annotation);
+      return this;
    }
 
    AnnotationStore create()

@@ -1,23 +1,135 @@
 package org.jboss.weld.extensions.annotated;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
-public class Parameter
+import org.jboss.weld.extensions.util.Reflections;
+
+/**
+ * An implementaiton of Member for parameters
+ * 
+ * @author pmuir
+ * 
+ */
+public abstract class Parameter<X> implements AnnotatedElement
 {
 
-   private final Member declaringMember;
+   public static <X> Parameter<X> create(Member declaringMember, int position)
+   {
+      if (declaringMember instanceof Method)
+      {
+         return new MethodParameter<X>((Method) declaringMember, position);
+      }
+      else if (declaringMember instanceof Constructor<?>)
+      {
+         return new ConstructorParameter<X>((Constructor<X>) declaringMember, position);
+      }
+      else
+      {
+         throw new IllegalArgumentException("Can only process members of type Method and Constructor, cannot process " + declaringMember);
+      }
+   }
+
+   private static class MethodParameter<X> extends Parameter<X>
+   {
+
+      private final Method declaringMethod;
+
+      private MethodParameter(Method declaringMethod, int position)
+      {
+         super(position);
+         this.declaringMethod = declaringMethod;
+      }
+
+      @Override
+      public Method getDeclaringMember()
+      {
+         return declaringMethod;
+      }
+      
+      public Annotation[] getAnnotations()
+      {
+         if (declaringMethod.getParameterAnnotations().length > getPosition())
+         {
+            return declaringMethod.getParameterAnnotations()[getPosition()];
+         }
+         else
+         {
+            return Reflections.EMPTY_ANNOTATION_ARRAY;
+         }
+      }
+      
+      @Override
+      public Type getBaseType()
+      {
+         if (declaringMethod.getGenericParameterTypes().length > getPosition())
+         {
+            return declaringMethod.getGenericParameterTypes()[getPosition()];
+         }
+         else
+         {
+            return declaringMethod.getParameterTypes()[getPosition()];
+         }
+      }
+
+   }
+   
+   private static class ConstructorParameter<X> extends Parameter<X>
+   {
+
+      private final Constructor<X> declaringConstructor;
+
+      private ConstructorParameter(Constructor<X> declaringConstructor, int position)
+      {
+         super(position);
+         this.declaringConstructor = declaringConstructor;
+      }
+
+      @Override
+      public Constructor<X> getDeclaringMember()
+      {
+         return declaringConstructor;
+      }
+      
+      public Annotation[] getAnnotations()
+      {
+         if (declaringConstructor.getParameterAnnotations().length > getPosition())
+         {
+            return declaringConstructor.getParameterAnnotations()[getPosition()];
+         }
+         else
+         {
+            return Reflections.EMPTY_ANNOTATION_ARRAY;
+         }
+      }
+      
+      @Override
+      public Type getBaseType()
+      {
+         if (declaringConstructor.getGenericParameterTypes().length > getPosition())
+         {
+            return declaringConstructor.getGenericParameterTypes()[getPosition()];
+         }
+         else
+         {
+            return declaringConstructor.getParameterTypes()[getPosition()];
+         }
+      }
+
+   }
+
    private final int position;
 
-   Parameter(Member declaringMember, int position)
+   Parameter(int position)
    {
-      this.declaringMember = declaringMember;
       this.position = position;
    }
-
-   public Member getDeclaringMember()
-   {
-      return declaringMember;
-   }
+   
+   public abstract Member getDeclaringMember();
 
    public int getPosition()
    {
@@ -28,24 +140,49 @@ public class Parameter
    public int hashCode()
    {
       int hash = 1;
-      hash = hash * 31 + declaringMember.hashCode();
+      hash = hash * 31 + getDeclaringMember().hashCode();
       hash = hash * 31 + Integer.valueOf(position).hashCode();
       return hash;
    }
-   
+
    @Override
    public boolean equals(Object obj)
    {
-      if (obj instanceof Parameter)
+      if (obj instanceof Parameter<?>)
       {
-         Parameter that = (Parameter) obj;
-         return this.getDeclaringMember().equals(that.getDeclaringMember()) && this.getPosition() == that.getPosition(); 
+         Parameter<?> that = (Parameter<?>) obj;
+         return this.getDeclaringMember().equals(that.getDeclaringMember()) && this.getPosition() == that.getPosition();
       }
       else
       {
          return false;
       }
-         
+
    }
+   
+
+   public <T extends Annotation> T getAnnotation(Class<T> annotationClass)
+   {
+      for (Annotation annotation : getAnnotations())
+      {
+         if (annotation.annotationType().equals(annotationClass))
+         {
+            return annotationClass.cast(annotation);
+         }
+      }
+      return null;
+   }
+
+   public Annotation[] getDeclaredAnnotations()
+   {
+      return getAnnotations();
+   }
+
+   public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass)
+   {
+      return getAnnotation(annotationClass) != null;
+   }
+   
+   public abstract Type getBaseType();
 
 }

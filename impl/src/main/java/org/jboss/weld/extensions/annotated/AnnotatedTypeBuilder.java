@@ -17,6 +17,7 @@
 package org.jboss.weld.extensions.annotated;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -303,16 +304,29 @@ public class AnnotatedTypeBuilder<X>
       }
       return this;
    }
-
-   public <T extends Annotation> AnnotatedTypeBuilder<X> redefineMemberParameters(Class<T> annotationType, ParameterAnnotationRedefiner<T> redefinition)
+   
+   public <A extends Annotation> AnnotatedTypeBuilder<X> redefine(Class<A> annotationType, AnnotationRedefiner<A> redefinition)
    {
+      for (Entry<Field, AnnotationBuilder> field : fields.entrySet())
+      {
+         redefineAnnotationBuilder(annotationType, redefinition, field.getKey(), field.getKey().getGenericType(), field.getValue(), field.getKey().getName());
+      }
+      for (Entry<Method, AnnotationBuilder> method : methods.entrySet())
+      {
+         redefineAnnotationBuilder(annotationType, redefinition, method.getKey(), method.getKey().getGenericReturnType(), method.getValue(), method.getKey().getName());
+      }
+      for (Entry<Constructor<?>, AnnotationBuilder> constructor : constructors.entrySet())
+      {
+         redefineAnnotationBuilder(annotationType, redefinition, constructor.getKey(), constructor.getKey().getDeclaringClass(), constructor.getValue(), null);
+      }
       for (Entry<Method, AnnotationBuilder> method : methods.entrySet())
       {
          if (methodParameters.get(method.getKey()) != null)
          {
             for (Entry<Integer, AnnotationBuilder> parameter : methodParameters.get(method.getKey()).entrySet())
             {
-               redefineAnnotationBuilder(annotationType, redefinition, new Parameter(method.getKey(), parameter.getKey()), parameter.getValue());
+               Parameter<?> p = Parameter.create(method.getKey(), parameter.getKey());
+               redefineAnnotationBuilder(annotationType, redefinition, p, p.getBaseType(), parameter.getValue(), null);
             }
          }
       }
@@ -322,40 +336,19 @@ public class AnnotatedTypeBuilder<X>
          {
             for (Entry<Integer, AnnotationBuilder> parameter : constructorParameters.get(constructor.getKey()).entrySet())
             {
-               redefineAnnotationBuilder(annotationType, redefinition, new Parameter(constructor.getKey(), parameter.getKey()), parameter.getValue());
+               Parameter<?> p = Parameter.create(constructor.getKey(), parameter.getKey());
+               redefineAnnotationBuilder(annotationType, redefinition, p, p.getBaseType(), parameter.getValue(), null);
             }
          }
       }
       return this;
    }
 
-   public <T extends Annotation> AnnotatedTypeBuilder<X> redefineMembers(Class<T> annotationType, MemberAnnotationRedefiner<T> redefinition)
-   {
-      for (Entry<Field, AnnotationBuilder> field : fields.entrySet())
-      {
-         redefineAnnotationBuilder(annotationType, redefinition, field.getKey(), field.getValue());
-      }
-      for (Entry<Method, AnnotationBuilder> method : methods.entrySet())
-      {
-         redefineAnnotationBuilder(annotationType, redefinition, method.getKey(), method.getValue());
-      }
-      for (Entry<Constructor<?>, AnnotationBuilder> constructor : constructors.entrySet())
-      {
-         redefineAnnotationBuilder(annotationType, redefinition, constructor.getKey(), constructor.getValue());
-      }
-      return this;
-   }
-
-   protected <T extends Annotation, A> void redefineAnnotationBuilder(Class<T> annotationType, AnnotationRedefiner<T, A> redefinition, A annotated, AnnotationBuilder builder)
+   protected <A extends Annotation> void redefineAnnotationBuilder(Class<A> annotationType, AnnotationRedefiner<A> redefinition, AnnotatedElement annotated, Type baseType, AnnotationBuilder builder, String elementName)
    {
       if (builder.isAnnotationPresent(annotationType))
       {
-         builder.remove(annotationType);
-         T redefinedAnnotation = redefinition.redefine(builder.getAnnotation(annotationType), annotated, builder);
-         if (redefinedAnnotation != null)
-         {
-            builder.add(redefinedAnnotation);
-         }
+         redefinition.redefine(new RedefinitionContext<A>(annotated, baseType, builder, elementName));
       }
    }
 

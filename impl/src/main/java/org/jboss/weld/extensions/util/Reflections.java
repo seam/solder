@@ -328,34 +328,83 @@ public class Reflections
       return message.toString();
    }
    
-   public static Object invokeMethod(Method method, Object obj, Object... args)
+   public static Object invokeMethod(Method method, Object instance, Object... args)
    {
       try
       {
-         return method.invoke(obj, args);
+         return method.invoke(instance, args);
       }
       catch (IllegalAccessException ex)
       {
-         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), ex);
+         throw new RuntimeException(buildInvokeMethodErrorMessage(method, instance, args), ex);
       }
       catch (IllegalArgumentException ex)
       {
-         throw new IllegalArgumentException(buildInvokeMethodErrorMessage(method, obj, args), ex.getCause());
+         throw new IllegalArgumentException(buildInvokeMethodErrorMessage(method, instance, args), ex.getCause());
       }
       catch (InvocationTargetException ex)
       {
-         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), ex);
+         throw new RuntimeException(buildInvokeMethodErrorMessage(method, instance, args), ex);
       }
       catch (NullPointerException ex)
       {
-         NullPointerException ex2 = new NullPointerException(buildInvokeMethodErrorMessage(method, obj, args));
+         NullPointerException ex2 = new NullPointerException(buildInvokeMethodErrorMessage(method, instance, args));
          ex2.initCause(ex.getCause());
          throw ex2;
       }
       catch (ExceptionInInitializerError e)
       {
-         throw new RuntimeException(buildInvokeMethodErrorMessage(method, obj, args), e);
+         throw new RuntimeException(buildInvokeMethodErrorMessage(method, instance, args), e);
       }
+   }
+   
+   public static void setFieldValue(Field field, Object instance, Object value)
+   {
+      field.setAccessible(true);
+      try
+      {
+         field.set(instance, value);
+      }
+      catch (IllegalAccessException e)
+      {
+         throw new RuntimeException(buildSetFieldValueErrorMessage(field, instance, value), e);
+      }
+      catch (NullPointerException ex)
+      {
+         NullPointerException ex2 = new NullPointerException(buildSetFieldValueErrorMessage(field, instance, value));
+         ex2.initCause(ex.getCause());
+         throw ex2;
+      }
+   }
+   
+   private static String buildSetFieldValueErrorMessage(Field field, Object obj, Object value)
+   {
+      return String.format("Exception setting [%s] field on object [%s] to value [%s]", field.getName(), obj, value);
+   }
+   
+   private static String buildGetFieldValueErrorMessage(Field field, Object obj)
+   {
+      return String.format("Exception reading [%s] field from object [%s].", field.getName(), obj);
+   }
+   
+   public static <T> T getFieldValue(Field field, Object instance, Class<T> expectedType)
+   {
+      field.setAccessible(true);
+      try
+      {
+         return expectedType.cast(field.get(instance));
+      }
+      catch (IllegalAccessException e)
+      {
+         throw new RuntimeException(buildGetFieldValueErrorMessage(field, instance), e);
+      }
+      catch (NullPointerException ex)
+      {
+         NullPointerException ex2 = new NullPointerException(buildGetFieldValueErrorMessage(field, instance));
+         ex2.initCause(ex.getCause());
+         throw ex2;
+      }
+
    }
    
    @SuppressWarnings("unchecked")

@@ -54,22 +54,6 @@ public class GenericBeanTest
    @Inject
    @Foo(2)
    private Bar bar2;
-   
-   @Inject
-   @Foo(1)
-   private Qux qux1;
-   
-   @Inject
-   @Foo(2)
-   private Qux qux2;
-   
-   @Inject
-   @Foo(1)
-   private Garply garply1;
-   
-   @Inject
-   @Foo(2)
-   private Garply garply2;
 
    @Test
    public void testGeneric()
@@ -89,42 +73,6 @@ public class GenericBeanTest
       assertEquals(baz1.getMessage().value(), "hello1");
       assertNotNull(baz2.getMessage());
       assertEquals(baz2.getMessage().value(), "hello2");
-      
-      // Check that the generic configuration injection wiring is working for qux (ctor injection)
-      assertNotNull(qux1.getMessage());
-      assertEquals(qux1.getMessage().value(), "adios1");
-      assertNotNull(qux2.getMessage());
-      assertEquals(qux2.getMessage().value(), "adios2");
-      
-   // Check that the generic configuration injection wiring is working for garply (initializer injection)
-      assertNotNull(garply1.getMessage());
-      assertEquals(garply1.getMessage().value(), "aurevoir1");
-      assertNotNull(garply2.getMessage());
-      assertEquals(garply2.getMessage().value(), "aurevoir2");
-      
-      // Check that generic beans can inject each other
-      assertNotNull(baz1.getBar());
-      assertNotNull(baz1.getBar().getInjectedMessage());
-      assertEquals(baz1.getBar().getInjectedMessage().value(), "hello1");
-      assertNotNull(baz2.getBar());
-      assertNotNull(baz2.getBar().getInjectedMessage());
-      assertEquals(baz2.getBar().getInjectedMessage().value(), "hello2");
-      
-      // Check for ctor injection
-      assertNotNull(qux1.getBar());
-      assertNotNull(qux1.getBar().getInjectedMessage());
-      assertEquals(qux1.getBar().getInjectedMessage().value(), "adios1");
-      assertNotNull(qux2.getBar());
-      assertNotNull(qux2.getBar().getInjectedMessage());
-      assertEquals(qux2.getBar().getInjectedMessage().value(), "adios2");
-      
-      // Check for initializer injection
-      assertNotNull(garply1.getQux());
-      assertNotNull(garply1.getQux().getMessage());
-      assertEquals(garply1.getQux().getMessage().value(), "aurevoir1");
-      assertNotNull(garply2.getQux());
-      assertNotNull(garply2.getQux().getMessage());
-      assertEquals(garply2.getQux().getMessage().value(), "aurevoir2");
       
       // Check that this isn't affecting annotations on the generic bean without @Inject 
       assertNull(baz1.getBar().getMessage());

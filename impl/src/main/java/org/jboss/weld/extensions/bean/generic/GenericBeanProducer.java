@@ -17,15 +17,15 @@ public class GenericBeanProducer<T> extends AbstractImmutableProducer<T>
    
    private final BeanManager beanManager;
    private final Synthetic qualifier;
-   private final Annotation genericConfigurationAnnotation;
+   private final Annotation genericConfiguration;
    private final Type type;
    
-   public GenericBeanProducer(Producer<T> originalProducer, Type genericBeanType, Annotation genericConfigurationAnnotation, Synthetic.Provider syntheticProvider, BeanManager beanManager)
+   public GenericBeanProducer(Producer<T> originalProducer, Type genericBeanType, Annotation genericConfiguration, Synthetic.Provider syntheticProvider, BeanManager beanManager)
    {
       super(originalProducer.getInjectionPoints());
       this.beanManager = beanManager;
-      this.genericConfigurationAnnotation = genericConfigurationAnnotation;
-      this.qualifier = syntheticProvider.get(genericConfigurationAnnotation);
+      this.genericConfiguration = genericConfiguration;
+      this.qualifier = syntheticProvider.get(genericConfiguration);
       this.type = genericBeanType;
    }
 
@@ -39,7 +39,7 @@ public class GenericBeanProducer<T> extends AbstractImmutableProducer<T>
       Bean<?> underlyingBean = beanManager.resolve(beanManager.getBeans(type, qualifier));
       if (underlyingBean == null)
       {
-         throw new UnsatisfiedResolutionException("Could not resolve generic bean " + type + " with generic configuration " + genericConfigurationAnnotation);
+         throw new UnsatisfiedResolutionException("Could not resolve generic bean " + type + " with generic configuration " + genericConfiguration);
       }
       
       Object object = beanManager.getReference(underlyingBean, underlyingBean.getBeanClass(), ctx);
