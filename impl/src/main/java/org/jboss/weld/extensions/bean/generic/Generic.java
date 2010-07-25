@@ -34,6 +34,9 @@ import java.lang.annotation.Target;
  * 
  * <ul>
  * <li>Only field injection is supported for generic configuration annotations, and @GenericBean</li>
+ * <li>Generic beans <b>must</b> be dependent scoped</li>
+ * <li>Injection into producer methods is not supported</li>
+ * <li>Observer methods are not suppported</li>
  * <ul>
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
