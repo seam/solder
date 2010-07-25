@@ -69,14 +69,17 @@ class CoreExtension implements Extension
          return;
       }
 
-      AnnotatedTypeBuilder<X> builder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
+      AnnotatedTypeBuilder<X> builder = null;
 
       // support for @Named packages
       Package pkg = pat.getAnnotatedType().getJavaClass().getPackage();
       if (pkg.isAnnotationPresent(Named.class))
       {
          final String packageName = getPackageName(pkg);
-
+         if (builder == null)
+         {
+            builder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
+         }
          builder.redefineMembers(Named.class, new MemberAnnotationRedefiner<Named>()
          {
             public Named redefine(Named annotation, Member member, AnnotationBuilder annotations)
@@ -111,6 +114,10 @@ class CoreExtension implements Extension
          if (f.isAnnotationPresent(Exact.class))
          {
             Class<?> type = f.getAnnotation(Exact.class).value();
+            if (builder == null)
+            {
+               builder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
+            }
             builder.overrideFieldType(f, type);
          }
       }
@@ -122,6 +129,10 @@ class CoreExtension implements Extension
             if (p.isAnnotationPresent(Exact.class))
             {
                Class<?> type = p.getAnnotation(Exact.class).value();
+               if (builder == null)
+               {
+                  builder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
+               }
                builder.overrideParameterType(p, type);
             }
          }
@@ -134,11 +145,18 @@ class CoreExtension implements Extension
             if (p.isAnnotationPresent(Exact.class))
             {
                Class<?> type = p.getAnnotation(Exact.class).value();
+               if (builder == null)
+               {
+                  builder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
+               }
                builder.overrideParameterType(p, type);
             }
          }
       }
-      pat.setAnnotatedType(builder.create());
+      if (builder != null)
+      {
+         pat.setAnnotatedType(builder.create());
+      }
 
       // support for @Constructs
       for (AnnotatedConstructor<X> constructor : pat.getAnnotatedType().getConstructors())
