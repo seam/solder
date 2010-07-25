@@ -16,6 +16,7 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.Generic;
@@ -44,5 +45,11 @@ public class Bar
    public Message getMessage()
    {
       return message;
+   }
+   
+   @Produces
+   public String getBarMessage()
+   {
+      return "bar" + getInjectedMessage().value();
    }
 }

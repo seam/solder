@@ -247,18 +247,22 @@ class GenericBeanExtension implements Extension
                event.addBean(createGenericBean(originalBean, genericConfiguration, (AnnotatedType) type.getKey(), beanManager));
             }
             
-            // For each of the producer methods which are registered to this generic configuration type, register a generic producer method for this generic configuration
-            if (genericBeanProducerMethods.get(genericConfigurationType.getKey()) != null)
-            {
-               for (Entry<AnnotatedMethod<?>, Bean<?>> type : genericBeanProducerMethods.get(genericConfigurationType.getKey()).entrySet())
-               {
-                  Bean<?> originalProducerMethod = type.getValue();
-                  event.addBean(createGenericProducerMethod(originalProducerMethod, genericConfiguration, type.getKey(), beanManager));
-               }
-            }
-            
             // Add a generic configuration bean for each generic configuration producer (allows us to inject the generic configuration annotation back into the generic bean)
             event.addBean(createGenericConfigurationBean(beanManager, genericConfiguration));
+            
+            // For each of the producer methods which are registered to this generic configuration type, register a generic producer method for this generic configuration
+            if (genericBeanProducerMethods.containsKey(genericConfiguration.annotationType()))
+            {
+               for (Entry<AnnotatedMethod<?>, Bean<?>> type : genericBeanProducerMethods.get(genericConfigurationType.getKey()).entrySet())
+               {  
+                  AnnotatedMethod<?> method = type.getKey();
+                  if (method.getDeclaringType().getBaseType().equals(genericConfigurationType.getValue().get(genericConfiguration).getBaseType()))
+                  {     
+                     Bean<?> originalProducerMethod = type.getValue();
+                     event.addBean(createGenericProducerMethod(originalProducerMethod, genericConfiguration, type.getKey(), beanManager));
+                  }
+               }
+            }
          }
       }
    }

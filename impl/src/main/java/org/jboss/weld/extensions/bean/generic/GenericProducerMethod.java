@@ -35,7 +35,7 @@ class GenericProducerMethod<T, X> extends AbstactGenericBean<T>
       try
       {
          Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(declaringBeanType, declaringBeanQualifier));
-         Object receiver = getBeanManager().getReference(declaringBean, Object.class, creationalContext);
+         Object receiver = getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
          return (T) invokeMethod(method.getJavaMember(), receiver);
       }
       finally
