@@ -14,23 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.core;
+package org.jboss.weld.extensions.test.servicehandler;
 
-import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Named;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
 
-class NamedLiteral extends AnnotationLiteral<Named> implements Named
+public class EchoServiceHandler
 {
-   private static final long serialVersionUID = 2239690880420187044L;
-   final String name;
-
-   NamedLiteral(String name)
+   @AroundInvoke
+   public Object invoke(InvocationContext ctx)
    {
-      this.name = name;
-   }
-
-   public String value()
-   {
-      return name;
+      return ctx.getMethod().getName().toString();
    }
 }

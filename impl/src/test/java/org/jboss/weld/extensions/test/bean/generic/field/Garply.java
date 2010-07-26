@@ -19,8 +19,8 @@ package org.jboss.weld.extensions.test.bean.generic.field;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.bean.generic.Generic;
 import org.jboss.weld.extensions.bean.generic.GenericProduct;
+import org.jboss.weld.extensions.bean.generic.Generic;
 
 /**
  * A generic bean for the config annotation Message

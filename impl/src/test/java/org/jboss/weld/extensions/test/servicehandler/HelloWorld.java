@@ -14,18 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.core;
+package org.jboss.weld.extensions.test.servicehandler;
 
-import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Inject;
-
-class InjectLiteral extends AnnotationLiteral<Inject> implements Inject 
+@EchoService
+public interface HelloWorld
 {
-   
-   private static final long serialVersionUID = 817936051028981316L;
-   
-   static final Inject INSTANCE = new InjectLiteral();
-   
-   private InjectLiteral() {}
-
+   public String helloWorld();
 }

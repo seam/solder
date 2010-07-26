@@ -14,37 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic.method;
+package org.jboss.weld.extensions.test.servicehandler;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
-import org.jboss.weld.extensions.bean.generic.Generic;
-
-/**
- * A generic bean for the config annotation Message
- * 
- * @author pmuir
- *
- */
-
-@Generic(Service.class)
-public class Garply
+public class EchoDecorator
 {
-   
-   @Inject @GenericProduct
-   private Waldo waldo;
-   
-   @Produces @WaldoName
-   public String getWaldoName()
+   public String decorate(String message)
    {
-      return waldo.getName();
+      return "-" + message + "-";
    }
-   
-   public Waldo getWaldo()
-   {
-      return waldo;
-   }
-   
 }

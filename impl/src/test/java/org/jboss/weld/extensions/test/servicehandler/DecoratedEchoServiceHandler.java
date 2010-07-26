@@ -14,18 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.core;
+package org.jboss.weld.extensions.test.servicehandler;
 
-import javax.enterprise.inject.Default;
-import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Inject;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
 
-class DefaultLiteral extends AnnotationLiteral<Default> implements Default 
+public class DecoratedEchoServiceHandler
 {
+   // test injection into the handler
+   @Inject
+   private EchoDecorator decorator;
 
-   private static final long serialVersionUID = 2768505716290514234L;
-   
-   static final Default INSTANCE = new DefaultLiteral();
-   
-   private DefaultLiteral() {}
-
+   @AroundInvoke
+   public Object invoke(InvocationContext ctx)
+   {
+      return decorator.decorate(ctx.getMethod().getName().toString());
+   }
 }

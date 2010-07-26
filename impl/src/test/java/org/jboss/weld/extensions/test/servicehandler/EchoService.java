@@ -14,37 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic.method;
+package org.jboss.weld.extensions.test.servicehandler;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
-import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.servicehandler.ServiceHandler;
 
-/**
- * A generic bean for the config annotation Message
- * 
- * @author pmuir
- *
- */
-
-@Generic(Service.class)
-public class Garply
+@Retention(RetentionPolicy.RUNTIME)
+@ServiceHandler(EchoServiceHandler.class)
+public @interface EchoService
 {
-   
-   @Inject @GenericProduct
-   private Waldo waldo;
-   
-   @Produces @WaldoName
-   public String getWaldoName()
-   {
-      return waldo.getName();
-   }
-   
-   public Waldo getWaldo()
-   {
-      return waldo;
-   }
-   
+
 }
