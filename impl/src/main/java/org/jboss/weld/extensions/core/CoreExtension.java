@@ -39,6 +39,8 @@ import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.annotated.AnnotationRedefiner;
 import org.jboss.weld.extensions.annotated.RedefinitionContext;
 import org.jboss.weld.extensions.bean.BeanBuilder;
+import org.jboss.weld.extensions.literal.InjectLiteral;
+import org.jboss.weld.extensions.literal.NamedLiteral;
 
 /**
  * Extension to install the "core" extensions. Core extensions are those that
