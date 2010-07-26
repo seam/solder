@@ -22,11 +22,7 @@ import javax.inject.Qualifier;
  *
  */
 @Retention(RUNTIME)
-<<<<<<< HEAD
 @Target({ METHOD, FIELD, PARAMETER, TYPE })
-=======
-@Target({ METHOD, FIELD, PARAMETER, TYPE})
->>>>>>> stuart/master
 @Qualifier
 public @interface GenericProduct
 {
