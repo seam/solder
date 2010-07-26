@@ -16,51 +16,18 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-
-import org.jboss.weld.extensions.bean.generic.Generic;
-import org.jboss.weld.extensions.bean.generic.GenericBean;
-
 /**
- * A generic bean for the config annotation Message
+ * A normal bean
  * 
  * @author pmuir
  *
  */
-
-@Generic(Message.class)
-public class Baz
+public class Wobble
 {
+   
+   public String getName()
+   {
+      return "bill";
+   }
 
-   @Inject @GenericBean
-   private Bar bar;
-
-   @Inject
-   private Corge corge;
-   
-   @Inject 
-   private Message message;
-
-   public Bar getBar()
-   {
-      return bar;
-   }
-   
-   public Corge getCorge()
-   {
-      return corge;
-   }
-   
-   @Produces
-   public Message getMessage()
-   {
-      return message;
-   }
-   
-   @Produces @Wibble
-   public String getCorge(Wobble wobble)
-   {
-      return wobble.getName() + message.value();
-   }
 }

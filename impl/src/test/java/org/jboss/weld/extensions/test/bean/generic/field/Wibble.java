@@ -16,51 +16,28 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import org.jboss.weld.extensions.bean.generic.Generic;
-import org.jboss.weld.extensions.bean.generic.GenericBean;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import javax.inject.Qualifier;
 
 /**
- * A generic bean for the config annotation Message
+ * A qualifier
  * 
  * @author pmuir
  *
  */
 
-@Generic(Message.class)
-public class Baz
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+@Qualifier
+public @interface Wibble
 {
 
-   @Inject @GenericBean
-   private Bar bar;
-
-   @Inject
-   private Corge corge;
-   
-   @Inject 
-   private Message message;
-
-   public Bar getBar()
-   {
-      return bar;
-   }
-   
-   public Corge getCorge()
-   {
-      return corge;
-   }
-   
-   @Produces
-   public Message getMessage()
-   {
-      return message;
-   }
-   
-   @Produces @Wibble
-   public String getCorge(Wobble wobble)
-   {
-      return wobble.getName() + message.value();
-   }
 }

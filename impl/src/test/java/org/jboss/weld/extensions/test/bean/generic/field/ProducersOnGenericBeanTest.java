@@ -56,6 +56,15 @@ public class ProducersOnGenericBeanTest
    @Foo(2)
    private Message baz2Message;
    
+   @Inject
+   @Foo(1) @Wibble
+   private String wibble1;
+   
+   @Inject
+   @Foo(2) @Wibble
+   private String wibble2;
+   
+   
    @Test
    public void testGeneric()
    {
@@ -70,5 +79,10 @@ public class ProducersOnGenericBeanTest
       assertEquals("hello1", baz1Message.value());
       assertNotNull(baz2Message);
       assertEquals( "hello2", baz2Message.value());
+      
+      assertNotNull(wibble1);
+      assertEquals("billhello1", wibble1);
+      assertNotNull(wibble2);
+      assertEquals("billhello2", wibble2);
    }
 }
