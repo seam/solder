@@ -45,7 +45,6 @@ import javax.enterprise.context.Dependent;
  * <ul>
  * <li>Only field injection is supported for generic configuration annotations,
  * and @GenericBean</li>
- * <li>Injection into producer methods is not supported</li>
  * <li>Observer methods are not supported</li>
  * <li>The user of parameterized types for generic beans is not supported</li> 
  * <ul>
