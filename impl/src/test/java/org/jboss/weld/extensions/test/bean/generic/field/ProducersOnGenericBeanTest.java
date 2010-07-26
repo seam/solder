@@ -18,7 +18,6 @@ package org.jboss.weld.extensions.test.bean.generic.field;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import javax.inject.Inject;
 
@@ -31,52 +30,45 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class GenericBeanTest
+public class ProducersOnGenericBeanTest
 {
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(GenericBeanTest.class.getPackage());
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(ProducersOnGenericBeanTest.class.getPackage());
    }
 
    @Inject
+   @Qux
    @Foo(1)
-   private Baz baz1;
+   private String bar1Message;
+
+   @Inject
+   @Qux
+   @Foo(2)
+   private String bar2Message;
+
+   @Inject
+   @Foo(1)
+   private Message baz1Message;
 
    @Inject
    @Foo(2)
-   private Baz baz2;
-
-   @Inject
-   @Foo(1)
-   private Bar bar1;
-
-   @Inject
-   @Foo(2)
-   private Bar bar2;
-
+   private Message baz2Message;
+   
    @Test
    public void testGeneric()
    {
-      // Check that normal bean injection is working correctly!
-      assertNotNull(baz2.getCorge());
-      assertEquals(baz2.getCorge().getName(), "fred");
       
-      // Test that the generic configuration injection wiring is working for bar
-      assertNotNull(bar1.getInjectedMessage());
-      assertEquals(bar1.getInjectedMessage().value(), "hello1");
-      assertNotNull(bar2.getInjectedMessage());
-      assertEquals(bar2.getInjectedMessage().value(), "hello2");
+      // Check that producer methods on generic beans are working
+      assertNotNull(bar1Message);
+      assertEquals("barhello1", bar1Message);
+      assertNotNull(bar2Message);
+      assertEquals( "barhello2", bar2Message);
       
-      // Check that the generic configuration injection wiring is working for baz
-      assertNotNull(baz1.getMessage());
-      assertEquals(baz1.getMessage().value(), "hello1");
-      assertNotNull(baz2.getMessage());
-      assertEquals(baz2.getMessage().value(), "hello2");
-      
-      // Check that this isn't affecting annotations on the generic bean without @Inject 
-      assertNull(baz1.getBar().getMessage());
-      assertNull(baz2.getBar().getMessage());
-      
+      assertNotNull(baz1Message);
+      assertEquals("hello1", baz1Message.value());
+      assertNotNull(baz2Message);
+      assertEquals( "hello2", baz2Message.value());
    }
 }

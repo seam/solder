@@ -45,7 +45,7 @@ public abstract class AbstactGenericBean<T> extends ForwardingBean<T>
       if (obj instanceof GenericManagedBean<?>)
       {
          GenericManagedBean<?> that = (GenericManagedBean<?>) obj;
-         return this.getBeanClass().equals(that.getBeanClass()) && this.getQualifiers().equals(that.getQualifiers());
+         return this.delegate().equals(that.delegate()) && this.getBeanClass().equals(that.getBeanClass()) && this.getQualifiers().equals(that.getQualifiers());
       }
       else
       {

@@ -40,18 +40,6 @@ public class GenericBeanProducer
    @SuppressWarnings("unused")
    @Foo(1)
    @Produces
-   @Message("bye1")
-   private Bar bar1;
-   
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Message("bye2")
-   private Bar bar2;
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
    @Service(1)
    private Waldo waldo1 = new Waldo("Pete");
    
@@ -60,17 +48,5 @@ public class GenericBeanProducer
    @Produces
    @Service(2)
    private Waldo waldo2 = new Waldo("Stuart");
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Service(1)
-   private Garply garply1;
-   
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Service(2)
-   private Garply garply2;
 
 }
