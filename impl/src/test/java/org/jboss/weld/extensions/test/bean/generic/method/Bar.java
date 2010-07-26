@@ -14,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic.field;
+package org.jboss.weld.extensions.test.bean.generic.method;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
 import org.jboss.weld.extensions.bean.generic.Generic;
 
 /**
@@ -48,7 +47,7 @@ public class Bar
       return message;
    }
    
-   @Produces @GenericProduct
+   @Produces @Qux
    public String getBarMessage()
    {
       return "bar" + getInjectedMessage().value();

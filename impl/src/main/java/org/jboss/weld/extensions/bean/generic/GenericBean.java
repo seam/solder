@@ -39,6 +39,10 @@ import javax.inject.Qualifier;
  * injections can only occur in other generic beans which share the same config
  * annotation.
  * 
+ * <ul>
+ * <li>Only works on injected fields</li>
+ * </ul>
+ * 
  * 
  * @author stuart
  * @author Pete Muir

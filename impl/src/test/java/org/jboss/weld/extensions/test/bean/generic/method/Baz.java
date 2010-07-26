@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic.field;
+package org.jboss.weld.extensions.test.bean.generic.method;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
 import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericBean;
 
 /**
  * A generic bean for the config annotation Message
@@ -30,27 +30,31 @@ import org.jboss.weld.extensions.bean.generic.Generic;
  */
 
 @Generic(Message.class)
-public class Bar
+public class Baz
 {
-   @Inject
-   private Message injectedMessage;
 
-   // A Message with no @Inject
+   @Inject @GenericBean
+   private Bar bar;
+
+   @Inject
+   private Corge corge;
+   
+   @Inject 
    private Message message;
 
-   public Message getInjectedMessage()
+   public Bar getBar()
    {
-      return injectedMessage;
+      return bar;
    }
-
+   
+   public Corge getCorge()
+   {
+      return corge;
+   }
+   
+   @Produces
    public Message getMessage()
    {
       return message;
-   }
-   
-   @Produces @GenericProduct
-   public String getBarMessage()
-   {
-      return "bar" + getInjectedMessage().value();
    }
 }

@@ -16,10 +16,6 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
 import org.jboss.weld.extensions.bean.generic.Generic;
 
 /**
@@ -29,28 +25,22 @@ import org.jboss.weld.extensions.bean.generic.Generic;
  *
  */
 
-@Generic(Message.class)
-public class Bar
+@Generic(Service.class)
+public class Waldo
 {
-   @Inject
-   private Message injectedMessage;
-
-   // A Message with no @Inject
-   private Message message;
-
-   public Message getInjectedMessage()
+   
+   private String name;
+   
+   public Waldo() {}
+   
+   public Waldo(String name)
    {
-      return injectedMessage;
-   }
-
-   public Message getMessage()
-   {
-      return message;
+      this.name = name;
    }
    
-   @Produces @GenericProduct
-   public String getBarMessage()
+   public String getName()
    {
-      return "bar" + getInjectedMessage().value();
+      return name;
    }
+   
 }

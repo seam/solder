@@ -17,60 +17,34 @@
 package org.jboss.weld.extensions.test.bean.generic.field;
 
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+
+import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericProduct;
 
 /**
- * A producer of generic beans
+ * A generic bean for the config annotation Message
+ * 
  * @author pmuir
  *
  */
-public class GenericBeanProducer
+
+@Generic(Service.class)
+public class Garply
 {
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Message("hello1")
-   private Baz baz1;
-
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Message("hello2")
-   private Baz baz2;
    
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Message("bye1")
-   private Bar bar1;
+   @Inject @GenericProduct
+   private Waldo waldo;
    
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Message("bye2")
-   private Bar bar2;
+   @Produces @WaldoName
+   public String getWaldoName()
+   {
+      return waldo.getName();
+   }
    
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Service(1)
-   private Waldo waldo1 = new Waldo("Pete");
+   public Waldo getWaldo()
+   {
+      return waldo;
+   }
    
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Service(2)
-   private Waldo waldo2 = new Waldo("Stuart");
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Service(1)
-   private Garply garply1;
-   
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Service(2)
-   private Garply garply2;
-
 }

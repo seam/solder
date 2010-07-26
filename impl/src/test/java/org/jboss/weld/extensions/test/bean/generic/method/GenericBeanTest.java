@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic.field;
+package org.jboss.weld.extensions.test.bean.generic.method;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,7 +27,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,58 +46,26 @@ public class GenericBeanTest
    @Inject
    @Foo(2)
    private Baz baz2;
-
-   @Inject
-   @Foo(1)
-   private Bar bar1;
-
-   @Inject
-   @Foo(2)
-   private Bar bar2;
-
-   @Inject
-   @GenericProduct
-   @Foo(1)
-   private String bar1Message;
-
-   @Inject
-   @GenericProduct
-   @Foo(2)
-   private String bar2Message;
-
-   @Inject
-   @Foo(1)
-   private Message baz1Message;
-
-   @Inject
-   @Foo(2)
-   private Message baz2Message;
-
-   @Inject
-   @Foo(1)
-   private Garply garply1;
-
-   @Inject
-   @Foo(2)
-   private Garply garply2;
    
    @Inject
    @Foo(1)
-   private Waldo waldo1;
-
+   private Bar bar1;
+   
    @Inject
    @Foo(2)
-   private Waldo waldo2;
-
-//   @Inject
-//   @Foo(1)
-//   @WaldoName
-//   private String waldoName1;
-//
-//   @Inject
-//   @Foo(2)
-//   @WaldoName
-//   private String waldoName2;
+   private Bar bar2;
+   
+   @Inject @Qux @Foo(1)
+   private String bar1Message;
+   
+   @Inject @Qux @Foo(2)
+   private String bar2Message;
+   
+   @Inject @Foo(1)
+   private Message baz1Message;
+   
+   @Inject @Foo(2)
+   private Message baz2Message;
 
    @Test
    public void testGeneric()
@@ -133,17 +100,6 @@ public class GenericBeanTest
       assertEquals(baz1Message.value(), "hello1");
       assertNotNull(baz2Message);
       assertEquals(baz2Message.value(), "hello2");
-      
-      // Check injection of product
-      assertNotNull(waldo1);
-      assertNotNull(waldo2);
-      assertNull(waldo1.getName());
-      assertNull(waldo2.getName());
-      
-      assertNotNull(garply1);
-      assertNotNull(garply2);
-      
-      assertEquals("Pete", garply1.getWaldo().getName());
-      assertEquals("Stuart", garply2.getWaldo().getName());
+     
    }
 }

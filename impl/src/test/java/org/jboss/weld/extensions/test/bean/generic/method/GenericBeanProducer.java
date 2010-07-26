@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic.field;
+package org.jboss.weld.extensions.test.bean.generic.method;
 
 import javax.enterprise.inject.Produces;
 
@@ -25,52 +25,36 @@ import javax.enterprise.inject.Produces;
  */
 public class GenericBeanProducer
 {
-   @SuppressWarnings("unused")
    @Foo(1)
    @Produces
    @Message("hello1")
-   private Baz baz1;
+   public Baz getBaz1()
+   {
+      return null;
+   }
 
-   @SuppressWarnings("unused")
    @Foo(2)
    @Produces
    @Message("hello2")
-   private Baz baz2;
+   public Baz getBaz2()
+   {
+      return null;
+   }
    
-   @SuppressWarnings("unused")
    @Foo(1)
    @Produces
    @Message("bye1")
-   private Bar bar1;
+   public Bar getBar1()
+   {
+      return null;
+   }
    
-   @SuppressWarnings("unused")
    @Foo(2)
    @Produces
    @Message("bye2")
-   private Bar bar2;
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Service(1)
-   private Waldo waldo1 = new Waldo("Pete");
-   
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Service(2)
-   private Waldo waldo2 = new Waldo("Stuart");
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Service(1)
-   private Garply garply1;
-   
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Service(2)
-   private Garply garply2;
+   public Bar getBar2()
+   {
+      return null;
+   }
 
 }

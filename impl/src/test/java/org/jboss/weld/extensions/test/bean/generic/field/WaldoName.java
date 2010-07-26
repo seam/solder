@@ -16,41 +16,28 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
-import org.jboss.weld.extensions.bean.generic.Generic;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import javax.inject.Qualifier;
 
 /**
- * A generic bean for the config annotation Message
+ * A qualifier
  * 
  * @author pmuir
  *
  */
 
-@Generic(Message.class)
-public class Bar
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+@Qualifier
+public @interface WaldoName
 {
-   @Inject
-   private Message injectedMessage;
 
-   // A Message with no @Inject
-   private Message message;
-
-   public Message getInjectedMessage()
-   {
-      return injectedMessage;
-   }
-
-   public Message getMessage()
-   {
-      return message;
-   }
-   
-   @Produces @GenericProduct
-   public String getBarMessage()
-   {
-      return "bar" + getInjectedMessage().value();
-   }
 }
