@@ -10,6 +10,6 @@ public class GenericProductLiteral extends AnnotationLiteral<GenericProduct> imp
 
    private static final long serialVersionUID = 2768505716290514234L;
    
-   public GenericProductLiteral() {}
+   private GenericProductLiteral() {}
 
 }
