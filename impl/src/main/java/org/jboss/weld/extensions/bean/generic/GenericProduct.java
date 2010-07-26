@@ -43,8 +43,10 @@ import javax.inject.Qualifier;
 @Qualifier
 public @interface GenericProduct
 {
-
-   static class GenericProductLiteral extends AnnotationLiteral<GenericProduct> implements GenericProduct 
+   
+   public static final GenericProduct INSTANCE = new GenericProductLiteral();
+   
+   class GenericProductLiteral extends AnnotationLiteral<GenericProduct> implements GenericProduct 
    {
 
       private static final long serialVersionUID = 2768505716290514234L;
@@ -54,7 +56,5 @@ public @interface GenericProduct
       private GenericProductLiteral() {}
 
    }
-   
-   static final GenericProduct INSTANCE = new GenericProductLiteral();
    
 }
