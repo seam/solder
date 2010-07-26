@@ -84,11 +84,6 @@ public class ServiceHandlerManager<T>
       return instance;
    }
 
-   public void dispose(T instance)
-   {
-      injectionTarget.dispose(instance);
-   }
-
    public Object invoke(Object instance, InvocationContext ctx) throws Exception
    {
       return handlerMethod.invoke(instance, ctx);

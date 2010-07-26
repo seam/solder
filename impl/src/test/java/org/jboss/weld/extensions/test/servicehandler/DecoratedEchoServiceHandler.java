@@ -16,8 +16,19 @@
  */
 package org.jboss.weld.extensions.test.servicehandler;
 
-@EchoService
-public interface HelloWorld
+import javax.inject.Inject;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
+
+public class DecoratedEchoServiceHandler
 {
-   public String helloWorld();
+   // test injection into the handler
+   @Inject
+   EchoDecorator decorator;
+
+   @AroundInvoke
+   public Object invoke(InvocationContext ctx)
+   {
+      return decorator.decorate(ctx.getMethod().getName().toString());
+   }
 }

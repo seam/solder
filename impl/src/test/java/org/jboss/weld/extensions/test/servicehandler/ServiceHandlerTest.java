@@ -42,6 +42,9 @@ public class ServiceHandlerTest
    @Inject
    GoodbyeWorld goodbyteWorld;
 
+   @Inject
+   DecoratedHelloWorld decoratedHelloWorld;
+
    @Deployment
    public static Archive<?> deploy()
    {
@@ -59,6 +62,12 @@ public class ServiceHandlerTest
    {
       Assert.assertTrue(goodbyteWorld.goodbyeWorld().equals("goodbyeWorld"));
       Assert.assertFalse(goodbyteWorld.otherMethod().equals("otherMethod"));
+   }
+
+   @Test
+   public void testInjectionIntoHandler()
+   {
+      Assert.assertTrue(decoratedHelloWorld.decoratedHelloWorld().equals("-decoratedHelloWorld-"));
    }
 
 }

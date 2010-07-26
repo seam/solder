@@ -16,8 +16,14 @@
  */
 package org.jboss.weld.extensions.test.servicehandler;
 
-@EchoService
-public interface HelloWorld
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import org.jboss.weld.extensions.servicehandler.ServiceHandler;
+
+@Retention(RetentionPolicy.RUNTIME)
+@ServiceHandler(DecoratedEchoServiceHandler.class)
+public @interface DecoratedEchoService
 {
-   public String helloWorld();
+
 }
