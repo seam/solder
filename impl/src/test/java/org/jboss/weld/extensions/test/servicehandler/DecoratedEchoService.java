@@ -16,12 +16,16 @@
  */
 package org.jboss.weld.extensions.test.servicehandler;
 
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import org.jboss.weld.extensions.servicehandler.ServiceHandler;
 
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RUNTIME)
+@Target(TYPE)
 @ServiceHandler(DecoratedEchoServiceHandler.class)
 public @interface DecoratedEchoService
 {

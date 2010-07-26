@@ -16,6 +16,8 @@
  */
 package org.jboss.weld.extensions.servicehandler;
 
+import static org.jboss.weld.extensions.util.AnnotationInspector.getMetaAnnotation;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +29,6 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.jboss.weld.extensions.bean.BeanBuilder;
-import org.jboss.weld.extensions.util.AnnotationInspector;
 
 /**
  * This extension automatically implements interfaces and abstract classes.
@@ -35,19 +36,19 @@ import org.jboss.weld.extensions.util.AnnotationInspector;
  * @author Stuart Douglas
  * 
  */
-public class ServiceHandlerExtension implements Extension
+class ServiceHandlerExtension implements Extension
 {
    Set<Bean<?>> beans = new HashSet<Bean<?>>();
    
-   public <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
+   <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
    {
-      ServiceHandler annotation = AnnotationInspector.getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
+      ServiceHandler annotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
       if (annotation != null)
       {
          Class<?> handlerClass = annotation.value();
          try
          {
-            BeanBuilder builder = new BeanBuilder(beanManager);
+            BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
             builder.defineBeanFromAnnotatedType(event.getAnnotatedType());
             builder.setBeanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
             beans.add(builder.create());
@@ -59,11 +60,11 @@ public class ServiceHandlerExtension implements Extension
       }
    }
 
-   public void afterBeanDiscovery(@Observes AfterBeanDiscovery event)
+   void afterBeanDiscovery(@Observes AfterBeanDiscovery event)
    {
-      for (Bean<?> b : beans)
+      for (Bean<?> bean : beans)
       {
-         event.addBean(b);
+         event.addBean(bean);
       }
    }
 }

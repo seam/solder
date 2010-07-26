@@ -23,22 +23,39 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * <p>
  * Meta annotation that is used to specify an invocation handler for an
  * automatically implmented bean.
+ * </p>
  * 
+ * <p>
  * If the annotation that is annotated with this meta-annotation is applied to
  * an interface or abstract class then the container will automatically provide
  * a concrete implementation of the class/interface, and delegate all calls to
  * abstract methods through the handler class specified by this annotations.
+ * </p>
  * 
+ * <p>
  * The handler class must have a method with the following signature:
+ * </p>
  * 
  * <pre>
  *  @AroundInvoke public Object aroundInvoke(final InvocationContext invocation) throws Exception
  * </pre>
  * 
+ * <p>
  * This is the same as an intercepter class. This handler can be injected into
- * and use initializer methods, however @PreDestory methods are not availble
+ * and use initializer methods, however @PreDestory methods are not available
+ * </p>
+ * 
+ * <p>
+ * The annotation should have:
+ * </p>
+ * 
+ * <pre>
+ * @Retention(RUNTIME)
+ * @Target({ TYPE })
+ * </pre>
  * 
  * @author Stuart Douglas <stuart.w.douglas@gmail.com>
  * 

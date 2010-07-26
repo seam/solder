@@ -42,6 +42,7 @@ public class ServiceHandlerBeanLifecycle<T, H> implements BeanLifecycle<T>
    private final Class<? extends T> proxyClass;
    private final ServiceHandlerManager<H> handler;
 
+   
    public ServiceHandlerBeanLifecycle(Class<? extends T> classToImplement, Class<H> handlerClass, BeanManager manager)
    {
       handler = new ServiceHandlerManager<H>(handlerClass, manager);
@@ -66,14 +67,18 @@ public class ServiceHandlerBeanLifecycle<T, H> implements BeanLifecycle<T>
             return !m.getName().equals("finalize");
          }
       });
-      proxyClass = factory.createClass();
+      
+      this.proxyClass = ((Class<?>) factory.createClass()).asSubclass(classToImplement);
    }
 
    public T create(Bean<T> bean, CreationalContext<T> creationalContext)
    {
       try
       {
-         H handlerInstance = handler.create((CreationalContext) creationalContext); //not sure if this is ok
+         // Make sure to pass the creational context along, allowing dependents to be cleaned up properly
+         @SuppressWarnings("unchecked")
+         H handlerInstance = handler.create((CreationalContext) creationalContext);
+         
          ServiceHandlerMethodHandler<T, H> methodHandler = new ServiceHandlerMethodHandler<T, H>(handler, handlerInstance);
          T instance = proxyClass.newInstance();
          ((ProxyObject) instance).setHandler(methodHandler);

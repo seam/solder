@@ -37,13 +37,13 @@ public class ServiceHandlerTest
 {
 
    @Inject
-   HelloWorld helloWorld;
+   private HelloWorld helloWorld;
 
    @Inject
-   GoodbyeWorld goodbyteWorld;
+   private GoodbyeWorld goodbyteWorld;
 
    @Inject
-   DecoratedHelloWorld decoratedHelloWorld;
+   private DecoratedHelloWorld decoratedHelloWorld;
 
    @Deployment
    public static Archive<?> deploy()

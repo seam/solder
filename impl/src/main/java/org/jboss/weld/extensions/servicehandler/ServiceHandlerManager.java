@@ -17,7 +17,6 @@
 package org.jboss.weld.extensions.servicehandler;
 
 import java.lang.reflect.Method;
-import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -35,7 +34,7 @@ import org.jboss.weld.extensions.util.Reflections;
  * @author Stuart Douglas
  * 
  */
-public class ServiceHandlerManager<T>
+class ServiceHandlerManager<T>
 {
    private final Class<T> handlerClass;
    private final Method handlerMethod;
@@ -48,35 +47,16 @@ public class ServiceHandlerManager<T>
     * @throws IllegalArgumentException if the handler class is does not have a
     *            suitable @AroundInvoke method
     */
-   public ServiceHandlerManager(Class<T> handlerClass, BeanManager beanManager) throws IllegalArgumentException
+   ServiceHandlerManager(Class<T> handlerClass, BeanManager beanManager) throws IllegalArgumentException
    {
       this.handlerClass = handlerClass;
-      Set<Method> methods = Reflections.getAllMethods(handlerClass);
-      Method handler = null;
-      //search for the handler method
-      for (Method m : methods)
-      {
-         if (m.isAnnotationPresent(AroundInvoke.class))
-         {
-            if (m.getParameterTypes().length != 1 || m.getParameterTypes()[0] != InvocationContext.class)
-            {
-               throw new IllegalArgumentException("Could not find suitable AroundInvoke method on class " + handlerClass + " methods denoted @AroundInvoke must have a single InvokationContext parameter");
-            }
-            handler = m;
-            break;
-         }
-      }
-      if (handler == null)
-      {
-         throw new IllegalArgumentException("Could not find suitable AroundInvoke method on class " + handlerClass);
-      }
-      handlerMethod = handler;
+      handlerMethod = getHandlerMethod(handlerClass);
       //now create the InjectionTarget
       AnnotatedTypeBuilder<T> typeBuilder = new AnnotatedTypeBuilder<T>().readFromType(handlerClass);
       injectionTarget = beanManager.createInjectionTarget(typeBuilder.create());
    }
 
-   public T create(CreationalContext<T> ctx)
+   T create(CreationalContext<T> ctx)
    {
       T instance = injectionTarget.produce(ctx);
       injectionTarget.inject(instance, ctx);
@@ -84,14 +64,31 @@ public class ServiceHandlerManager<T>
       return instance;
    }
 
-   public Object invoke(Object instance, InvocationContext ctx) throws Exception
+   Object invoke(Object instance, InvocationContext ctx) throws Exception
    {
       return handlerMethod.invoke(instance, ctx);
    }
 
-   public Class<?> getHandlerClass()
+   Class<?> getHandlerClass()
    {
       return handlerClass;
+   }
+
+   private static Method getHandlerMethod(Class<?> handlerClass)
+   {
+      //search for the handler method
+      for (Method m : Reflections.getAllMethods(handlerClass))
+      {
+         if (m.isAnnotationPresent(AroundInvoke.class))
+         {
+            if (m.getParameterTypes().length != 1 || m.getParameterTypes()[0] != InvocationContext.class)
+            {
+               throw new IllegalArgumentException("Could not find suitable AroundInvoke method on class " + handlerClass + " methods denoted @AroundInvoke must have a single InvokationContext parameter");
+            }
+            return m;
+         }
+      }
+      throw new IllegalArgumentException("Could not find suitable AroundInvoke method on class " + handlerClass);
    }
 
 }

@@ -24,7 +24,7 @@ public class DecoratedEchoServiceHandler
 {
    // test injection into the handler
    @Inject
-   EchoDecorator decorator;
+   private EchoDecorator decorator;
 
    @AroundInvoke
    public Object invoke(InvocationContext ctx)
