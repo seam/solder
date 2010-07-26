@@ -17,44 +17,34 @@
 package org.jboss.weld.extensions.test.bean.generic.method;
 
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+
+import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericProduct;
 
 /**
- * A producer of generic beans
+ * A generic bean for the config annotation Message
+ * 
  * @author pmuir
  *
  */
-public class GenericBeanProducer
+
+@Generic(Service.class)
+public class Garply
 {
-   @Foo(1)
-   @Produces
-   @Message("hello1")
-   public Baz getBaz1()
+   
+   @Inject @GenericProduct
+   private Waldo waldo;
+   
+   @Produces @WaldoName
+   public String getWaldoName()
    {
-      return null;
-   }
-
-   @Foo(2)
-   @Produces
-   @Message("hello2")
-   public Baz getBaz2()
-   {
-      return null;
+      return waldo.getName();
    }
    
-   @Foo(1)
-   @Produces
-   @Service(1)
-   public Waldo getWaldo1()
+   public Waldo getWaldo()
    {
-      return new Waldo("Pete");
+      return waldo;
    }
    
-   @Foo(2)
-   @Produces
-   @Service(2)
-   public Waldo getWaldo2()
-   {
-      return new Waldo("Stuart");
-   }
-
 }

@@ -31,52 +31,57 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class GenericBeanTest
+public class GenericProductTest
 {
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(GenericBeanTest.class.getPackage());
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(GenericProductTest.class.getPackage());
    }
 
    @Inject
    @Foo(1)
-   private Baz baz1;
+   private Garply garply1;
 
    @Inject
    @Foo(2)
-   private Baz baz2;
+   private Garply garply2;
+   
+   @Inject
+   @Foo(1)
+   private Waldo waldo1;
+
+   @Inject
+   @Foo(2)
+   private Waldo waldo2;
 
    @Inject
    @Foo(1)
-   private Bar bar1;
+   @WaldoName
+   private String waldoName1;
 
    @Inject
    @Foo(2)
-   private Bar bar2;
+   @WaldoName
+   private String waldoName2;
 
    @Test
    public void testGeneric()
    {
-      // Check that normal bean injection is working correctly!
-      assertNotNull(baz2.getCorge());
-      assertEquals(baz2.getCorge().getName(), "fred");
       
-      // Test that the generic configuration injection wiring is working for bar
-      assertNotNull(bar1.getInjectedMessage());
-      assertEquals(bar1.getInjectedMessage().value(), "hello1");
-      assertNotNull(bar2.getInjectedMessage());
-      assertEquals(bar2.getInjectedMessage().value(), "hello2");
+      // Check injection of product
+      assertNotNull(waldo1);
+      assertNotNull(waldo2);
+      assertNull(waldo1.getName());
+      assertNull(waldo2.getName());
       
-      // Check that the generic configuration injection wiring is working for baz
-      assertNotNull(baz1.getMessage());
-      assertEquals(baz1.getMessage().value(), "hello1");
-      assertNotNull(baz2.getMessage());
-      assertEquals(baz2.getMessage().value(), "hello2");
+      assertNotNull(garply1);
+      assertNotNull(garply2);
       
-      // Check that this isn't affecting annotations on the generic bean without @Inject 
-      assertNull(baz1.getBar().getMessage());
-      assertNull(baz2.getBar().getMessage());
+      assertEquals("Pete", garply1.getWaldo().getName());
+      assertEquals("Stuart", garply2.getWaldo().getName());
       
+      assertEquals("Pete", waldoName1);
+      assertEquals("Stuart", waldoName2);
    }
 }

@@ -16,45 +16,28 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.method;
 
-import javax.enterprise.inject.Produces;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import javax.inject.Qualifier;
 
 /**
- * A producer of generic beans
+ * A qualifier
+ * 
  * @author pmuir
  *
  */
-public class GenericBeanProducer
-{
-   @Foo(1)
-   @Produces
-   @Message("hello1")
-   public Baz getBaz1()
-   {
-      return null;
-   }
 
-   @Foo(2)
-   @Produces
-   @Message("hello2")
-   public Baz getBaz2()
-   {
-      return null;
-   }
-   
-   @Foo(1)
-   @Produces
-   @Service(1)
-   public Waldo getWaldo1()
-   {
-      return new Waldo("Pete");
-   }
-   
-   @Foo(2)
-   @Produces
-   @Service(2)
-   public Waldo getWaldo2()
-   {
-      return new Waldo("Stuart");
-   }
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+@Qualifier
+public @interface WaldoName
+{
 
 }
