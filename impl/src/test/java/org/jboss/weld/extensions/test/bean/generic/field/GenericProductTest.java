@@ -55,15 +55,15 @@ public class GenericProductTest
    @Foo(2)
    private Waldo waldo2;
 
-//   @Inject
-//   @Foo(1)
-//   @WaldoName
-//   private String waldoName1;
+   @Inject
+   @Foo(1)
+   @WaldoName
+   private String waldoName1;
 
-//   @Inject
-//   @Foo(2)
-//   @WaldoName
-//   private String waldoName2;
+   @Inject
+   @Foo(2)
+   @WaldoName
+   private String waldoName2;
 
    @Test
    public void testGeneric()
@@ -80,5 +80,8 @@ public class GenericProductTest
       
       assertEquals("Pete", garply1.getWaldo().getName());
       assertEquals("Stuart", garply2.getWaldo().getName());
+      
+      assertEquals("Pete", waldoName1);
+      assertEquals("Stuart", waldoName2);
    }
 }
