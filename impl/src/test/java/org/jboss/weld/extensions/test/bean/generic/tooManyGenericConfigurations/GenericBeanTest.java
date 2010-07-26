@@ -16,27 +16,19 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.tooManyGenericConfigurations;
 
-import static org.junit.Assert.assertFalse;
 
-import org.jboss.arquillian.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.runner.RunWith;
-
-@RunWith(Arquillian.class)
-public class GenericBeanTest
-{
-   @Deployment
-   public static Archive<?> deploy()
-   {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(GenericBeanTest.class.getPackage());
-   }
-
-   //@Test(expected=Exception.class )
-   public void testGeneric()
-   {
-      assertFalse(true);
-   }
-}
+//@RunWith(Arquillian.class)
+//public class GenericBeanTest
+//{
+//   @Deployment
+//   public static Archive<?> deploy()
+//   {
+//      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(GenericBeanTest.class.getPackage());
+//   }
+//
+//   //@Test(expected=Exception.class )
+//   public void testGeneric()
+//   {
+//      assertFalse(true);
+//   }
+//}
