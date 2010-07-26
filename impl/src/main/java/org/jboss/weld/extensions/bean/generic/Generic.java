@@ -27,24 +27,35 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.enterprise.context.Dependent;
+
 /**
- * Defines a set of generic beans which can inject the specified configuration annotation.
+ * <p>
+ * Defines a set of generic beans which can inject the configuration annotation,
+ * any other generic bean for the same configuration type, and the product of
+ * the generic producer. Generic beans must be {@link Dependent} scoped.
+ * </p>
+ * 
+ * <p>
+ * Each generic configuration may be specified at most once.
+ * </p>
  * 
  * This implementation of generic beans has a number of limitations:
  * 
  * <ul>
- * <li>Only field injection is supported for generic configuration annotations, and @GenericBean</li>
- * <li>Generic beans <b>must</b> be dependent scoped</li>
+ * <li>Only field injection is supported for generic configuration annotations,
+ * and @GenericBean</li>
  * <li>Injection into producer methods is not supported</li>
- * <li>Observer methods are not suppported</li>
+ * <li>Observer methods are not supported</li>
+ * <li>The user of parameterized types for generic beans is not supported</li> 
  * <ul>
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
  * 
  */
-@Retention( RUNTIME )
-@Target({ METHOD, FIELD, PARAMETER, TYPE })
+@Retention(RUNTIME)
+@Target( { METHOD, FIELD, PARAMETER, TYPE })
 @Documented
 public @interface Generic
 {
