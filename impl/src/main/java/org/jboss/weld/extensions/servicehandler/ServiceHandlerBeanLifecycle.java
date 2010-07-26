@@ -50,7 +50,7 @@ public class ServiceHandlerBeanLifecycle<T, H> implements BeanLifecycle<T>
       factory = new ProxyFactory();
       if (classToImplement.isInterface())
       {
-         Class[] interfaces = new Class[1];
+         Class<?>[] interfaces = new Class[1];
          interfaces[0] = classToImplement;
          factory.setInterfaces(interfaces);
       }
@@ -73,8 +73,8 @@ public class ServiceHandlerBeanLifecycle<T, H> implements BeanLifecycle<T>
    {
       try
       {
-         H handlerInstance = handler.create((CreationalContext) creationalContext);
-         ServiceHandlerMethodHandler methodHandler = new ServiceHandlerMethodHandler(handler, handlerInstance);
+         H handlerInstance = handler.create((CreationalContext) creationalContext); //not sure if this is ok
+         ServiceHandlerMethodHandler<T, H> methodHandler = new ServiceHandlerMethodHandler<T, H>(handler, handlerInstance);
          T instance = proxyClass.newInstance();
          ((ProxyObject) instance).setHandler(methodHandler);
          return instance;

@@ -30,7 +30,7 @@ import org.jboss.weld.extensions.bean.BeanBuilder;
 import org.jboss.weld.extensions.util.AnnotationInspector;
 
 /**
- * This extension provides an implementation of interfaces and abstract classes.
+ * This extension automatically implements interfaces and abstract classes.
  * 
  * @author Stuart Douglas
  * 

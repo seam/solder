@@ -29,8 +29,8 @@ import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.util.Reflections;
 
 /**
- * Manages the handler for the auto proxy extension. This class is responsible
- * for managing the lifecycle of the handler class instances
+ * Manages the handler class for the service handler extension. This class is
+ * responsible for managing the lifecycle of the handler class instances
  * 
  * @author Stuart Douglas
  * 

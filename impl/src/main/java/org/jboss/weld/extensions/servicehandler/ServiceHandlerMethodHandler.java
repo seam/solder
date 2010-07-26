@@ -25,7 +25,8 @@ import javassist.util.proxy.MethodHandler;
 import javax.interceptor.InvocationContext;
 
 /**
- * MethodHandler that forwards calls to abstract methods to handler instance
+ * MethodHandler that forwards calls to abstract methods to the service handler
+ * instance
  * 
  * @author Stuart Douglas
  * 
