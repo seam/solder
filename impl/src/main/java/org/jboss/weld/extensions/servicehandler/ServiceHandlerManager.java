@@ -84,10 +84,9 @@ public class ServiceHandlerManager<T>
       return instance;
    }
 
-   public void dispose(T instance, CreationalContext<T> ctx)
+   public void dispose(T instance)
    {
       injectionTarget.dispose(instance);
-      ctx.release();
    }
 
    public Object invoke(Object instance, InvocationContext ctx) throws Exception

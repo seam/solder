@@ -18,6 +18,8 @@ package org.jboss.weld.extensions.test.servicehandler;
 
 import javax.inject.Inject;
 
+import junit.framework.Assert;
+
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -37,6 +39,9 @@ public class ServiceHandlerTest
    @Inject
    HelloWorld helloWorld;
 
+   @Inject
+   GoodbyeWorld goodbyteWorld;
+
    @Deployment
    public static Archive<?> deploy()
    {
@@ -44,9 +49,16 @@ public class ServiceHandlerTest
    }
 
    @Test
-   public void testExact()
+   public void testProxiedInterface()
    {
-      assert helloWorld.helloWorld().equals("helloWorld");
+      Assert.assertTrue(helloWorld.helloWorld().equals("helloWorld"));
+   }
+
+   @Test
+   public void testProxiedAbstractClass()
+   {
+      Assert.assertTrue(goodbyteWorld.goodbyeWorld().equals("goodbyeWorld"));
+      Assert.assertFalse(goodbyteWorld.otherMethod().equals("otherMethod"));
    }
 
 }

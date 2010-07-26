@@ -38,9 +38,9 @@ import java.lang.annotation.Target;
  * </pre>
  * 
  * This is the same as an intercepter class. This handler can be injected into
- * and use initializer methods
+ * and use initializer methods, however @PreDestory methods are not availble
  * 
- * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * @author Stuart Douglas <stuart.w.douglas@gmail.com>
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)

@@ -28,6 +28,14 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.bean.BeanLifecycle;
 
+/**
+ * Bean lifecycle for ServiceHandler beans
+ * 
+ * @author Stuart Douglas
+ * 
+ * @param <T>
+ * @param <H>
+ */
 public class ServiceHandlerBeanLifecycle<T, H> implements BeanLifecycle<T>
 {
    private final ProxyFactory factory;
@@ -79,7 +87,7 @@ public class ServiceHandlerBeanLifecycle<T, H> implements BeanLifecycle<T>
 
    public void destroy(Bean<T> bean, T instance, CreationalContext<T> creationalContext)
    {
-      // handler.dispose(instance, (CreationalContext) creationalContext);
+      // handler.dispose(instance);
    }
 
 }
