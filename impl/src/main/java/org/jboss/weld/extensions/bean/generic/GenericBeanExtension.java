@@ -287,13 +287,11 @@ class GenericBeanExtension implements Extension
                // Register the generic bean, this is the underlying definition, with the synthetic qualifier
                Bean<?> genericBean = createGenericBean(originalBean, genericConfiguration, (AnnotatedType) type.getKey(), beanManager);
                event.addBean(genericBean);
-               System.out.println("Creating generic bean " + genericBean.getBeanClass() + " [" + genericConfiguration + "] [" + genericBean.getQualifiers() + "]");
                // If we don't already have the producer (registered by the bean definition) now register the producer for it
                if (!genericConfigurationType.getValue().get(genericConfiguration).getBaseType().equals(type.getKey().getBaseType()))
                {
                   Bean<?> genericProducerBean = createGenericProducerBean(beanManager, originalBean.getBeanClass(), genericConfiguration);
                   event.addBean(genericProducerBean);
-                  System.out.println("Creating generic producer bean " + genericProducerBean.getBeanClass() + " [" + genericConfiguration + "] [" + genericProducerBean.getQualifiers() + "]");
                }
             }
          }
