@@ -9,8 +9,9 @@ import java.lang.reflect.Type;
 
 import org.jboss.weld.extensions.util.Reflections;
 
+
 /**
- * An implementaiton of Member for parameters
+ * An implementation of Member for parameters
  * 
  * @author pmuir
  * 
