@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.autoproxy;
+package org.jboss.weld.extensions.servicehandler;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -30,13 +30,13 @@ import javax.interceptor.InvocationContext;
  * @author Stuart Douglas
  * 
  */
-public class AutoProxyMethodHandler<T, H> implements MethodHandler
+public class ServiceHandlerMethodHandler<T, H> implements MethodHandler
 {
 
-   private final AutoProxyHandler<H> handler;
+   private final ServiceHandlerManager<H> handler;
    private final H handlerInstance;
 
-   public AutoProxyMethodHandler(AutoProxyHandler<H> handler, H handlerInstance)
+   public ServiceHandlerMethodHandler(ServiceHandlerManager<H> handler, H handlerInstance)
    {
       this.handler = handler;
       this.handlerInstance = handlerInstance;

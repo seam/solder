@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.autoproxy;
+package org.jboss.weld.extensions.servicehandler;
 
 import java.lang.reflect.Method;
 
@@ -28,15 +28,15 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.bean.BeanLifecycle;
 
-public class AutoProxyBeanLifecycle<T, H> implements BeanLifecycle<T>
+public class ServiceHandlerBeanLifecycle<T, H> implements BeanLifecycle<T>
 {
    private final ProxyFactory factory;
    private final Class<? extends T> proxyClass;
-   private final AutoProxyHandler<H> handler;
+   private final ServiceHandlerManager<H> handler;
 
-   public AutoProxyBeanLifecycle(Class<? extends T> classToImplement, Class<H> handlerClass, BeanManager manager)
+   public ServiceHandlerBeanLifecycle(Class<? extends T> classToImplement, Class<H> handlerClass, BeanManager manager)
    {
-      handler = new AutoProxyHandler<H>(handlerClass, manager);
+      handler = new ServiceHandlerManager<H>(handlerClass, manager);
 
       // create the proxy
       factory = new ProxyFactory();
@@ -66,7 +66,7 @@ public class AutoProxyBeanLifecycle<T, H> implements BeanLifecycle<T>
       try
       {
          H handlerInstance = handler.create((CreationalContext) creationalContext);
-         AutoProxyMethodHandler methodHandler = new AutoProxyMethodHandler(handler, handlerInstance);
+         ServiceHandlerMethodHandler methodHandler = new ServiceHandlerMethodHandler(handler, handlerInstance);
          T instance = proxyClass.newInstance();
          ((ProxyObject) instance).setHandler(methodHandler);
          return instance;

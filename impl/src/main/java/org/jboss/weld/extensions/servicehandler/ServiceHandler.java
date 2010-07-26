@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.autoproxy;
+package org.jboss.weld.extensions.servicehandler;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -46,7 +46,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
 @Documented
-public @interface AutoProxy
+public @interface ServiceHandler
 {
    Class<?> value();
 }

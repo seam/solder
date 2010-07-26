@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.autoproxy;
+package org.jboss.weld.extensions.test.servicehandler;
 
 import javax.inject.Inject;
 
@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(Arquillian.class)
-public class AutoProxyTest
+public class ServiceHandlerTest
 {
 
    @Inject
@@ -40,7 +40,7 @@ public class AutoProxyTest
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(AutoProxyTest.class.getPackage());
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(ServiceHandlerTest.class.getPackage());
    }
 
    @Test

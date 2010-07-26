@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.autoproxy;
+package org.jboss.weld.extensions.servicehandler;
 
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -35,7 +35,7 @@ import org.jboss.weld.extensions.util.Reflections;
  * @author Stuart Douglas
  * 
  */
-public class AutoProxyHandler<T>
+public class ServiceHandlerManager<T>
 {
    private final Class<T> handlerClass;
    private final Method handlerMethod;
@@ -48,7 +48,7 @@ public class AutoProxyHandler<T>
     * @throws IllegalArgumentException if the handler class is does not have a
     *            suitable @AroundInvoke method
     */
-   public AutoProxyHandler(Class<T> handlerClass, BeanManager beanManager) throws IllegalArgumentException
+   public ServiceHandlerManager(Class<T> handlerClass, BeanManager beanManager) throws IllegalArgumentException
    {
       this.handlerClass = handlerClass;
       Set<Method> methods = Reflections.getAllMethods(handlerClass);

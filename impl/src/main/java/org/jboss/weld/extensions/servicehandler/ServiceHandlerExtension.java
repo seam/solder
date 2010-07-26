@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.autoproxy;
+package org.jboss.weld.extensions.servicehandler;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,13 +35,13 @@ import org.jboss.weld.extensions.util.AnnotationInspector;
  * @author Stuart Douglas
  * 
  */
-public class AutoProxyExtension implements Extension
+public class ServiceHandlerExtension implements Extension
 {
    Set<Bean<?>> beans = new HashSet<Bean<?>>();
    
    public <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
    {
-      AutoProxy annotation = AnnotationInspector.getMetaAnnotation(event.getAnnotatedType(), AutoProxy.class);
+      ServiceHandler annotation = AnnotationInspector.getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
       if (annotation != null)
       {
          Class<?> handlerClass = annotation.value();
@@ -49,7 +49,7 @@ public class AutoProxyExtension implements Extension
          {
             BeanBuilder builder = new BeanBuilder(beanManager);
             builder.defineBeanFromAnnotatedType(event.getAnnotatedType());
-            builder.setBeanLifecycle(new AutoProxyBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
+            builder.setBeanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
             beans.add(builder.create());
          }
          catch (IllegalArgumentException e)

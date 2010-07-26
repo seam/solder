@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.test.autoproxy;
+package org.jboss.weld.extensions.test.servicehandler;
 
 @EchoService
 public interface HelloWorld
