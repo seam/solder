@@ -39,7 +39,7 @@ import javax.inject.Qualifier;
  *
  */
 @Retention(RUNTIME)
-@Target({METHOD, FIELD, PARAMETER, TYPE})
+@Target({ METHOD, FIELD, PARAMETER, TYPE })
 @Qualifier
 public @interface GenericProduct
 {
