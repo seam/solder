@@ -16,14 +16,23 @@ import org.jboss.weld.extensions.util.Synthetic;
 class GenericProducerMethod<T, X> extends AbstactGenericBean<T>
 {
 
-   private final InjectableMethod<X> method;
+   private final InjectableMethod<X> producerMethod;
+   private final InjectableMethod<X> disposerMethod;
    private final Type declaringBeanType;
    private final Annotation declaringBeanQualifier;
 
-   GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, Set<Annotation> qualifiers, Synthetic.Provider syntheticProvider, BeanManager beanManager)
+   GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, Set<Annotation> qualifiers, Synthetic.Provider syntheticProvider, BeanManager beanManager)
    {
-      super(originalBean, qualifiers, beanManager); 
-      this.method = new InjectableMethod<X>(method, this, beanManager);
+      super(originalBean, qualifiers, beanManager);
+      this.producerMethod = new InjectableMethod<X>(method, this, beanManager);
+      if (disposerMethod != null)
+      {
+         this.disposerMethod = new InjectableMethod<X>(disposerMethod, this, beanManager);
+      }
+      else
+      {
+         this.disposerMethod = null;
+      }
       this.declaringBeanType = originalBean.getBeanClass();
       this.declaringBeanQualifier = syntheticProvider.get(genericConfiguration);
    }
@@ -33,9 +42,7 @@ class GenericProducerMethod<T, X> extends AbstactGenericBean<T>
    {
       try
       {
-         Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(declaringBeanType, declaringBeanQualifier));
-         Object receiver = getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
-         return method.invoke(receiver, creationalContext);
+         return producerMethod.invoke(getReceiver(creationalContext), creationalContext);
       }
       finally
       {
@@ -44,4 +51,27 @@ class GenericProducerMethod<T, X> extends AbstactGenericBean<T>
       }
    }
 
+   @Override
+   public void destroy(T instance, CreationalContext<T> creationalContext)
+   {
+      if (disposerMethod != null)
+      {
+         try
+         {
+            disposerMethod.invoke(getReceiver(creationalContext), creationalContext);
+         }
+         finally
+         {
+            // Generic managed beans must be dependent
+            creationalContext.release();
+         }
+      }
+   }
+
+   private Object getReceiver(CreationalContext<T> creationalContext)
+   {
+      Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(declaringBeanType, declaringBeanQualifier));
+      return getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
+   }
+   
 }

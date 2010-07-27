@@ -78,6 +78,9 @@ class GenericBeanExtension implements Extension
    // A map of generic configuration types to producer methods on generic beans
    // Used to track the generic bean found
    private final Map<Class<? extends Annotation>, Map<AnnotatedMethod<?>, Bean<?>>> genericBeanProducerMethods;
+   
+   // A map of producer methods on generic beans to their disposer method (if existent)
+   private final Map<AnnotatedMethod<?>, AnnotatedMethod<?>> genericBeanDisposerMethods;
 
    // A map of generic configuration types to producer fields on generic beans
    // Used to track the generic bean found
@@ -103,6 +106,7 @@ class GenericBeanExtension implements Extension
    {
       this.genericBeans = new HashMap<Class<? extends Annotation>, Map<AnnotatedType<?>, Bean<?>>>();
       this.genericBeanProducerMethods = new HashMap<Class<? extends Annotation>, Map<AnnotatedMethod<?>, Bean<?>>>();
+      this.genericBeanDisposerMethods = new HashMap<AnnotatedMethod<?>, AnnotatedMethod<?>>();
       this.genericBeanProducerFields = new HashMap<Class<? extends Annotation>, Map<AnnotatedField<?>, Bean<?>>>();
       this.genericInjectionTargets = new HashMap<Class<? extends Annotation>, Map<AnnotatedType<?>, InjectionTarget<?>>>();
       this.genericProducers = new HashMap<Class<? extends Annotation>, Map<Annotation, AnnotatedMember<?>>>();
@@ -187,6 +191,12 @@ class GenericBeanExtension implements Extension
             beans.put(method, event.getBean());
             genericBeanProducerMethods.put(genericConfigurationType, beans);
          }
+         // Only register a disposer method if it exists
+         // Blocked by WELD-572
+//         if (event.getAnnotatedDisposedParameter() instanceof AnnotatedMethod<?>)
+//         {
+//            disposerMethods.put(method, (AnnotatedMethod<?>) event.getAnnotatedDisposedParameter());
+//         }
       }
    }
 
@@ -405,6 +415,7 @@ class GenericBeanExtension implements Extension
       Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), beanManager);
 
       // TODO make this passivation capable?
+      // TODO Make this wrap the existing bean, replacing the type and qualifiers only
       BeanBuilder<T> builder = new BeanBuilder<T>(beanManager).setJavaClass(genericBeanType).setQualifiers(qualifiers).setBeanLifecycle(new BeanLifecycle<T>()
       {
 
@@ -440,7 +451,7 @@ class GenericBeanExtension implements Extension
    private <X, T> Bean<T> createGenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, BeanManager beanManager)
    {
       Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean, beanManager);
-      return new GenericProducerMethod<T, X>(originalBean, genericConfiguration, method, qualifiers, syntheticProvider, beanManager);
+      return new GenericProducerMethod<T, X>(originalBean, genericConfiguration, method, (AnnotatedMethod<X>) genericBeanDisposerMethods.get(method), qualifiers, syntheticProvider, beanManager);
    }
 
    private <X, T> Bean<T> createGenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, BeanManager beanManager)
