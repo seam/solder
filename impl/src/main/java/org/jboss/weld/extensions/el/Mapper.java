@@ -16,32 +16,25 @@
  */
 package org.jboss.weld.extensions.el;
 
-import javax.el.ValueExpression;
-import javax.el.VariableMapper;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
+import javax.inject.Qualifier;
 
 /**
- * Default variable mapper bean. Should be overriden by the faces module or any
- * other module that provides a 'real' VariableMapper
+ * Qualifier used for FunctionMapper and VariableMapper beans, to stop
+ * implementation that happen to be present on the classpath from breaking el
+ * evaluation
  * 
  * @author Stuart Douglas
  * 
  */
-@DefaultBean(type = VariableMapper.class)
-@Mapper
-public class VariableMapperImpl extends VariableMapper
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
+public @interface Mapper
 {
-   @Override
-   public ValueExpression resolveVariable(String variable)
-   {
-      return null;
-   }
-
-   @Override
-   public ValueExpression setVariable(String variable, ValueExpression expression)
-   {
-      return null;
-   }
 
 }

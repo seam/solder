@@ -26,15 +26,26 @@ import javax.el.ListELResolver;
 import javax.el.MapELResolver;
 import javax.el.ResourceBundleELResolver;
 import javax.el.VariableMapper;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Inject;
 
 public class ELContextProducer
 {
+
+   @Inject
+   @Mapper
+   Instance<FunctionMapper> functionMapper;
+
+   @Inject
+   @Mapper
+   Instance<VariableMapper> variableMapper;
+
    @Produces
    public ELContext createELContext(BeanManager beanManager)
    {
-      return createELContext(createELResolver(beanManager), new FunctionMapperImpl(), new VariableMapperImpl());
+      return createELContext(createELResolver(beanManager), functionMapper.get(), variableMapper.get());
    }
 
    private ELResolver createELResolver(BeanManager beanManager)

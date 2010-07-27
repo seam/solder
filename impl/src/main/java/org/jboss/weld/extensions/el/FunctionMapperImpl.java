@@ -20,6 +20,8 @@ import java.lang.reflect.Method;
 
 import javax.el.FunctionMapper;
 
+import org.jboss.weld.extensions.defaultbean.DefaultBean;
+
 /**
  * Default function mapper bean. Should be overriden by the faces module or any
  * other module that provides a 'real' FunctionMapper
@@ -27,6 +29,8 @@ import javax.el.FunctionMapper;
  * @author Stuart Douglas
  * 
  */
+@DefaultBean(type = FunctionMapper.class)
+@Mapper
 public class FunctionMapperImpl extends FunctionMapper
 {
 

@@ -70,6 +70,7 @@
       <servlet.api.version>2.5</servlet.api.version>
       <arquillian.version>1.0.0.Alpha2</arquillian.version>
       <junit.version>4.8.1</junit.version>
+      <elimpl.version>1.0</elimpl.version>
    </properties>
 
    <!-- Dependency management, including extra repositories if needed -->
@@ -139,6 +140,11 @@
            <version>${junit.version}</version>
          </dependency>
 	     
+	     <dependency>
+	         <groupId>el-impl</groupId>
+	         <artifactId>el-impl</artifactId>
+	         <version>${elimpl.version}</version>
+        </dependency>
       </dependencies>
    </dependencyManagement>
  

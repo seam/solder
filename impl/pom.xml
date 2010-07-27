@@ -9,7 +9,7 @@
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-extensions-parent</artifactId>
       <version>1.0.0-SNAPSHOT</version>
-      <relativePath>../po.xml</relativePath>
+      <relativePath>../pom.xml</relativePath>
    </parent>
 
    <name>Weld Extensions</name>
@@ -118,7 +118,6 @@
       <dependency>
          <groupId>el-impl</groupId>
          <artifactId>el-impl</artifactId>
-         <version>1.0</version>
          <scope>test</scope>
       </dependency>
             
