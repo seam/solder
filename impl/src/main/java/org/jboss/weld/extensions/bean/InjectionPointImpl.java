@@ -62,7 +62,7 @@ public class InjectionPointImpl implements InjectionPoint
    {
       this.annotated = field;
       this.member = field.getJavaMember();
-      this.qualifiers = Beans.getQualifiers(field.getAnnotations(), beanManager);
+      this.qualifiers = Beans.getQualifiers(beanManager, field.getAnnotations());
       this.type = field.getJavaMember().getGenericType();
       this._transient = trans;
       this.delegate = delegate;
@@ -84,7 +84,7 @@ public class InjectionPointImpl implements InjectionPoint
    {
       this.annotated = param;
       this.member = param.getDeclaringCallable().getJavaMember();
-      this.qualifiers = Beans.getQualifiers(param.getAnnotations(), beanManager);
+      this.qualifiers = Beans.getQualifiers(beanManager, param.getAnnotations());
       this._transient = trans;
       this.delegate = delegate;
       this.bean = bean;

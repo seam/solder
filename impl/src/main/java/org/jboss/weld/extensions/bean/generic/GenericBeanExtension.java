@@ -16,12 +16,13 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
+import static org.jboss.weld.extensions.bean.Beans.getQualifiers;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +31,6 @@ import java.util.Map.Entry;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
 import javax.enterprise.inject.UnsatisfiedResolutionException;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
@@ -43,9 +43,11 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.InjectionTarget;
+import javax.enterprise.inject.spi.ObserverMethod;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.enterprise.inject.spi.ProcessManagedBean;
+import javax.enterprise.inject.spi.ProcessObserverMethod;
 import javax.enterprise.inject.spi.ProcessProducer;
 import javax.enterprise.inject.spi.ProcessProducerField;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
@@ -75,10 +77,14 @@ class GenericBeanExtension implements Extension
    // Used to track the generic bean found
    private final Map<Class<? extends Annotation>, Map<AnnotatedType<?>, Bean<?>>> genericBeans;
 
+   // A map of generic configuration types to observer methods on generic beans
+   // Used to track observer methods found on generic bean
+   private final Map<Class<? extends Annotation>, Map<AnnotatedMethod<?>, ObserverMethod<?>>> genericBeanObserverMethods;
+
    // A map of generic configuration types to producer methods on generic beans
-   // Used to track the generic bean found
+   // Used to track producers found on generic bean
    private final Map<Class<? extends Annotation>, Map<AnnotatedMethod<?>, Bean<?>>> genericBeanProducerMethods;
-   
+
    // A map of producer methods on generic beans to their disposer method (if existent)
    private final Map<AnnotatedMethod<?>, AnnotatedMethod<?>> genericBeanDisposerMethods;
 
@@ -106,6 +112,7 @@ class GenericBeanExtension implements Extension
    {
       this.genericBeans = new HashMap<Class<? extends Annotation>, Map<AnnotatedType<?>, Bean<?>>>();
       this.genericBeanProducerMethods = new HashMap<Class<? extends Annotation>, Map<AnnotatedMethod<?>, Bean<?>>>();
+      this.genericBeanObserverMethods = new HashMap<Class<? extends Annotation>, Map<AnnotatedMethod<?>, ObserverMethod<?>>>();
       this.genericBeanDisposerMethods = new HashMap<AnnotatedMethod<?>, AnnotatedMethod<?>>();
       this.genericBeanProducerFields = new HashMap<Class<? extends Annotation>, Map<AnnotatedField<?>, Bean<?>>>();
       this.genericInjectionTargets = new HashMap<Class<? extends Annotation>, Map<AnnotatedType<?>, InjectionTarget<?>>>();
@@ -176,10 +183,10 @@ class GenericBeanExtension implements Extension
 
    <T, X> void registerGenericBeanProducerMethod(@Observes ProcessProducerMethod<T, X> event)
    {
-      AnnotatedMethod<T> method = event.getAnnotatedProducerMethod();
       AnnotatedType<T> declaringType = event.getAnnotatedProducerMethod().getDeclaringType();
       if (declaringType.isAnnotationPresent(Generic.class))
       {
+         AnnotatedMethod<T> method = event.getAnnotatedProducerMethod();
          Class<? extends Annotation> genericConfigurationType = declaringType.getAnnotation(Generic.class).value();
          if (genericBeanProducerMethods.containsKey(genericConfigurationType))
          {
@@ -193,10 +200,30 @@ class GenericBeanExtension implements Extension
          }
          // Only register a disposer method if it exists
          // Blocked by WELD-572
-//         if (event.getAnnotatedDisposedParameter() instanceof AnnotatedMethod<?>)
-//         {
-//            disposerMethods.put(method, (AnnotatedMethod<?>) event.getAnnotatedDisposedParameter());
-//         }
+         //         if (event.getAnnotatedDisposedParameter() instanceof AnnotatedMethod<?>)
+         //         {
+         //            disposerMethods.put(method, (AnnotatedMethod<?>) event.getAnnotatedDisposedParameter());
+         //         }
+      }
+   }
+
+   <T, X> void registerGenericBeanObserverMethod(@Observes ProcessObserverMethod<T, X> event)
+   {
+      AnnotatedType<X> declaringType = event.getAnnotatedMethod().getDeclaringType();
+      if (declaringType.isAnnotationPresent(Generic.class))
+      {
+         AnnotatedMethod<X> method = event.getAnnotatedMethod();
+         Class<? extends Annotation> genericConfigurationType = declaringType.getAnnotation(Generic.class).value();
+         if (genericBeanObserverMethods.containsKey(genericConfigurationType))
+         {
+            genericBeanObserverMethods.get(genericConfigurationType).put(method, event.getObserverMethod());
+         }
+         else
+         {
+            Map<AnnotatedMethod<?>, ObserverMethod<?>> beans = new HashMap<AnnotatedMethod<?>, ObserverMethod<?>>();
+            beans.put(method, event.getObserverMethod());
+            genericBeanObserverMethods.put(genericConfigurationType, beans);
+         }
       }
    }
 
@@ -289,6 +316,14 @@ class GenericBeanExtension implements Extension
                {
                   event.addBean(createGenericProducerField(field.getValue(), genericConfiguration, field.getKey(), beanManager));
                }
+            }
+            if (genericBeanObserverMethods.containsKey(genericConfigurationType.getKey()))
+            {
+               for (Entry<AnnotatedMethod<?>, ObserverMethod<?>> method : genericBeanObserverMethods.get(genericConfigurationType.getKey()).entrySet())
+               {
+                  event.addObserverMethod(createGenericObserverMethod(method.getValue(), genericConfiguration, method.getKey(), beanManager));
+               }
+               
             }
             // For each generic bean that uses this genericConfigurationType, register a generic bean for this generic configuration 
             for (Entry<AnnotatedType<?>, Bean<?>> type : genericBeans.get(genericConfigurationType.getKey()).entrySet())
@@ -412,7 +447,7 @@ class GenericBeanExtension implements Extension
    private <T> Bean<T> createGenericProducerBean(final BeanManager beanManager, final Class<? extends T> genericBeanType, final Annotation genericConfiguration)
    {
       final Synthetic syntheticQualifier = syntheticProvider.get(genericConfiguration);
-      Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), beanManager);
+      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations());
 
       // TODO make this passivation capable?
       // TODO Make this wrap the existing bean, replacing the type and qualifiers only
@@ -450,42 +485,20 @@ class GenericBeanExtension implements Extension
 
    private <X, T> Bean<T> createGenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, BeanManager beanManager)
    {
-      Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean, beanManager);
+      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean.getQualifiers());
       return new GenericProducerMethod<T, X>(originalBean, genericConfiguration, method, (AnnotatedMethod<X>) genericBeanDisposerMethods.get(method), qualifiers, syntheticProvider, beanManager);
+   }
+
+   private <X, T> ObserverMethod<T> createGenericObserverMethod(ObserverMethod<T> originalObserverMethod, Annotation genericConfiguration, AnnotatedMethod<X> method, BeanManager beanManager)
+   {
+      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalObserverMethod.getObservedQualifiers());
+      return new GenericObserverMethod<T, X>(originalObserverMethod, method, genericConfiguration, qualifiers, syntheticProvider, beanManager);
    }
 
    private <X, T> Bean<T> createGenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, BeanManager beanManager)
    {
-      Set<Annotation> qualifiers = getQualifiers(genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean, beanManager);
+      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean.getQualifiers());
       return new GenericProducerField<T, X>(originalBean, genericConfiguration, field, qualifiers, syntheticProvider, beanManager);
-   }
-
-   private static Set<Annotation> getQualifiers(Set<Annotation> annotations, BeanManager beanManager)
-   {
-      return getQualifiers(annotations, null, beanManager);
-   }
-
-   private static Set<Annotation> getQualifiers(Set<Annotation> annotations, Bean<?> originalBean, BeanManager beanManager)
-   {
-      Set<Annotation> qualifiers = new HashSet<Annotation>();
-      for (Annotation annotation : annotations)
-      {
-         if (beanManager.isQualifier(annotation.annotationType()))
-         {
-            qualifiers.add(annotation);
-         }
-      }
-      if (originalBean != null)
-      {
-         for (Annotation annotation : originalBean.getQualifiers())
-         {
-            if (!annotation.annotationType().equals(Default.class))
-            {
-               qualifiers.add(annotation);
-            }
-         }
-      }
-      return qualifiers;
    }
 
    void cleanup(@Observes AfterDeploymentValidation event)

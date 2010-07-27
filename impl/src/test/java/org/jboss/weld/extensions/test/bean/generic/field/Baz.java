@@ -16,6 +16,8 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
+import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
@@ -62,5 +64,14 @@ public class Baz
    public String getCorge(Wobble wobble)
    {
       return wobble.getName() + message.value();
+   }
+   
+   public void observe(@Observes @Any Plugh event)
+   {
+      // Workaround WELD-573
+      if (message != null)
+      {
+         event.setMessage(message);
+      }
    }
 }

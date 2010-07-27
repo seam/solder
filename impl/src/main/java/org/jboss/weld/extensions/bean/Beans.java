@@ -8,35 +8,41 @@ import javax.enterprise.inject.spi.BeanManager;
 
 public class Beans
 {
-   
-   private Beans() {}
 
-   public static Set<Annotation> getQualifiers(Iterable<Annotation> annotations, BeanManager beanManager)
+   private Beans()
+   {
+   }
+
+   public static Set<Annotation> getQualifiers(BeanManager beanManager, Iterable<Annotation>... annotations)
    {
       Set<Annotation> qualifiers = new HashSet<Annotation>();
-      for (Annotation annotation : annotations)
+      for (Iterable<Annotation> annotationSet : annotations)
       {
-         if (beanManager.isQualifier(annotation.annotationType()))
+         for (Annotation annotation : annotationSet)
          {
-            qualifiers.add(annotation);
+            if (beanManager.isQualifier(annotation.annotationType()))
+            {
+               qualifiers.add(annotation);
+            }
          }
       }
       return qualifiers;
    }
-   
-   public static Set<Annotation> getQualifiers(Annotation[] annotations, BeanManager beanManager)
+
+   public static Set<Annotation> getQualifiers(BeanManager beanManager, Annotation[]... annotations)
    {
       Set<Annotation> qualifiers = new HashSet<Annotation>();
-      for (Annotation annotation : annotations)
+      for (Annotation[] annotationArray : annotations)
       {
-         if (beanManager.isQualifier(annotation.annotationType()))
+         for (Annotation annotation : annotationArray)
          {
-            qualifiers.add(annotation);
+            if (beanManager.isQualifier(annotation.annotationType()))
+            {
+               qualifiers.add(annotation);
+            }
          }
       }
       return qualifiers;
    }
-   
-   
 
 }
