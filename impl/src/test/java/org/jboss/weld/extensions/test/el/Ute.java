@@ -16,6 +16,9 @@
  */
 package org.jboss.weld.extensions.test.el;
 
+import javax.inject.Named;
+
+@Named
 public class Ute
 {
    public String speed = "fast";

@@ -114,6 +114,13 @@
          <artifactId>el-api</artifactId>
          <optional>true</optional>
       </dependency>
+      
+      <dependency>
+         <groupId>juel</groupId>
+         <artifactId>juel-impl</artifactId>
+         <version>2.1.0</version>
+         <scope>test</scope>
+      </dependency>
             
    </dependencies>
 
