@@ -42,6 +42,8 @@ public class Reflections
 {
    
    public static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
+   
+   public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
    private Reflections()
    {
