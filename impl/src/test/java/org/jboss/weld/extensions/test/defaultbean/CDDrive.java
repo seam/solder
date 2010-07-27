@@ -14,27 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.defaultbean;
+package org.jboss.weld.extensions.test.defaultbean;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.jboss.weld.extensions.defaultbean.DefaultBean;
 
-/**
- * Annotation that signifies that a bean should only be registered if no other
- * instance with the same type and qualifiers is registered. The bean only has
- * the type specified in the type() attribute
- * 
- * IMPORTANT: Producers, Disposes and Observes on the bean class will not be
- * registered, and will not work
- * 
- * @author Stuart Douglas
- * 
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface DefaultBean
+@DefaultBean(type = CDDrive.class)
+public class CDDrive implements OpticalDrive
 {
-   public Class<?> type();
+
 }
