@@ -21,11 +21,12 @@ import javax.inject.Named;
 @Named
 public class Ute
 {
+   public static String GO_STRING = "Vroom Vroom";
    public String speed = "fast";
 
    public String go()
    {
-      return "Vroom Vroom";
+      return GO_STRING;
    }
 
    public String getSpeed()

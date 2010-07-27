@@ -116,9 +116,9 @@
       </dependency>
       
       <dependency>
-         <groupId>juel</groupId>
-         <artifactId>juel-impl</artifactId>
-         <version>2.1.0</version>
+         <groupId>el-impl</groupId>
+         <artifactId>el-impl</artifactId>
+         <version>1.0</version>
          <scope>test</scope>
       </dependency>
             
