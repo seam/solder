@@ -17,6 +17,7 @@
 package org.jboss.weld.extensions.defaultbean;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -81,7 +82,7 @@ public class DefaultBeanExtension implements Extension
          event.veto();
          BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
          builder.defineBeanFromAnnotatedType(event.getAnnotatedType());
-         builder.setTypes((Set) Collections.singleton(annotation.type()));
+         builder.setTypes(Collections.<Type>singleton(annotation.type()));
          addDefaultBean(annotation.type(), builder.create());
       }
    }

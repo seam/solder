@@ -505,6 +505,7 @@ class GenericBeanExtension implements Extension
    private <T> Bean<T> createGenericProducerBean(final BeanManager beanManager, AnnotatedMember<?> member, Type genericBeanType, final Annotation genericConfiguration)
    {
       final Synthetic syntheticQualifier = syntheticProvider.get(genericConfiguration);
+      @SuppressWarnings("unchecked")
       Set<Annotation> qualifiers = getQualifiers(beanManager, member.getAnnotations());
       return new GenericProducerBean<T>(qualifiers, syntheticQualifier, genericConfiguration, genericBeanType, beanManager, (Bean<T>) genericProducerBeans.get(member));
    }
@@ -514,20 +515,24 @@ class GenericBeanExtension implements Extension
       return new GenericManagedBean<X>(holder.getBean(), genericConfiguration, (InjectionTarget<X>) genericInjectionTargets.get(holder.getType()), holder.getType(), syntheticProvider, productSyntheticProvider, beanManager);
    }
 
+   
    private <X, T> Bean<T> createGenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, BeanManager beanManager)
    {
+      @SuppressWarnings("unchecked")
       Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration).getAnnotations(), originalBean.getQualifiers());
       return new GenericProducerMethod<T, X>(originalBean, genericConfiguration, method, (AnnotatedMethod<X>) genericBeanDisposerMethods.get(method), qualifiers, syntheticProvider, beanManager);
    }
 
    private <X, T> ObserverMethod<T> createGenericObserverMethod(ObserverMethod<T> originalObserverMethod, Annotation genericConfiguration, AnnotatedMethod<X> method, BeanManager beanManager)
    {
+      @SuppressWarnings("unchecked")
       Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration).getAnnotations(), originalObserverMethod.getObservedQualifiers());
       return new GenericObserverMethod<T, X>(originalObserverMethod, method, genericConfiguration, qualifiers, syntheticProvider, beanManager);
    }
 
    private <X, T> Bean<T> createGenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, BeanManager beanManager)
    {
+      @SuppressWarnings("unchecked")
       Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration).getAnnotations(), originalBean.getQualifiers());
       return new GenericProducerField<T, X>(originalBean, genericConfiguration, field, qualifiers, syntheticProvider, beanManager);
    }
