@@ -27,9 +27,12 @@ import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
+import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
 
+import org.jboss.weld.extensions.bean.BeanBuilder;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +71,19 @@ public class DefaultBeanExtension implements Extension
    public static void addDefaultBean(Class<?> type, Bean<?> bean)
    {
       beans.add(new DefaultBeanDefinition(type, Collections.singleton(DefaultLiteral.INSTANCE), bean));
+   }
+
+   public <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
+   {
+      if (event.getAnnotatedType().isAnnotationPresent(DefaultBean.class))
+      {
+         DefaultBean annotation = event.getAnnotatedType().getAnnotation(DefaultBean.class);
+         event.veto();
+         BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
+         builder.defineBeanFromAnnotatedType(event.getAnnotatedType());
+         builder.setTypes((Set) Collections.singleton(annotation.type()));
+         addDefaultBean(annotation.type(), builder.create());
+      }
    }
 
    /**
