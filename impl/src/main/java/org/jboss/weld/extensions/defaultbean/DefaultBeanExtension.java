@@ -61,14 +61,14 @@ public class DefaultBeanExtension implements Extension
 
    Logger log = LoggerFactory.getLogger(DefaultBeanExtension.class);
 
-   private static final Set<DefaultBeanDefinition> beans = new HashSet<DefaultBeanDefinition>();
+   private final Set<DefaultBeanDefinition> beans = new HashSet<DefaultBeanDefinition>();
 
    private boolean beanDiscoveryOver = false;
 
    /**
     * Adds a default bean with the {@link Default} qualifier
     */
-   public static void addDefaultBean(Class<?> type, Bean<?> bean)
+   public void addDefaultBean(Class<?> type, Bean<?> bean)
    {
       beans.add(new DefaultBeanDefinition(type, Collections.singleton(DefaultLiteral.INSTANCE), bean));
    }
@@ -89,7 +89,7 @@ public class DefaultBeanExtension implements Extension
    /**
     * Adds a default bean
     */
-   public static void addDefaultBean(Class<?> type, Set<Annotation> qualifiers, Bean<?> bean)
+   public void addDefaultBean(Class<?> type, Set<Annotation> qualifiers, Bean<?> bean)
    {
       beans.add(new DefaultBeanDefinition(type, Collections.singleton(DefaultLiteral.INSTANCE), bean));
    }
@@ -120,6 +120,7 @@ public class DefaultBeanExtension implements Extension
          log.info("Installing default bean " + d.getDefaultBean());
          event.addBean(d.getDefaultBean());
       }
+      beans.clear();
    }
 
 }
