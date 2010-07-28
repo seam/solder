@@ -17,7 +17,7 @@ import org.jboss.weld.extensions.bean.InjectableMethod;
 import org.jboss.weld.extensions.bean.ParameterValueRedefiner;
 import org.jboss.weld.extensions.util.Synthetic;
 
-public class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
+class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
 {
 
    private final ObserverMethod<T> originalObserverMethod;
@@ -27,7 +27,7 @@ public class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
    private final Annotation declaringBeanQualifier;
    private final Set<Annotation> qualifiers;
 
-   public GenericObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Annotation declaringBeanQualifier, Set<Annotation> qualifiers, Synthetic.Provider syntheticProvider, BeanManager beanManager)
+   GenericObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Annotation declaringBeanQualifier, Set<Annotation> qualifiers, Synthetic.Provider syntheticProvider, BeanManager beanManager)
    {
       this.originalObserverMethod = originalObserverMethod;
       this.observerMethod = new InjectableMethod<X>(observerMethod, null, beanManager);

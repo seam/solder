@@ -13,7 +13,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import org.jboss.weld.extensions.bean.Beans;
 
 // TODO make this passivation capable?
-public class GenericProducerBean<T> extends AbstactGenericBean<T>
+class GenericProducerBean<T> extends AbstactGenericBean<T>
 {
 
    private final Set<Type> types;
@@ -21,7 +21,7 @@ public class GenericProducerBean<T> extends AbstactGenericBean<T>
    private final Annotation genericBeanQualifier;
    private final Annotation genericConfiguration;
 
-   public GenericProducerBean(Set<Annotation> qualifiers, Annotation genericBeanQualifier, Annotation genericConfiguration, Type genericBeanType, BeanManager beanManager, Bean<T> originalBean)
+   GenericProducerBean(Set<Annotation> qualifiers, Annotation genericBeanQualifier, Annotation genericConfiguration, Type genericBeanType, BeanManager beanManager, Bean<T> originalBean)
    {
       super(originalBean, qualifiers, beanManager);
       this.genericBeanType = genericBeanType;

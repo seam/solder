@@ -8,14 +8,20 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.bean.ForwardingBean;
 
-public abstract class AbstactGenericBean<T> extends ForwardingBean<T>
+/**
+ * A helper class for implementing generic bean functionality
+ * 
+ * @author Pete Muir
+ *
+ */
+abstract class AbstactGenericBean<T> extends ForwardingBean<T>
 {
 
    private final Bean<T> delegate;
    private final Set<Annotation> qualifiers;
    private final BeanManager beanManager;
 
-   public AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, BeanManager beanManager)
+   protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, BeanManager beanManager)
    {
       this.delegate = delegate;
       this.beanManager = beanManager;

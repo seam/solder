@@ -57,5 +57,7 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
       injectionTarget.postConstruct(instance);
       return instance;
    }
+   
+   // No need to implement destroy(), default will do
 
 }

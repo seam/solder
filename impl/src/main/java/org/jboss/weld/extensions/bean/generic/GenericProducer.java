@@ -13,7 +13,13 @@ import javax.enterprise.inject.spi.Producer;
 import org.jboss.weld.extensions.bean.AbstractImmutableProducer;
 import org.jboss.weld.extensions.util.Synthetic;
 
-public class GenericBeanProducer<T> extends AbstractImmutableProducer<T>
+/**
+ * Helper class which implements the {@link Producer} contract for creating generic producers
+ * 
+ * @author Pete Muir
+ *
+ */
+public class GenericProducer<T> extends AbstractImmutableProducer<T>
 {
    
    private final BeanManager beanManager;
@@ -22,7 +28,7 @@ public class GenericBeanProducer<T> extends AbstractImmutableProducer<T>
    private final Type type;
    private final AnnotatedMember<?> originalMember;
    
-   public GenericBeanProducer(Producer<T> originalProducer, Type genericBeanType, Annotation genericConfiguration, AnnotatedMember<?> originalMember, Synthetic.Provider syntheticProvider, BeanManager beanManager)
+   GenericProducer(Producer<T> originalProducer, Type genericBeanType, Annotation genericConfiguration, AnnotatedMember<?> originalMember, Synthetic.Provider syntheticProvider, BeanManager beanManager)
    {
       super(originalProducer.getInjectionPoints());
       this.beanManager = beanManager;

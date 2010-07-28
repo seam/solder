@@ -3,7 +3,6 @@ package org.jboss.weld.extensions.bean.generic;
 import static org.jboss.weld.extensions.util.Reflections.getFieldValue;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -11,41 +10,32 @@ import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.weld.extensions.bean.Beans;
+import org.jboss.weld.extensions.util.Reflections;
 import org.jboss.weld.extensions.util.Synthetic;
 
 // TODO Make this passivation capable
-class GenericProducerField<T, X> extends AbstactGenericBean<T>
+class GenericProducerField<T, X> extends AbstractGenericProducerBean<T>
 {
 
    private final AnnotatedField<X> field;
-   private final Type declaringBeanType;
-   private final Annotation declaringBeanQualifier;
 
    GenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, Set<Annotation> qualifiers, Synthetic.Provider syntheticProvider, BeanManager beanManager)
    {
-      super(originalBean, qualifiers, beanManager); 
+      super(originalBean, genericConfiguration, qualifiers, syntheticProvider, beanManager);
       this.field = field;
-      this.declaringBeanType = originalBean.getBeanClass();
-      this.declaringBeanQualifier = syntheticProvider.get(genericConfiguration);
    }
 
    @Override
-   public T create(CreationalContext<T> creationalContext)
+   protected T getValue(Object receiver, CreationalContext<T> creationalContext)
    {
-      try
-      {
-         Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(declaringBeanType, declaringBeanQualifier));
-         Object receiver = getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
-         T instance = (T) getFieldValue(field.getJavaMember(), receiver, Object.class);
-         Beans.checkReturnValue(instance, this, null, getBeanManager());
-         return instance;
-      }
-      finally
-      {
-         // Generic managed beans must be dependent
-         creationalContext.release();
-      }
+      return getFieldValue(field.getJavaMember(), receiver, Reflections.<T>getRawType(field.getBaseType()));
+   }
+
+   @Override
+   public void destroy(T instance, CreationalContext<T> creationalContext)
+   {
+      // Generic managed beans must be dependent
+      creationalContext.release();
    }
 
 }
