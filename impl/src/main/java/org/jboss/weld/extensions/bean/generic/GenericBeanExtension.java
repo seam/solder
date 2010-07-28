@@ -535,12 +535,18 @@ class GenericBeanExtension implements Extension
    void cleanup(@Observes AfterDeploymentValidation event)
    {
       // Defensively clear maps to help with GC
-      this.genericProducers.clear();
-      this.genericBeans.clear();
-      this.syntheticProvider.clear();
+      this.genericBeanDisposerMethods.clear();
+      this.genericBeanObserverMethods.clear();
       this.genericBeanProducerFields.clear();
       this.genericBeanProducerMethods.clear();
+      this.genericBeans.clear();
+      this.genericProducers.clear();
+      this.originalProducers.clear();
+      
+      this.syntheticProvider.clear();
+      this.productSyntheticProvider.clear();
       this.genericInjectionTargets.clear();
+      
    }
 
 }
