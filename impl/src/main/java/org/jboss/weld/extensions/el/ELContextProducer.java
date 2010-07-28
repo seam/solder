@@ -16,15 +16,9 @@
  */
 package org.jboss.weld.extensions.el;
 
-import javax.el.ArrayELResolver;
-import javax.el.BeanELResolver;
-import javax.el.CompositeELResolver;
 import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.el.FunctionMapper;
-import javax.el.ListELResolver;
-import javax.el.MapELResolver;
-import javax.el.ResourceBundleELResolver;
 import javax.el.VariableMapper;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
@@ -42,22 +36,14 @@ public class ELContextProducer
    @Mapper
    Instance<VariableMapper> variableMapper;
 
+   @Inject
+   @Resolver
+   ELResolver resolver;
+
    @Produces
    public ELContext createELContext(BeanManager beanManager)
    {
-      return createELContext(createELResolver(beanManager), functionMapper.get(), variableMapper.get());
-   }
-
-   private ELResolver createELResolver(BeanManager beanManager)
-   {
-      CompositeELResolver resolver = new CompositeELResolver();
-      resolver.add(beanManager.getELResolver());
-      resolver.add(new MapELResolver());
-      resolver.add(new ListELResolver());
-      resolver.add(new ArrayELResolver());
-      resolver.add(new ResourceBundleELResolver());
-      resolver.add(new BeanELResolver());
-      return resolver;
+      return createELContext(resolver, functionMapper.get(), variableMapper.get());
    }
 
    private ELContext createELContext(final ELResolver resolver, final FunctionMapper functionMapper, final VariableMapper variableMapper)

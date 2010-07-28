@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.defaultbean;
+package org.jboss.weld.extensions.el;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -22,28 +22,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.inject.Qualifier;
+
 /**
- * Annotation that signifies that a bean should only be registered if no other
- * instance with the same type and qualifiers is registered. The bean only has
- * the type specified in the type() attribute
- * 
- * IMPORTANT: Producers, Disposes and Observes on the bean class will not be
- * registered, and will not work
+ * Qualifier used to specify the ELResolver to use. If this is not specified a
+ * default ELResolver will be used instead
  * 
  * @author Stuart Douglas
  * 
  */
+@Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target( { ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
 @Documented
-public @interface DefaultBean
+public @interface Resolver
 {
-   /**
-    * The type of the bean. If another bean is found with this type and the same
-    * qualifiers this bean will not be installed.
-    * 
-    * This bean will only be installed with the type specified here, not
-    * 
-    */
-   public Class<?> type();
+
 }
