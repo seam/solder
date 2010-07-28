@@ -16,6 +16,7 @@
  */
 package org.jboss.weld.extensions.util;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -424,6 +425,17 @@ public class Reflections
          }
       }
       return null;
+   }
+   
+   /**
+    * Check if a class is serializable.
+    * 
+    * @param clazz The class to check
+    * @return true if the class implements serializable or is a primitive
+    */
+   public static boolean isSerializable(Class<?> clazz)
+   {
+      return clazz.isPrimitive() || Serializable.class.isAssignableFrom(clazz);
    }
 
 }

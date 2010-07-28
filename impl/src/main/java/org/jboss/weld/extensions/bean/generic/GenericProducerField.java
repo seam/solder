@@ -11,6 +11,7 @@ import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
+import org.jboss.weld.extensions.bean.Beans;
 import org.jboss.weld.extensions.util.Synthetic;
 
 // TODO Make this passivation capable
@@ -36,7 +37,9 @@ class GenericProducerField<T, X> extends AbstactGenericBean<T>
       {
          Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(declaringBeanType, declaringBeanQualifier));
          Object receiver = getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
-         return (T) getFieldValue(field.getJavaMember(), receiver, Object.class);
+         T instance = (T) getFieldValue(field.getJavaMember(), receiver, Object.class);
+         Beans.checkReturnValue(instance, this, null, getBeanManager());
+         return instance;
       }
       finally
       {

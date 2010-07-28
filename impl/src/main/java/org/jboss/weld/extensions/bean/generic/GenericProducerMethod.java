@@ -9,6 +9,7 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
+import org.jboss.weld.extensions.bean.Beans;
 import org.jboss.weld.extensions.bean.InjectableMethod;
 import org.jboss.weld.extensions.util.Synthetic;
 
@@ -42,7 +43,9 @@ class GenericProducerMethod<T, X> extends AbstactGenericBean<T>
    {
       try
       {
-         return producerMethod.invoke(getReceiver(creationalContext), creationalContext);
+         T instance = producerMethod.invoke(getReceiver(creationalContext), creationalContext);
+         Beans.checkReturnValue(instance, this, null, getBeanManager());
+         return instance;
       }
       finally
       {

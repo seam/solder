@@ -34,7 +34,7 @@ public class GenericBeanProducer<T> extends AbstractImmutableProducer<T>
 
    public void dispose(T instance)
    {
-      // TODO implement
+      // TODO Support disposer methods for generic producers
    }
 
    public T produce(CreationalContext<T> ctx)
@@ -49,6 +49,8 @@ public class GenericBeanProducer<T> extends AbstractImmutableProducer<T>
       
       @SuppressWarnings("unchecked")
       T value = (T) object;
+
+      // No need to check the producer return, the CDI impl will do this for us
       
       return value;
    }

@@ -10,6 +10,8 @@ import javax.enterprise.inject.UnsatisfiedResolutionException;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
+import org.jboss.weld.extensions.bean.Beans;
+
 // TODO make this passivation capable?
 public class GenericProducerBean<T> extends AbstactGenericBean<T>
 {
@@ -39,6 +41,7 @@ public class GenericProducerBean<T> extends AbstactGenericBean<T>
    @Override
    public void destroy(T instance, CreationalContext<T> creationalContext)
    {
+      // TODO Implement support for disposer methods for generic producers
    }
 
    @Override
@@ -54,6 +57,9 @@ public class GenericProducerBean<T> extends AbstactGenericBean<T>
 
       @SuppressWarnings("unchecked")
       T value = (T) object;
+      
+      // Check the return value, as this is actually a producer method or field
+      Beans.checkReturnValue(value, this, null, getBeanManager());
 
       return value;
    }
