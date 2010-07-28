@@ -17,15 +17,14 @@
 package org.jboss.weld.extensions.bean.generic;
 
 import static org.jboss.weld.extensions.bean.Beans.getQualifiers;
+import static org.jboss.weld.extensions.util.AnnotationInspector.getAnnotations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -284,8 +283,7 @@ class GenericBeanExtension implements Extension
       AnnotatedType<X> type = event.getAnnotatedBeanClass();
       if (type.isAnnotationPresent(Generic.class))
       {
-         Class<? extends Annotation> genericConfigurationType = type.getAnnotation(Generic.class).value();
-         genericBeans.put(genericConfigurationType, new BeanTypeHolder<X>(event.getAnnotatedBeanClass(), event.getBean()));
+         genericBeans.put(type.getAnnotation(Generic.class).value(), new BeanTypeHolder<X>(event.getAnnotatedBeanClass(), event.getBean()));
       }
    }
 
@@ -295,8 +293,7 @@ class GenericBeanExtension implements Extension
       if (declaringType.isAnnotationPresent(Generic.class))
       {
          AnnotatedMethod<X> method = event.getAnnotatedProducerMethod();
-         Class<? extends Annotation> genericConfigurationType = declaringType.getAnnotation(Generic.class).value();
-         genericBeanProducerMethods.put(genericConfigurationType, new BeanMethodHolder<X, T>(method, event.getBean()));
+         genericBeanProducerMethods.put(declaringType.getAnnotation(Generic.class).value(), new BeanMethodHolder<X, T>(method, event.getBean()));
          // Only register a disposer method if it exists
          // Blocked by WELD-572
          //         if (event.getAnnotatedDisposedParameter() instanceof AnnotatedMethod<?>)
@@ -424,14 +421,7 @@ class GenericBeanExtension implements Extension
    private static Annotation getGenericConfiguration(Annotated annotated)
    {
       // Only process the producer as a generic producer, if it has an annotation meta-annotated with GenericConfiguration
-      List<Annotation> genericConfigurationAnnotiations = new ArrayList<Annotation>();
-      for (Annotation annotation : annotated.getAnnotations())
-      {
-         if (annotation.annotationType().isAnnotationPresent(GenericConfiguration.class))
-         {
-            genericConfigurationAnnotiations.add(annotation);
-         }
-      }
+      Set<Annotation> genericConfigurationAnnotiations = getAnnotations(annotated, GenericConfiguration.class);
 
       if (genericConfigurationAnnotiations.size() > 1)
       {
@@ -439,7 +429,7 @@ class GenericBeanExtension implements Extension
       }
       else if (genericConfigurationAnnotiations.size() == 1)
       {
-         return genericConfigurationAnnotiations.get(0);
+         return genericConfigurationAnnotiations.iterator().next();
       }
       else
       {

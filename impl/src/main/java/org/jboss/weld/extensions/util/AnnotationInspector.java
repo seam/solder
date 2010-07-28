@@ -18,6 +18,8 @@ package org.jboss.weld.extensions.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.enterprise.inject.Stereotype;
 import javax.enterprise.inject.spi.Annotated;
@@ -25,19 +27,23 @@ import javax.enterprise.inject.spi.BeanManager;
 
 public class AnnotationInspector
 {
-   
-   private AnnotationInspector() {}
-   
+
+   private AnnotationInspector()
+   {
+   }
+
    /**
-    * Discover if a AnnotatedElement <b>element</b> has been annotated with <b>annotationType</b>. This
-    * also discovers annotations defined through a @{@link Stereotype} and the CDI SPI.
-    *
+    * Discover if a AnnotatedElement <b>element</b> has been annotated with
+    * <b>annotationType</b>. This also discovers annotations defined through a @
+    * {@link Stereotype} and the CDI SPI.
+    * 
     * @param element The element to inspect.
     * @param annotationType
-    * @param metaAnnotation Whether the annotation may be used as a meta-annotation or not
-    *
-    * @return true if annotation is present either on the method itself. Returns false if the annotation
-    * is not present
+    * @param metaAnnotation Whether the annotation may be used as a
+    *           meta-annotation or not
+    * 
+    * @return true if annotation is present either on the method itself. Returns
+    *         false if the annotation is not present
     * @throws IllegalArgumentException if element or annotationType is null
     */
    public static boolean isAnnotationPresent(AnnotatedElement element, Class<? extends Annotation> annotationType, boolean metaAnnotation, BeanManager beanManager)
@@ -46,14 +52,17 @@ public class AnnotationInspector
    }
 
    /**
-    * Inspect AnnoatedElement <b>element</b> for a specific <b>type</b> of annotation. This
-    * also discovers annotations defined through a @ {@link Stereotype} and the CDI SPI.
-    *
+    * Inspect AnnoatedElement <b>element</b> for a specific <b>type</b> of
+    * annotation. This also discovers annotations defined through a @
+    * {@link Stereotype} and the CDI SPI.
+    * 
     * @param element The element to inspect
     * @param annotationType The annotation type to check for
-    * @param metaAnnotation Whether the annotation may be used as a meta-annotation or not
-    *
-    * @return The annotation instance found on this method or null if no matching annotation was found.
+    * @param metaAnnotation Whether the annotation may be used as a
+    *           meta-annotation or not
+    * 
+    * @return The annotation instance found on this method or null if no
+    *         matching annotation was found.
     * @throws IllegalArgumentException if element or annotationType is null
     */
    public static <A extends Annotation> A getAnnotation(AnnotatedElement element, final Class<A> annotationType, boolean metaAnnotation, BeanManager beanManager)
@@ -101,6 +110,29 @@ public class AnnotationInspector
          }
       }
       return null;
+   }
+
+   /**
+    * Inspects an annotated element for any annotations with the given meta
+    * annotation. This should only be used for user defined meta annotations,
+    * where the annotation must be physically present.
+    * 
+    * @param element The element to inspect
+    * @param annotationType The meta annotation to search for
+    * @return The annotation instances found on this method or an empty set if no
+    *         matching meta-annotation was found.
+    */
+   public static Set<Annotation> getAnnotations(Annotated element, final Class<? extends Annotation> metaAnnotationType)
+   {
+      Set<Annotation> annotations = new HashSet<Annotation>();
+      for (Annotation annotation : element.getAnnotations())
+      {
+         if (annotation.annotationType().isAnnotationPresent(metaAnnotationType))
+         {
+            annotations.add(annotation);
+         }
+      }
+      return annotations;
    }
 
 }
