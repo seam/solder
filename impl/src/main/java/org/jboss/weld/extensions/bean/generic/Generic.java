@@ -33,7 +33,13 @@ import javax.enterprise.context.Dependent;
  * <p>
  * Defines a set of generic beans which can inject the configuration annotation,
  * any other generic bean for the same configuration type, and the product of
- * the generic producer. Generic beans must be {@link Dependent} scoped.
+ * the generic producer.
+ * </p>
+ * 
+ * <p>
+ * Generic beans must be {@link Dependent} scoped. If you wish to give your
+ * generic bean a scope, you should do this on the generic producers which
+ * configure the generic bean.
  * </p>
  * 
  * <p>
@@ -45,8 +51,7 @@ import javax.enterprise.context.Dependent;
  * <ul>
  * <li>Only field injection is supported for generic configuration annotations,
  * and @GenericBean</li>
- * <li>Observer methods are not supported</li>
- * <li>The user of parameterized types for generic beans is not supported</li> 
+ * <li>The user of parameterized types for generic beans is not supported</li>
  * <ul>
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
