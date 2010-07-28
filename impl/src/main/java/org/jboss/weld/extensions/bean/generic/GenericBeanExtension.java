@@ -93,13 +93,13 @@ class GenericBeanExtension implements Extension
 
    // A map of generic configuration types to generic bean injection targets
    // Used to track the generic bean found
-   private final Map<Class<? extends Annotation>, Map<AnnotatedType<?>, InjectionTarget<?>>> genericInjectionTargets;
+   private final Map<AnnotatedType<?>, InjectionTarget<?>> genericInjectionTargets;
 
    // A map of a generic configuration types to generic configurations
    // Used to track the generic configuration producers found
-   private final Map<Class<? extends Annotation>, Map<Annotation, AnnotatedMember<?>>> genericProducers;
-   
-// A map of a generic configuration types to generic configurations
+   private final Map<Annotation, AnnotatedMember<?>> genericProducers;
+
+   // A map of a generic configuration types to generic configurations
    // Used to track the generic configuration producers found
    private final Map<AnnotatedMember<?>, Bean<?>> genericProducerBeans;
 
@@ -118,8 +118,8 @@ class GenericBeanExtension implements Extension
       this.genericBeanObserverMethods = new HashMap<Class<? extends Annotation>, Map<AnnotatedMethod<?>, ObserverMethod<?>>>();
       this.genericBeanDisposerMethods = new HashMap<AnnotatedMethod<?>, AnnotatedMethod<?>>();
       this.genericBeanProducerFields = new HashMap<Class<? extends Annotation>, Map<AnnotatedField<?>, Bean<?>>>();
-      this.genericInjectionTargets = new HashMap<Class<? extends Annotation>, Map<AnnotatedType<?>, InjectionTarget<?>>>();
-      this.genericProducers = new HashMap<Class<? extends Annotation>, Map<Annotation, AnnotatedMember<?>>>();
+      this.genericInjectionTargets = new HashMap<AnnotatedType<?>, InjectionTarget<?>>();
+      this.genericProducers = new HashMap<Annotation, AnnotatedMember<?>>();
       this.originalProducers = new HashMap<Annotation, Producer<?>>();
       this.genericProducerBeans = new HashMap<AnnotatedMember<?>, Bean<?>>();
       this.syntheticProvider = new Synthetic.Provider("org.jboss.weld.extensions.bean.generic");
@@ -237,7 +237,7 @@ class GenericBeanExtension implements Extension
 
    <T, X> void registerGenericBeanProducerField(@Observes ProcessProducerField<T, X> event)
    {
-      
+
       AnnotatedType<T> declaringType = event.getAnnotatedProducerField().getDeclaringType();
       if (declaringType.isAnnotationPresent(Generic.class))
       {
@@ -265,17 +265,7 @@ class GenericBeanExtension implements Extension
       AnnotatedType<X> type = event.getAnnotatedType();
       if (type.isAnnotationPresent(Generic.class))
       {
-         Class<? extends Annotation> genericConfigurationType = type.getAnnotation(Generic.class).value();
-         if (genericInjectionTargets.containsKey(genericConfigurationType))
-         {
-            genericInjectionTargets.get(genericConfigurationType).put(type, event.getInjectionTarget());
-         }
-         else
-         {
-            Map<AnnotatedType<?>, InjectionTarget<?>> injectionTargets = new HashMap<AnnotatedType<?>, InjectionTarget<?>>();
-            injectionTargets.put(type, event.getInjectionTarget());
-            genericInjectionTargets.put(genericConfigurationType, injectionTargets);
-         }
+         genericInjectionTargets.put(type, event.getInjectionTarget());
       }
    }
 
@@ -286,9 +276,9 @@ class GenericBeanExtension implements Extension
       {
          // Ensure that this generic configuration hasn't been registered yet!
          Class<? extends Annotation> genericConfigurationType = genericConfiguration.annotationType();
-         if (genericProducers.containsKey(genericConfigurationType) && genericProducers.get(genericConfigurationType).containsKey(genericConfiguration))
+         if (genericProducers.containsKey(genericConfiguration))
          {
-            throw new IllegalStateException("Generic configuration " + genericConfiguration + " is defined twice [" + event.getAnnotatedMember() + ", " + genericProducers.get(genericConfigurationType).get(genericConfiguration) + "]");
+            throw new IllegalStateException("Generic configuration " + genericConfiguration + " is defined twice [" + event.getAnnotatedMember() + ", " + genericProducers.get(genericConfiguration) + "]");
          }
          Producer<X> originalProducer = event.getProducer();
          event.setProducer(new GenericProducer<X>(originalProducer, event.getAnnotatedMember().getBaseType(), genericConfiguration, event.getAnnotatedMember(), syntheticProvider, beanManager));
@@ -302,55 +292,55 @@ class GenericBeanExtension implements Extension
    void createGenericBeans(@Observes AfterBeanDiscovery event, BeanManager beanManager)
    {
       // For each generic configuration type, we iterate the generic configurations
-      for (Entry<Class<? extends Annotation>, Map<Annotation, AnnotatedMember<?>>> genericConfigurationType : genericProducers.entrySet())
+      for (Entry<Annotation, AnnotatedMember<?>> genericConfigurationEntry : genericProducers.entrySet())
       {
-         if (!genericBeans.containsKey(genericConfigurationType.getKey()))
+         Annotation genericConfiguration = genericConfigurationEntry.getKey();
+         Class<? extends Annotation> genericConfigurationType = genericConfiguration.annotationType();
+         if (!genericBeans.containsKey(genericConfigurationType))
          {
-            throw new IllegalStateException("No generic bean definition exists for " + genericConfigurationType.getKey() + ", but generic producers do: " + genericConfigurationType.getValue().values());
+            throw new IllegalStateException("No generic bean definition exists for " + genericConfigurationType + ", but a generic producer does: " + genericConfigurationEntry.getValue());
          }
-         for (Annotation genericConfiguration : genericConfigurationType.getValue().keySet())
+         // Add a generic configuration bean for each generic configuration producer (allows us to inject the generic configuration annotation back into the generic bean)
+         event.addBean(createGenericConfigurationBean(beanManager, genericConfiguration));
+
+         // Register the GenericProduct bean
+         event.addBean(createGenericProductBean(beanManager, genericConfiguration));
+
+         if (genericBeanProducerMethods.containsKey(genericConfigurationType))
          {
-            // Add a generic configuration bean for each generic configuration producer (allows us to inject the generic configuration annotation back into the generic bean)
-            event.addBean(createGenericConfigurationBean(beanManager, genericConfiguration));
+            for (Entry<AnnotatedMethod<?>, Bean<?>> methodEntry : genericBeanProducerMethods.get(genericConfigurationType).entrySet())
+            {
+               event.addBean(createGenericProducerMethod(methodEntry.getValue(), genericConfiguration, methodEntry.getKey(), beanManager));
+            }
+         }
+         if (genericBeanProducerFields.containsKey(genericConfigurationType))
+         {
+            for (Entry<AnnotatedField<?>, Bean<?>> fieldEntry : genericBeanProducerFields.get(genericConfigurationType).entrySet())
+            {
+               event.addBean(createGenericProducerField(fieldEntry.getValue(), genericConfiguration, fieldEntry.getKey(), beanManager));
+            }
+         }
+         if (genericBeanObserverMethods.containsKey(genericConfigurationType))
+         {
+            for (Entry<AnnotatedMethod<?>, ObserverMethod<?>> methodEntry : genericBeanObserverMethods.get(genericConfigurationType).entrySet())
+            {
+               event.addObserverMethod(createGenericObserverMethod(methodEntry.getValue(), genericConfiguration, methodEntry.getKey(), beanManager));
+            }
 
-            // Register the GenericProduct bean
-            event.addBean(createGenericProductBean(beanManager, genericConfiguration));
-
-            if (genericBeanProducerMethods.containsKey(genericConfigurationType.getKey()))
+         }
+         // For each generic bean that uses this genericConfigurationType, register a generic bean for this generic configuration 
+         for (Entry<AnnotatedType<?>, Bean<?>> typeEntry : genericBeans.get(genericConfigurationType).entrySet())
+         {
+            Bean<?> originalBean = typeEntry.getValue();
+            // Register the generic bean, this is the underlying definition, with the synthetic qualifier
+            Bean<?> genericBean = createGenericBean(originalBean, genericConfiguration, (AnnotatedType) typeEntry.getKey(), beanManager);
+            event.addBean(genericBean);
+            // If we don't already have the producer (registered by the bean definition) now register the producer for it
+            AnnotatedMember<?> member = genericConfigurationEntry.getValue();
+            if (!member.getBaseType().equals(typeEntry.getKey().getBaseType()))
             {
-               for (Entry<AnnotatedMethod<?>, Bean<?>> method : genericBeanProducerMethods.get(genericConfigurationType.getKey()).entrySet())
-               {
-                  event.addBean(createGenericProducerMethod(method.getValue(), genericConfiguration, method.getKey(), beanManager));
-               }
-            }
-            if (genericBeanProducerFields.containsKey(genericConfigurationType.getKey()))
-            {
-               for (Entry<AnnotatedField<?>, Bean<?>> field : genericBeanProducerFields.get(genericConfigurationType.getKey()).entrySet())
-               {
-                  event.addBean(createGenericProducerField(field.getValue(), genericConfiguration, field.getKey(), beanManager));
-               }
-            }
-            if (genericBeanObserverMethods.containsKey(genericConfigurationType.getKey()))
-            {
-               for (Entry<AnnotatedMethod<?>, ObserverMethod<?>> method : genericBeanObserverMethods.get(genericConfigurationType.getKey()).entrySet())
-               {
-                  event.addObserverMethod(createGenericObserverMethod(method.getValue(), genericConfiguration, method.getKey(), beanManager));
-               }
-               
-            }
-            // For each generic bean that uses this genericConfigurationType, register a generic bean for this generic configuration 
-            for (Entry<AnnotatedType<?>, Bean<?>> type : genericBeans.get(genericConfigurationType.getKey()).entrySet())
-            {
-               Bean<?> originalBean = type.getValue();
-               // Register the generic bean, this is the underlying definition, with the synthetic qualifier
-               Bean<?> genericBean = createGenericBean(originalBean, genericConfiguration, (AnnotatedType) type.getKey(), beanManager);
-               event.addBean(genericBean);
-               // If we don't already have the producer (registered by the bean definition) now register the producer for it
-               if (!genericConfigurationType.getValue().get(genericConfiguration).getBaseType().equals(type.getKey().getBaseType()))
-               {
-                  Bean<?> genericProducerBean = createGenericProducerBean(beanManager, genericConfigurationType.getValue().get(genericConfiguration), originalBean.getBeanClass(), genericConfiguration);
-                  event.addBean(genericProducerBean);
-               }
+               Bean<?> genericProducerBean = createGenericProducerBean(beanManager, member, originalBean.getBeanClass(), genericConfiguration);
+               event.addBean(genericProducerBean);
             }
          }
       }
@@ -384,17 +374,7 @@ class GenericBeanExtension implements Extension
 
    private <X> void addGenericProducer(Annotation genericConfiguration, AnnotatedMember<X> annotatedMember)
    {
-      Class<? extends Annotation> genericConfigurationType = genericConfiguration.annotationType();
-      if (!genericProducers.containsKey(genericConfigurationType))
-      {
-         Map<Annotation, AnnotatedMember<?>> genericConfigurations = new HashMap<Annotation, AnnotatedMember<?>>();
-         genericConfigurations.put(genericConfiguration, annotatedMember);
-         genericProducers.put(genericConfigurationType, genericConfigurations);
-      }
-      else
-      {
-         genericProducers.get(genericConfigurationType).put(genericConfiguration, annotatedMember);
-      }
+      genericProducers.put(genericConfiguration, annotatedMember);
    }
 
    private <T> void addOriginalProducer(Annotation genericConfiguration, Producer<T> producer)
@@ -428,7 +408,7 @@ class GenericBeanExtension implements Extension
       // We don't have a bean created for this generic configuration annotation. Create it, store it to be added later
       Synthetic syntheticQualifier = productSyntheticProvider.get(genericConfiguration);
       final Producer<T> producer = (Producer<T>) originalProducers.get(genericConfiguration);
-      AnnotatedMember<?> originalProducer = genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration);
+      AnnotatedMember<?> originalProducer = genericProducers.get(genericConfiguration);
 
       // TODO make this passivation capable?
       BeanBuilder<T> builder = new BeanBuilder<T>(beanManager).setJavaClass(Reflections.<T> getRawType(originalProducer.getBaseType())).setQualifiers(Arrays2.<Annotation> asSet(syntheticQualifier)).setBeanLifecycle(new BeanLifecycle<T>()
@@ -466,24 +446,24 @@ class GenericBeanExtension implements Extension
 
    private <X> Bean<X> createGenericBean(Bean<X> originalBean, Annotation genericConfiguration, AnnotatedType<X> type, BeanManager beanManager)
    {
-      return new GenericManagedBean<X>(originalBean, genericConfiguration, (InjectionTarget<X>) genericInjectionTargets.get(genericConfiguration.annotationType()).get(type), type, syntheticProvider, productSyntheticProvider, beanManager);
+      return new GenericManagedBean<X>(originalBean, genericConfiguration, (InjectionTarget<X>) genericInjectionTargets.get(type), type, syntheticProvider, productSyntheticProvider, beanManager);
    }
 
    private <X, T> Bean<T> createGenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, BeanManager beanManager)
    {
-      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean.getQualifiers());
+      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration).getAnnotations(), originalBean.getQualifiers());
       return new GenericProducerMethod<T, X>(originalBean, genericConfiguration, method, (AnnotatedMethod<X>) genericBeanDisposerMethods.get(method), qualifiers, syntheticProvider, beanManager);
    }
 
    private <X, T> ObserverMethod<T> createGenericObserverMethod(ObserverMethod<T> originalObserverMethod, Annotation genericConfiguration, AnnotatedMethod<X> method, BeanManager beanManager)
    {
-      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalObserverMethod.getObservedQualifiers());
+      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration).getAnnotations(), originalObserverMethod.getObservedQualifiers());
       return new GenericObserverMethod<T, X>(originalObserverMethod, method, genericConfiguration, qualifiers, syntheticProvider, beanManager);
    }
 
    private <X, T> Bean<T> createGenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, BeanManager beanManager)
    {
-      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration.annotationType()).get(genericConfiguration).getAnnotations(), originalBean.getQualifiers());
+      Set<Annotation> qualifiers = getQualifiers(beanManager, genericProducers.get(genericConfiguration).getAnnotations(), originalBean.getQualifiers());
       return new GenericProducerField<T, X>(originalBean, genericConfiguration, field, qualifiers, syntheticProvider, beanManager);
    }
 
