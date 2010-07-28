@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.UnsatisfiedResolutionException;
+import javax.enterprise.inject.spi.AnnotatedMember;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Producer;
@@ -19,14 +20,16 @@ public class GenericBeanProducer<T> extends AbstractImmutableProducer<T>
    private final Synthetic qualifier;
    private final Annotation genericConfiguration;
    private final Type type;
+   private final AnnotatedMember<?> originalMember;
    
-   public GenericBeanProducer(Producer<T> originalProducer, Type genericBeanType, Annotation genericConfiguration, Synthetic.Provider syntheticProvider, BeanManager beanManager)
+   public GenericBeanProducer(Producer<T> originalProducer, Type genericBeanType, Annotation genericConfiguration, AnnotatedMember<?> originalMember, Synthetic.Provider syntheticProvider, BeanManager beanManager)
    {
       super(originalProducer.getInjectionPoints());
       this.beanManager = beanManager;
       this.genericConfiguration = genericConfiguration;
       this.qualifier = syntheticProvider.get(genericConfiguration);
       this.type = genericBeanType;
+      this.originalMember = originalMember;
    }
 
    public void dispose(T instance)
@@ -48,6 +51,12 @@ public class GenericBeanProducer<T> extends AbstractImmutableProducer<T>
       T value = (T) object;
       
       return value;
+   }
+   
+   @Override
+   public String toString()
+   {
+      return "Generic producer for " + genericConfiguration + " " + type.toString() + " originally declared as " + originalMember;
    }
 
 }

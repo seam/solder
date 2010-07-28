@@ -16,15 +16,19 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
+import java.io.Serializable;
+
 /**
  * A normal bean
  * 
  * @author pmuir
  *
  */
-public class Corge
+public class Corge implements Serializable
 {
    
+   private static final long serialVersionUID = 8211199638181988551L;
+
    public String getName()
    {
       return "fred";

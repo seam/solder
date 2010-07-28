@@ -18,6 +18,7 @@ package org.jboss.weld.extensions.test.bean.generic.field;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 
 import javax.inject.Inject;
@@ -54,6 +55,22 @@ public class GenericBeanTest
    @Inject
    @Foo(2)
    private Bar bar2;
+   
+   @Inject
+   @Foo(3)
+   private Baz baz3;
+   
+   @Inject
+   @Foo(3)
+   private Baz baz3a;
+   
+   @Inject
+   @Foo(4)
+   private Baz baz4;
+   
+   @Inject
+   @Foo(4)
+   private Baz baz4a;
 
    @Test
    public void testGeneric()
@@ -78,5 +95,18 @@ public class GenericBeanTest
       assertNull(baz1.getBar().getMessage());
       assertNull(baz2.getBar().getMessage());
       
+   }
+   
+   @Test
+   public void testScope()
+   {
+      assertNotSame(baz1.getCorge(), baz2.getCorge());
+      assertNotNull(baz3);
+      assertNotNull(baz3a);
+      assertEquals(baz3.getCorge(), baz3a.getCorge());
+      assertNotNull(baz4);
+      assertNotNull(baz4a);
+      assertEquals(baz4.getCorge(), baz4a.getCorge());
+      assertNotSame(baz3.getCorge(), baz4.getCorge());
    }
 }

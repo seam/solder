@@ -16,6 +16,8 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
+import java.io.Serializable;
+
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
@@ -29,8 +31,11 @@ import org.jboss.weld.extensions.bean.generic.Generic;
  */
 
 @Generic(Message.class)
-public class Bar
+public class Bar implements Serializable
 {
+
+   private static final long serialVersionUID = -6679070875886826999L;
+
    @Inject
    private Message injectedMessage;
 

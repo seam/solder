@@ -16,6 +16,7 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 
 /**
@@ -36,6 +37,20 @@ public class GenericBeanProducer
    @Produces
    @Message("hello2")
    private Baz baz2;
+   
+   @SuppressWarnings("unused")
+   @Foo(3)
+   @Produces
+   @Message("hello3")
+   @SessionScoped
+   private Baz baz3;
+   
+   @SuppressWarnings("unused")
+   @Foo(4)
+   @Produces
+   @Message("hello4")
+   @SessionScoped
+   private Baz baz4;
    
    @SuppressWarnings("unused")
    @Foo(1)

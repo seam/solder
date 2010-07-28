@@ -291,7 +291,7 @@ class GenericBeanExtension implements Extension
             throw new IllegalStateException("Generic configuration " + genericConfiguration + " is defined twice [" + event.getAnnotatedMember() + ", " + genericProducers.get(genericConfigurationType).get(genericConfiguration) + "]");
          }
          Producer<X> originalProducer = event.getProducer();
-         event.setProducer(new GenericBeanProducer<X>(originalProducer, event.getAnnotatedMember().getBaseType(), genericConfiguration, syntheticProvider, beanManager));
+         event.setProducer(new GenericBeanProducer<X>(originalProducer, event.getAnnotatedMember().getBaseType(), genericConfiguration, event.getAnnotatedMember(), syntheticProvider, beanManager));
 
          // Register the producer for use later
          addGenericProducer(genericConfiguration, event.getAnnotatedMember());
