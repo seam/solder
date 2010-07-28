@@ -28,6 +28,8 @@ import java.lang.annotation.Target;
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
+ * @see Generic
+ * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.TYPE })

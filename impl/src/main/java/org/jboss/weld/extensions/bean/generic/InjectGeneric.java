@@ -37,6 +37,8 @@ import javax.enterprise.util.AnnotationLiteral;
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
  * 
+ * @see Generic
+ * 
  */
 @Retention(RUNTIME)
 @Target( { METHOD, FIELD, CONSTRUCTOR })
