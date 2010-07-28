@@ -21,6 +21,13 @@ import javax.el.ExpressionFactory;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
+/**
+ * Bean that can be used to evaluate EL expressions
+ * 
+ * @author Dan Allen
+ * @author Stuart Douglas
+ * 
+ */
 public class Expressions
 {
    @Inject
