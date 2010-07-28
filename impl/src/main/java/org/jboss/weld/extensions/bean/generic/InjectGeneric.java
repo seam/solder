@@ -24,8 +24,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.enterprise.util.AnnotationLiteral;
-
 /**
  * Annotation used to define generic injection points. @Inject is swapped out
  * for @InjectConfiguration on generic beans for any injection points that are controlled by
@@ -43,15 +41,5 @@ import javax.enterprise.util.AnnotationLiteral;
 @Retention(RUNTIME)
 @Target( { METHOD, FIELD, CONSTRUCTOR })
 @interface InjectGeneric
-{
-   
-   static class InjectGenericLiteral extends AnnotationLiteral<InjectGeneric> implements InjectGeneric
-   {
-    
-      private static final long serialVersionUID = -1931707390692943775L;
-      
-   }
-   
-   static final InjectGeneric INSTANCE = new InjectGenericLiteral();
-   
+{  
 }

@@ -143,12 +143,12 @@ class GenericBeanExtension implements Extension
                   if (ctx.getRawType().equals(genericConfigurationType))
                   {
                      // This is a Generic configuration injection point
-                     ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGeneric.INSTANCE);
+                     ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGenericLiteral.INSTANCE);
                   }
                   else if (ctx.getAnnotatedElement().isAnnotationPresent(GenericBean.class))
                   {
                      // This is a Generic bean injection point
-                     ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGeneric.INSTANCE);
+                     ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGenericLiteral.INSTANCE);
                   }
                   else if (ctx.getAnnotatedElement().isAnnotationPresent(GenericProduct.class))
                   {
@@ -156,7 +156,7 @@ class GenericBeanExtension implements Extension
                       * This is an injection point where @GenericProduct has
                       * been used, so we have to take control of injection
                       */
-                     ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGeneric.INSTANCE);
+                     ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGenericLiteral.INSTANCE);
                   }
                }
             }
