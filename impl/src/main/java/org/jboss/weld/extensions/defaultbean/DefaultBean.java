@@ -16,6 +16,7 @@
  */
 package org.jboss.weld.extensions.defaultbean;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,7 +35,15 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Documented
 public @interface DefaultBean
 {
+   /**
+    * The type of the bean. If another bean is found with this type and the same
+    * qualifiers this bean will not be installed.
+    * 
+    * This bean will only be installed with the type specified here, not
+    * 
+    */
    public Class<?> type();
 }
