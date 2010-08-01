@@ -17,7 +17,7 @@ import java.lang.reflect.Type;
  * @author Shane Bryzak
  */
 class MethodPropertyImpl<V> implements MethodProperty<V>
-{   
+{
    private final Method getterMethod;
    private final String propertyName;
    private final Method setterMethod;
@@ -28,54 +28,58 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
       {
          this.propertyName = Introspector.decapitalize(method.getName().substring(3));
       }
+      else if (method.getName().startsWith("set"))
+      {
+         this.propertyName = Introspector.decapitalize(method.getName().substring(3));
+      }
       else if (method.getName().startsWith("is"))
       {
          this.propertyName = Introspector.decapitalize(method.getName().substring(2));
       }
       else
       {
-         throw new IllegalArgumentException("Invalid accessor method, must start with 'get' or 'is'.  " + "Method: " + method);
+         throw new IllegalArgumentException("Invalid accessor method, must start with 'get', 'set' or 'is'.  " + "Method: " + method);
       }
       this.getterMethod = getGetterMethod(method.getDeclaringClass(), propertyName);
-      this.setterMethod = getSetterMethod(method.getDeclaringClass(), propertyName);      
+      this.setterMethod = getSetterMethod(method.getDeclaringClass(), propertyName);
    }
-   
+
    public String getName()
    {
       return propertyName;
    }
-   
+
    @SuppressWarnings("unchecked")
    public Class<V> getJavaClass()
    {
       return (Class<V>) getterMethod.getReturnType();
    }
-   
+
    public Type getBaseType()
    {
       return getterMethod.getGenericReturnType();
    }
-   
+
    public Method getAnnotatedElement()
    {
       return getterMethod;
    }
-   
+
    public Member getMember()
    {
       return getterMethod;
    }
-   
+
    public V getValue(Object instance)
    {
       return getJavaClass().cast(invokeMethod(getterMethod, instance));
    }
-   
-   public void setValue(Object instance, V value) 
+
+   public void setValue(Object instance, V value)
    {
       invokeMethod(setterMethod, instance, value);
    }
-   
+
    private static Method getSetterMethod(Class<?> clazz, String name)
    {
       Method[] methods = clazz.getMethods();
@@ -123,12 +127,12 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
    {
       return getterMethod.getDeclaringClass();
    }
-   
+
    public boolean isReadOnly()
    {
       return setterMethod == null;
    }
-   
+
    @Override
    public String toString()
    {
@@ -140,7 +144,7 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
       builder.append(getterMethod.toString());
       return builder.toString();
    }
-   
+
    @Override
    public int hashCode()
    {
@@ -149,7 +153,7 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
       hash = hash * 31 + getterMethod.hashCode();
       return hash;
    }
-   
+
    @Override
    public boolean equals(Object obj)
    {
