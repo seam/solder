@@ -48,7 +48,7 @@ public class ServiceHandlerTest
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(ServiceHandlerTest.class.getPackage());
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(ServiceHandlerTest.class.getPackage());
    }
 
    @Test

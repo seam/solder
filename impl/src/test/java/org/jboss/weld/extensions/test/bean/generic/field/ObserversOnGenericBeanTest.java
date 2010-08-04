@@ -35,7 +35,7 @@ public class ObserversOnGenericBeanTest
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(ObserversOnGenericBeanTest.class.getPackage());
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(ObserversOnGenericBeanTest.class.getPackage());
    }
 
    @Inject
@@ -45,9 +45,9 @@ public class ObserversOnGenericBeanTest
    public void testGeneric()
    {
       // Check that all observers are invoked
-      //Plugh allPlugh = new Plugh();
-      //plughEvent.fire(allPlugh);
-      // TODO See WELD-573
+//      Plugh allPlugh = new Plugh();
+//      plughEvent.fire(allPlugh);
+//      assertNotNull(allPlugh.getMessage().value());
 
       // Check specific observers are invoked
       Plugh plugh1 = new Plugh();

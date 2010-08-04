@@ -36,7 +36,7 @@ public class GenericProductTest
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(GenericProductTest.class.getPackage());
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(GenericProductTest.class.getPackage());
    }
 
    @Inject

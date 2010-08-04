@@ -39,7 +39,7 @@ public class DefaultBeanTest
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(DefaultBeanTest.class.getPackage());
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(DefaultBeanTest.class.getPackage());
    }
 
    @Test

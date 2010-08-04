@@ -35,7 +35,7 @@ public class ProducersOnGenericBeanTest
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(ProducersOnGenericBeanTest.class.getPackage());
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(ProducersOnGenericBeanTest.class.getPackage());
    }
 
    @Inject

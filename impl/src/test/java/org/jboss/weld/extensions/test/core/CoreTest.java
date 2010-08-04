@@ -40,7 +40,7 @@ public class CoreTest
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(CoreTest.class.getPackage());
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(CoreTest.class.getPackage());
    }
 
    @Test

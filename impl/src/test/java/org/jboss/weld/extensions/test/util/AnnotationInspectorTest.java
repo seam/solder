@@ -18,7 +18,7 @@ public class AnnotationInspectorTest
    @Deployment
    public static Archive<?> deploy()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addPackage(AnnotationInspectorTest.class.getPackage());
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(AnnotationInspectorTest.class.getPackage());
    }
 
    @Inject

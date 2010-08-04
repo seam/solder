@@ -23,8 +23,8 @@ import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
 import org.jboss.weld.extensions.managedproducer.ManagedProducerExtension;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ public class ManagedProducerTest
    @Deployment
    public static Archive<?> deploy()
    {
-      JavaArchive a = ShrinkWrap.create("test.jar", JavaArchive.class);
+      JavaArchive a = ShrinkWrap.create(JavaArchive.class, "test.jar");
       a.addPackage(ManagedProducerTest.class.getPackage());
       a.addPackage(ManagedProducerExtension.class.getPackage());
       a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
