@@ -17,6 +17,7 @@
 package org.jboss.weld.extensions.test.bean.generic.field;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -44,10 +45,7 @@ public class ObserversOnGenericBeanTest
    @Test
    public void testGeneric()
    {
-      // Check that all observers are invoked
-//      Plugh allPlugh = new Plugh();
-//      plughEvent.fire(allPlugh);
-//      assertNotNull(allPlugh.getMessage().value());
+      
 
       // Check specific observers are invoked
       Plugh plugh1 = new Plugh();
@@ -57,6 +55,12 @@ public class ObserversOnGenericBeanTest
       Plugh plugh2 = new Plugh();
       plughEvent.select(new FooLiteral(2)).fire(plugh2);
       assertEquals("hello2", plugh2.getMessage().value());
+      
+      // Check that the base observer is invoked
+      Plugh basePlugh = new Plugh();
+      plughEvent.fire(basePlugh);
+      assertNotNull(basePlugh.getMessage());
+      assertEquals("base", basePlugh.getMessage().value());
       
    }
 }

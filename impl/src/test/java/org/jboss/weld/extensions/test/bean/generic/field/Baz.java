@@ -72,10 +72,15 @@ public class Baz implements Serializable
    
    public void observe(@Observes @Any Plugh event)
    {
-      // Workaround WELD-573
+      // Set the message if we are in a generic bean
       if (message != null)
       {
          event.setMessage(message);
+      }
+      // Set the message if not previously
+      else if (event.getMessage() == null)
+      {
+         event.setMessage(new MessageLiteral("base"));
       }
    }
 }
