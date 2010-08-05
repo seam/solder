@@ -40,7 +40,7 @@ public class ResourceLoaderManager
 
    private final List<ResourceLoader> resourceLoaders;
 
-   ResourceLoaderManager()
+   public ResourceLoaderManager()
    {
       resourceLoaders = new ArrayList<ResourceLoader>();
       for (ResourceLoader resourceLoader : ServiceLoader.load(ResourceLoader.class))
