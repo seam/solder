@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.Set;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -34,30 +35,17 @@ import javax.inject.Inject;
  * @author pmuir
  *
  */
+@ApplicationScoped
 class ResourceProducer
 {
-   
-   private final ResourceLoaderManager resourceLoaderManager;
-   
    @Inject
-   ResourceProducer(ResourceLoaderManager resourceLoaderManager)
-   {
-      this.resourceLoaderManager = resourceLoaderManager;
-   }
+   private ResourceLoaderManager resourceLoaderManager;
    
    @Produces @Resource("")
    InputStream loadResourceStream(InjectionPoint injectionPoint) throws IOException
    {
       String name = getName(injectionPoint);
-      for (ResourceLoader loader : resourceLoaderManager.getResourceLoaders())
-      {
-         InputStream is = loader.getResourceAsStream(name);
-         if (is != null)
-         {
-            return is;
-         }
-      }
-      return null;
+      return resourceLoaderManager.getResourceAsStream(name);
    }
    
    void closeResourceStream(@Disposes @Resource("") InputStream inputStream) throws IOException
@@ -76,15 +64,7 @@ class ResourceProducer
    URL loadResource(InjectionPoint injectionPoint)
    {
       String name = getName(injectionPoint);
-      for (ResourceLoader loader : resourceLoaderManager.getResourceLoaders())
-      {
-         URL url = loader.getResource(name);
-         if (url != null)
-         {
-            return url;
-         }
-      }
-      return null;
+      return resourceLoaderManager.getResource(name);
    }
    
    private String getName(InjectionPoint ip)
