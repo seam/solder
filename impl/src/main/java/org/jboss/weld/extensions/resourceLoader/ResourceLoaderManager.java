@@ -35,7 +35,7 @@ import org.jboss.weld.extensions.util.service.ServiceLoader;
  * @author Stuart Douglas
  * 
  */
-class ResourceLoaderManager
+public class ResourceLoaderManager
 {
 
    private final List<ResourceLoader> resourceLoaders;
