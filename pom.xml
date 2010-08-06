@@ -9,7 +9,7 @@
    <parent>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-parent</artifactId>
-      <version>13</version>
+      <version>15</version>
    </parent>
 
    <name>Weld Extensions Parent</name>
@@ -239,26 +239,8 @@
                </snapshots>
             </pluginRepository>
          </pluginRepositories>
-
       </profile>
    </profiles>
-
-   <build>
-      <plugins>
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>buildnumber-maven-plugin</artifactId>
-            <version>1.0-beta-4</version>
-            <executions>
-               <execution>
-                  <id>set-build-properties</id>
-                  <phase>none</phase>
-               </execution>
-            </executions>
-            <inherited>true</inherited>
-         </plugin>
-      </plugins>
-   </build>
 
    <scm>
       <connection>scm:git:git://github.com/weld/extensions.git</connection>
