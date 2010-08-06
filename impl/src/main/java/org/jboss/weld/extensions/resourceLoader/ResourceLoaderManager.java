@@ -16,40 +16,79 @@
  */
 package org.jboss.weld.extensions.resourceLoader;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import java.util.Set;
 
 import org.jboss.weld.extensions.util.Sortable;
 import org.jboss.weld.extensions.util.service.ServiceLoader;
 
-@ApplicationScoped
-class ResourceLoaderManager
+/**
+ * Class that is resposible for loading {@link ResourceProvider} implements from
+ * the servive loader and using them to load resources
+ * 
+ * @author pmuir
+ * @author Stuart Douglas
+ * 
+ */
+public class ResourceLoaderManager
 {
-   
+
    private final List<ResourceLoader> resourceLoaders;
-   
-   ResourceLoaderManager()
+
+   public ResourceLoaderManager()
    {
-      this.resourceLoaders = new ArrayList<ResourceLoader>();
-   }
-   
-   @PostConstruct
-   void init()
-   {
+      resourceLoaders = new ArrayList<ResourceLoader>();
       for (ResourceLoader resourceLoader : ServiceLoader.load(ResourceLoader.class))
       {
          resourceLoaders.add(resourceLoader);
       }
       Collections.sort(resourceLoaders, new Sortable.Comparator());
    }
-   
+
    public Iterable<ResourceLoader> getResourceLoaders()
    {
-      return resourceLoaders;
+      return Collections.unmodifiableList(resourceLoaders);
+   }
+
+   public URL getResource(String resource)
+   {
+      for (ResourceLoader loader : resourceLoaders)
+      {
+         URL url = loader.getResource(resource);
+         if (url != null)
+         {
+            return url;
+         }
+      }
+      return null;
+   }
+
+   public InputStream getResourceAsStream(String name)
+   {
+      for (ResourceLoader loader : resourceLoaders)
+      {
+         InputStream is = loader.getResourceAsStream(name);
+         if (is != null)
+         {
+            return is;
+         }
+      }
+      return null;
+   }
+
+   public Set<URL> getResources(String name)
+   {
+      Set<URL> urls = new HashSet<URL>();
+      for (ResourceLoader loader : resourceLoaders)
+      {
+         urls.addAll(loader.getResources(name));
+      }
+      return urls;
    }
 
 }
