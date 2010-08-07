@@ -21,6 +21,8 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import javax.enterprise.event.Observes;
@@ -66,6 +68,8 @@ public class DefaultBeanExtension implements Extension
 
    private boolean beanDiscoveryOver = false;
 
+   private final List<Bean<?>> processedBeans = new LinkedList<Bean<?>>();
+
    /**
     * Adds a default bean with the {@link Default} qualifier
     */
@@ -97,25 +101,31 @@ public class DefaultBeanExtension implements Extension
 
    public void processBean(@Observes ProcessBean<?> event)
    {
+      System.out.println("Processing " + event.getBean());
       if (beanDiscoveryOver)
       {
          return;
       }
-      Iterator<DefaultBeanDefinition> it = beans.iterator();
-      while (it.hasNext())
-      {
-         DefaultBeanDefinition definition = it.next();
-         if (definition.matches(event.getBean()))
-         {
-            log.info("Preventing install of default bean " + definition.getDefaultBean());
-            it.remove();
-         }
-      }
+      processedBeans.add(event.getBean());
    }
 
    public void afterBeanDiscovery(@Observes AfterBeanDiscovery event)
    {
       beanDiscoveryOver = true;
+      for (Bean<?> b : processedBeans)
+      {
+         Iterator<DefaultBeanDefinition> it = beans.iterator();
+         while (it.hasNext())
+         {
+            DefaultBeanDefinition definition = it.next();
+            if (definition.matches(b))
+            {
+               log.info("Preventing install of default bean " + definition.getDefaultBean());
+               it.remove();
+            }
+         }
+      }
+
       for (DefaultBeanDefinition d : beans)
       {
          log.info("Installing default bean " + d.getDefaultBean());
