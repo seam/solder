@@ -22,13 +22,29 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.spi.AfterBeanDiscovery;
+
 /**
  * Annotation that signifies that a bean should only be registered if no other
  * instance with the same type and qualifiers is registered. The bean only has
- * the type specified in the type() attribute
+ * the type specified in the type() attribute.
+ * 
+ * A default bean must be a Managed Bean.
  * 
  * IMPORTANT: Producers, Disposes and Observes on the bean class will not be
  * registered, and will not work
+ * 
+ * In some ways this is similar to the functionality provided by
+ * {@link Alternative} however there are some important distinctions
+ * <ul>
+ * <li>No XML is required, if an alternative implementation is available it is
+ * used automatically</li>
+ * <li>The bean is registered across all modules, not on a per module basis</li>
+ * </ul>
+ * 
+ * It is also important to note that beans registered in the
+ * {@link AfterBeanDiscovery} event may not been see by this extension
  * 
  * @author Stuart Douglas
  * 

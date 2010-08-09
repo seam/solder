@@ -41,20 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This extension allows you to register a 'Default Bean' for a given type and
- * qualifiers. If no bean with the given type and qualifiers is installed then
- * this extensions installs the default bean.
- * 
- * In some ways this is similar to the functionality provided by
- * {@link Alternative} however there are some important distinctions
- * <ul>
- * <li>No XML is required, if an alternative implementation is available it is
- * used automatically</li>
- * <li>The bean is registered across all modules, not on a per module basis</li>
- * </ul>
- * 
- * It is also important to note that beans registered in the
- * {@link AfterBeanDiscovery} event may not been see by this extension
+ * Registers beans annotated @DefaultBean
  * 
  * @author Stuart Douglas
  * 
