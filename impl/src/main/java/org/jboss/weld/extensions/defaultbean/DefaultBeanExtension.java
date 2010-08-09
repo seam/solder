@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
 public class DefaultBeanExtension implements Extension
 {
 
-   Logger log = LoggerFactory.getLogger(DefaultBeanExtension.class);
+   private static final Logger log = LoggerFactory.getLogger(DefaultBeanExtension.class);
 
    private final Set<DefaultBeanDefinition> beans = new HashSet<DefaultBeanDefinition>();
 
@@ -101,7 +101,6 @@ public class DefaultBeanExtension implements Extension
 
    public void processBean(@Observes ProcessBean<?> event)
    {
-      System.out.println("Processing " + event.getBean());
       if (beanDiscoveryOver)
       {
          return;
@@ -120,7 +119,7 @@ public class DefaultBeanExtension implements Extension
             DefaultBeanDefinition definition = it.next();
             if (definition.matches(b))
             {
-               log.info("Preventing install of default bean " + definition.getDefaultBean());
+               log.debug("Preventing install of default bean " + definition.getDefaultBean());
                it.remove();
             }
          }
@@ -128,7 +127,7 @@ public class DefaultBeanExtension implements Extension
 
       for (DefaultBeanDefinition d : beans)
       {
-         log.info("Installing default bean " + d.getDefaultBean());
+         log.debug("Installing default bean " + d.getDefaultBean());
          event.addBean(d.getDefaultBean());
       }
       beans.clear();
