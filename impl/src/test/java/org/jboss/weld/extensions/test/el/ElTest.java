@@ -43,7 +43,6 @@ public class ElTest
       JavaArchive a = ShrinkWrap.create(JavaArchive.class, "test.jar");
       a.addPackage(ElTest.class.getPackage());
       a.addPackage(Expressions.class.getPackage());
-      // a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
       return a;
    }
 
