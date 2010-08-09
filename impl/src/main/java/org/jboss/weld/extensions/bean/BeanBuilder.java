@@ -56,6 +56,7 @@ public class BeanBuilder<T>
    private BeanLifecycle<T> beanLifecycle;
    boolean passivationCapable;
    private String id;
+   private String toString;
 
    public BeanBuilder(BeanManager beanManager)
    {
@@ -126,9 +127,9 @@ public class BeanBuilder<T>
    {
       if (!passivationCapable)
       {
-         return new BeanImpl<T>(javaClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle);
+         return new BeanImpl<T>(javaClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle, toString);
       }
-      return new PassivationCapableBeanImpl<T>(id, javaClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle);
+      return new PassivationCapableBeanImpl<T>(id, javaClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle, toString);
    }
 
    public Set<Annotation> getQualifiers()
@@ -266,6 +267,17 @@ public class BeanBuilder<T>
    {
       this.injectionPoints = injectionPoints;
       return this;
+   }
+   
+   public BeanBuilder<T> setToString(String toString)
+   {
+      this.toString = toString;
+      return this;
+   }
+   
+   public String getToString()
+   {
+      return toString;
    }
 
 }

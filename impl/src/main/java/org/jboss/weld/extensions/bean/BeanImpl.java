@@ -37,8 +37,10 @@ public class BeanImpl<T> extends AbstractImmutableBean<T> implements Bean<T>
 {
 
    final BeanLifecycle<T> beanLifecycle;
+
    /**
-    * Create a new, immutable bean. All arguments passed as collections are defensively copied.
+    * Create a new, immutable bean. All arguments passed as collections are
+    * defensively copied.
     * 
     * @param beanClass The Bean class, may not be null
     * @param name The bean name
@@ -51,18 +53,22 @@ public class BeanImpl<T> extends AbstractImmutableBean<T> implements Bean<T>
     *           will be used
     * @param alternative True if the bean is an alternative
     * @param nullable True if the bean is nullable
-    * @param injectionPoints the bean's injection points, if null an empty set is used
+    * @param injectionPoints the bean's injection points, if null an empty set
+    *           is used
     * @param beanLifecycle Handler for {@link #create(CreationalContext)} and
     *           {@link #destroy(Object, CreationalContext)}
+    * @param toString the string representation of the bean, if null the built
+    *           in representation is used, which states the bean class and
+    *           qualifiers
     * 
     * @throws IllegalArgumentException if the beanClass is null
     */
-   public BeanImpl(Class<?> beanClass, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, Set<InjectionPoint> injectionPoints, BeanLifecycle<T> beanLifecycle)
+   public BeanImpl(Class<?> beanClass, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, Set<InjectionPoint> injectionPoints, BeanLifecycle<T> beanLifecycle, String toString)
    {
-      super(beanClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints);
+      super(beanClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, toString);
       this.beanLifecycle = beanLifecycle;
    }
-   
+
    public T create(CreationalContext<T> arg0)
    {
       return beanLifecycle.create(this, arg0);

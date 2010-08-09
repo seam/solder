@@ -39,6 +39,7 @@ public abstract class AbstractImmutableBean<T>
    private final boolean alternative;
    private final boolean nullable;
    private final Set<InjectionPoint> injectionPoints;
+   private final String toString;
 
    /**
     * Create a new, immutable bean. All arguments passed as collections are
@@ -62,7 +63,7 @@ public abstract class AbstractImmutableBean<T>
     * 
     * @throws IllegalArgumentException if the beanClass is null
     */
-   public AbstractImmutableBean(Class<?> beanClass, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, Set<InjectionPoint> injectionPoints)
+   public AbstractImmutableBean(Class<?> beanClass, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, Set<InjectionPoint> injectionPoints, String toString)
    {
       if (beanClass == null)
       {
@@ -115,6 +116,14 @@ public abstract class AbstractImmutableBean<T>
       }
       this.alternative = alternative;
       this.nullable = nullable;
+      if (toString != null)
+      {
+         this.toString = toString;
+      }
+      else
+      {
+         this.toString = "Custom Bean with bean class " + beanClass + " and qualifiers " + qualifiers;
+      }
    }
 
    public Class<?> getBeanClass()
@@ -165,7 +174,7 @@ public abstract class AbstractImmutableBean<T>
    @Override
    public String toString()
    {
-      return new StringBuilder().append("Custom Bean with bean class ").append(beanClass).append(" and qualifiers ").append(qualifiers).toString();
+      return toString;
    }
 
 }
