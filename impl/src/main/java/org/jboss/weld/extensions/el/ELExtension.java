@@ -17,10 +17,9 @@
 package org.jboss.weld.extensions.el;
 
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
-
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 
 /**
  * Extension that adds classes from the el package as AnnotatedTypes
@@ -30,15 +29,13 @@ import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
  */
 public class ELExtension implements Extension
 {
-   public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event)
+   public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
    {
-      event.addAnnotatedType(new AnnotatedTypeBuilder<ELContextProducer>().readFromType(ELContextProducer.class).create());
-      event.addAnnotatedType(new AnnotatedTypeBuilder<ELResolverImpl>().readFromType(ELResolverImpl.class).create());
-      event.addAnnotatedType(new AnnotatedTypeBuilder<ExpressionFactoryProducer>().readFromType(ExpressionFactoryProducer.class).create());
-      event.addAnnotatedType(new AnnotatedTypeBuilder<Expressions>().readFromType(Expressions.class).create());
-      event.addAnnotatedType(new AnnotatedTypeBuilder<FunctionMapperImpl>().readFromType(FunctionMapperImpl.class).create());
-      event.addAnnotatedType(new AnnotatedTypeBuilder<VariableMapperImpl>().readFromType(VariableMapperImpl.class).create());
-      event.addQualifier(Mapper.class);
-      event.addQualifier(Resolver.class);
+      event.addAnnotatedType(beanManager.createAnnotatedType(ELContextProducer.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(ELResolverImpl.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(ExpressionFactoryProducer.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(Expressions.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(FunctionMapperImpl.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(VariableMapperImpl.class));
    }
 }
