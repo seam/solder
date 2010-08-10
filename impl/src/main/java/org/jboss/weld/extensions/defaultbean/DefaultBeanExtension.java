@@ -16,7 +16,6 @@
  */
 package org.jboss.weld.extensions.defaultbean;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
@@ -26,9 +25,9 @@ import java.util.List;
 import java.util.Set;
 
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
@@ -51,21 +50,27 @@ public class DefaultBeanExtension implements Extension
 
    private static final Logger log = LoggerFactory.getLogger(DefaultBeanExtension.class);
 
-   private final Set<DefaultBeanDefinition> beans = new HashSet<DefaultBeanDefinition>();
+   private final Set<DefaultBeanDefinition> beans;
 
    private boolean beanDiscoveryOver = false;
 
-   private final List<Bean<?>> processedBeans = new LinkedList<Bean<?>>();
+   private final List<Bean<?>> processedBeans;
+   
+   DefaultBeanExtension()
+   {
+      this.beans = new HashSet<DefaultBeanDefinition>();
+      this.processedBeans = new LinkedList<Bean<?>>();
+   }
 
    /**
     * Adds a default bean with the {@link Default} qualifier
     */
-   public void addDefaultBean(Class<?> type, Bean<?> bean)
+   private void addDefaultBean(Class<?> type, Bean<?> bean)
    {
       beans.add(new DefaultBeanDefinition(type, Collections.singleton(DefaultLiteral.INSTANCE), bean));
    }
 
-   public <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
+   <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
    {
       if (event.getAnnotatedType().isAnnotationPresent(DefaultBean.class))
       {
@@ -78,15 +83,7 @@ public class DefaultBeanExtension implements Extension
       }
    }
 
-   /**
-    * Adds a default bean
-    */
-   public void addDefaultBean(Class<?> type, Set<Annotation> qualifiers, Bean<?> bean)
-   {
-      beans.add(new DefaultBeanDefinition(type, Collections.singleton(DefaultLiteral.INSTANCE), bean));
-   }
-
-   public void processBean(@Observes ProcessBean<?> event)
+   void processBean(@Observes ProcessBean<?> event)
    {
       if (beanDiscoveryOver)
       {
@@ -95,7 +92,7 @@ public class DefaultBeanExtension implements Extension
       processedBeans.add(event.getBean());
    }
 
-   public void afterBeanDiscovery(@Observes AfterBeanDiscovery event)
+   void afterBeanDiscovery(@Observes AfterBeanDiscovery event)
    {
       beanDiscoveryOver = true;
       for (Bean<?> b : processedBeans)
@@ -117,7 +114,12 @@ public class DefaultBeanExtension implements Extension
          log.debug("Installing default bean " + d.getDefaultBean());
          event.addBean(d.getDefaultBean());
       }
-      beans.clear();
+   }
+   
+   void afterDeploymentValidation(@Observes AfterDeploymentValidation event)
+   {
+      this.beans.clear();
+      this.processedBeans.clear();
    }
 
 }
