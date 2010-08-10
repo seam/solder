@@ -95,20 +95,23 @@ public class DefaultBeanExtension implements Extension
    void afterBeanDiscovery(@Observes AfterBeanDiscovery event)
    {
       beanDiscoveryOver = true;
-      for (Bean<?> b : processedBeans)
+      if (beans.size() > 0)
       {
-         Iterator<DefaultBeanDefinition> it = beans.iterator();
-         while (it.hasNext())
+         for (Bean<?> b : processedBeans)
          {
-            DefaultBeanDefinition definition = it.next();
-            if (definition.matches(b))
+            Iterator<DefaultBeanDefinition> it = beans.iterator();
+            while (it.hasNext())
             {
-               log.debug("Preventing install of default bean " + definition.getDefaultBean());
-               it.remove();
+               DefaultBeanDefinition definition = it.next();
+               if (definition.matches(b))
+               {
+                  log.debug("Preventing install of default bean " + definition.getDefaultBean());
+                  it.remove();
+               }
             }
          }
       }
-
+      
       for (DefaultBeanDefinition d : beans)
       {
          log.debug("Installing default bean " + d.getDefaultBean());
