@@ -79,6 +79,7 @@ public class DefaultBeanExtension implements Extension
          BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
          builder.defineBeanFromAnnotatedType(event.getAnnotatedType());
          builder.setTypes(Collections.<Type>singleton(annotation.type()));
+         builder.setToString("@DefaultBean of type [" + annotation.type() + "] with qualifiers [" + builder.getQualifiers() + "]");
          addDefaultBean(annotation.type(), builder.create());
       }
    }
