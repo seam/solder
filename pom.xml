@@ -136,19 +136,19 @@
          <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-jbossas-managed-6</artifactId>
-            <version>${jboss.arquillian.version}</version>
+            <version>${arquillian.version}</version>
          </dependency>
          
          <dependency>
             <groupId>org.jboss.jbossas</groupId>
             <artifactId>jboss-server-manager</artifactId>
-            <version>${version.jbossas_server_manager}</version>
+            <version>${jbossas.server.manager.version}</version>
          </dependency>
          
          <dependency>
             <groupId>org.jboss.jbossas</groupId>
             <artifactId>jboss-as-client</artifactId>
-            <version>${version.jbossas_client}</version>
+            <version>${jbossas.client.version}</version>
             <type>pom</type>
          </dependency>
 
