@@ -34,7 +34,7 @@ public class DefaultBeanTest
    OpticalDrive opticalDrive;
 
    @Inject
-   MagneticDrive magniticDrive;
+   MagneticDrive magneticDrive;
 
    @Deployment
    public static Archive<?> deploy()
@@ -46,7 +46,7 @@ public class DefaultBeanTest
    public void tesetDefaultBean()
    {
       Assert.assertTrue(opticalDrive instanceof DVDDrive);
-      Assert.assertTrue(magniticDrive instanceof FloppyDrive);
+      Assert.assertTrue(magneticDrive instanceof FloppyDrive);
    }
 
 }
