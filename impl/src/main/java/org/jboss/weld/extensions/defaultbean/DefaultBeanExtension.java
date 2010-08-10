@@ -50,7 +50,7 @@ public class DefaultBeanExtension implements Extension
 
    private static final Logger log = LoggerFactory.getLogger(DefaultBeanExtension.class);
 
-   private final Set<DefaultBeanDefinition> beans;
+   private final Set<DefaultBeanDefinition> defaultBeans;
 
    private boolean beanDiscoveryOver = false;
 
@@ -58,7 +58,7 @@ public class DefaultBeanExtension implements Extension
    
    DefaultBeanExtension()
    {
-      this.beans = new HashSet<DefaultBeanDefinition>();
+      this.defaultBeans = new HashSet<DefaultBeanDefinition>();
       this.processedBeans = new LinkedList<Bean<?>>();
    }
 
@@ -67,7 +67,7 @@ public class DefaultBeanExtension implements Extension
     */
    private void addDefaultBean(Class<?> type, Bean<?> bean)
    {
-      beans.add(new DefaultBeanDefinition(type, Collections.singleton(DefaultLiteral.INSTANCE), bean));
+      defaultBeans.add(new DefaultBeanDefinition(type, Collections.singleton(DefaultLiteral.INSTANCE), bean));
    }
 
    <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
@@ -95,15 +95,15 @@ public class DefaultBeanExtension implements Extension
    void afterBeanDiscovery(@Observes AfterBeanDiscovery event)
    {
       beanDiscoveryOver = true;
-      if (beans.size() > 0)
+      if (defaultBeans.size() > 0)
       {
-         for (Bean<?> b : processedBeans)
+         for (Bean<?> processedBean : processedBeans)
          {
-            Iterator<DefaultBeanDefinition> it = beans.iterator();
+            Iterator<DefaultBeanDefinition> it = defaultBeans.iterator();
             while (it.hasNext())
             {
                DefaultBeanDefinition definition = it.next();
-               if (definition.matches(b))
+               if (definition.matches(processedBean))
                {
                   log.debug("Preventing install of default bean " + definition.getDefaultBean());
                   it.remove();
@@ -112,16 +112,16 @@ public class DefaultBeanExtension implements Extension
          }
       }
       
-      for (DefaultBeanDefinition d : beans)
+      for (DefaultBeanDefinition defaultBean : defaultBeans)
       {
-         log.debug("Installing default bean " + d.getDefaultBean());
-         event.addBean(d.getDefaultBean());
+         log.debug("Installing default bean " + defaultBean.getDefaultBean());
+         event.addBean(defaultBean.getDefaultBean());
       }
    }
    
    void afterDeploymentValidation(@Observes AfterDeploymentValidation event)
    {
-      this.beans.clear();
+      this.defaultBeans.clear();
       this.processedBeans.clear();
    }
 
