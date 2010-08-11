@@ -109,7 +109,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
     */
 
    private transient Map<K, Collection<V>> map;
-   private transient int totalSize;
+   transient int totalSize;
 
    /**
     * Creates a new multimap that uses the provided map.
@@ -445,7 +445,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
     * removeIfEmpty}, and {@code addToMap} methods call the corresponding
     * methods of the full wrapped collection.
     */
-   private class WrappedCollection extends AbstractCollection<V>
+   class WrappedCollection extends AbstractCollection<V>
    {
       final K key;
       Collection<V> delegate;
@@ -458,6 +458,11 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
          this.delegate = delegate;
          this.ancestor = ancestor;
          this.ancestorDelegate = (ancestor == null) ? null : ancestor.getDelegate();
+      }
+
+      public AbstractMultimap<K, V> getParent()
+      {
+         return AbstractMultimap.this;
       }
 
       /**
@@ -570,63 +575,10 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
       public Iterator<V> iterator()
       {
          refreshIfEmpty();
-         return new WrappedIterator();
+         return new WrappedIterator(this);
       }
 
-      /** Collection iterator for {@code WrappedCollection}. */
-      class WrappedIterator implements Iterator<V>
-      {
-         final Iterator<V> delegateIterator;
-         final Collection<V> originalDelegate = delegate;
 
-         WrappedIterator()
-         {
-            delegateIterator = iteratorOrListIterator(delegate);
-         }
-
-         WrappedIterator(Iterator<V> delegateIterator)
-         {
-            this.delegateIterator = delegateIterator;
-         }
-
-         /**
-          * If the delegate changed since the iterator was created, the iterator
-          * is no longer valid.
-          */
-         void validateIterator()
-         {
-            refreshIfEmpty();
-            if (delegate != originalDelegate)
-            {
-               throw new ConcurrentModificationException();
-            }
-         }
-
-         public boolean hasNext()
-         {
-            validateIterator();
-            return delegateIterator.hasNext();
-         }
-
-         public V next()
-         {
-            validateIterator();
-            return delegateIterator.next();
-         }
-
-         public void remove()
-         {
-            delegateIterator.remove();
-            totalSize--;
-            removeIfEmpty();
-         }
-
-         Iterator<V> getDelegateIterator()
-         {
-            validateIterator();
-            return delegateIterator;
-         }
-      }
 
       @Override
       public boolean add(V value)
@@ -747,7 +699,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
       }
    }
 
-   private Iterator<V> iteratorOrListIterator(Collection<V> collection)
+   Iterator<V> iteratorOrListIterator(Collection<V> collection)
    {
       return (collection instanceof List<?>) ? ((List<V>) collection).listIterator() : collection.iterator();
    }
@@ -813,7 +765,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
    }
 
    /** List decorator that stays in sync with the multimap values for a key. */
-   private class WrappedList extends WrappedCollection implements List<V>
+   class WrappedList extends WrappedCollection implements List<V>
    {
       WrappedList(K key, List<V> delegate, WrappedCollection ancestor)
       {
@@ -893,13 +845,13 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
       public ListIterator<V> listIterator()
       {
          refreshIfEmpty();
-         return new WrappedListIterator();
+         return new WrappedListIterator(this);
       }
 
       public ListIterator<V> listIterator(int index)
       {
          refreshIfEmpty();
-         return new WrappedListIterator(index);
+         return new WrappedListIterator(index, this);
       }
 
       public List<V> subList(int fromIndex, int toIndex)
@@ -908,59 +860,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
          return wrapList(getKey(), Platform.subList(getListDelegate(), fromIndex, toIndex), (getAncestor() == null) ? this : getAncestor());
       }
 
-      /** ListIterator decorator. */
-      private class WrappedListIterator extends WrappedIterator implements ListIterator<V>
-      {
-         WrappedListIterator()
-         {
-         }
 
-         public WrappedListIterator(int index)
-         {
-            super(getListDelegate().listIterator(index));
-         }
-
-         private ListIterator<V> getDelegateListIterator()
-         {
-            return (ListIterator<V>) getDelegateIterator();
-         }
-
-         public boolean hasPrevious()
-         {
-            return getDelegateListIterator().hasPrevious();
-         }
-
-         public V previous()
-         {
-            return getDelegateListIterator().previous();
-         }
-
-         public int nextIndex()
-         {
-            return getDelegateListIterator().nextIndex();
-         }
-
-         public int previousIndex()
-         {
-            return getDelegateListIterator().previousIndex();
-         }
-
-         public void set(V value)
-         {
-            getDelegateListIterator().set(value);
-         }
-
-         public void add(V value)
-         {
-            boolean wasEmpty = isEmpty();
-            getDelegateListIterator().add(value);
-            totalSize++;
-            if (wasEmpty)
-            {
-               addToMap();
-            }
-         }
-      }
    }
 
    /**

@@ -13,6 +13,6 @@ public class CompilerBugTest
    @Test
    public void testcompilerBug()
    {
-      AbstractMultimap.WrappedList.WrappedListIterator.class.getTypeParameters();
+      WrappedListIterator.class.getTypeParameters();
    }
 }
