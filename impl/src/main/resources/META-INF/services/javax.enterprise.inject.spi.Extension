@@ -7,3 +7,4 @@ org.jboss.weld.extensions.defaultbean.DefaultBeanExtension
 org.jboss.weld.extensions.log.LoggerExtension
 org.jboss.weld.extensions.servicehandler.ServiceHandlerExtension
 org.jboss.weld.extensions.el.ELExtension
+org.jboss.weld.extensions.resourceLoader.ResourceLoaderExtension
