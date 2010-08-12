@@ -4,16 +4,15 @@ import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
-import org.jboss.weld.extensions.util.collections.AbstractMultimap.WrappedCollection;
 
 /** Collection iterator for {@code WrappedCollection}. */
 public class WrappedIterator<K, V> implements Iterator<V>
 {
    final Iterator<V> delegateIterator;
    final Collection<V> originalDelegate;
-   private final AbstractMultimap<K, V>.WrappedCollection collection;
+   private final WrappedCollection<K, V> collection;
 
-   WrappedIterator(AbstractMultimap<K, V>.WrappedCollection collection)
+   WrappedIterator(WrappedCollection<K, V> collection)
    {
       this.collection = collection;
       delegateIterator = collection.getParent().iteratorOrListIterator(collection.delegate);
@@ -21,7 +20,7 @@ public class WrappedIterator<K, V> implements Iterator<V>
       
    }
 
-   WrappedIterator(Iterator<V> delegateIterator, WrappedCollection collection)
+   WrappedIterator(Iterator<V> delegateIterator, WrappedCollection<K, V> collection)
    {
       this.delegateIterator = delegateIterator;
       this.collection = collection;

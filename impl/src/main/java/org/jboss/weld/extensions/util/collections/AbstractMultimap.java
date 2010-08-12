@@ -17,7 +17,6 @@
 package org.jboss.weld.extensions.util.collections;
 
 import static org.jboss.weld.extensions.util.collections.Preconditions.checkArgument;
-import static org.jboss.weld.extensions.util.collections.Preconditions.checkNotNull;
 import static org.jboss.weld.extensions.util.collections.Preconditions.checkState;
 
 import java.io.Serializable;
@@ -27,10 +26,8 @@ import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.RandomAccess;
 import java.util.Set;
@@ -108,7 +105,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
     * an entry for the provided key, and if so replaces the delegate.
     */
 
-   private transient Map<K, Collection<V>> map;
+   transient Map<K, Collection<V>> map;
    transient int totalSize;
 
    /**
@@ -416,287 +413,13 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
       }
       else
       {
-         return new WrappedCollection(key, collection, null);
+         return new WrappedCollection<K, V>(this, key, collection, null);
       }
    }
 
-   private List<V> wrapList(K key, List<V> list, WrappedCollection ancestor)
+   List<V> wrapList(K key, List<V> list, WrappedCollection<K, V> ancestor)
    {
-      return (list instanceof RandomAccess) ? new RandomAccessWrappedList(key, list, ancestor) : new WrappedList(key, list, ancestor);
-   }
-
-   /**
-    * Collection decorator that stays in sync with the multimap values for a
-    * key. There are two kinds of wrapped collections: full and subcollections.
-    * Both have a delegate pointing to the underlying collection class.
-    * 
-    * <p>
-    * Full collections, identified by a null ancestor field, contain all
-    * multimap values for a given key. Its delegate is a value in
-    * {@link AbstractMultimap#map} whenever the delegate is non-empty. The
-    * {@code refreshIfEmpty}, {@code removeIfEmpty}, and {@code addToMap}
-    * methods ensure that the {@code WrappedCollection} and map remain
-    * consistent.
-    * 
-    * <p>
-    * A subcollection, such as a sublist, contains some of the values for a
-    * given key. Its ancestor field points to the full wrapped collection with
-    * all values for the key. The subcollection {@code refreshIfEmpty}, {@code
-    * removeIfEmpty}, and {@code addToMap} methods call the corresponding
-    * methods of the full wrapped collection.
-    */
-   class WrappedCollection extends AbstractCollection<V>
-   {
-      final K key;
-      Collection<V> delegate;
-      final WrappedCollection ancestor;
-      final Collection<V> ancestorDelegate;
-
-      WrappedCollection(K key, Collection<V> delegate, WrappedCollection ancestor)
-      {
-         this.key = key;
-         this.delegate = delegate;
-         this.ancestor = ancestor;
-         this.ancestorDelegate = (ancestor == null) ? null : ancestor.getDelegate();
-      }
-
-      public AbstractMultimap<K, V> getParent()
-      {
-         return AbstractMultimap.this;
-      }
-
-      /**
-       * If the delegate collection is empty, but the multimap has values for
-       * the key, replace the delegate with the new collection for the key.
-       * 
-       * <p>
-       * For a subcollection, refresh its ancestor and validate that the
-       * ancestor delegate hasn't changed.
-       */
-      void refreshIfEmpty()
-      {
-         if (ancestor != null)
-         {
-            ancestor.refreshIfEmpty();
-            if (ancestor.getDelegate() != ancestorDelegate)
-            {
-               throw new ConcurrentModificationException();
-            }
-         }
-         else if (delegate.isEmpty())
-         {
-            Collection<V> newDelegate = map.get(key);
-            if (newDelegate != null)
-            {
-               delegate = newDelegate;
-            }
-         }
-      }
-
-      /**
-       * If collection is empty, remove it from {@code map}. For subcollections,
-       * check whether the ancestor collection is empty.
-       */
-      void removeIfEmpty()
-      {
-         if (ancestor != null)
-         {
-            ancestor.removeIfEmpty();
-         }
-         else if (delegate.isEmpty())
-         {
-            map.remove(key);
-         }
-      }
-
-      K getKey()
-      {
-         return key;
-      }
-
-      /**
-       * Add the delegate to the map. Other {@code WrappedCollection} methods
-       * should call this method after adding elements to a previously empty
-       * collection.
-       * 
-       * <p>
-       * Subcollection add the ancestor's delegate instead.
-       */
-      void addToMap()
-      {
-         if (ancestor != null)
-         {
-            ancestor.addToMap();
-         }
-         else
-         {
-            map.put(key, delegate);
-         }
-      }
-
-      @Override
-      public int size()
-      {
-         refreshIfEmpty();
-         return delegate.size();
-      }
-
-      @Override
-      public boolean equals(Object object)
-      {
-         if (object == this)
-         {
-            return true;
-         }
-         refreshIfEmpty();
-         return delegate.equals(object);
-      }
-
-      @Override
-      public int hashCode()
-      {
-         refreshIfEmpty();
-         return delegate.hashCode();
-      }
-
-      @Override
-      public String toString()
-      {
-         refreshIfEmpty();
-         return delegate.toString();
-      }
-
-      Collection<V> getDelegate()
-      {
-         return delegate;
-      }
-
-      @Override
-      public Iterator<V> iterator()
-      {
-         refreshIfEmpty();
-         return new WrappedIterator(this);
-      }
-
-
-
-      @Override
-      public boolean add(V value)
-      {
-         refreshIfEmpty();
-         boolean wasEmpty = delegate.isEmpty();
-         boolean changed = delegate.add(value);
-         if (changed)
-         {
-            totalSize++;
-            if (wasEmpty)
-            {
-               addToMap();
-            }
-         }
-         return changed;
-      }
-
-      WrappedCollection getAncestor()
-      {
-         return ancestor;
-      }
-
-      // The following methods are provided for better performance.
-
-      @Override
-      public boolean addAll(Collection<? extends V> collection)
-      {
-         if (collection.isEmpty())
-         {
-            return false;
-         }
-         int oldSize = size(); // calls refreshIfEmpty
-         boolean changed = delegate.addAll(collection);
-         if (changed)
-         {
-            int newSize = delegate.size();
-            totalSize += (newSize - oldSize);
-            if (oldSize == 0)
-            {
-               addToMap();
-            }
-         }
-         return changed;
-      }
-
-      @Override
-      public boolean contains(Object o)
-      {
-         refreshIfEmpty();
-         return delegate.contains(o);
-      }
-
-      @Override
-      public boolean containsAll(Collection<?> c)
-      {
-         refreshIfEmpty();
-         return delegate.containsAll(c);
-      }
-
-      @Override
-      public void clear()
-      {
-         int oldSize = size(); // calls refreshIfEmpty
-         if (oldSize == 0)
-         {
-            return;
-         }
-         delegate.clear();
-         totalSize -= oldSize;
-         removeIfEmpty(); // maybe shouldn't be removed if this is a sublist
-      }
-
-      @Override
-      public boolean remove(Object o)
-      {
-         refreshIfEmpty();
-         boolean changed = delegate.remove(o);
-         if (changed)
-         {
-            totalSize--;
-            removeIfEmpty();
-         }
-         return changed;
-      }
-
-      @Override
-      public boolean removeAll(Collection<?> c)
-      {
-         if (c.isEmpty())
-         {
-            return false;
-         }
-         int oldSize = size(); // calls refreshIfEmpty
-         boolean changed = delegate.removeAll(c);
-         if (changed)
-         {
-            int newSize = delegate.size();
-            totalSize += (newSize - oldSize);
-            removeIfEmpty();
-         }
-         return changed;
-      }
-
-      @Override
-      public boolean retainAll(Collection<?> c)
-      {
-         checkNotNull(c);
-         int oldSize = size(); // calls refreshIfEmpty
-         boolean changed = delegate.retainAll(c);
-         if (changed)
-         {
-            int newSize = delegate.size();
-            totalSize += (newSize - oldSize);
-            removeIfEmpty();
-         }
-         return changed;
-      }
+      return (list instanceof RandomAccess) ? new RandomAccessWrappedList(key, list, ancestor) : new WrappedList<K, V>(this, key, list, ancestor);
    }
 
    Iterator<V> iteratorOrListIterator(Collection<V> collection)
@@ -705,22 +428,22 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
    }
 
    /** Set decorator that stays in sync with the multimap values for a key. */
-   private class WrappedSet extends WrappedCollection implements Set<V>
+   private class WrappedSet extends WrappedCollection<K, V> implements Set<V>
    {
       WrappedSet(K key, Set<V> delegate)
       {
-         super(key, delegate, null);
+         super(AbstractMultimap.this, key, delegate, null);
       }
    }
 
    /**
     * SortedSet decorator that stays in sync with the multimap values for a key.
     */
-   private class WrappedSortedSet extends WrappedCollection implements SortedSet<V>
+   private class WrappedSortedSet extends WrappedCollection<K, V> implements SortedSet<V>
    {
-      WrappedSortedSet(K key, SortedSet<V> delegate, WrappedCollection ancestor)
+      WrappedSortedSet(K key, SortedSet<V> delegate, WrappedCollection<K, V> ancestor)
       {
-         super(key, delegate, ancestor);
+         super(AbstractMultimap.this, key, delegate, ancestor);
       }
 
       SortedSet<V> getSortedSetDelegate()
@@ -764,114 +487,15 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V>, Serializable
       }
    }
 
-   /** List decorator that stays in sync with the multimap values for a key. */
-   class WrappedList extends WrappedCollection implements List<V>
-   {
-      WrappedList(K key, List<V> delegate, WrappedCollection ancestor)
-      {
-         super(key, delegate, ancestor);
-      }
-
-      List<V> getListDelegate()
-      {
-         return (List<V>) getDelegate();
-      }
-
-      public boolean addAll(int index, Collection<? extends V> c)
-      {
-         if (c.isEmpty())
-         {
-            return false;
-         }
-         int oldSize = size(); // calls refreshIfEmpty
-         boolean changed = getListDelegate().addAll(index, c);
-         if (changed)
-         {
-            int newSize = getDelegate().size();
-            totalSize += (newSize - oldSize);
-            if (oldSize == 0)
-            {
-               addToMap();
-            }
-         }
-         return changed;
-      }
-
-      public V get(int index)
-      {
-         refreshIfEmpty();
-         return getListDelegate().get(index);
-      }
-
-      public V set(int index, V element)
-      {
-         refreshIfEmpty();
-         return getListDelegate().set(index, element);
-      }
-
-      public void add(int index, V element)
-      {
-         refreshIfEmpty();
-         boolean wasEmpty = getDelegate().isEmpty();
-         getListDelegate().add(index, element);
-         totalSize++;
-         if (wasEmpty)
-         {
-            addToMap();
-         }
-      }
-
-      public V remove(int index)
-      {
-         refreshIfEmpty();
-         V value = getListDelegate().remove(index);
-         totalSize--;
-         removeIfEmpty();
-         return value;
-      }
-
-      public int indexOf(Object o)
-      {
-         refreshIfEmpty();
-         return getListDelegate().indexOf(o);
-      }
-
-      public int lastIndexOf(Object o)
-      {
-         refreshIfEmpty();
-         return getListDelegate().lastIndexOf(o);
-      }
-
-      public ListIterator<V> listIterator()
-      {
-         refreshIfEmpty();
-         return new WrappedListIterator(this);
-      }
-
-      public ListIterator<V> listIterator(int index)
-      {
-         refreshIfEmpty();
-         return new WrappedListIterator(index, this);
-      }
-
-      public List<V> subList(int fromIndex, int toIndex)
-      {
-         refreshIfEmpty();
-         return wrapList(getKey(), Platform.subList(getListDelegate(), fromIndex, toIndex), (getAncestor() == null) ? this : getAncestor());
-      }
-
-
-   }
-
    /**
     * List decorator that stays in sync with the multimap values for a key and
     * supports rapid random access.
     */
-   private class RandomAccessWrappedList extends WrappedList implements RandomAccess
+   private class RandomAccessWrappedList extends WrappedList<K, V> implements RandomAccess
    {
-      RandomAccessWrappedList(K key, List<V> delegate, WrappedCollection ancestor)
+      RandomAccessWrappedList(K key, List<V> delegate, WrappedCollection<K, V> ancestor)
       {
-         super(key, delegate, ancestor);
+         super(AbstractMultimap.this, key, delegate, ancestor);
       }
    }
 

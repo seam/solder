@@ -5,15 +5,15 @@ import java.util.ListIterator;
 /** ListIterator decorator. */
 public class WrappedListIterator<K, V> extends WrappedIterator<K, V> implements ListIterator<V>
 {
-   private final AbstractMultimap<K, V>.WrappedList list;
+   private final WrappedList<K, V> list;
 
-   WrappedListIterator(AbstractMultimap<K, V>.WrappedList collection)
+   WrappedListIterator(WrappedList<K, V> collection)
    {
       super(collection);
       this.list = collection;
    }
 
-   public WrappedListIterator(int index, AbstractMultimap<K, V>.WrappedList collection)
+   public WrappedListIterator(int index, WrappedList<K, V> collection)
    {
       super(collection.getListDelegate().listIterator(index), collection);
       this.list = collection;
