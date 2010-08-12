@@ -1,5 +1,6 @@
-package org.jboss.weld.extensions.util.collections;
+package org.jboss.weld.extensions.test.util.collections;
 
+import org.jboss.weld.extensions.util.collections.WrappedListIterator;
 import org.junit.Test;
 
 /**
