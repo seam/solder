@@ -44,7 +44,15 @@ public class MavenArtifactResolver
                targetPaths.add(path.substring(0, path.length() - 8));
             }
             while (localClassesMatcher.find());
-            return new File(findBuiltArtifact(targetPaths, artifactId));
+            String fileName = findBuiltArtifact(targetPaths, artifactId);
+            if (fileName == null)
+            {
+               throw new IllegalStateException("Unable to locate artifact for " + groupId + ":" + artifactId);
+            }
+            else
+            {
+               return new File(fileName);
+            }
          }
       }
       else
