@@ -126,10 +126,11 @@
 
    <profiles>
       <profile>
-         <id>embedded-tests</id>
+         <id>default</id>
          <activation>
+            <activeByDefault>true</activeByDefault>
             <property>
-               <name>!incontainer</name>
+               <name>default</name>
             </property>
          </activation>
          <dependencies>
@@ -149,8 +150,9 @@
          </dependencies>
       </profile>
       <profile>
-         <id>incontainer-tests</id>
+         <id>incontainer</id>
          <activation>
+            <activeByDefault>false</activeByDefault>
             <property>
                <name>incontainer</name>
             </property>
