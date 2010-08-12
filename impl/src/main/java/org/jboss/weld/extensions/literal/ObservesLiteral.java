@@ -31,11 +31,13 @@ public class ObservesLiteral extends AnnotationLiteral<Observes> implements Obse
    private static final long serialVersionUID = 338211360805208962L;
    private final TransactionPhase during;
    private final Reception notifyObserver;
+   private final Reception receives;
 
-   public ObservesLiteral(TransactionPhase during, Reception notifyObserver)
+   public ObservesLiteral(TransactionPhase during, Reception notifyObserver, Reception receives)
    {
       this.during = during;
       this.notifyObserver = notifyObserver;
+      this.receives = receives;
    }
 
    public TransactionPhase during()
@@ -46,6 +48,11 @@ public class ObservesLiteral extends AnnotationLiteral<Observes> implements Obse
    public Reception notifyObserver()
    {
       return notifyObserver;
+   }
+
+   public Reception receive()
+   {
+      return receives;
    }
 
 }
