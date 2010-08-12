@@ -33,7 +33,6 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.weld.extensions.resourceLoader.ResourceProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -45,7 +44,6 @@ public class ResourceLoaderTest
    {
       JavaArchive a = ShrinkWrap.create(JavaArchive.class, "test.jar");
       a.addPackage(ResourceLoaderTest.class.getPackage());
-      a.addPackage(ResourceProvider.class.getPackage());
       a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
       return a;
    }
