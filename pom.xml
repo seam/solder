@@ -166,6 +166,67 @@
       </dependencies>
    </dependencyManagement>
 
+   <build>
+      <defaultGoal>test</defaultGoal>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>generate-test-report</id>
+                  <phase>test</phase>
+                  <goals>
+                     <goal>report-only</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <outputDirectory>${project.build.directory}/surefire-reports</outputDirectory>
+               <outputName>test-report</outputName>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+               <!--
+                  Set parallel none to force a more modern JUnitCore
+                  provider that understands Suites,
+                  http://old.nabble.com/Maven-Surefire-and-newer-junit-features-td28539796.html
+               -->
+               <parallel>none</parallel>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>enforce</id>
+                  <goals>
+                     <goal>enforce</goal>
+                  </goals>
+                  <configuration>
+                     <rules>
+                        <requireMavenVersion>
+                           <version>[${minimum.maven.version},)</version>
+                        </requireMavenVersion>
+                        <requirePluginVersions>
+                           <unCheckedPlugins>
+                              <unCheckedPlugin>org.apache.maven.plugins:maven-eclipse-plugin</unCheckedPlugin>
+                              <unCheckedPlugin>org.codehaus.mojo:versions-maven-plugin</unCheckedPlugin>
+                              <unCheckedPlugin>org.apache.maven.plugins:maven-surefire-plugin</unCheckedPlugin>
+                           </unCheckedPlugins>
+                        </requirePluginVersions>
+                     </rules>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
    <profiles>
       <profile>
          <id>dist</id>
