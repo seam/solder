@@ -17,6 +17,8 @@
 
 package org.jboss.weld.extensions.test.resourceLoader;
 
+import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,9 +32,6 @@ import javax.inject.Inject;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,12 +39,9 @@ import org.junit.runner.RunWith;
 public class ResourceLoaderTest
 {
    @Deployment
-   public static Archive<?> deploy()
+   public static Archive<?> deployment()
    {
-      JavaArchive a = ShrinkWrap.create(JavaArchive.class, "test.jar");
-      a.addPackage(ResourceLoaderTest.class.getPackage());
-      a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
-      return a;
+      return baseDeployment().addPackage(ResourceLoaderTest.class.getPackage()).addResource("com/acme/foo1");
    }
 
    @Inject

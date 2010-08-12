@@ -16,13 +16,13 @@
  */
 package org.jboss.weld.extensions.test.defaultbean;
 
+import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,9 +37,9 @@ public class DefaultBeanTest
    MagneticDrive magneticDrive;
 
    @Deployment
-   public static Archive<?> deploy()
+   public static WebArchive deployment()
    {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(DefaultBeanTest.class.getPackage());
+      return baseDeployment().addPackage(DefaultBeanTest.class.getPackage());
    }
 
    @Test

@@ -16,6 +16,8 @@
  */
 package org.jboss.weld.extensions.test.servicehandler;
 
+import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+
 import javax.inject.Inject;
 
 import junit.framework.Assert;
@@ -23,8 +25,6 @@ import junit.framework.Assert;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,6 +35,12 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class ServiceHandlerTest
 {
+   
+   @Deployment
+   public static Archive<?> deployment()
+   {
+      return baseDeployment().addPackage(ServiceHandlerTest.class.getPackage());
+   }
 
    @Inject
    private HelloWorld helloWorld;
@@ -44,12 +50,6 @@ public class ServiceHandlerTest
 
    @Inject
    private DecoratedHelloWorld decoratedHelloWorld;
-
-   @Deployment
-   public static Archive<?> deploy()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(ServiceHandlerTest.class.getPackage());
-   }
 
    @Test
    public void testProxiedInterface()

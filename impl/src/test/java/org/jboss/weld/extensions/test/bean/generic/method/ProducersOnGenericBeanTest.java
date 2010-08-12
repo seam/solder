@@ -16,6 +16,7 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.method;
 
+import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -24,18 +25,17 @@ import javax.inject.Inject;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 public class ProducersOnGenericBeanTest
 {
+   
    @Deployment
-   public static Archive<?> deploy()
+   public static Archive<?> deployment()
    {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(ProducersOnGenericBeanTest.class.getPackage());
+      return baseDeployment().addPackage(ProducersOnGenericBeanTest.class.getPackage());
    }
 
    @Inject

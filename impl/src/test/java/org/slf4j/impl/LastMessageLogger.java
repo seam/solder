@@ -16,11 +16,13 @@
  */
 package org.slf4j.impl;
 
+import org.jboss.weld.extensions.core.Veto;
 import org.slf4j.helpers.MarkerIgnoringBase;
 
 /**
  * A very limited test logger which records the last info message logged
  */
+@Veto
 public class LastMessageLogger extends MarkerIgnoringBase
 {
 

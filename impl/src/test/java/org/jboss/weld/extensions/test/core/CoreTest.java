@@ -16,13 +16,13 @@
  */
 package org.jboss.weld.extensions.test.core;
 
+import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -33,15 +33,15 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class CoreTest
 {
+   
+   @Deployment
+   public static Archive<?> deployment()
+   {
+      return baseDeployment().addPackage(CoreTest.class.getPackage());
+   }
 
    @Inject
    RaceTrack raceTrack;
-
-   @Deployment
-   public static Archive<?> deploy()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar").addPackage(CoreTest.class.getPackage());
-   }
 
    @Test
    public void testExact()

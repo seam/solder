@@ -17,14 +17,13 @@
 
 package org.jboss.weld.extensions.test.log;
 
+import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.impl.LastMessageLoggerFactory;
@@ -44,12 +43,9 @@ public class LoggerInjectionTest
    Finch finch;
 
    @Deployment
-   public static Archive<?> deploy()
+   public static Archive<?> deployment()
    {
-      JavaArchive a = ShrinkWrap.create(JavaArchive.class, "test.jar");
-      a.addPackage(LoggerInjectionTest.class.getPackage());
-      a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
-      return a;
+      return baseDeployment().addPackage(LoggerInjectionTest.class.getPackage()).addPackage(LastMessageLoggerFactory.class.getPackage());
    }
 
    @Test

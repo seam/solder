@@ -16,16 +16,14 @@
  */
 package org.jboss.weld.extensions.test.managedproducer;
 
+import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.weld.extensions.managedproducer.ManagedProducerExtension;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,13 +32,9 @@ public class ManagedProducerTest
 {
 
    @Deployment
-   public static Archive<?> deploy()
+   public static Archive<?> deployment()
    {
-      JavaArchive a = ShrinkWrap.create(JavaArchive.class, "test.jar");
-      a.addPackage(ManagedProducerTest.class.getPackage());
-      a.addPackage(ManagedProducerExtension.class.getPackage());
-      a.addManifestResource(new ByteArrayAsset(new byte[0]), "beans.xml");
-      return a;
+      return baseDeployment().addPackage(ManagedProducerTest.class.getPackage());
    }
 
    @Inject

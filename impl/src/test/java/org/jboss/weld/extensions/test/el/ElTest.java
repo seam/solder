@@ -16,13 +16,13 @@
  */
 package org.jboss.weld.extensions.test.el;
 
+import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.extensions.el.Expressions;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,11 +35,9 @@ public class ElTest
    Expressions extressions;
 
    @Deployment
-   public static Archive<?> deploy()
+   public static Archive<?> deployment()
    {
-      JavaArchive a = ShrinkWrap.create(JavaArchive.class, "test.jar");
-      a.addPackage(ElTest.class.getPackage());
-      return a;
+      return baseDeployment().addPackage(ElTest.class.getPackage());
    }
 
    @Test

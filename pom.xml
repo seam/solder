@@ -129,7 +129,7 @@
 
          <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-jbossas-remote-60</artifactId>
+            <artifactId>arquillian-jbossas-remote-6</artifactId>
             <version>${arquillian.version}</version>
          </dependency>
 
