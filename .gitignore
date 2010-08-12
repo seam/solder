@@ -4,3 +4,4 @@
 target
 test-output
 impl/src/main/java/META-INF/MANIFEST.MF
+impl/transaction.log
