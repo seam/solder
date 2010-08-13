@@ -20,17 +20,14 @@ public class MavenArtifactResolver
    public static File resolve(String groupId, String artifactId)
    {
       String classPath = System.getProperty("java.class.path");
-      // first look for an artifact from the repo
-      String pathString = groupId.replace('.', File.separatorChar) + File.separatorChar + artifactId;
-      Pattern p = Pattern.compile("[^:]*" + Pattern.quote(pathString) + "[^:]*", Pattern.CASE_INSENSITIVE);
-      Matcher matches = p.matcher(classPath);
+      // first look for an artifact from the repo     
+      Matcher matches = getRepoMatcher(groupId, artifactId, classPath, File.pathSeparatorChar, File.separatorChar);
 
       if (!matches.find())
       {
          // find a resource from the local build
-         String localClasses = Pattern.quote("target" + File.separatorChar + "classes");
-         Pattern localClassesPattern = Pattern.compile("[^:]*" + localClasses + "[^:]*", Pattern.CASE_INSENSITIVE);
-         Matcher localClassesMatcher = localClassesPattern.matcher(classPath);
+         String localClasses = getLocalClassesString(File.separatorChar);
+         Matcher localClassesMatcher = getLocalClassesMatcher(classPath, localClasses, File.pathSeparatorChar);
          if (!localClassesMatcher.find())
          {
             throw new IllegalArgumentException("Unable to find maven archive " + groupId + ":" + artifactId + " in the local build");
@@ -99,5 +96,28 @@ public class MavenArtifactResolver
          }
       }
       return null;
+   }
+   
+   public static Matcher getRepoMatcher(String groupId, String artifactId, String classPath, char pathSeparator, char fileSeparator)
+   {
+      String pathString = getPathString(groupId, artifactId, File.separatorChar);
+      Pattern p = Pattern.compile("[^:]*" + Pattern.quote(pathString) + "[^:]*", Pattern.CASE_INSENSITIVE);
+      return p.matcher(classPath);
+   }
+   
+   public static Matcher getLocalClassesMatcher(String classPath, String localClasses, char pathSeparator)
+   {
+      Pattern p = Pattern.compile("[^" + pathSeparator + "]*" + localClasses + "[^" + pathSeparator + "]*", Pattern.CASE_INSENSITIVE);
+      return p.matcher(classPath);
+   }
+   
+   public static String getPathString(String groupId, String artifactId, char fileSeparator)
+   {
+      return groupId.replace('.', fileSeparator) + fileSeparator + artifactId;
+   }
+   
+   public static String getLocalClassesString(char fileSeparator)
+   {
+      return Pattern.quote("target" + fileSeparator + "classes");
    }
 }
