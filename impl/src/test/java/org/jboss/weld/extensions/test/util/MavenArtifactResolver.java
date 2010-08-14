@@ -1,9 +1,7 @@
 package org.jboss.weld.extensions.test.util;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,105 +17,148 @@ public class MavenArtifactResolver
 
    public static File resolve(String groupId, String artifactId)
    {
-      String classPath = System.getProperty("java.class.path");
-      // first look for an artifact from the repo     
-      Matcher matches = getRepoMatcher(groupId, artifactId, classPath, File.pathSeparatorChar, File.separatorChar);
-
-      if (!matches.find())
+      if (groupId == null)
       {
-         // find a resource from the local build
-         String localClasses = getLocalClassesString(File.separatorChar);
-         Matcher localClassesMatcher = getLocalClassesMatcher(classPath, localClasses, File.pathSeparatorChar);
-         if (!localClassesMatcher.find())
-         {
-            throw new IllegalArgumentException("Unable to find maven archive " + groupId + ":" + artifactId + " in the local build");
-         }
-         else
-         {
-            List<String> targetPaths = new ArrayList<String>();
-            do
-            {
-               String path = localClassesMatcher.group();
-               targetPaths.add(path.substring(0, path.length() - 8));
-            }
-            while (localClassesMatcher.find());
-            String fileName = findBuiltArtifact(targetPaths, artifactId);
-            if (fileName == null)
-            {
-               throw new IllegalStateException("Unable to locate artifact for " + groupId + ":" + artifactId);
-            }
-            else
-            {
-               return new File(fileName);
-            }
-         }
+         throw new IllegalArgumentException("groupId cannot be null");
       }
-      else
+      if (artifactId == null)
       {
-         return new File(matches.group(0));
+         throw new IllegalArgumentException("artifactId cannot be null");
       }
+      String path = new MavenArtifactResolver(groupId.trim(), artifactId.trim(), System.getProperty("java.class.path"), File.pathSeparatorChar, File.separatorChar).resolve();
+      if (path == null)
+      {
+         throw new IllegalArgumentException("Cannot locate artifact for " + groupId + ":" + artifactId);
+      }
+      return new File(path);
    }
 
    public static File resolve(String qualifiedArtifactId)
    {
       String[] segments = qualifiedArtifactId.split(":");
-      return resolve(segments[0], segments[1]);
+      if (segments.length == 2)
+      {
+         return resolve(segments[0], segments[1]);
+      }
+      else
+      {
+         throw new IllegalArgumentException("Unable to parse " + qualifiedArtifactId + " as a groupId:artifactId");
+      }
    }
    
-   public static String findBuiltArtifact(List<String> targetPaths, String artifactId)
+   private final String classPathSeparatorRegex;
+   private final char fileSeparator;
+   private final String groupId;
+   private final String artifactId;
+   private final String classPath;
+
+   MavenArtifactResolver(String groupId, String artifactId, String classPath, char pathSeparator, char fileSeparator)
    {
-      final String regex = "^" + artifactId + "-[\\d+\\.]+(?:\\-\\p{Upper}*)?.jar$";
-      for (String targetPath : targetPaths)
+      this.groupId = groupId;
+      this.artifactId = artifactId;
+      this.classPath = classPath;
+      this.classPathSeparatorRegex = "[^" + pathSeparator + "]*";
+      this.fileSeparator = fileSeparator;
+   }
+   
+   String resolve()
+   {
+      Matcher matches = createFullyQualifiedMatcher();
+      if (!matches.find())
       {
-         File target = new File(targetPath);
+         matches = createUnqualifiedMatcher();
+         if (!matches.find())
+         {
+            matches = createTargetClassesMatcher();
+            if (!matches.find())
+            {
+               return null;
+            }
+            else
+            {
+               String fileName = scanForArtifact(matches);
+               if (fileName == null)
+               {
+                  return null;
+               }
+               else
+               {
+                  return fileName;
+               }
+            }
+         }
+      }
+      return matches.group(0);
+   }
+
+   private String scanForArtifact(Matcher targetClassesMatcher)
+   {
+      // Locate all target/classes in classpath and store the path to all files target/
+      List<String> paths = new ArrayList<String>();
+      do
+      {
+         String path = targetClassesMatcher.group();
+         File target = new File(path.substring(0, path.length() - 8));
          if (target.exists())
          {
             if (!target.isDirectory())
             {
                throw new IllegalStateException("Found ${project.dir}/target/ but it is not a directory!");
             }
-            String[] possibleFiles = target.list(new FilenameFilter()
+            for (File file : target.listFiles())
             {
-               
-               public boolean accept(File dir, String name)
-               {
-                  return name.matches(regex);
-               }
-               
-            });
-            if (possibleFiles.length == 1)
-            {
-               return "target" + File.separatorChar + possibleFiles[0];
+               paths.add(file.getPath());
             }
-            if (possibleFiles.length > 0)
-            {
-               throw new IllegalStateException("Found multiple matching files " + Arrays.asList(possibleFiles) + " for " + artifactId + " not sure which one to choose");
-            }
+         }
+      }
+      while (targetClassesMatcher.find());
+      return scanForArtifact(paths);
+   }
+   
+   String scanForArtifact(List<String> paths)
+   {
+      Pattern pattern = Pattern.compile(artifactId + "-[\\d+\\.]+(?:[\\-\\.]\\p{Alpha}*)?.jar$");
+      for (String path : paths)
+      {
+         if (pattern.matcher(path).find())
+         {
+            return path;
          }
       }
       return null;
    }
-   
-   public static Matcher getRepoMatcher(String groupId, String artifactId, String classPath, char pathSeparator, char fileSeparator)
+
+   /**
+    * Creates a matcher that returns any fully qualified matches of the form
+    * <code>com/acme/acme-core/1.0/acme-core-1.0.jar</code>. This will match
+    * artifacts on the classpath from the Maven repo.
+    */
+   private Matcher createFullyQualifiedMatcher()
    {
-      String pathString = getPathString(groupId, artifactId, File.separatorChar);
-      Pattern p = Pattern.compile("[^:]*" + Pattern.quote(pathString) + "[^:]*", Pattern.CASE_INSENSITIVE);
+      String pathString = groupId.replace('.', fileSeparator) + fileSeparator + artifactId;
+      Pattern p = Pattern.compile(classPathSeparatorRegex + Pattern.quote(pathString) + classPathSeparatorRegex, Pattern.CASE_INSENSITIVE);
       return p.matcher(classPath);
    }
-   
-   public static Matcher getLocalClassesMatcher(String classPath, String localClasses, char pathSeparator)
+
+   /**
+    * Creates a matcher that returns any unqualified matches of the form
+    * <code>target/acme-foo-1.0.jar</code>. This will match artifacts on the
+    * classpath from the reactor.
+    */
+   private Matcher createUnqualifiedMatcher()
    {
-      Pattern p = Pattern.compile("[^" + pathSeparator + "]*" + localClasses + "[^" + pathSeparator + "]*", Pattern.CASE_INSENSITIVE);
+      Pattern p = Pattern.compile(classPathSeparatorRegex + Pattern.quote("target" + fileSeparator + artifactId) + classPathSeparatorRegex, Pattern.CASE_INSENSITIVE);
       return p.matcher(classPath);
    }
-   
-   public static String getPathString(String groupId, String artifactId, char fileSeparator)
+
+   /**
+    * Creates a matcher that returns any unqualified matches of the form
+    * <code>target/acme-foo-1.0.jar</code>. This locates all 
+    * 
+    */
+   private Matcher createTargetClassesMatcher()
    {
-      return groupId.replace('.', fileSeparator) + fileSeparator + artifactId;
-   }
-   
-   public static String getLocalClassesString(char fileSeparator)
-   {
-      return Pattern.quote("target" + fileSeparator + "classes");
+      Pattern p = Pattern.compile(classPathSeparatorRegex + Pattern.quote("target" + fileSeparator + "classes") + classPathSeparatorRegex, Pattern.CASE_INSENSITIVE);
+      return p.matcher(classPath);
    }
 }
