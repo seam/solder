@@ -40,7 +40,7 @@
   
     <para>
       Once you have created the <literal>PropertyQuery</literal> instance, you can add search criteria.  Weld extensions
-      provides three built-in criteria types, and it is very easy to add your own.  Criteria is added to a query via the
+      provides three built-in criteria types, and it is very easy to add your own.  A criteria is added to a query via the
       <literal>addCriteria()</literal> method.  This method returns an instance of the <literal>PropertyQuery</literal>,
       so multiple <literal>addCriteria()</literal> invocations can be stacked.
     </para>    
