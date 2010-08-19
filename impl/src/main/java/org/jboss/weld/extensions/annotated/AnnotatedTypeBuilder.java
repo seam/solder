@@ -461,7 +461,7 @@ public class AnnotatedTypeBuilder<X>
          }
       }
 
-      for (Field field : Reflections.getAllFields(underlyingType))
+      for (Field field : Reflections.getAllDeclaredFields(underlyingType))
       {
          AnnotationBuilder annotationBuilder = fields.get(field);
          if (annotationBuilder == null)
@@ -479,7 +479,7 @@ public class AnnotatedTypeBuilder<X>
          }
       }
 
-      for (Method method : Reflections.getAllMethods(underlyingType))
+      for (Method method : Reflections.getAllDeclaredMethods(underlyingType))
       {
          AnnotationBuilder annotationBuilder = methods.get(method);
          if (annotationBuilder == null)

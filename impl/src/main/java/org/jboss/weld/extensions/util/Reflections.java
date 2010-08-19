@@ -41,9 +41,9 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class Reflections
 {
-   
+
    public static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
-   
+
    public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
    private Reflections()
@@ -57,7 +57,7 @@ public class Reflections
     * @param clazz The class to search
     * @return the set of all declared fields or an empty set if there are none
     */
-   public static Set<Field> getAllFields(Class<?> clazz)
+   public static Set<Field> getAllDeclaredFields(Class<?> clazz)
    {
       HashSet<Field> fields = new HashSet<Field>();
       for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
@@ -79,7 +79,7 @@ public class Reflections
     * @param name The name of the field to search for
     * @return The field found, or null if no field is found
     */
-   public static Field getField(Class<?> clazz, String name)
+   public static Field findDeclaredField(Class<?> clazz, String name)
    {
       for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
@@ -187,7 +187,7 @@ public class Reflections
     * @param clazz The class to search
     * @return the set of all declared methods or an empty set if there are none
     */
-   public static Set<Method> getAllMethods(Class<?> clazz)
+   public static Set<Method> getAllDeclaredMethods(Class<?> clazz)
    {
       HashSet<Method> methods = new HashSet<Method>();
       for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
@@ -210,7 +210,7 @@ public class Reflections
     * @param args The arguments of the method to search for
     * @return The method found, or null if no method is found
     */
-   public static Method getMethod(Class<?> clazz, String name, Class<?>... args)
+   public static Method findDeclaredMethod(Class<?> clazz, String name, Class<?>... args)
    {
       for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
@@ -235,7 +235,7 @@ public class Reflections
     * @param args The arguments of the constructor to search for
     * @return The constructor found, or null if no constructor is found
     */
-   public static Constructor<?> getConstructor(Class<?> clazz, Class<?>... args)
+   public static Constructor<?> findDeclaredConstructor(Class<?> clazz, Class<?>... args)
    {
       for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
       {
@@ -259,7 +259,7 @@ public class Reflections
     * @return the set of all declared constructors or an empty set if there are
     *         none
     */
-   public static Set<Constructor<?>> getAllConstructors(Class<?> clazz)
+   public static Set<Constructor<?>> getAllDeclaredConstructors(Class<?> clazz)
    {
       HashSet<Constructor<?>> constructors = new HashSet<Constructor<?>>();
       for (Class<?> c = clazz; c != null && c != Object.class; c = c.getSuperclass())
@@ -321,6 +321,7 @@ public class Reflections
          return Class.forName(name);
       }
    }
+
    private static String buildInvokeMethodErrorMessage(Method method, Object obj, Object... args)
    {
       StringBuilder message = new StringBuilder(String.format("Exception invoking method [%s] on object [%s], using arguments [", method.getName(), obj));
@@ -330,12 +331,17 @@ public class Reflections
       message.append("]");
       return message.toString();
    }
-   
+
    public static Object invokeMethod(Method method, Object instance, Object... args)
+   {
+      return invokeMethod(method, Object.class, instance, args);
+   }
+   
+   public static <T> T invokeMethod(Method method, Class<T> expectedReturnType, Object instance, Object... args)
    {
       try
       {
-         return method.invoke(instance, args);
+         return expectedReturnType.cast(method.invoke(instance, args));
       }
       catch (IllegalAccessException ex)
       {
@@ -360,7 +366,7 @@ public class Reflections
          throw new RuntimeException(buildInvokeMethodErrorMessage(method, instance, args), e);
       }
    }
-   
+
    public static void setFieldValue(Field field, Object instance, Object value)
    {
       field.setAccessible(true);
@@ -379,15 +385,20 @@ public class Reflections
          throw ex2;
       }
    }
-   
+
    private static String buildSetFieldValueErrorMessage(Field field, Object obj, Object value)
    {
       return String.format("Exception setting [%s] field on object [%s] to value [%s]", field.getName(), obj, value);
    }
-   
+
    private static String buildGetFieldValueErrorMessage(Field field, Object obj)
    {
       return String.format("Exception reading [%s] field from object [%s].", field.getName(), obj);
+   }
+
+   public static Object getFieldValue(Field field, Object instance)
+   {
+      return getFieldValue(field, instance, Object.class);
    }
    
    public static <T> T getFieldValue(Field field, Object instance, Class<T> expectedType)
@@ -409,7 +420,7 @@ public class Reflections
       }
 
    }
-   
+
    @SuppressWarnings("unchecked")
    public static <T> Class<T> getRawType(Type type)
    {
@@ -426,7 +437,7 @@ public class Reflections
       }
       return null;
    }
-   
+
    /**
     * Check if a class is serializable.
     * 

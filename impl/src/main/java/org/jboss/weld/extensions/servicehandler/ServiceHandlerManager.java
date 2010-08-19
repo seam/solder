@@ -77,7 +77,7 @@ class ServiceHandlerManager<T>
    private static Method getHandlerMethod(Class<?> handlerClass)
    {
       //search for the handler method
-      for (Method m : Reflections.getAllMethods(handlerClass))
+      for (Method m : Reflections.getAllDeclaredMethods(handlerClass))
       {
          if (m.isAnnotationPresent(AroundInvoke.class))
          {
