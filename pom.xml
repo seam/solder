@@ -9,7 +9,7 @@
    <parent>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-parent</artifactId>
-      <version>15</version>
+      <version>17</version>
    </parent>
 
    <name>Weld Extensions Parent</name>
@@ -63,8 +63,9 @@
    </ciManagement>
 
    <properties>
-      <weld.api.version>1.1-SNAPSHOT</weld.api.version>
-      <weld.core.version>1.1.0-SNAPSHOT</weld.core.version>
+      <weld.api.version>1.0-SP1</weld.api.version>
+      <weld.core.version>1.0.1-SP4</weld.core.version>
+      <javassist.version>3.13.0-GA</javassist.version>
       <slf4j.version>1.5.10</slf4j.version>
       <testng.version>5.12.1</testng.version>
       <jboss.test.harness.version>1.1.0-CR3</jboss.test.harness.version>
@@ -138,13 +139,13 @@
             <artifactId>arquillian-jbossas-managed-6</artifactId>
             <version>${arquillian.version}</version>
          </dependency>
-         
+
          <dependency>
             <groupId>org.jboss.jbossas</groupId>
             <artifactId>jboss-server-manager</artifactId>
             <version>${jbossas.server.manager.version}</version>
          </dependency>
-         
+
          <dependency>
             <groupId>org.jboss.jbossas</groupId>
             <artifactId>jboss-as-client</artifactId>
@@ -162,6 +163,12 @@
             <groupId>el-impl</groupId>
             <artifactId>el-impl</artifactId>
             <version>${elimpl.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>${javassist.version}</version>
          </dependency>
       </dependencies>
    </dependencyManagement>
