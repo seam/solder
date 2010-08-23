@@ -4,9 +4,73 @@
 <chapter id="annotationutilities">
   <title>Annotation Utilities</title>
 
-  <section>
+<section>
+   <title>Annotated Type Builder</title>
+   <para>Weld extensions provides an <literal>AnnotatedType</literal> implementation. You can use it as follows:
+   </para>
+   <programlisting role="java" >
+AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder();
+//readFromType can read from an AnnotatedType or a class
+builder.readFromType(baseType,true);
+//add the @Model annotation
+builder.addToClass(ModelLiteral.INSTANCE);
+AnnotatedType type = builder.create();
+   </programlisting>
+      <para>
+         For more information see the API docs.
+      </para>
+   </section>    
+   <section>
+      <title>Annotation Instance Provider</title>
+      <para>
+         Weld Extensions provides an <literal>AnnotationInstanceProvider</literal> class that can create a given 
+         <literal>AnnotationLiteral</literal> instance at runtime. Annotation members are passed in via a 
+         <literal>Map&lt;String,Object&gt;</literal>. For example given the follow annotation:
+      </para>
+<programlisting role="java">
+<![CDATA[
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MultipleMembers
+{
+   int intMember();
 
-  
-  </section>
+   long longMember();
+
+   short shortMember();
+
+   float floatMember();
+
+   double doubleMember();
+
+   byte byteMember();
+
+   char charMember();
+
+   boolean booleanMember();
+
+   int[] intArrayMember();
+}
+]]>
+</programlisting>
+      <para>
+         We can create an <literal>AnnotationLiteral</literal> instance as follows:
+      </para>
+<programlisting role="java">
+<![CDATA[
+AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
+Map<String, Object> values = new HashMap<String, Object>();
+values.put("intMember", 1);
+values.put("longMember", 1);
+values.put("shortMember", 1);
+values.put("floatMember", 0);
+values.put("doubleMember", 0);
+values.put("byteMember", ((byte) 1));
+values.put("charMember", 'c');
+values.put("booleanMember", true);
+values.put("intArrayMember", new int[] { 0, 1 });
+MultipleMembers an = provider.get(MultipleMembers.class, values);
+]]>
+</programlisting>
+   </section>
     
 </chapter>

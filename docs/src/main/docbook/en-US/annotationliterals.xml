@@ -3,10 +3,13 @@
 
 <chapter id="annotationliterals">
   <title>Annotation Literals</title>
-
-  <section>
-
-  
-  </section>
-    
+<section>
+      <title>Summary</title>
+      <para>
+         Weld extensions provides a complete set of <literal>AnnotationLiteral</literal>s for every annotation type 
+         defined by the JSR-299 and JSR-330 specification. These are located in the 
+         <literal>org.jboss.weld.extensions.literal</literal> package. Annotations without members provide a static 
+         <literal>INSTANCE</literal> member that should be used rather than creating a new instance every time.
+      </para>
+   </section>
 </chapter>

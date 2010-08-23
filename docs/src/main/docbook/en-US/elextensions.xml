@@ -3,10 +3,25 @@
 
 <chapter id="elextensions">
   <title>EL Extensions</title>
-
-  <section>
-
+<section >
+      <title>Evaluating EL Expressions</title>
+      <para>Weld extensions provides a method to evaluate EL that is not dependent on JSF. To use it 
+      inject the <literal>org.jboss.weld.extensions.el.Expressions</literal> into your bean.</para>
+      <para>The <literal>Expressions</literal> class provides several methods for evaluating an EL expressions.</para>
+<programlisting role="java">
+public class ElBean
+{
+  @Inject Expressions expressions;
   
-  </section>
-    
+  public void runEl()
+  {
+   String fruitName = expressions.evaluateValueExpression("#{fruitBowl.fruitName}",String.class);
+   Apple fruit = (Apple)expressions.invokeMethodExpression("#{fruitBown.getFruit}");
+  }
+}
+</programlisting>      
+    <para>
+      For more information see the API docs.
+    </para>  
+   </section>
 </chapter>

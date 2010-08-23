@@ -5,7 +5,24 @@
   <title>Logging Extension</title>
 
   <section>
-
+    <title>Summary</title>
+    <para>
+         Weld extensions provides a <literal>org.slf4j.Logger</literal> bean that can be injected directly into your beans. An optional
+         <literal>Category</literal> annotation can be applied to the injection point to set the loggers category.      
+     </para>
+<programlisting role="java">
+public class PingService
+{
+   //equivalent to LoggerFactory.getLogger(PingService.class)
+   @Inject
+   Logger log;
+   
+   //equivalent to LoggerFactory.getLogger("Network")
+   @Inject
+   @Category("Network")
+   Logger log2;
+}
+</programlisting>
   
   </section>
     

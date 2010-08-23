@@ -21,6 +21,7 @@
     <xi:include href="managedproducer.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
     <xi:include href="logging.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
     <xi:include href="defaultbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <xi:include href="servicehandler.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <toc/>
 </book>

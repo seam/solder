@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="servicehandler">
+  <title>Service Handler</title>
+    <section>
+      <title>Service Handlers</title>
+      <para>Service handler allow you to declare interfaces and abstract classes as beans with the <literal>@ServiceHandler</literal> 
+      meta annotation. This is best illustrated with an example:</para>
+      <programlisting role="java" >
+@ServiceHandler(QueryHandler.class)
+@Retention(RUNTIME)
+@Target({TYPE})
+public @interface QueryService
+{
+   
+}         
+
+@Retention(RUNTIME)
+@Target({METHOD})
+public @interface Query
+{
+   public String value();
+}         
+
+public class QueryHandler
+{
+  @Inject EntityManager em;
+  
+  @AroundInvoke
+  public Object handle(InvocationContext ctx)
+  {
+    return em.createQuery(ctx.getMethod().getAnnotation(Query.class).value()).getResultList();
+  }
+}
+
+@QueryService
+public interface UserQuery
+{
+  @Query("select u from User u");
+  public List&lt;User&gt; getAllUsers();
+}
+
+public class UserListManager
+{
+  @Inject 
+  UserQuery userQuery;
+  
+  List&lt;User&gt; users;
+   
+  @Inject
+  public void create()
+  {
+      users=userQuery.getAllUsers();
+  }
+  
+ 
+}
+</programlisting>
+      <para>
+         The <literal>@ServiceHandler(QueryHandler.class)</literal> annotation on the<literal>@QueryService</literal> annotation tells weld
+         to automatically implement any abstract classes or interfaces that are annotated with <literal>@QueryService</literal>, and pass
+         any calls to abstract methods to the <literal>QueryHandler</literal> class. 
+      </para>
+      <para>   
+         The <literal>QueryHandler</literal> class works in a similar method to an intercepter. It must have an <literal>@AroundInvoke</literal> 
+         method that returns and object and takes an <literal>InvocationContext</literal> as a parameter.
+      </para>
+      <para>
+         Injection is available into the handler class, however the handler is not a proper bean, so observer methods and producer fields
+         and methods will not work.
+      </para>
+      <note>
+        <para>Do not call <literal>InvocationContext.proceed()</literal> as there is no method to proceed to.</para>
+      </note>
+   </section>
+</chapter>
