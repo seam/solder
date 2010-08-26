@@ -35,7 +35,6 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
 
 import org.jboss.weld.extensions.bean.BeanBuilder;
-import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +66,7 @@ public class DefaultBeanExtension implements Extension
     */
    private void addDefaultBean(Class<?> type, Bean<?> bean)
    {
-      defaultBeans.add(new DefaultBeanDefinition(type, Collections.singleton(DefaultLiteral.INSTANCE), bean));
+      defaultBeans.add(new DefaultBeanDefinition(type, bean.getQualifiers(), bean));
    }
 
    <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
