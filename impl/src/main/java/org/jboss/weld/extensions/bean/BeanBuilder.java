@@ -31,6 +31,7 @@ import javax.enterprise.inject.spi.InjectionTarget;
 import javax.inject.Named;
 
 import org.jboss.weld.extensions.annotated.Annotateds;
+import org.jboss.weld.extensions.literal.AnyLiteral;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
 
 /**
@@ -119,6 +120,7 @@ public class BeanBuilder<T>
       {
          qualifiers.add(DefaultLiteral.INSTANCE);
       }
+      qualifiers.add(AnyLiteral.INSTANCE);
       this.id = BeanImpl.class.getName() + ":" + Annotateds.createTypeId(type);
       return this;
    }
