@@ -63,8 +63,8 @@
    </ciManagement>
 
    <properties>
-      <weld.api.version>1.0-SP1</weld.api.version>
-      <weld.core.version>1.0.1-SP4</weld.core.version>
+      <weld.api.version>1.1.Beta1</weld.api.version>
+      <weld.core.version>1.1.0.Beta1</weld.core.version>
       <javassist.version>3.13.0-GA</javassist.version>
       <slf4j.version>1.5.10</slf4j.version>
       <testng.version>5.12.1</testng.version>
@@ -123,9 +123,9 @@
          </dependency>
 
          <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
+            <groupId>org.jboss.weld.arquillian.container</groupId>
             <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-            <version>${arquillian.version}</version>
+            <version>${weld.core.version}</version>
          </dependency>
 
          <dependency>
