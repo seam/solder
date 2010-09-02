@@ -51,7 +51,7 @@ class ServiceHandlerExtension implements Extension
             BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
             builder.defineBeanFromAnnotatedType(event.getAnnotatedType());
             builder.setBeanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
-            builder.setToString("Generated @ServiceHandler for [" + builder.getJavaClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
+            builder.setToString("Generated @ServiceHandler for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
             beans.add(builder.create());
          }
          catch (IllegalArgumentException e)

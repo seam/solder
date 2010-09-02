@@ -45,7 +45,7 @@ public class BeanBuilder<T>
 
    private final BeanManager beanManager;
    
-   private Class<? extends T> javaClass;
+   private Class<?> beanClass;
    private String name;
    private Set<Annotation> qualifiers;
    private Class<? extends Annotation> scope;
@@ -66,7 +66,7 @@ public class BeanBuilder<T>
 
    public BeanBuilder<T> defineBeanFromAnnotatedType(AnnotatedType<T> type)
    {
-      this.javaClass = type.getJavaClass();
+      this.beanClass = type.getJavaClass();
       InjectionTarget<T> injectionTarget;
       if (!type.getJavaClass().isInterface())
       {
@@ -129,9 +129,9 @@ public class BeanBuilder<T>
    {
       if (!passivationCapable)
       {
-         return new BeanImpl<T>(javaClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle, toString);
+         return new BeanImpl<T>(beanClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle, toString);
       }
-      return new PassivationCapableBeanImpl<T>(id, javaClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle, toString);
+      return new PassivationCapableBeanImpl<T>(id, beanClass, name, qualifiers, scope, stereotypes, types, alternative, nullable, injectionPoints, beanLifecycle, toString);
    }
 
    public Set<Annotation> getQualifiers()
@@ -211,14 +211,14 @@ public class BeanBuilder<T>
       return this;
    }
 
-   public Class<? extends T> getJavaClass()
+   public Class<?> getBeanClass()
    {
-      return javaClass;
+      return beanClass;
    }
    
-   public BeanBuilder<T> setJavaClass(Class<? extends T> javaClass)
+   public BeanBuilder<T> setBeanClass(Class<?> beanClass)
    {
-      this.javaClass = javaClass;
+      this.beanClass = beanClass;
       return this;
    }
 
