@@ -76,11 +76,6 @@ public class BeanManagerAware
    {
       if (beanManager == null)
       {
-         if (beanManagerProviders.isEmpty())
-         {
-            loadServices();
-            Collections.sort(beanManagerProviders, new Sortable.Comparator());
-         }
          beanManager = lookupBeanManager();
       }
       if (beanManager == null)
@@ -88,6 +83,18 @@ public class BeanManagerAware
          throw new IllegalStateException("Could not locate a BeanManager from the providers " + providersToString());
       }
       return beanManager;
+   }
+   
+   protected boolean isBeanManagerAvailable()
+   {
+      if (beanManager == null)
+      {
+         return lookupBeanManager() != null;
+      }
+      else
+      {
+         return true;
+      }
    }
 
    private String providersToString()
@@ -112,6 +119,11 @@ public class BeanManagerAware
    private BeanManager lookupBeanManager()
    {
       BeanManager beanManager = null;
+      if (beanManagerProviders.isEmpty())
+      {
+         loadServices();
+         Collections.sort(beanManagerProviders, new Sortable.Comparator());
+      }
       for (BeanManagerProvider provider : beanManagerProviders)
       {
          beanManager = provider.getBeanManager();
