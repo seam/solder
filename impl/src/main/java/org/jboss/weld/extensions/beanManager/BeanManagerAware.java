@@ -53,6 +53,9 @@ import org.jboss.weld.extensions.util.service.ServiceLoader;
  */
 public class BeanManagerAware
 {
+   
+   // This might be a managed bean, so try for injection
+   @Inject
    private BeanManager beanManager;
 
    private final List<BeanManagerProvider> beanManagerProviders = new ArrayList<BeanManagerProvider>();
