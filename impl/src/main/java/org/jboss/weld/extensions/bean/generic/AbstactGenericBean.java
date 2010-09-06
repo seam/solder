@@ -1,6 +1,7 @@
 package org.jboss.weld.extensions.bean.generic;
 
 import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.enterprise.inject.spi.Bean;
@@ -25,7 +26,16 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T>
    {
       this.delegate = delegate;
       this.beanManager = beanManager;
-      this.qualifiers = qualifiers;
+      this.qualifiers = new HashSet<Annotation>();
+      for (Annotation qualifier : qualifiers)
+      {
+         // Don't add the GenericMarker qualifier, this is a pseudo qualifier,
+         // used to remove declared qualifiers
+         if (!qualifier.annotationType().equals(GenericMarker.class))
+         {
+            this.qualifiers.add(qualifier);
+         }
+      }
    }
    
    protected BeanManager getBeanManager()

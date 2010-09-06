@@ -25,12 +25,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.Annotated;
@@ -297,6 +298,15 @@ class GenericBeanExtension implements Extension
                }
             }
 
+         });
+         builder.redefine(Produces.class, new AnnotationRedefiner<Produces>() {
+            
+            public void redefine(RedefinitionContext<Produces> ctx)
+            {
+               // Add the marker qualifier
+               ctx.getAnnotationBuilder().add(GenericMarkerLiteral.INSTANCE);
+            }
+            
          });
          event.setAnnotatedType(builder.create());
       }
