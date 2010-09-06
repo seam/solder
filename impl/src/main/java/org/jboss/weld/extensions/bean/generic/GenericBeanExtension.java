@@ -316,10 +316,7 @@ class GenericBeanExtension implements Extension
       AnnotatedType<X> declaringType = event.getAnnotatedProducerMethod().getDeclaringType();
       if (declaringType.isAnnotationPresent(Generic.class))
       {
-         AnnotatedMethod<X> method = event.getAnnotatedProducerMethod();
          genericBeanProducerMethods.put(declaringType.getAnnotation(Generic.class).value(), getProducerMethodHolder(event));
-
-         //         
       }
       else if (getGenericConfiguration(event.getAnnotated()) != null)
       {
