@@ -52,6 +52,8 @@ import javax.enterprise.context.Dependent;
  * <li>Only field injection is supported for generic configuration annotations,
  * and @GenericBean</li>
  * <li>The user of parameterized types for generic beans is not supported</li>
+ * <li>The user of the qualifier @Default is not supported (you must declare a
+ * qualifier at the generic bean definition point).</li>
  * <ul>
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
