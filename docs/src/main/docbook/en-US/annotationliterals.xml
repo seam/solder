@@ -11,5 +11,30 @@
          <literal>org.jboss.weld.extensions.literal</literal> package. Annotations without members provide a static 
          <literal>INSTANCE</literal> member that should be used rather than creating a new instance every time.
       </para>
+      <para>Literals are provided for the following annotations:</para>
+      <simplelist>
+      <member><literal>@Alternative</literal></member>
+      <member><literal>@Any</literal></member>
+      <member><literal>@ApplicationScoped</literal></member>
+      <member><literal>@ConversationScoped</literal></member>
+      <member><literal>@Decorator</literal></member>
+      <member><literal>@Default</literal></member>
+      <member><literal>@Delegate</literal></member>
+      <member><literal>@Dependent</literal></member>
+      <member><literal>@Disposes</literal></member>
+      <member><literal>@Inject</literal></member>
+      <member><literal>@Model</literal></member>
+      <member><literal>@Named</literal></member>
+      <member><literal>@New</literal></member>
+      <member><literal>@NonBinding</literal></member>
+      <member><literal>@NormalScope</literal></member>
+      <member><literal>@Observes</literal></member>
+      <member><literal>@Produces</literal></member>
+      <member><literal>@RequestScoped</literal></member>
+      <member><literal>@SessionScoped</literal></member>
+      <member><literal>@Specializes</literal></member>
+      <member><literal>@Stereotype</literal></member>
+      <member><literal>@Typed</literal></member>
+      </simplelist>
    </section>
 </chapter>

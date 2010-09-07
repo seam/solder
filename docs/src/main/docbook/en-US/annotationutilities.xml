@@ -6,7 +6,9 @@
 
 <section>
    <title>Annotated Type Builder</title>
-   <para>Weld extensions provides an <literal>AnnotatedType</literal> implementation. You can use it as follows:
+   <para>Weld extensions provides an <literal>AnnotatedType</literal> implementation that should be suitable for most 
+   portable extensions needs. The <literal>AnnotatedType</literal> is created from <literal>AnnotatedTypeBuilder</literal> 
+   as follows:
    </para>
    <programlisting role="java" >
 AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder();
@@ -23,9 +25,10 @@ AnnotatedType type = builder.create();
    <section>
       <title>Annotation Instance Provider</title>
       <para>
-         Weld Extensions provides an <literal>AnnotationInstanceProvider</literal> class that can create a given 
-         <literal>AnnotationLiteral</literal> instance at runtime. Annotation members are passed in via a 
-         <literal>Map&lt;String,Object&gt;</literal>. For example given the follow annotation:
+         Sometimes you may need a literal for an arbitary annotation that is not availible at compile time.
+         Weld extends provides a <literal>AnnotationInstanceProvider</literal> class that can create an 
+         <literal>AnnotationLiteral</literal> instance for any annotation at runtime. Annotation members 
+         are passed in via a <literal>Map&lt;String,Object&gt;</literal>. For example given the follow annotation:
       </para>
 <programlisting role="java">
 <![CDATA[

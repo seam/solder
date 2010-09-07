@@ -8,7 +8,7 @@
       <para>
          Managed producer methods allow you to create injectable objects that have lifecycles that do not exactly match one of the existing scopes.
          Instead these objects lifecycles are managed by a bean, and changes to the object in the manager are immediately visible to all 
-         clients.  
+         clients. 
       </para>
       <para>
          You can declare a method to be a managed producer with the <literal>@ManagedProducer</literal> annotation. The return type of the 
