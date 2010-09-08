@@ -418,6 +418,7 @@ class GenericBeanExtension implements Extension
 
          // Register the GenericProduct bean
          event.addBean(createGenericProductBean(beanManager, genericConfiguration));
+         event.addBean(createGenericProductAnnotatedMemberBean(beanManager, genericConfiguration));
 
          if (genericBeanProducerMethods.containsKey(genericConfigurationType))
          {
@@ -518,6 +519,31 @@ class GenericBeanExtension implements Extension
          public T create(Bean<T> bean, CreationalContext<T> ctx)
          {
             return holder.getProducer().produce(ctx);
+         }
+      });
+      return builder.create();
+   }
+   
+   private Bean<AnnotatedMember<?>> createGenericProductAnnotatedMemberBean(BeanManager beanManager, final Annotation genericConfiguration)
+   {
+      // We don't have a bean created for this generic configuration annotation. Create it, store it to be added later
+      Synthetic syntheticQualifier = productSyntheticProvider.get(genericConfiguration);
+
+      @SuppressWarnings("unchecked")
+      final ProducerHolder<?, ?> holder = genericProducers.get(genericConfiguration);
+
+      // TODO make this passivation capable?
+      BeanBuilder<AnnotatedMember<?>> builder = new BeanBuilder<AnnotatedMember<?>>(beanManager).setBeanClass(AnnotatedMember.class).setQualifiers(Arrays2.<Annotation> asSet(syntheticQualifier)).setBeanLifecycle(new BeanLifecycle<AnnotatedMember<?>>()
+      {
+
+         public void destroy(Bean<AnnotatedMember<?>> bean, AnnotatedMember<?> instance, CreationalContext<AnnotatedMember<?>> ctx)
+         {
+            // No-op
+         }
+
+         public AnnotatedMember<?> create(Bean<AnnotatedMember<?>> bean, CreationalContext<AnnotatedMember<?>> ctx)
+         {
+            return holder.getMember();
          }
       });
       return builder.create();

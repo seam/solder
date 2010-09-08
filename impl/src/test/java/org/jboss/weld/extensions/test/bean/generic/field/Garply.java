@@ -17,6 +17,8 @@
 package org.jboss.weld.extensions.test.bean.generic.field;
 
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.AnnotatedMember;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.GenericProduct;
@@ -36,6 +38,9 @@ public class Garply
    @Inject @GenericProduct
    private Waldo waldo;
    
+   @Inject @GenericProduct
+   private AnnotatedMember<?> annotatedMember;
+   
    @Produces @WaldoName
    public String getWaldoName()
    {
@@ -45,6 +50,11 @@ public class Garply
    public Waldo getWaldo()
    {
       return waldo;
+   }
+   
+   public AnnotatedMember<?> getAnnotatedMember()
+   {
+      return annotatedMember;
    }
    
 }

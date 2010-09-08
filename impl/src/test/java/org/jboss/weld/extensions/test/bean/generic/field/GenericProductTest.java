@@ -20,6 +20,7 @@ import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 
@@ -82,5 +83,14 @@ public class GenericProductTest
       
       assertEquals("Pete", waldoName1);
       assertEquals("Stuart", waldoName2);
+      
+      // Check injection of generic product injection point
+      assertNotNull(garply1.getAnnotatedMember());
+      assertTrue(garply1.getAnnotatedMember().isAnnotationPresent(Service.class));
+      assertEquals(1, garply1.getAnnotatedMember().getAnnotation(Service.class).value());
+      
+      assertNotNull(garply2.getAnnotatedMember());
+      assertTrue(garply2.getAnnotatedMember().isAnnotationPresent(Service.class));
+      assertEquals(2, garply2.getAnnotatedMember().getAnnotation(Service.class).value());
    }
 }
