@@ -16,10 +16,16 @@
  */
 package org.jboss.weld.extensions.test.defaultbean;
 
+import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Default;
+
 import org.jboss.weld.extensions.defaultbean.DefaultBean;
 
-@DefaultBean(type = CDDrive.class)
+@DefaultBean(OpticalDrive.class)
 public class CDDrive implements OpticalDrive
 {
-
+   public void write(@Observes @Default WriteEvent event)
+   {
+      event.increment();
+   }
 }

@@ -16,16 +16,36 @@
  */
 package org.jboss.weld.extensions.test.defaultbean;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Produces;
 
 import org.jboss.weld.extensions.defaultbean.DefaultBean;
 
-@DefaultBean(MagneticDrive.class)
-public class FloppyDrive implements MagneticDrive
+public class ChipManufacturer
 {
-   public void write(@Observes @Default WriteEvent event)
+   @DefaultBean(CPU.class)
+   @Produces
+   public CPU createChip()
    {
-      event.increment();
+      return new CPU()
+      {
+         public String getSpeed()
+         {
+            return "slow";
+         }
+      };
+   }
+
+   @DefaultBean(GPU.class)
+   @Produces
+   public GPU createGPU()
+   {
+      return new GPU()
+      {
+
+         public String getSpeed()
+         {
+            return "slow";
+         }
+      };
    }
 }

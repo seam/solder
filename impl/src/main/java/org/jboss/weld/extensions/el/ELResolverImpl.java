@@ -39,7 +39,7 @@ import org.jboss.weld.extensions.defaultbean.DefaultBean;
  * @author Stuart Douglas
  * 
  */
-@DefaultBean(type = ELResolver.class)
+@DefaultBean(ELResolver.class)
 @Resolver
 public class ELResolverImpl extends ELResolver
 {

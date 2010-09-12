@@ -16,16 +16,19 @@
  */
 package org.jboss.weld.extensions.test.defaultbean;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
-
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
-
-@DefaultBean(MagneticDrive.class)
-public class FloppyDrive implements MagneticDrive
+public class HardDriveImpl implements HardDrive
 {
-   public void write(@Observes @Default WriteEvent event)
+
+   public HardDriveImpl(String size)
    {
-      event.increment();
+      this.size = size;
    }
+
+   private final String size;
+
+   public String size()
+   {
+      return size;
+   }
+
 }

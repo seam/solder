@@ -16,16 +16,17 @@
  */
 package org.jboss.weld.extensions.test.defaultbean;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
+import javax.inject.Qualifier;
 
-@DefaultBean(MagneticDrive.class)
-public class FloppyDrive implements MagneticDrive
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.FIELD })
+public @interface SASHardDrive
 {
-   public void write(@Observes @Default WriteEvent event)
-   {
-      event.increment();
-   }
+
 }

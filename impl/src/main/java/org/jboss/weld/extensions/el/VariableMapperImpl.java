@@ -28,7 +28,7 @@ import org.jboss.weld.extensions.defaultbean.DefaultBean;
  * @author Stuart Douglas
  * 
  */
-@DefaultBean(type = VariableMapper.class)
+@DefaultBean(VariableMapper.class)
 @Mapper
 public class VariableMapperImpl extends VariableMapper
 {

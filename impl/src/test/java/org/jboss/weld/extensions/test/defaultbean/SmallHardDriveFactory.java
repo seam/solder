@@ -16,16 +16,22 @@
  */
 package org.jboss.weld.extensions.test.defaultbean;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 
 import org.jboss.weld.extensions.defaultbean.DefaultBean;
 
-@DefaultBean(MagneticDrive.class)
-public class FloppyDrive implements MagneticDrive
+@DefaultBean(SmallHardDriveFactory.class)
+public class SmallHardDriveFactory
 {
-   public void write(@Observes @Default WriteEvent event)
-   {
-      event.increment();
-   }
+   @Produces
+   @SASHardDrive
+   @ApplicationScoped
+   private HardDrive sasHardDrive = new HardDriveImpl("100MB");
+
+   @Produces
+   @LaptopHardDrive
+   @ApplicationScoped
+   private HardDrive laptopHardDrive = new HardDriveImpl("100MB");
+
 }

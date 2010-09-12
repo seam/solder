@@ -16,16 +16,48 @@
  */
 package org.jboss.weld.extensions.test.defaultbean;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 
 import org.jboss.weld.extensions.defaultbean.DefaultBean;
 
-@DefaultBean(MagneticDrive.class)
-public class FloppyDrive implements MagneticDrive
+/**
+ * test that producer methods are read from the installed default bean and not
+ * the synthetic delegate
+ * 
+ * @author stuart
+ * 
+ */
+@ApplicationScoped
+@DefaultBean(HardDriveFactory.class)
+public class HardDriveFactory
 {
-   public void write(@Observes @Default WriteEvent event)
+   private String size = "small";
+
+   @DefaultBean(HardDrive.class)
+   @Produces
+   public HardDrive getHardDrive()
    {
-      event.increment();
+      return new HardDrive()
+      {
+         public String size()
+         {
+            return size;
+         }
+      };
    }
+
+
+   public String getSize()
+   {
+      return size;
+   }
+
+   public void setSize(String size)
+   {
+      this.size = size;
+   }
+
+
+
 }

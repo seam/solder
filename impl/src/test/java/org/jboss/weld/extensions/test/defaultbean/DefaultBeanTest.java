@@ -18,11 +18,13 @@ package org.jboss.weld.extensions.test.defaultbean;
 
 import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
 
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +38,29 @@ public class DefaultBeanTest
    @Inject
    MagneticDrive magneticDrive;
 
+   @Inject
+   CPU cpu;
+
+   @Inject
+   GPU gpu;
+
+   @Inject
+   HardDrive hardDrive;
+
+   @Inject
+   HardDriveFactory factory;
+
+   @Inject
+   BeanManager manager;
+
+   @Inject
+   @SASHardDrive
+   HardDrive sasHardDrive;
+
+   @Inject
+   @LaptopHardDrive
+   HardDrive laptopHardDrive;
+
    @Deployment
    public static WebArchive deployment()
    {
@@ -43,10 +68,39 @@ public class DefaultBeanTest
    }
 
    @Test
-   public void tesetDefaultBean()
+   public void testDefaultBean()
    {
       Assert.assertTrue(opticalDrive instanceof DVDDrive);
       Assert.assertTrue(magneticDrive instanceof FloppyDrive);
+   }
+
+   @Test
+   public void testDefaultProducerMethod()
+   {
+      Assert.assertEquals("fast", cpu.getSpeed());
+      Assert.assertEquals("slow", gpu.getSpeed());
+   }
+
+   @Test
+   public void testDefaultProducerUsesCorrectDelegate()
+   {
+      factory.setSize("big");
+      Assert.assertEquals("big", hardDrive.size());
+   }
+
+   @Test
+   public void testDefaultProducerFields()
+   {
+      Assert.assertEquals("100MB", sasHardDrive.size());
+      Assert.assertEquals("200MB", laptopHardDrive.size());
+   }
+
+   @Test
+   public void testDefaultBeanObserverMethods()
+   {
+      WriteEvent event = new WriteEvent();
+      manager.fireEvent(event, DefaultLiteral.INSTANCE);
+      Assert.assertEquals(1, event.getCount());
    }
 
 }

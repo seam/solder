@@ -16,16 +16,12 @@
  */
 package org.jboss.weld.extensions.test.defaultbean;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
-
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
-
-@DefaultBean(MagneticDrive.class)
-public class FloppyDrive implements MagneticDrive
+public class SuperChargedCPU implements CPU
 {
-   public void write(@Observes @Default WriteEvent event)
+
+   public String getSpeed()
    {
-      event.increment();
+      return "fast";
    }
+
 }

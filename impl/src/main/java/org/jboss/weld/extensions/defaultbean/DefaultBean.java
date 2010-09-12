@@ -28,12 +28,17 @@ import javax.enterprise.inject.spi.AfterBeanDiscovery;
 /**
  * Annotation that signifies that a bean should only be registered if no other
  * instance with the same type and qualifiers is registered. The bean only has
- * the type specified in the type() attribute.
+ * the type specified in the value() attribute and java.lang.Object.
  * 
- * A default bean must be a Managed Bean.
+ * Managed beans, producer methods and producer fields can all be made into
+ * default beans.
  * 
- * IMPORTANT: Producers, Disposes and Observes on the bean class will not be
- * registered, and will not work
+ * If a managed bean is declared to be a default bean then all producers methods
+ * and fields on the bean are also considered to be default beans. In this case
+ * if the @DefaultBean annotation is not explicitly specified then the default
+ * bean type is considered to be the type returned by getGenericTypeReturnType
+ * for a method and getGenericType for a field.
+ * 
  * 
  * In some ways this is similar to the functionality provided by
  * {@link Alternative} however there are some important distinctions
@@ -44,13 +49,13 @@ import javax.enterprise.inject.spi.AfterBeanDiscovery;
  * </ul>
  * 
  * It is also important to note that beans registered in the
- * {@link AfterBeanDiscovery} event may not been see by this extension
+ * {@link AfterBeanDiscovery} event may not been see by this extension.
  * 
  * @author Stuart Douglas
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target( { ElementType.TYPE, ElementType.METHOD, ElementType.FIELD })
 @Documented
 public @interface DefaultBean
 {
@@ -58,8 +63,8 @@ public @interface DefaultBean
     * The type of the bean. If another bean is found with this type and the same
     * qualifiers this bean will not be installed.
     * 
-    * This bean will only be installed with the type specified here, not
+    * This bean will only be installed with the type specified here
     * 
     */
-   public Class<?> type();
+   public Class<?> value();
 }

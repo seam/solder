@@ -29,7 +29,7 @@ import org.jboss.weld.extensions.defaultbean.DefaultBean;
  * @author Stuart Douglas
  * 
  */
-@DefaultBean(type = FunctionMapper.class)
+@DefaultBean(FunctionMapper.class)
 @Mapper
 public class FunctionMapperImpl extends FunctionMapper
 {
