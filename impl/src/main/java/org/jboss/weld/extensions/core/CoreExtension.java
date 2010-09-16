@@ -65,6 +65,31 @@ class CoreExtension implements Extension
          return;
       }
 
+      // support for @RequireClasses
+      if (pat.getAnnotatedType().isAnnotationPresent(RequireClasses.class))
+      {
+         String[] classes = pat.getAnnotatedType().getAnnotation(RequireClasses.class).value();
+         for (String i : classes)
+         {
+            try
+            {
+               Thread.currentThread().getContextClassLoader().loadClass(i);
+            }
+            catch (ClassNotFoundException e)
+            {
+               try
+               {
+                  pat.getAnnotatedType().getJavaClass().getClassLoader().loadClass(i);
+               }
+               catch (ClassNotFoundException e1)
+               {
+                  pat.veto();
+                  return;
+               }
+            }
+         }
+      }
+
       AnnotatedTypeBuilder<X> builder = null;
 
       // support for @Named packages

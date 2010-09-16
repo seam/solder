@@ -18,11 +18,19 @@ package org.jboss.weld.extensions.test.core;
 
 import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
 
+import java.util.Set;
+
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+
+import junit.framework.Assert;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,6 +55,22 @@ public class CoreTest
    public void testExact()
    {
       assert raceTrack.getDog() instanceof Greyhound;
+   }
+
+   @Test
+   public void testBeanInstalled(BeanManager manager)
+   {
+      Set<Bean<?>> beans = manager.getBeans(InstalledService.class, DefaultLiteral.INSTANCE);
+      Bean<?> bean = manager.resolve(beans);
+      CreationalContext<?> ctx = manager.createCreationalContext(bean);
+      manager.getReference(bean, InstalledService.class, ctx);
+   }
+
+   @Test
+   public void testBeanNotInstalled(BeanManager manager)
+   {
+      Set<Bean<?>> beans = manager.getBeans(OptionalService.class, DefaultLiteral.INSTANCE);
+      Assert.assertEquals(0, beans.size());
    }
 
 }
