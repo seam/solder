@@ -1,10 +1,3 @@
-package org.jboss.weld.extensions.test.managedproducer;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-
-import org.jboss.weld.extensions.managedproducer.ManagedProducer;
-
 /*
  * JBoss, Home of Professional Open Source
  * Copyright 2010, Red Hat, Inc., and individual contributors
@@ -21,22 +14,28 @@ import org.jboss.weld.extensions.managedproducer.ManagedProducer;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@ApplicationScoped
-public class LionTamer
+package org.jboss.weld.extensions.test.unwraps;
+
+import javax.inject.Inject;
+
+public class ManagedReciever
 {
+   @MPType("bean1")
+   @Inject
+   private ProducedInterface bean1;
 
-   private Lion lion = new Lion("lion one");
+   @MPType("bean2")
+   @Inject
+   private ProducedInterface bean2;
 
-   public void changeLion()
+   public ProducedInterface getBean1()
    {
-      lion = new Lion("lion two");
+      return bean1;
    }
 
-   @ManagedProducer
-   @Named("lion")
-   public Lion produceLion()
+   public ProducedInterface getBean2()
    {
-      return lion;
+      return bean2;
    }
 
 }

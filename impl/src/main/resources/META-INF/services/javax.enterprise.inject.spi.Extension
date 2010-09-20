@@ -2,7 +2,7 @@ org.jboss.weld.extensions.bean.generic.GenericBeanExtension
 org.jboss.weld.extensions.resourceLoader.servlet.ServletResourceExtension
 org.jboss.weld.extensions.core.CoreExtension
 org.jboss.weld.extensions.interceptor.InterceptorExtension
-org.jboss.weld.extensions.managedproducer.ManagedProducerExtension
+org.jboss.weld.extensions.unwraps.UnwrapsExtension
 org.jboss.weld.extensions.defaultbean.DefaultBeanExtension
 org.jboss.weld.extensions.log.LoggerExtension
 org.jboss.weld.extensions.servicehandler.ServiceHandlerExtension

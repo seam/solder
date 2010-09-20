@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.managedproducer;
+package org.jboss.weld.extensions.test.unwraps;
 
 import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
 
@@ -28,13 +28,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class ManagedProducerTest
+public class UnwrapsTest
 {
 
    @Deployment
    public static Archive<?> deployment()
    {
-      return baseDeployment().addPackage(ManagedProducerTest.class.getPackage());
+      return baseDeployment().addPackage(UnwrapsTest.class.getPackage());
    }
 
    @Inject
@@ -48,14 +48,14 @@ public class ManagedProducerTest
    LionTamer lionTamer;
 
    @Test
-   public void testManagedProducersInjectionPoint()
+   public void testUnwrapsInjectionPoint()
    {
       assert bean.getBean1().getValue().equals("bean1") : " value: " + bean.getBean1().getValue();
       assert bean.getBean2().getValue().equals("bean2") : " value: " + bean.getBean2().getValue();
    }
 
    @Test
-   public void testManagedProducers()
+   public void testUnwraps()
    {
       assert lion.getName().equals("lion one");
       lionTamer.changeLion();

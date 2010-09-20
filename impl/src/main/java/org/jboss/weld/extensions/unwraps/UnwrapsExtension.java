@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.managedproducer;
+package org.jboss.weld.extensions.unwraps;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,34 +27,33 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
 /**
- * An extension that allows the use of @ManagedProducer methods
+ * An extension that allows the use of {@link Unwraps} methods
  * 
- * these methods work in a similar manner to @Unwrap methods in seam 2
  * 
- * @author stuart
+ * @author Stuart Douglas
  * 
  */
-public class ManagedProducerExtension implements Extension
+public class UnwrapsExtension implements Extension
 {
 
-   final private Set<ManagedProducerBean<?>> beans = new HashSet<ManagedProducerBean<?>>();
+   final private Set<UnwrapsProducerBean<?>> beans = new HashSet<UnwrapsProducerBean<?>>();
 
    public void processAnnotatedType(@Observes ProcessAnnotatedType<?> type, BeanManager manager)
    {
       for (AnnotatedMethod<?> m : type.getAnnotatedType().getMethods())
       {
-         if (m.isAnnotationPresent(ManagedProducer.class))
+         if (m.isAnnotationPresent(Unwraps.class))
          {
             // we have a managed producer
             // lets make a note of it and register it later
-            beans.add(new ManagedProducerBean(m, manager));
+            beans.add(new UnwrapsProducerBean(m, manager));
          }
       }
    }
 
    public void afterBeanDiscovery(@Observes AfterBeanDiscovery afterBean)
    {
-      for (ManagedProducerBean<?> b : beans)
+      for (UnwrapsProducerBean<?> b : beans)
       {
          afterBean.addBean(b);
       }

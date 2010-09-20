@@ -14,19 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.managedproducer;
+package org.jboss.weld.extensions.test.unwraps;
 
-import javax.enterprise.inject.spi.InjectionPoint;
+import org.jboss.weld.extensions.core.Veto;
 
-import org.jboss.weld.extensions.managedproducer.ManagedProducer;
-
-public class BeanProducer
+@Veto
+public class Lion
 {
-   @ManagedProducer
-   public ProducedInterface produce(InjectionPoint injectionPoint)
+   private final String name;
+
+   public Lion()
    {
-      ProducedBean b = new ProducedBean();
-      b.setValue(injectionPoint.getAnnotated().getAnnotation(MPType.class).value());
-      return b;
+      name = "default lion";
+   }
+
+   public Lion(String name)
+   {
+      this.name = name;
+   }
+
+   public String getName()
+   {
+      return name;
    }
 }

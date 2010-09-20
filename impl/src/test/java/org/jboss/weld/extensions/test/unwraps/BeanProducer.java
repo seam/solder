@@ -14,13 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.managedproducer;
+package org.jboss.weld.extensions.test.unwraps;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import javax.enterprise.inject.spi.InjectionPoint;
 
-@Retention(RetentionPolicy.RUNTIME)
-public @interface MPType
+import org.jboss.weld.extensions.unwraps.Unwraps;
+
+public class BeanProducer
 {
-   String value();
+   @Unwraps
+   public ProducedInterface produce(InjectionPoint injectionPoint)
+   {
+      ProducedBean b = new ProducedBean();
+      b.setValue(injectionPoint.getAnnotated().getAnnotation(MPType.class).value());
+      return b;
+   }
 }

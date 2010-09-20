@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.managedproducer;
+package org.jboss.weld.extensions.unwraps;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -41,14 +41,13 @@ import javax.inject.Named;
 /**
  * Bean implementation that produces a JDK proxy
  * 
- * when a method is invoked on the proxy it calls the managed producer method
+ * when a method is invoked on the proxy it calls the Unwraps producer method
  * and invokes the method on the returned object
  * 
- * @author stuart
+ * @author Stuart Douglas
  * 
- * @param <M>
  */
-public class ManagedProducerBean<M> implements Bean<M>
+public class UnwrapsProducerBean<M> implements Bean<M>
 {
 
    final private Class<?> beanClass;
@@ -69,7 +68,7 @@ public class ManagedProducerBean<M> implements Bean<M>
    {
    } };
 
-   public ManagedProducerBean(AnnotatedMethod<?> method, BeanManager manager)
+   public UnwrapsProducerBean(AnnotatedMethod<?> method, BeanManager manager)
    {
       this.method = method;
       beanClass = method.getDeclaringType().getJavaClass();
@@ -201,7 +200,7 @@ public class ManagedProducerBean<M> implements Bean<M>
       Set<Bean<?>> beans = manager.getBeans(InjectionPoint.class, defaultQualifiers);
       Bean<?> injectionPointBean = (Bean<?>) beans.iterator().next();
       InjectionPoint injectionPoint = (InjectionPoint) manager.getReference(injectionPointBean, InjectionPoint.class, creationalContext);
-      ManagedProducerInvocationHandler hdl = new ManagedProducerInvocationHandler(manager, this.method, this, injectionPoint);
+      UnwrapsInvocationHandler hdl = new UnwrapsInvocationHandler(manager, this.method, this, injectionPoint);
       try
       {
          M obj = proxyClass.newInstance();

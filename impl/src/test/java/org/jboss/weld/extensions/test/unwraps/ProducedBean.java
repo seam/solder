@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.managedproducer;
+package org.jboss.weld.extensions.test.unwraps;
 
 import org.jboss.weld.extensions.core.Veto;
 

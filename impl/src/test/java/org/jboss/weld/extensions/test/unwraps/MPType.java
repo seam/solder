@@ -14,11 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.managedproducer;
+package org.jboss.weld.extensions.test.unwraps;
 
-public interface ProducedInterface
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MPType
 {
-
-   public abstract String getValue();
-
+   String value();
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.managedproducer;
+package org.jboss.weld.extensions.unwraps;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -34,7 +34,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.weld.extensions.bean.InjectionPointImpl;
 
-public class ManagedProducerInvocationHandler implements MethodHandler
+public class UnwrapsInvocationHandler implements MethodHandler
 {
    
    final private BeanManager manager;
@@ -46,7 +46,7 @@ public class ManagedProducerInvocationHandler implements MethodHandler
    final private InjectionPoint injectionPoint;
 
 
-   public ManagedProducerInvocationHandler(BeanManager manager, AnnotatedMethod<?> method, Bean<?> bean, InjectionPoint injectionPoint)
+   public UnwrapsInvocationHandler(BeanManager manager, AnnotatedMethod<?> method, Bean<?> bean, InjectionPoint injectionPoint)
    {
       this.manager = manager;
       this.method = method.getJavaMember();
@@ -69,11 +69,11 @@ public class ManagedProducerInvocationHandler implements MethodHandler
       Set<Bean<?>> beans = manager.getBeans(mainType, mainClassQualifiers.toArray(new Annotation[0]));
       if (beans.isEmpty())
       {
-         throw new UnsatisfiedResolutionException("could not find declaring bean for managed producer method " + method.getDeclaringType().getJavaClass() + "." + this.method.getName());
+         throw new UnsatisfiedResolutionException("Could not find declaring bean for @Unwrap method " + method.getDeclaringType().getJavaClass() + "." + this.method.getName());
       }
       else if (beans.size() > 1)
       {
-         throw new AmbiguousResolutionException("could not find declaring bean for managed producer method " + method.getDeclaringType().getJavaClass() + "." + this.method.getName());
+         throw new AmbiguousResolutionException("Could not find declaring bean for @Unwrap method " + method.getDeclaringType().getJavaClass() + "." + this.method.getName());
       }
       mainClassBean = beans.iterator().next();
       this.injectionPoint = injectionPoint;

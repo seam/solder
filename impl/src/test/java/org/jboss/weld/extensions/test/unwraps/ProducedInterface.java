@@ -14,27 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.managedproducer;
+package org.jboss.weld.extensions.test.unwraps;
 
-import org.jboss.weld.extensions.core.Veto;
-
-@Veto
-public class Lion
+public interface ProducedInterface
 {
-   private final String name;
 
-   public Lion()
-   {
-      name = "default lion";
-   }
+   public abstract String getValue();
 
-   public Lion(String name)
-   {
-      this.name = name;
-   }
-
-   public String getName()
-   {
-      return name;
-   }
 }
