@@ -16,7 +16,6 @@
  */
 package org.jboss.weld.extensions.core;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -27,19 +26,15 @@ import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
-import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.annotated.AnnotationRedefiner;
 import org.jboss.weld.extensions.annotated.RedefinitionContext;
-import org.jboss.weld.extensions.bean.BeanBuilder;
-import org.jboss.weld.extensions.literal.InjectLiteral;
 import org.jboss.weld.extensions.literal.NamedLiteral;
 
 /**
@@ -154,31 +149,6 @@ class CoreExtension implements Extension
       if (builder != null)
       {
          pat.setAnnotatedType(builder.create());
-      }
-
-      // support for @Constructs
-      for (AnnotatedConstructor<X> constructor : pat.getAnnotatedType().getConstructors())
-      {
-         if (constructor.isAnnotationPresent(Constructs.class))
-         {
-            AnnotatedTypeBuilder<X> annotatedTypeBuilder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
-            // remove class-level @Named annotation
-            annotatedTypeBuilder.removeFromClass(Named.class);
-            // remove bean constructors annotated @Inject
-            for (AnnotatedConstructor<X> constructor2 : pat.getAnnotatedType().getConstructors())
-            {
-               annotatedTypeBuilder.removeFromConstructor(constructor2, Inject.class);
-            }
-            // make the constructor annotated @Constructs the bean constructor
-            annotatedTypeBuilder.addToConstructor(constructor, InjectLiteral.INSTANCE);
-            // add all the annotations of this constructor to the class
-            for (Annotation ann : constructor.getAnnotations())
-            {
-               annotatedTypeBuilder.addToClass(ann);
-            }
-            AnnotatedType<X> construtsAnnotatedType = builder.create();
-            additionalBeans.add(new BeanBuilder<X>(beanManager).defineBeanFromAnnotatedType(construtsAnnotatedType).create());
-         }
       }
    }
 
