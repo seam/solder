@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * @author Gavin King
  * 
  */
-class CoreExtension implements Extension
+public class CoreExtension implements Extension
 {
 
    private final Collection<Bean<?>> additionalBeans;

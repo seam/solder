@@ -25,8 +25,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
@@ -74,7 +74,7 @@ import org.jboss.weld.extensions.util.collections.Supplier;
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  */
-class GenericBeanExtension implements Extension
+public class GenericBeanExtension implements Extension
 {
 
    private static <T> Supplier<Set<T>> createHashSetSupplier()
@@ -250,7 +250,7 @@ class GenericBeanExtension implements Extension
    // The Synthetic qualifier provider for generic product beans
    private final Synthetic.Provider productSyntheticProvider;
 
-   GenericBeanExtension()
+   public GenericBeanExtension()
    {
       this.genericBeans = Multimaps.newSetMultimap(new HashMap<Class<? extends Annotation>, Collection<BeanHolder<?>>>(), GenericBeanExtension.<BeanHolder<?>> createHashSetSupplier());
       this.genericBeanProducerMethods = Multimaps.newSetMultimap(new HashMap<Class<? extends Annotation>, Collection<ProducerMethodHolder<?, ?>>>(), GenericBeanExtension.<ProducerMethodHolder<?, ?>> createHashSetSupplier());

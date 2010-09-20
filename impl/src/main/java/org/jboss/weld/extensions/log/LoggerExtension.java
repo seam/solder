@@ -11,7 +11,7 @@ import javax.enterprise.inject.spi.Extension;
  * @author pmuir
  *
  */
-class LoggerExtension implements Extension
+public class LoggerExtension implements Extension
 {
    
    void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager)

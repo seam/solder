@@ -36,7 +36,7 @@ import org.jboss.weld.extensions.bean.BeanBuilder;
  * @author Stuart Douglas
  * 
  */
-class ServiceHandlerExtension implements Extension
+public class ServiceHandlerExtension implements Extension
 {
    Set<Bean<?>> beans = new HashSet<Bean<?>>();
    
