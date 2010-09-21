@@ -23,12 +23,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * If all the specified classes are not present the bean will not be installed.
+ * <p>
+ * Veto the processing of the type if the required classes are not available.
+ * Any beans defined by this class will not be installed.
+ * </p>
  * 
- * First the Thread Context Class Loader is used to attempt to load the class,
- * and if that fails then the bean class loader is used
+ * <p>
+ * Weld Extensions will try both the Thread Context ClassLoader, as well as the
+ * classloader of the declaring class.
+ * </p>
  * 
  * @author Stuart Douglas
+ * 
+ * @see Veto
  * 
  */
 @Target(ElementType.TYPE)

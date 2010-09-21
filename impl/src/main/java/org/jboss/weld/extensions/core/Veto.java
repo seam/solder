@@ -23,7 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Instructs the CDI container not to deploy the class as a bean
+ * Veto the processing of the type. Any beans defined by this class will not be
+ * installed.
  * 
  * @author Stuart Douglas
  * 
