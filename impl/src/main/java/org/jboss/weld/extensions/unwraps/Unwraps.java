@@ -5,18 +5,55 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.enterprise.inject.Produces;
+
 /**
- * This allows for producer methods that emulate a stateless scope.
+ * <p>
+ * Identifies a stateless producer method where each method invocation on the
+ * produced object will cause the annotated method to be invoked to produce the
+ * object.
+ * </p>
  * 
- * If a method is annotated with @Unwraps then a bean is registered with CDI
- * with the same types and qualifiers as the @Unwraps method. This bean produces
- * a proxy, whenever a method is invoked on the proxy the @Unwraps method is
- * called, and the method invocation is forwarded to the result.
+ * <p>
+ * A method is annotated with <code>&#064;Unwraps</code> is with CDI as bean;
+ * whenever a method is invoked on the proxy the @Unwraps method is called, and
+ * the method invocation is forwarded to the result. This allows you to manual
+ * control the lifecycle of the object while still allowing it to be injected.
+ * </p>
  * 
- * This allows you to manually control the lifecycle of an object while still
- * allowing it to be injected.
+ * <p>
+ * As the method is called every time a method invocation occurs, it is
+ * important that you do not perform expensive operations in this method.
+ * Normally you will want to simply expose an existing object via unwrap method:
+ * </p>
+ * 
+ * <pre>
+ * &#064SessionScoped
+ * class FooManager {
+ * 
+ *    private Foo foo;
+ *   
+ *    &#064;PostConstruct
+ *    void init() {
+ *       // set up Foo
+ *    }
+ *    
+ *    void getFoo() {
+ *       return foo;
+ *    }
+ *    
+ *    // Client immediately reflect any changes to Bar as a result
+ *    // of changes to Foo
+ *    &#064;Unwraps
+ *    Bar getBar() {
+ *       return foo.getBar();
+ *    }
+ * 
+ * }
+ * </pre>
  * 
  * @author Stuart Douglas
+ * @see Produces
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
