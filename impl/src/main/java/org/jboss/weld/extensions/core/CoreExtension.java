@@ -36,6 +36,9 @@ import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.annotated.AnnotationRedefiner;
 import org.jboss.weld.extensions.annotated.RedefinitionContext;
 import org.jboss.weld.extensions.literal.NamedLiteral;
+import org.jboss.weld.extensions.util.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Extension to install the "core" extensions. Core extensions are those that
@@ -51,6 +54,8 @@ class CoreExtension implements Extension
 
    private final Collection<Bean<?>> additionalBeans;
 
+   static final Logger log = LoggerFactory.getLogger(CoreExtension.class);
+
    CoreExtension()
    {
       this.additionalBeans = new ArrayList<Bean<?>>();
@@ -62,30 +67,30 @@ class CoreExtension implements Extension
       if (pat.getAnnotatedType().isAnnotationPresent(Veto.class))
       {
          pat.veto();
+         log.info("Preventing " + pat.getAnnotatedType().getJavaClass() + " from being installed as bean due to @Veto annotation");
          return;
       }
 
-      // support for @RequireClasses
-      if (pat.getAnnotatedType().isAnnotationPresent(RequireClasses.class))
+      // support for @Requires
+      if (pat.getAnnotatedType().isAnnotationPresent(Requires.class))
       {
-         String[] classes = pat.getAnnotatedType().getAnnotation(RequireClasses.class).value();
+         String[] classes = pat.getAnnotatedType().getAnnotation(Requires.class).value();
          for (String i : classes)
          {
             try
             {
-               Thread.currentThread().getContextClassLoader().loadClass(i);
+               Reflections.classForName(i, pat.getAnnotatedType().getJavaClass().getClassLoader());
             }
             catch (ClassNotFoundException e)
             {
-               try
-               {
-                  pat.getAnnotatedType().getJavaClass().getClassLoader().loadClass(i);
-               }
-               catch (ClassNotFoundException e1)
-               {
-                  pat.veto();
-                  return;
-               }
+               log.info("Preventing " + pat.getAnnotatedType().getJavaClass() + " from being installed as required class " + i + " could not be found");
+               pat.veto();
+            }
+            catch (LinkageError e)
+            {
+               // LinkageError is a superclass of NoClassDefFoundError
+               log.info("Preventing " + pat.getAnnotatedType().getJavaClass() + " from being installed as a linkage error occurred loading required class " + i + ". The linkage error was " + e.toString());
+               pat.veto();
             }
          }
       }

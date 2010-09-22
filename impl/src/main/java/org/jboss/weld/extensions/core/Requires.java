@@ -41,7 +41,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RequireClasses
+public @interface Requires
 {
    String[] value();
 }

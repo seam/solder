@@ -25,6 +25,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -301,24 +302,54 @@ public class Reflections
    }
 
    /**
-    * Load a class for the given name.
+    * Loads and initializes a class for the given name.
     * 
     * If the Thread Context Class Loader is available, it will be used,
     * otherwise the classloader used to load {@link Reflections} will be used
     * 
+    * It is also possible to specify additional classloaders to attempt to load
+    * the class with. If the first attempt fails, then these additional loaders
+    * are tried in order.
+    * 
     * @param name The name of the class to load
+    * @param loaders Additional classloaders to use to attempt to load the class
     * @return The class object
     * @throws ClassNotFoundException if the class cannot be found
     */
-   public static Class<?> classForName(String name) throws ClassNotFoundException
+   public static Class<?> classForName(String name, ClassLoader... loaders) throws ClassNotFoundException
    {
+      try
+      {
+         if (Thread.currentThread().getContextClassLoader() != null)
+         {
+            return Class.forName(name, true, Thread.currentThread().getContextClassLoader());
+         }
+         else
+         {
+            return Class.forName(name);
+         }
+      }
+      catch (ClassNotFoundException e)
+      {
+         for (ClassLoader l : loaders)
+         {
+            try
+            {
+               return Class.forName(name, true, l);
+            }
+            catch (ClassNotFoundException ex)
+            {
+
+            }
+         }
+      }
       if (Thread.currentThread().getContextClassLoader() != null)
       {
-         return Thread.currentThread().getContextClassLoader().loadClass(name);
+         throw new ClassNotFoundException("Could not load class " + name + " with the context class loader " + Thread.currentThread().getContextClassLoader().toString() + " or any of the additional ClassLoaders: " + Arrays.toString(loaders));
       }
       else
       {
-         return Class.forName(name);
+         throw new ClassNotFoundException("Could not load class " + name + " using Class.forName or using any of the additional ClassLoaders: " + Arrays.toString(loaders));
       }
    }
 
