@@ -425,6 +425,27 @@ public class DefaultBeanExtension implements Extension
    void afterBeanDiscovery(@Observes AfterBeanDiscovery event, BeanManager manager)
    {
       beanDiscoveryOver = true;
+      // first check for duplicate default bean definitions
+      Map<DefaultBeanType, Bean<?>> duplicateDetectionMap = new HashMap<DefaultBeanType, Bean<?>>();
+      for (Entry<Synthetic, DefaultBeanType> e : beanTypeInformation.entrySet())
+      {
+         Bean<?> bean = defaultManagedBeans.get(e.getKey());
+         if (bean == null)
+         {
+            bean = defaultProducerMethods.get(e.getKey());
+         }
+         if (bean == null)
+         {
+            bean = defaultProducerFields.get(e.getKey());
+         }
+         if (duplicateDetectionMap.containsKey(e.getValue()))
+         {
+            Bean<?> other = duplicateDetectionMap.get(e.getValue());
+            deploymentProblems.add(new RuntimeException("Two default beans with the same type and qualifiers: Type: " + e.getValue().getType() + " Qualifiers: " + e.getValue().getQualifiers() + " Beans are " + other.toString() + " and " + bean.toString()));
+         }
+         duplicateDetectionMap.put(e.getValue(), bean);
+      }
+
       // loop over all installed beans and see if they match any default beans
       if (beanTypeInformation.size() > 0)
       {
@@ -567,6 +588,44 @@ public class DefaultBeanExtension implements Extension
          }
          return false;
       }
+
+      @Override
+      public int hashCode()
+      {
+         final int prime = 31;
+         int result = 1;
+         result = prime * result + ((qualifiers == null) ? 0 : qualifiers.hashCode());
+         result = prime * result + ((type == null) ? 0 : type.hashCode());
+         return result;
+      }
+
+      @Override
+      public boolean equals(Object obj)
+      {
+         if (this == obj)
+            return true;
+         if (obj == null)
+            return false;
+         if (getClass() != obj.getClass())
+            return false;
+         DefaultBeanType other = (DefaultBeanType) obj;
+         if (qualifiers == null)
+         {
+            if (other.qualifiers != null)
+               return false;
+         }
+         else if (!qualifiers.equals(other.qualifiers))
+            return false;
+         if (type == null)
+         {
+            if (other.type != null)
+               return false;
+         }
+         else if (!type.equals(other.type))
+            return false;
+         return true;
+      }
+
    }
 
    private static class ObserverMethodInfo<T>
