@@ -46,7 +46,7 @@ public class UnwrapsInvocationHandler implements MethodHandler
    final private InjectionPoint injectionPoint;
 
 
-   public UnwrapsInvocationHandler(BeanManager manager, AnnotatedMethod<?> method, Bean<?> bean, InjectionPoint injectionPoint)
+   public UnwrapsInvocationHandler(BeanManager manager, AnnotatedMethod<?> method, Bean<?> bean, InjectionPoint injectionPoint, Set<Annotation> declaringBeanQualifiers)
    {
       this.manager = manager;
       this.method = method.getJavaMember();
@@ -58,14 +58,7 @@ public class UnwrapsInvocationHandler implements MethodHandler
          injectionPoints[i] = new InjectionPointImpl(method.getParameters().get(i), manager, bean, false, false);
       }
       Type mainType = method.getDeclaringType().getBaseType();
-      HashSet<Annotation> mainClassQualifiers = new HashSet<Annotation>();
-      for (Annotation a : method.getDeclaringType().getAnnotations())
-      {
-         if (manager.isQualifier(a.annotationType()))
-         {
-            mainClassQualifiers.add(a);
-         }
-      }
+      HashSet<Annotation> mainClassQualifiers = new HashSet<Annotation>(declaringBeanQualifiers);
       Set<Bean<?>> beans = manager.getBeans(mainType, mainClassQualifiers.toArray(new Annotation[0]));
       if (beans.isEmpty())
       {

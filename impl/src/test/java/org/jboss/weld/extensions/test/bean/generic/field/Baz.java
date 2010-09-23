@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.Generic;
 import org.jboss.weld.extensions.bean.generic.GenericBean;
+import org.jboss.weld.extensions.unwraps.Unwraps;
 
 /**
  * A generic bean for the config annotation Message
@@ -38,6 +39,8 @@ public class Baz implements Serializable
 {
 
    private static final long serialVersionUID = 6807449196645110050L;
+
+   private Fred fred = new Fred("Hello Fred");
 
    @Inject @GenericBean
    private Bar bar;
@@ -70,6 +73,12 @@ public class Baz implements Serializable
       return wobble.getName() + message.value();
    }
    
+   @Unwraps
+   public Fred getFred()
+   {
+      return fred;
+   }
+
    public void observe(@Observes @Any Plugh event)
    {
       // Set the message if we are in a generic bean
@@ -82,5 +91,10 @@ public class Baz implements Serializable
       {
          event.setMessage(new MessageLiteral("base"));
       }
+   }
+
+   public void setFred(Fred fred)
+   {
+      this.fred = fred;
    }
 }

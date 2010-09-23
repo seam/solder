@@ -30,13 +30,15 @@ import javassist.util.proxy.ProxyObject;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.Default;
+import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Named;
+
+import org.jboss.weld.extensions.bean.Beans;
+import org.jboss.weld.extensions.literal.DefaultLiteral;
 
 /**
  * Bean implementation that produces a JDK proxy
@@ -56,6 +58,8 @@ public class UnwrapsProducerBean<M> implements Bean<M>
 
    final private Set<Annotation> qualifiers;
 
+   final private Set<Annotation> declaringClassQualifiers;
+
    final private Set<Type> types;
 
    final private Class<M> proxyClass;
@@ -64,11 +68,14 @@ public class UnwrapsProducerBean<M> implements Bean<M>
 
    final private AnnotatedMethod<?> method;
 
-   private final static Annotation[] defaultQualifiers = { new AnnotationLiteral<Default>()
-   {
-   } };
+   private final static Annotation[] defaultQualifiers = { DefaultLiteral.INSTANCE };
 
    public UnwrapsProducerBean(AnnotatedMethod<?> method, BeanManager manager)
+   {
+      this(method, resolveQualifiers(method, manager), resolveQualifiers(method.getDeclaringType(), manager), manager);
+   }
+
+   public UnwrapsProducerBean(AnnotatedMethod<?> method, Set<Annotation> methodQualifiers, Set<Annotation> beanQualifiers, BeanManager manager)
    {
       this.method = method;
       beanClass = method.getDeclaringType().getJavaClass();
@@ -82,20 +89,8 @@ public class UnwrapsProducerBean<M> implements Bean<M>
          name = null;
       }
       // get the qualifiers
-      qualifiers = new HashSet<Annotation>();
-      for (Annotation a : method.getAnnotations())
-      {
-         if (manager.isQualifier(a.annotationType()))
-         {
-            qualifiers.add(a);
-         }
-      }
-      if (qualifiers.isEmpty())
-      {
-         qualifiers.add(new AnnotationLiteral<Default>()
-         {
-         });
-      }
+      qualifiers = new HashSet<Annotation>(methodQualifiers);
+      declaringClassQualifiers = new HashSet<Annotation>(beanQualifiers);
       // get the bean types
       types = new HashSet<Type>();
       Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -144,7 +139,16 @@ public class UnwrapsProducerBean<M> implements Bean<M>
          }
       });
       proxyClass = f.createClass();
+   }
 
+   private static Set<Annotation> resolveQualifiers(Annotated method, BeanManager manager)
+   {
+      Set<Annotation> qualifiers = Beans.getQualifiers(manager, method.getAnnotations());
+      if (qualifiers.isEmpty())
+      {
+         qualifiers.add(DefaultLiteral.INSTANCE);
+      }
+      return qualifiers;
    }
 
    public Class<?> getBeanClass()
@@ -200,7 +204,7 @@ public class UnwrapsProducerBean<M> implements Bean<M>
       Set<Bean<?>> beans = manager.getBeans(InjectionPoint.class, defaultQualifiers);
       Bean<?> injectionPointBean = (Bean<?>) beans.iterator().next();
       InjectionPoint injectionPoint = (InjectionPoint) manager.getReference(injectionPointBean, InjectionPoint.class, creationalContext);
-      UnwrapsInvocationHandler hdl = new UnwrapsInvocationHandler(manager, this.method, this, injectionPoint);
+      UnwrapsInvocationHandler hdl = new UnwrapsInvocationHandler(manager, this.method, this, injectionPoint, declaringClassQualifiers);
       try
       {
          M obj = proxyClass.newInstance();

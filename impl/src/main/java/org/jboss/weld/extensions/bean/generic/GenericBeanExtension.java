@@ -60,6 +60,9 @@ import org.jboss.weld.extensions.annotated.RedefinitionContext;
 import org.jboss.weld.extensions.bean.BeanBuilder;
 import org.jboss.weld.extensions.bean.BeanLifecycle;
 import org.jboss.weld.extensions.bean.Beans;
+import org.jboss.weld.extensions.literal.DefaultLiteral;
+import org.jboss.weld.extensions.unwraps.Unwraps;
+import org.jboss.weld.extensions.unwraps.UnwrapsProducerBean;
 import org.jboss.weld.extensions.util.Arrays2;
 import org.jboss.weld.extensions.util.Reflections;
 import org.jboss.weld.extensions.util.Synthetic;
@@ -244,6 +247,9 @@ public class GenericBeanExtension implements Extension
    // Used to track the generic configuration producers found
    private final Map<AnnotatedMember<?>, Bean<?>> genericProducerBeans;
 
+   // tracks @Unwraps methods, as these need to be handled manually
+   private final SetMultimap<Class<? extends Annotation>, AnnotatedMethod<?>> unwrapsMethods;
+
    // The Synthetic qualifier provider for generic beans, and configuration injection
    private final Synthetic.Provider syntheticProvider;
 
@@ -259,6 +265,7 @@ public class GenericBeanExtension implements Extension
       this.genericInjectionTargets = new HashMap<AnnotatedType<?>, InjectionTarget<?>>();
       this.genericProducers = new HashMap<Annotation, ProducerHolder<?, ?>>();
       this.genericProducerBeans = new HashMap<AnnotatedMember<?>, Bean<?>>();
+      this.unwrapsMethods = Multimaps.newSetMultimap(new HashMap<Class<? extends Annotation>, Collection<AnnotatedMethod<?>>>(), GenericBeanExtension.<AnnotatedMethod<?>> createHashSetSupplier());
       this.syntheticProvider = new Synthetic.Provider("org.jboss.weld.extensions.bean.generic");
       this.productSyntheticProvider = new Synthetic.Provider("org.jboss.weld.extensions.bean.generic.product");
    }
@@ -317,7 +324,15 @@ public class GenericBeanExtension implements Extension
       AnnotatedType<X> type = event.getAnnotatedBeanClass();
       if (type.isAnnotationPresent(Generic.class))
       {
-         genericBeans.put(type.getAnnotation(Generic.class).value(), new BeanHolder<X>(event.getAnnotatedBeanClass(), event.getBean()));
+         Class<? extends Annotation> genericType = type.getAnnotation(Generic.class).value();
+         genericBeans.put(genericType, new BeanHolder<X>(event.getAnnotatedBeanClass(), event.getBean()));
+         for (AnnotatedMethod<? super X> m : event.getAnnotatedBeanClass().getMethods())
+         {
+            if (m.isAnnotationPresent(Unwraps.class))
+            {
+               unwrapsMethods.put(genericType, m);
+            }
+         }
       }
    }
 
@@ -441,6 +456,24 @@ public class GenericBeanExtension implements Extension
                event.addObserverMethod(createGenericObserverMethod(holder.getObserverMethod(), genericConfiguration, holder.getMethod(), beanManager));
             }
 
+         }
+         if(unwrapsMethods.containsKey(genericConfigurationType))
+         {
+            for(AnnotatedMethod<?> i : unwrapsMethods.get(genericConfigurationType))
+            {
+               AnnotatedMember<?> member = genericConfigurationEntry.getValue().getMember();
+               Set<Annotation> qualifiers= Beans.getQualifiers(beanManager, i.getAnnotations(),member.getAnnotations());
+               if(qualifiers.isEmpty())
+               {
+                  qualifiers.add(DefaultLiteral.INSTANCE);
+               }
+               Set<Annotation> beanQualifiers = Beans.getQualifiers(beanManager, i.getDeclaringType().getAnnotations(), member.getAnnotations());
+               if (beanQualifiers.isEmpty())
+               {
+                  beanQualifiers.add(DefaultLiteral.INSTANCE);
+               }
+               event.addBean(new UnwrapsProducerBean(i, qualifiers, beanQualifiers, beanManager));
+            }
          }
          // For each generic bean that uses this genericConfigurationType, register a generic bean for this generic configuration 
          for (BeanHolder<?> genericBeanHolder : genericBeans.get(genericConfigurationType))
