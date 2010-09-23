@@ -16,6 +16,9 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AnnotatedMember;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -45,6 +48,12 @@ public class Garply
    public String getWaldoName()
    {
       return waldo.getName();
+   }
+   
+   @Produces 
+   public HashMap<String, String> getMap()
+   {
+      return new HashMap<String, String>();
    }
    
    public Waldo getWaldo()
