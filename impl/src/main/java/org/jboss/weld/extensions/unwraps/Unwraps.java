@@ -15,7 +15,7 @@ import javax.enterprise.inject.Produces;
  * </p>
  * 
  * <p>
- * A method is annotated with <code>&#064;Unwraps</code> is with CDI as bean;
+ * A method is annotated with <code>&#064;Unwraps</code> is registered with CDI as bean;
  * whenever a method is invoked on the proxy the @Unwraps method is called, and
  * the method invocation is forwarded to the result. This allows you to manual
  * control the lifecycle of the object while still allowing it to be injected.

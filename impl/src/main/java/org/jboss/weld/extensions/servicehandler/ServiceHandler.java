@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 /**
  * <p>
  * Meta annotation that is used to specify an invocation handler for an
- * automatically implmented bean.
+ * automatically implemented bean.
  * </p>
  * 
  * <p>
