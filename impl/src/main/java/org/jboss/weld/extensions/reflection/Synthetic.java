@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.util;
+package org.jboss.weld.extensions.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
@@ -27,8 +27,12 @@ import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Qualifier;
 
 /**
+ * <p>
  * A synthetic qualifier that can be used to replace other user-supplied
- * configuration at deployment
+ * configuration at deployment.
+ * </p>
+ * 
+ * <p>
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
@@ -69,9 +73,15 @@ public @interface Synthetic
    }
 
    /**
+    * <p>
     * Provides a unique Synthetic qualifier for the specified namespace
+    * </p>
     * 
-    * @author pmuir
+    * <p>
+    * {@link Provider} is thread safe.
+    * </p>
+    * 
+    * @author Pete Muir
     * 
     */
    public static class Provider
@@ -99,6 +109,9 @@ public @interface Synthetic
        */
       public Synthetic get(Annotation annotation)
       {
+         // This may give us data races, but these don't matter as Annotation use it's type and it's members values
+         // for equality, it does not use instance equality.
+         // Note that count is atomic
          if (!synthetics.containsKey(annotation))
          {
             synthetics.put(annotation, new Synthetic.SyntheticLiteral(namespace, count.getAndIncrement()));

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.util;
+package org.jboss.weld.extensions.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -25,6 +25,13 @@ import javax.enterprise.inject.Stereotype;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.BeanManager;
 
+/**
+ * Inspect an {@link AnnotatedElement} or {@link Annotated} to obtain it's meta
+ * annotations and annotations, taking into account stereotypes.
+ * 
+ * @author Pete Muir
+ * 
+ */
 public class AnnotationInspector
 {
 
@@ -119,8 +126,8 @@ public class AnnotationInspector
     * 
     * @param element The element to inspect
     * @param annotationType The meta annotation to search for
-    * @return The annotation instances found on this method or an empty set if no
-    *         matching meta-annotation was found.
+    * @return The annotation instances found on this method or an empty set if
+    *         no matching meta-annotation was found.
     */
    public static Set<Annotation> getAnnotations(Annotated element, final Class<? extends Annotation> metaAnnotationType)
    {

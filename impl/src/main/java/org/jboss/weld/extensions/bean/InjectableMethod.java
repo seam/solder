@@ -1,7 +1,7 @@
 package org.jboss.weld.extensions.bean;
 
-import static org.jboss.weld.extensions.util.Reflections.EMPTY_OBJECT_ARRAY;
-import static org.jboss.weld.extensions.util.Reflections.invokeMethod;
+import static org.jboss.weld.extensions.reflection.Reflections.EMPTY_OBJECT_ARRAY;
+import static org.jboss.weld.extensions.reflection.Reflections.invokeMethod;
 
 import java.util.ArrayList;
 import java.util.List;

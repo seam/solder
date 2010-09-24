@@ -14,35 +14,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotated;
+package org.jboss.weld.extensions.reflection.annotated;
+
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.unmodifiableSet;
 
 import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
+ * A helper class used to hold annotations on a type or member.
  * 
  * @author Stuart Douglas
- *
+ * 
  */
 class AnnotationStore
 {
-   
-   private final HashMap<Class<? extends Annotation>, Annotation> annotationMap;
+
+   private final Map<Class<? extends Annotation>, Annotation> annotationMap;
    private final Set<Annotation> annotationSet;
 
-   AnnotationStore(HashMap<Class<? extends Annotation>, Annotation> annotationMap, Set<Annotation> annotationSet)
+   AnnotationStore(Map<Class<? extends Annotation>, Annotation> annotationMap, Set<Annotation> annotationSet)
    {
       this.annotationMap = annotationMap;
-      this.annotationSet = annotationSet;
+      this.annotationSet = unmodifiableSet(annotationSet);
    }
-   
+
    AnnotationStore()
    {
-      this.annotationMap = new HashMap<Class<? extends Annotation>, Annotation>();
-      this.annotationSet = new HashSet<Annotation>();
+      this.annotationMap = emptyMap();
+      this.annotationSet = emptySet();
    }
 
    <T extends Annotation> T getAnnotation(Class<T> annotationType)
@@ -52,7 +55,7 @@ class AnnotationStore
 
    Set<Annotation> getAnnotations()
    {
-      return Collections.unmodifiableSet(annotationSet);
+      return annotationSet;
    }
 
    boolean isAnnotationPresent(Class<? extends Annotation> annotationType)

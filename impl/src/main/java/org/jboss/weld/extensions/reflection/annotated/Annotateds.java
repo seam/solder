@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotated;
+package org.jboss.weld.extensions.reflection.annotated;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -40,10 +40,14 @@ import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
 /**
+ * <p>
  * Utilities for working with {@link Annotated}s.
+ * </p>
  * 
+ * <p>
  * Includes utilities to check the equality of {@link Annotated} instances, and
  * to create unique ids for {@link Annotated} instances.
+ * </p>
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  */

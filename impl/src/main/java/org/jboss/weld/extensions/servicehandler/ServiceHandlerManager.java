@@ -24,8 +24,8 @@ import javax.enterprise.inject.spi.InjectionTarget;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.util.Reflections;
+import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
 
 /**
  * Manages the handler class for the service handler extension. This class is

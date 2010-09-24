@@ -3,8 +3,8 @@
  */
 package org.jboss.weld.extensions.util.properties;
 
-import static org.jboss.weld.extensions.util.Reflections.getFieldValue;
-import static org.jboss.weld.extensions.util.Reflections.setFieldValue;
+import static org.jboss.weld.extensions.reflection.Reflections.getFieldValue;
+import static org.jboss.weld.extensions.reflection.Reflections.setFieldValue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;

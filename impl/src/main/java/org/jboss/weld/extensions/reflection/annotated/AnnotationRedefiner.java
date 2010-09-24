@@ -14,25 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotated;
+package org.jboss.weld.extensions.reflection.annotated;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Map;
-
-import javax.enterprise.inject.spi.AnnotatedMethod;
-import javax.enterprise.inject.spi.AnnotatedType;
+import java.lang.annotation.Annotation;
 
 /**
+ * An implementation {@link AnnotationRedefiner} can be applied to an
+ * {@link AnnotatedTypeBuilder}, and receives callbacks for each annotation of
+ * the type is it applied for.
  * 
- * @author Stuart Douglas
+ * @author Pete Muir
  * 
+ * @see AnnotatedTypeBuilder
  */
-class AnnotatedMethodImpl<X> extends AnnotatedCallableImpl<X, Method> implements AnnotatedMethod<X>
+public interface AnnotationRedefiner<A extends Annotation>
 {
-   AnnotatedMethodImpl(AnnotatedType<X> type, Method method, AnnotationStore annotations, Map<Integer, AnnotationStore> parameterAnnotations, Map<Integer, Type> parameterTypeOverrides)
-   {
-      super(type, method, method.getReturnType(), method.getParameterTypes(), method.getGenericParameterTypes(), annotations, parameterAnnotations, method.getGenericReturnType(), parameterTypeOverrides);
-   }
+   /**
+    * Callback invoked for each annotation of the type the
+    * {@link AnnotationRedefiner} is applied for.
+    * 
+    * @param ctx
+    */
+   public void redefine(RedefinitionContext<A> ctx);
 
 }

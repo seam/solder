@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.weld.extensions.util.AnnotationInspector;
+import org.jboss.weld.extensions.reflection.AnnotationInspector;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

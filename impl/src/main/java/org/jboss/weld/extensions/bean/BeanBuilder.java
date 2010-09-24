@@ -30,9 +30,9 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 import javax.inject.Named;
 
-import org.jboss.weld.extensions.annotated.Annotateds;
 import org.jboss.weld.extensions.literal.AnyLiteral;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
+import org.jboss.weld.extensions.reflection.annotated.Annotateds;
 
 /**
  * class that can build a bean from an AnnotatedType.

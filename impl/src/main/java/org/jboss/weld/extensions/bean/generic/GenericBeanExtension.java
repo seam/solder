@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
-import static org.jboss.weld.extensions.util.AnnotationInspector.getAnnotations;
+import static org.jboss.weld.extensions.reflection.AnnotationInspector.getAnnotations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -54,18 +54,18 @@ import javax.enterprise.inject.spi.ProcessProducerMethod;
 import javax.enterprise.inject.spi.Producer;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.annotated.AnnotationRedefiner;
-import org.jboss.weld.extensions.annotated.RedefinitionContext;
 import org.jboss.weld.extensions.bean.BeanBuilder;
 import org.jboss.weld.extensions.bean.BeanLifecycle;
 import org.jboss.weld.extensions.bean.Beans;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
+import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.weld.extensions.reflection.Synthetic;
+import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
+import org.jboss.weld.extensions.reflection.annotated.AnnotationRedefiner;
+import org.jboss.weld.extensions.reflection.annotated.RedefinitionContext;
 import org.jboss.weld.extensions.unwraps.Unwraps;
 import org.jboss.weld.extensions.unwraps.UnwrapsProducerBean;
 import org.jboss.weld.extensions.util.Arrays2;
-import org.jboss.weld.extensions.util.Reflections;
-import org.jboss.weld.extensions.util.Synthetic;
 import org.jboss.weld.extensions.util.collections.Multimaps;
 import org.jboss.weld.extensions.util.collections.SetMultimap;
 import org.jboss.weld.extensions.util.collections.Supplier;

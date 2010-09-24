@@ -9,7 +9,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.bean.InjectableMethod;
-import org.jboss.weld.extensions.util.Synthetic;
+import org.jboss.weld.extensions.reflection.Synthetic;
 
 // TODO Make this passivation capable
 public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>

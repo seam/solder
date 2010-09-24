@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotated;
+package org.jboss.weld.extensions.reflection.annotated;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -33,28 +33,37 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
-import org.jboss.weld.extensions.util.Reflections;
+import org.jboss.logging.Messages;
+import org.jboss.weld.extensions.messages.AnnotatedMessages;
+import org.jboss.weld.extensions.reflection.Reflections;
 
 /**
- * Class for constructing a new AnnotatedType. A new instance of builder must be
- * used for each annotated type.
+ * <p>
+ * Class for constructing a new AnnotatedType. A new instance of builder should
+ * be used for each annotated type.
+ * </p>
  * 
- * In can either be created with no annotations, or the annotations can be read
- * from the underlying class or an AnnotatedType
+ * <p>
+ * {@link AnnotatedTypeBuilder} is not thread-safe.
+ * </p>
  * 
  * @author Stuart Douglas
  * @author Pete Muir
  * 
+ * @see AnnotatedType
+ * 
  */
 public class AnnotatedTypeBuilder<X>
 {
+
+   private transient AnnotatedMessages messages = Messages.getBundle(AnnotatedMessages.class);
 
    private Class<X> javaClass;
    private final AnnotationBuilder typeAnnotations;
 
    private final Map<Constructor<?>, AnnotationBuilder> constructors;
    private final Map<Constructor<?>, Map<Integer, AnnotationBuilder>> constructorParameters;
-   private Map<Constructor<?>, Map<Integer, Type>> constructorParameterTypes;
+   private final Map<Constructor<?>, Map<Integer, Type>> constructorParameterTypes;
 
    private final Map<Field, AnnotationBuilder> fields;
    private final Map<Field, Type> fieldTypes;
@@ -63,6 +72,14 @@ public class AnnotatedTypeBuilder<X>
    private final Map<Method, Map<Integer, AnnotationBuilder>> methodParameters;
    private final Map<Method, Map<Integer, Type>> methodParameterTypes;
 
+   /**
+    * Create a new builder. A new builder has no annotations and no members.
+    * 
+    * @see #readFromType(AnnotatedType)
+    * @see #readFromType(Class)
+    * @see #readFromType(AnnotatedType, boolean)
+    * @see #readFromType(Class, boolean)
+    */
    public AnnotatedTypeBuilder()
    {
       this.typeAnnotations = new AnnotationBuilder();
@@ -76,18 +93,38 @@ public class AnnotatedTypeBuilder<X>
       this.methodParameterTypes = new HashMap<Method, Map<Integer, Type>>();
    }
 
+   /**
+    * Add an annotation to the type declaration.
+    * 
+    * @param annotation the annotation instance to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToClass(Annotation annotation)
    {
       typeAnnotations.add(annotation);
       return this;
    }
 
+   /**
+    * Remove an annotation from the type
+    * 
+    * @param annotationType the annotation type to remove
+    * @throws IllegalArgumentException if the annotationType
+    */
    public AnnotatedTypeBuilder<X> removeFromClass(Class<? extends Annotation> annotationType)
    {
       typeAnnotations.remove(annotationType);
       return this;
    }
 
+   /**
+    * Add an annotation to the specified field. If the field is not already
+    * present, it will be added.
+    * 
+    * @param field the field to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToField(Field field, Annotation annotation)
    {
       if (fields.get(field) == null)
@@ -98,25 +135,61 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Add an annotation to the specified field. If the field is not already
+    * present, it will be added.
+    * 
+    * @param field the field to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToField(AnnotatedField<? super X> field, Annotation annotation)
    {
       return addToField(field.getJavaMember(), annotation);
    }
 
+   /**
+    * Remove an annotation from the specified field.
+    * 
+    * @param field the field to remove the annotation from
+    * @param annotationType the annotation type to remove
+    * @throws IllegalArgumentException if the annotationType is null or if the
+    *            field is not currently declared on the type
+    */
    public AnnotatedTypeBuilder<X> removeFromField(Field field, Class<? extends Annotation> annotationType)
    {
-      if (fields.get(field) != null)
+      if (fields.get(field) == null)
+      {
+         throw new IllegalArgumentException(messages.notPresent(field, getJavaClass()));
+      }
+      else
       {
          fields.get(field).remove(annotationType);
       }
       return this;
    }
 
+   /**
+    * Remove an annotation from the specified field.
+    * 
+    * @param field the field to remove the annotation from
+    * @param annotationType the annotation type to remove
+    * @throws IllegalArgumentException if the annotationType is null or if the
+    *            field is not currently declared on the type
+    */
    public AnnotatedTypeBuilder<X> removeFromField(AnnotatedField<? super X> field, Class<? extends Annotation> annotationType)
    {
       return removeFromField(field.getJavaMember(), annotationType);
    }
 
+   /**
+    * Add an annotation to the specified method. If the method is not already
+    * present, it will be added.
+    * 
+    * @param method the method to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToMethod(Method method, Annotation annotation)
    {
       if (methods.get(method) == null)
@@ -127,25 +200,63 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Add an annotation to the specified method. If the method is not already
+    * present, it will be added.
+    * 
+    * @param method the method to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToMethod(AnnotatedMethod<? super X> method, Annotation annotation)
    {
       return addToMethod(method.getJavaMember(), annotation);
    }
 
+   /**
+    * Remove an annotation from the specified method.
+    * 
+    * @param method the method to remove the annotation from
+    * @param annotationType the annotation type to remove
+    * @throws IllegalArgumentException if the annotationType is null or if the
+    *            method is not currently declared on the type
+    */
    public AnnotatedTypeBuilder<X> removeFromMethod(Method method, Class<? extends Annotation> annotationType)
    {
-      if (methods.get(method) != null)
+      if (methods.get(method) == null)
+      {
+         throw new IllegalArgumentException(messages.notPresent(method, getJavaClass()));
+      }
+      else
       {
          methods.get(method).remove(annotationType);
       }
       return this;
    }
 
+   /**
+    * Remove an annotation from the specified method.
+    * 
+    * @param method the method to remove the annotation from
+    * @param annotationType the annotation type to remove
+    * @throws IllegalArgumentException if the annotationType is null or if the
+    *            method is not currently declared on the type
+    */
    public AnnotatedTypeBuilder<X> removeFromMethod(AnnotatedMethod<? super X> method, Class<? extends Annotation> annotationType)
    {
       return removeFromMethod(method.getJavaMember(), annotationType);
    }
 
+   /**
+    * Add an annotation to the specified method parameter. If the method is not
+    * already present, it will be added. If the method parameter is not already
+    * present, it will be added.
+    * 
+    * @param method the method to add the annotation to
+    * @param position the position of the parameter to add
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToMethodParameter(Method method, int position, Annotation annotation)
    {
       if (!methods.containsKey(method))
@@ -164,11 +275,29 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Remove an annotation from the specified method parameter.
+    * 
+    * @param method the method to remove the annotation from
+    * @param position the position of the parameter to remove
+    * @param annotationType the annotation type to remove
+    * @throws IllegalArgumentException if the annotationType is null, if the
+    *            method is not currently declared on the type or if the
+    *            parameter is not declared on the method
+    */
    public AnnotatedTypeBuilder<X> removeFromMethodParameter(Method method, int position, Class<? extends Annotation> annotationType)
    {
-      if (methodParameters.get(method) != null)
+      if (methods.get(method) == null)
       {
-         if (methodParameters.get(method).get(position) != null)
+         throw new IllegalArgumentException(messages.notPresent(method, getJavaClass()));
+      }
+      else
+      {
+         if (methodParameters.get(method).get(position) == null)
+         {
+            throw new IllegalArgumentException(messages.notPresent(method, position, getJavaClass()));
+         }
+         else
          {
             methodParameters.get(method).get(position).remove(annotationType);
          }
@@ -176,6 +305,14 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Add an annotation to the specified constructor. If the constructor is not
+    * already present, it will be added.
+    * 
+    * @param constructor the constructor to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToConstructor(Constructor<X> constructor, Annotation annotation)
    {
       if (constructors.get(constructor) == null)
@@ -186,11 +323,27 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Add an annotation to the specified constructor. If the constructor is not
+    * already present, it will be added.
+    * 
+    * @param constructor the constructor to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToConstructor(AnnotatedConstructor<X> constructor, Annotation annotation)
    {
       return addToConstructor(constructor.getJavaMember(), annotation);
    }
 
+   /**
+    * Remove an annotation from the specified constructor.
+    * 
+    * @param constructor the constructor to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotationType is null or if the
+    *            constructor is not currently declared on the type
+    */
    public AnnotatedTypeBuilder<X> removeFromConstructor(Constructor<X> constructor, Class<? extends Annotation> annotationType)
    {
       if (constructors.get(constructor) != null)
@@ -200,11 +353,30 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Remove an annotation from the specified constructor.
+    * 
+    * @param constructor the constructor to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotationType is null, if the
+    *            annotation does not exist on the type or if the constructor is
+    *            not currently declared on the type
+    */
    public AnnotatedTypeBuilder<X> removeFromConstructor(AnnotatedConstructor<X> constructor, Class<? extends Annotation> annotationType)
    {
       return removeFromConstructor(constructor.getJavaMember(), annotationType);
    }
 
+   /**
+    * Add an annotation to the specified constructor parameter. If the
+    * constructor is not already present, it will be added. If the constructor
+    * parameter is not already present, it will be added.
+    * 
+    * @param method the constructor to add the annotation to
+    * @param position the position of the parameter to add
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null
+    */
    public AnnotatedTypeBuilder<X> addToConstructorParameter(Constructor<X> constructor, int position, Annotation annotation)
    {
       if (!constructors.containsKey(constructor))
@@ -223,6 +395,16 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Remove an annotation from the specified constructor parameter.
+    * 
+    * @param method the constructor to remove the annotation from
+    * @param position the position of the parameter to remove
+    * @param annotationType the annotation type to remove
+    * @throws IllegalArgumentException if the annotationType is null, if the
+    *            constructor is not currently declared on the type or if the
+    *            parameter is not declared on the constructor
+    */
    public AnnotatedTypeBuilder<X> removeFromConstructorParameter(Constructor<X> constructor, int position, Class<? extends Annotation> annotationType)
    {
       if (constructorParameters.get(constructor) != null)
@@ -235,6 +417,16 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Remove an annotation from the specified parameter.
+    * 
+    * @param parameter the parameter to remove the annotation from
+    * @param annotationType the annotation type to remove
+    * @throws IllegalArgumentException if the annotationType is null, if the
+    *            callable which declares the parameter is not currently declared
+    *            on the type or if the parameter is not declared on either a
+    *            constructor or a method
+    */
    public AnnotatedTypeBuilder<X> removeFromParameter(AnnotatedParameter<? super X> parameter, Class<? extends Annotation> annotationType)
    {
       if (parameter.getDeclaringCallable().getJavaMember() instanceof Method)
@@ -254,6 +446,16 @@ public class AnnotatedTypeBuilder<X>
       }
    }
 
+   /**
+    * Add an annotation to the specified parameter. If the callable which
+    * declares the parameter is not already present, it will be added. If the
+    * parameter is not already present on the callable, it will be added.
+    * 
+    * @param parameter the parameter to add the annotation to
+    * @param annotation the annotation to add
+    * @throws IllegalArgumentException if the annotation is null or if the
+    *            parameter is not declared on either a constructor or a method
+    */
    public AnnotatedTypeBuilder<X> addToParameter(AnnotatedParameter<? super X> parameter, Annotation annotation)
    {
       if (parameter.getDeclaringCallable().getJavaMember() instanceof Method)
@@ -273,8 +475,20 @@ public class AnnotatedTypeBuilder<X>
       }
    }
 
+   /**
+    * Remove annotations from the type, and all of it's members. If an
+    * annotation of the specified type appears on the type declaration, or any
+    * of it's members it will be removed.
+    * 
+    * @param annotationType the type of annotation to remove
+    * @throws IllegalArgumentException if the annotationType is null
+    */
    public AnnotatedTypeBuilder<X> removeFromAll(Class<? extends Annotation> annotationType)
    {
+      if (annotationType == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("annotationType"));
+      }
       removeFromClass(annotationType);
       for (Entry<Field, AnnotationBuilder> field : fields.entrySet())
       {
@@ -304,9 +518,28 @@ public class AnnotatedTypeBuilder<X>
       }
       return this;
    }
-   
+
+   /**
+    * Redefine any annotations of the specified type. The redefinition callback
+    * will be invoked for any annotation on the type definition or any of it's
+    * members.
+    * 
+    * @param annotationType the type of the annotation for which to call the
+    *           redefinition
+    * @param redefinition the redefiniton callback
+    * @throws IllegalArgumentException if the annotationType or redefinition is
+    *            null
+    */
    public <A extends Annotation> AnnotatedTypeBuilder<X> redefine(Class<A> annotationType, AnnotationRedefiner<A> redefinition)
    {
+      if (annotationType == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("annotationType"));
+      }
+      if (redefinition == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("redefinition"));
+      }
       for (Entry<Field, AnnotationBuilder> field : fields.entrySet())
       {
          redefineAnnotationBuilder(annotationType, redefinition, field.getKey(), field.getKey().getGenericType(), field.getValue(), field.getKey().getName());
@@ -357,7 +590,8 @@ public class AnnotatedTypeBuilder<X>
     * added. The javaClass will be read in. If the annotation already exists on
     * that element in the builder the read annotation will be used.
     * 
-    * @param type The type to read from
+    * @param type the type to read from
+    * @throws IllegalArgumentException if type is null
     */
    public AnnotatedTypeBuilder<X> readFromType(AnnotatedType<X> type)
    {
@@ -370,12 +604,17 @@ public class AnnotatedTypeBuilder<X>
     * annotation already exists on that element in the builder, overwrite
     * determines whether the original or read annotation will be used.
     * 
-    * @param type The type to read from
-    * @param overwrite If true, the read annotation will replace any existing
+    * @param type the type to read from
+    * @param overwrite if true, the read annotation will replace any existing
     *           annotation
+    * @throws IllegalArgumentException if type is null
     */
    public AnnotatedTypeBuilder<X> readFromType(AnnotatedType<X> type, boolean overwrite)
    {
+      if (type == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("type"));
+      }
       if (javaClass == null || overwrite)
       {
          this.javaClass = type.getJavaClass();
@@ -433,27 +672,36 @@ public class AnnotatedTypeBuilder<X>
    }
 
    /**
-    * reads the annotations from an existing java type. Annotations already
-    * present will be overriten
+    * Reads the annotations from an existing java type. Annotations already
+    * present will be overwritten
     * 
+    * @param type the type to read from
+    * @throws IllegalArgumentException if type is null
     */
-   public AnnotatedTypeBuilder<X> readFromType(Class<X> underlyingType)
+   public AnnotatedTypeBuilder<X> readFromType(Class<X> type)
    {
-      return readFromType(underlyingType, true);
+      return readFromType(type, true);
    }
 
    /**
-    * reads the annotations from an existing java type. If overwrite is true
+    * Reads the annotations from an existing java type. If overwrite is true
     * then existing annotations will be overwritten
     * 
+    * @param type the type to read from
+    * @param overwrite if true, the read annotation will replace any existing
+    *           annotation
     */
-   public AnnotatedTypeBuilder<X> readFromType(Class<X> underlyingType, boolean overwrite)
+   public AnnotatedTypeBuilder<X> readFromType(Class<X> type, boolean overwrite)
    {
+      if (type == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("type"));
+      }
       if (javaClass == null || overwrite)
       {
-         this.javaClass = underlyingType;
+         this.javaClass = type;
       }
-      for (Annotation annotation : underlyingType.getAnnotations())
+      for (Annotation annotation : type.getAnnotations())
       {
          if (overwrite || !typeAnnotations.isAnnotationPresent(annotation.annotationType()))
          {
@@ -461,7 +709,7 @@ public class AnnotatedTypeBuilder<X>
          }
       }
 
-      for (Field field : Reflections.getAllDeclaredFields(underlyingType))
+      for (Field field : Reflections.getAllDeclaredFields(type))
       {
          AnnotationBuilder annotationBuilder = fields.get(field);
          if (annotationBuilder == null)
@@ -479,7 +727,7 @@ public class AnnotatedTypeBuilder<X>
          }
       }
 
-      for (Method method : Reflections.getAllDeclaredMethods(underlyingType))
+      for (Method method : Reflections.getAllDeclaredMethods(type))
       {
          AnnotationBuilder annotationBuilder = methods.get(method);
          if (annotationBuilder == null)
@@ -520,7 +768,7 @@ public class AnnotatedTypeBuilder<X>
          }
       }
 
-      for (Constructor<?> constructor : underlyingType.getDeclaredConstructors())
+      for (Constructor<?> constructor : type.getDeclaredConstructors())
       {
          AnnotationBuilder annotationBuilder = constructors.get(constructor);
          if (annotationBuilder == null)
@@ -581,6 +829,11 @@ public class AnnotatedTypeBuilder<X>
       }
    }
 
+   /**
+    * Create an {@link AnnotatedType}. Any public members present on the
+    * underlying class and not overridden by the builder will be automatically
+    * added.
+    */
    public AnnotatedType<X> create()
    {
       Map<Constructor<?>, Map<Integer, AnnotationStore>> constructorParameterAnnnotations = new HashMap<Constructor<?>, Map<Integer, AnnotationStore>>();
@@ -625,18 +878,56 @@ public class AnnotatedTypeBuilder<X>
       return new AnnotatedTypeImpl<X>(javaClass, typeAnnotations.create(), fieldAnnotations, methodAnnotations, methodParameterAnnnotations, constructorAnnotations, constructorParameterAnnnotations, fieldTypes, methodParameterTypes, constructorParameterTypes);
    }
 
+   /**
+    * Override the declared type of a field
+    * 
+    * @param field the field to override the type on
+    * @param type the new type of the field
+    * @throws IllegalArgumentException if field or type is null
+    */
    public void overrideFieldType(Field field, Type type)
    {
+      if (field == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("field"));
+      }
+      if (type == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("type"));
+      }
       fieldTypes.put(field, type);
    }
 
+   /**
+    * Override the declared type of a field
+    * 
+    * @param field the field to override the type on
+    * @param type the new type of the field
+    * @throws IllegalArgumentException if field or type is null
+    */
    public void overrideFieldType(AnnotatedField<? super X> field, Type type)
    {
-      fieldTypes.put(field.getJavaMember(), type);
+      overrideFieldType(field.getJavaMember(), type);
    }
 
+   /**
+    * Override the declared type of a method parameter
+    * 
+    * @param method the method to override the parameter type on
+    * @param position the position of the parameter to override the type on
+    * @param type the new type of the parameter
+    * @throws IllegalArgumentException if parameter or type is null
+    */
    public AnnotatedTypeBuilder<X> overrideMethodParameterType(Method method, int position, Type type)
    {
+      if (method == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("method"));
+      }
+      if (type == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("type"));
+      }
       if (methodParameterTypes.get(method) == null)
       {
          methodParameterTypes.put(method, new HashMap<Integer, Type>());
@@ -645,8 +936,24 @@ public class AnnotatedTypeBuilder<X>
       return this;
    }
 
+   /**
+    * Override the declared type of a constructor parameter
+    * 
+    * @param constructor the constructor to override the parameter type on
+    * @param position the position of the parameter to override the type on
+    * @param type the new type of the parameter
+    * @throws IllegalArgumentException if parameter or type is null
+    */
    public AnnotatedTypeBuilder<X> overrideConstructorParameterType(Constructor<X> constructor, int position, Type type)
    {
+      if (constructor == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("constructor"));
+      }
+      if (type == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("type"));
+      }
       if (constructorParameterTypes.get(constructor) == null)
       {
          constructorParameterTypes.put(constructor, new HashMap<Integer, Type>());

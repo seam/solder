@@ -20,8 +20,8 @@ package org.jboss.weld.extensions.log;
 import static org.jboss.logging.Logger.getLogger;
 import static org.jboss.logging.Logger.getMessageLogger;
 import static org.jboss.logging.Messages.getBundle;
+import static org.jboss.weld.extensions.reflection.Reflections.getRawType;
 import static org.jboss.weld.extensions.util.Locales.toLocale;
-import static org.jboss.weld.extensions.util.Reflections.getRawType;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;

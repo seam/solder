@@ -15,8 +15,8 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 
 import org.jboss.weld.extensions.bean.InjectionPointImpl;
-import org.jboss.weld.extensions.util.Reflections;
-import org.jboss.weld.extensions.util.Synthetic;
+import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.weld.extensions.reflection.Synthetic;
 
 // TODO Make this passivation capable
 class GenericManagedBean<T> extends AbstactGenericBean<T>

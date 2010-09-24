@@ -32,11 +32,11 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.inject.Named;
 
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.annotated.AnnotationRedefiner;
-import org.jboss.weld.extensions.annotated.RedefinitionContext;
 import org.jboss.weld.extensions.literal.NamedLiteral;
-import org.jboss.weld.extensions.util.Reflections;
+import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
+import org.jboss.weld.extensions.reflection.annotated.AnnotationRedefiner;
+import org.jboss.weld.extensions.reflection.annotated.RedefinitionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

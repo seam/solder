@@ -9,7 +9,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.bean.Beans;
-import org.jboss.weld.extensions.util.Synthetic;
+import org.jboss.weld.extensions.reflection.Synthetic;
 
 /**
  * A helper class for implementing producer methods and fields on generic beans

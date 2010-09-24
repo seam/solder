@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.util;
+package org.jboss.weld.extensions.reflection;
 
 import java.io.IOException;
 import java.io.ObjectStreamException;
@@ -23,34 +23,17 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class that handles the method calls for a java.lang.reflect.Proxy that
+ * Class that handles the method calls for a {@link Proxy} that
  * implements an annotation.
  * 
- * The generated handler takes a Map<String,Object> as a constructor argument
- * with the keys equal to the annotation method names. For Annotation, array and
- * Enum types the values must exactly match the return type or a
- * ClassCastException will result.
- * 
- * For character types the the value must be an instance of java.lang.Character
- * or String.
- * 
- * Numeric types do not have to match exactly, as they are converted using
- * java.lang.Number's xxxValue methods.
- * 
- * If am member does not have a corresponding entry in the value map then the
- * annotations default value will be used. 
- * 
- * If the annotation member does not have a default value then a NullMemberException
- * will be thrown
- * 
- * 
  * @author Stuart Douglas
- * 
+ * @see AnnotationInstanceProvider
  */
 class AnnotationInvocationHandler implements InvocationHandler, Serializable
 {

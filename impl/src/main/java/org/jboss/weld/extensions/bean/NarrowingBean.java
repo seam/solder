@@ -1,6 +1,6 @@
 package org.jboss.weld.extensions.bean;
 
-import static org.jboss.weld.extensions.util.Reflections.cast;
+import static org.jboss.weld.extensions.reflection.Reflections.cast;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -10,7 +10,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.weld.extensions.util.Reflections;
+import org.jboss.weld.extensions.reflection.Reflections;
 
 /**
  * <p>

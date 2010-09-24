@@ -30,7 +30,7 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
+import org.jboss.weld.extensions.reflection.AnnotationInstanceProvider;
 
 /**
  * The ResourceProvider allows dynamic loading of managed resources.

@@ -1,6 +1,6 @@
 package org.jboss.weld.extensions.bean;
 
-import static org.jboss.weld.extensions.util.Reflections.isSerializable;
+import static org.jboss.weld.extensions.reflection.Reflections.isSerializable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;

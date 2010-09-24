@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.util;
+package org.jboss.weld.extensions.reflection;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -36,7 +36,7 @@ import javax.enterprise.inject.spi.BeanManager;
 /**
  * Utility class for working with Java Reflection
  * 
- * @author stuart
+ * @author Stuart Douglas
  * @author Pete Muir
  * 
  */

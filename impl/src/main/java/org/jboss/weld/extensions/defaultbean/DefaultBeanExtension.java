@@ -47,10 +47,10 @@ import javax.enterprise.inject.spi.ProcessObserverMethod;
 import javax.enterprise.inject.spi.ProcessProducerField;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.bean.Beans;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
-import org.jboss.weld.extensions.util.Synthetic;
+import org.jboss.weld.extensions.reflection.Synthetic;
+import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.util.collections.Multimaps;
 import org.jboss.weld.extensions.util.collections.SetMultimap;
 import org.jboss.weld.extensions.util.collections.Supplier;

@@ -11,7 +11,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Producer;
 
 import org.jboss.weld.extensions.bean.AbstractImmutableProducer;
-import org.jboss.weld.extensions.util.Synthetic;
+import org.jboss.weld.extensions.reflection.Synthetic;
 
 /**
  * Helper class which implements the {@link Producer} contract for creating generic producers

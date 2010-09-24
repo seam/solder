@@ -3,7 +3,7 @@
  */
 package org.jboss.weld.extensions.util.properties;
 
-import static org.jboss.weld.extensions.util.Reflections.invokeMethod;
+import static org.jboss.weld.extensions.reflection.Reflections.invokeMethod;
 
 import java.beans.Introspector;
 import java.lang.reflect.Member;

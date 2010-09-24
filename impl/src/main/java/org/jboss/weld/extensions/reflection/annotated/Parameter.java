@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.annotated;
+package org.jboss.weld.extensions.reflection.annotated;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -7,7 +7,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import org.jboss.weld.extensions.util.Reflections;
+import org.jboss.weld.extensions.reflection.Reflections;
 
 
 /**
@@ -16,10 +16,10 @@ import org.jboss.weld.extensions.util.Reflections;
  * @author pmuir
  * 
  */
-public abstract class Parameter<X> implements AnnotatedElement
+abstract class Parameter<X> implements AnnotatedElement
 {
 
-   public static <X> Parameter<X> create(Member declaringMember, int position)
+   static <X> Parameter<X> create(Member declaringMember, int position)
    {
       if (declaringMember instanceof Method)
       {
@@ -27,7 +27,7 @@ public abstract class Parameter<X> implements AnnotatedElement
       }
       else if (declaringMember instanceof Constructor<?>)
       {
-         return new ConstructorParameter<X>((Constructor<X>) declaringMember, position);
+         return new ConstructorParameter<X>(Reflections.<Constructor<X>>cast(declaringMember), position);
       }
       else
       {

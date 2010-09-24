@@ -14,44 +14,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.annotated;
+package org.jboss.weld.extensions.reflection.annotated;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
+import org.jboss.logging.Messages;
+import org.jboss.weld.extensions.messages.AnnotatedMessages;
+import org.jboss.weld.extensions.reflection.Reflections;
+
 /**
+ * Helper class used to build annotation stores
  * 
  * @author Stuart Douglas
  *
  */
 public class AnnotationBuilder
 {
-   private final HashMap<Class<? extends Annotation>, Annotation> annotationMap = new HashMap<Class<? extends Annotation>, Annotation>();
-   private final Set<Annotation> annotationSet = new HashSet<Annotation>();
+   
+   private transient AnnotatedMessages messages = Messages.getBundle(AnnotatedMessages.class);
+   
+   private final Map<Class<? extends Annotation>, Annotation> annotationMap;
+   private final Set<Annotation> annotationSet;
+   
+   AnnotationBuilder()
+   {
+      this.annotationMap = new HashMap<Class<? extends Annotation>, Annotation>();
+      this.annotationSet = new HashSet<Annotation>();
+   }
 
    public AnnotationBuilder add(Annotation annotation)
    {
+      if (annotation == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("annotation"));
+      }
       annotationSet.add(annotation);
       annotationMap.put(annotation.annotationType(), annotation);
       return this;
    }
 
-   public AnnotationBuilder remove(Class<? extends Annotation> annotation)
+   public AnnotationBuilder remove(Class<? extends Annotation> annotationType)
    {
+      if (annotationType == null)
+      {
+         throw new IllegalArgumentException(messages.parameterMustNotBeNull("annotationType"));
+      }
+
       Iterator<Annotation> it = annotationSet.iterator();
       while (it.hasNext())
       {
          Annotation an = it.next();
-         if (annotation.isAssignableFrom(an.annotationType()))
+         if (annotationType.isAssignableFrom(an.annotationType()))
          {
             it.remove();
          }
       }
-      annotationMap.remove(annotation);
+      annotationMap.remove(annotationType);
       return this;
    }
 
@@ -89,7 +113,7 @@ public class AnnotationBuilder
 
    public <T extends Annotation> T getAnnotation(Class<T> anType)
    {
-      return (T) annotationMap.get(anType);
+      return Reflections.<T>cast(annotationMap.get(anType));
    }
    
    public boolean isAnnotationPresent(Class<?> annotationType)

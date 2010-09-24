@@ -1,6 +1,6 @@
 package org.jboss.weld.extensions.defaultbean;
 
-import static org.jboss.weld.extensions.util.Reflections.getFieldValue;
+import static org.jboss.weld.extensions.reflection.Reflections.getFieldValue;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -11,7 +11,7 @@ import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.weld.extensions.util.Reflections;
+import org.jboss.weld.extensions.reflection.Reflections;
 
 // TODO Make this passivation capable
 class DefaultProducerField<T, X> extends AbstractDefaultProducerBean<T>

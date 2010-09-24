@@ -15,7 +15,7 @@ import javax.enterprise.inject.spi.ObserverMethod;
 import org.jboss.weld.extensions.bean.ForwardingObserverMethod;
 import org.jboss.weld.extensions.bean.InjectableMethod;
 import org.jboss.weld.extensions.bean.ParameterValueRedefiner;
-import org.jboss.weld.extensions.util.Synthetic;
+import org.jboss.weld.extensions.reflection.Synthetic;
 
 class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
 {

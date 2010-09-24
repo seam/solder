@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.extensions.servicehandler;
 
-import static org.jboss.weld.extensions.util.AnnotationInspector.getMetaAnnotation;
+import static org.jboss.weld.extensions.reflection.AnnotationInspector.getMetaAnnotation;
 
 import java.util.HashSet;
 import java.util.Set;

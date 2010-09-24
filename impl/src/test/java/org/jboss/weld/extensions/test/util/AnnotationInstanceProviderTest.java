@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
-import org.jboss.weld.extensions.util.NullMemberException;
+import org.jboss.weld.extensions.reflection.AnnotationInstanceProvider;
+import org.jboss.weld.extensions.reflection.NullMemberException;
 import org.junit.Test;
 
 /**
