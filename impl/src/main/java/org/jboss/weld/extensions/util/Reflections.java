@@ -50,6 +50,12 @@ public class Reflections
    private Reflections()
    {
    }
+   
+   @SuppressWarnings("unchecked")
+   public static <T> T cast(Object obj)
+   {
+      return (T) obj;
+   }
 
    /**
     * Get all the declared fields on the class hierarchy. This <b>will</b>
