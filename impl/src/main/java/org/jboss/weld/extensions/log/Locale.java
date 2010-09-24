@@ -31,28 +31,28 @@ import org.jboss.logging.MessageLogger;
 
 /**
  * <p>
- * Specifies a Category for the injected logger. A category must be specified
- * for a typed logger.
+ * Specifies a Locale for a typed logger.
  * </p>
  * 
  * <p>
- * If the <code>&#64;Category</code> annotation is omitted, the fully qualified
- * name of the injection point type is used as the category.
+ * If no locale is specified, the default locale will be used.
  * </p>
  * 
  * @author Pete Muir
  * 
  * @see MessageLogger
- * @see Logger#getLogger(String)
+ * @see java.util.Locale#getDefault()
+ * @see Logger#getMessageLogger(Class, String, java.util.Locale)
  */
 @Target({ METHOD, FIELD, PARAMETER, TYPE })
 @Retention(RUNTIME)
 @Documented
-public @interface Category
+public @interface Locale
 {
 
    /**
-    * The category of the logger.
+    * The locale, using _ to separate the language code, country code and
+    * variant. Specifying the country code and variant is optional.
     */
    String value();
 }

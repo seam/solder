@@ -67,6 +67,7 @@
       <weld.core.version>1.1.0.Beta1</weld.core.version>
       <javassist.version>3.13.0-GA</javassist.version>
       <slf4j.version>1.5.10</slf4j.version>
+      <jboss.logging.version>3.0.0.Beta4</jboss.logging.version>
       <testng.version>5.12.1</testng.version>
       <jboss.test.harness.version>1.1.0-CR3</jboss.test.harness.version>
       <servlet.api.version>2.5</servlet.api.version>
@@ -95,6 +96,12 @@
             <version>${weld.core.version}</version>
             <type>pom</type>
             <scope>import</scope>
+         </dependency>
+         
+         <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>${jboss.logging.version}</version>
          </dependency>
 
          <dependency>
@@ -170,6 +177,13 @@
             <artifactId>javassist</artifactId>
             <version>${javassist.version}</version>
          </dependency>
+         
+         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
+         </dependency>
+         
       </dependencies>
    </dependencyManagement>
 

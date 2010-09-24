@@ -18,6 +18,7 @@
 package org.jboss.weld.extensions.test.log;
 
 import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+import static org.junit.Assert.assertEquals;
 
 import javax.inject.Inject;
 
@@ -26,43 +27,58 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.impl.LastMessageLoggerFactory;
 
 /**
- * All the tests related to the @Logger binding type and injection.
+ * 
+ * These tests are basically manual as we have no way to check the output
  * 
  * @author David Allen
  */
 @RunWith(Arquillian.class)
 public class LoggerInjectionTest
 {
+   
    @Inject
    Sparrow sparrow;
 
    @Inject
    Finch finch;
+   
+   @Inject
+   Hawk hawk;
+   
+   @Inject
+   Jay jay;
 
    @Deployment
    public static Archive<?> deployment()
    {
-      return baseDeployment().addPackage(LoggerInjectionTest.class.getPackage()).addPackage(LastMessageLoggerFactory.class.getPackage());
+      return baseDeployment().addPackage(LoggerInjectionTest.class.getPackage());
    }
 
    @Test
    public void testBasicLogInjection()
    {
-      LastMessageLoggerFactory.INSTANCE.getLogger("").reset();
       sparrow.generateLogMessage();
-      assert LastMessageLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
-      assert LastMessageLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Sparrow");
    }
 
    @Test
    public void testCategorySpecifiedLogger()
    {
-      LastMessageLoggerFactory.INSTANCE.getLogger("").reset();
       finch.generateLogMessage();
-      assert LastMessageLoggerFactory.INSTANCE.getLogger("").getLastMessage() != null;
-      assert LastMessageLoggerFactory.INSTANCE.getLogger("").getLastMessage().equals("Finch");
    }
+   
+   @Test
+   public void testMessageLogger()
+   {
+      hawk.generateLogMessage();
+   }
+   
+   @Test
+   public void testMessageBundleInjection()
+   {
+      assertEquals("Spotted 8 jays", jay.getMessage());
+   }
+   
+   
 }

@@ -27,32 +27,29 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.jboss.logging.Logger;
-import org.jboss.logging.MessageLogger;
 
 /**
  * <p>
- * Specifies a Category for the injected logger. A category must be specified
- * for a typed logger.
+ * A suffix to use on the specified category (or fully qualified name of the
+ * injection point type if no category is specified). The category and suffix
+ * will be separated by a logger separator.
  * </p>
  * 
  * <p>
- * If the <code>&#64;Category</code> annotation is omitted, the fully qualified
- * name of the injection point type is used as the category.
+ * Suffixes are not supported by typed loggers.
  * </p>
  * 
  * @author Pete Muir
  * 
- * @see MessageLogger
- * @see Logger#getLogger(String)
+ * @see Logger#getLogger(String, String)
  */
 @Target({ METHOD, FIELD, PARAMETER, TYPE })
 @Retention(RUNTIME)
 @Documented
-public @interface Category
+public @interface Suffix
 {
-
    /**
-    * The category of the logger.
+    * The suffix to use
     */
    String value();
 }

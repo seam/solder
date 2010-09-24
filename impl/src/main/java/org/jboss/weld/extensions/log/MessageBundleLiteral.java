@@ -14,20 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.log;
+package org.jboss.weld.extensions.log;
 
-import javax.inject.Inject;
+import javax.enterprise.util.AnnotationLiteral;
 
-import org.jboss.logging.Logger;
-
-
-class Sparrow
+/**
+ * 
+ * @author Stuart Douglas
+ * 
+ */
+public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle
 {
-   @Inject
-   private Logger log;
-   
-   public void generateLogMessage()
-   {
-      log.info("Sparrow");
-   }
+   private static final long serialVersionUID = -8137340248362361317L;
+
+   public static final MessageBundle INSTANCE = new MessageBundleLiteral();
 }
