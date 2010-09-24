@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="annotationutilities">
+   <title>Annotation and AnnotatedType Utilities</title>
+
+   <para>
+      Weld Extensions provides a number of utilility classes to make working with Annotations and AnnotatedTypes easier.
+      This chapter will walk you each utility, and give you an idea of how to use it. For more detail, take a look at
+      the javaodoc on each class.
+   </para>
+
+   <section>
+      <title>Annotated Type Builder</title>
+      
+      <para>
+         Weld Extensions provides an <literal>AnnotatedType</literal> implementation that should be suitable for most 
+         portable extensions needs. The <literal>AnnotatedType</literal> is created from 
+         <literal>AnnotatedTypeBuilder</literal> as follows:
+      </para>
+      
+      <programlisting role="JAVA" ><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
+      .readFromType(baseType,true) /* readFromType can read from an AnnotatedType or a class */
+      .addToClass(ModelLiteral.INSTANCE) /* add the @Model annotation */
+      .create();]]></programlisting>
+      
+      <para>
+         Here we create a new builder, and initialize it using an existing <literal>AnnotatedType</literal>. We can then
+         add or remove annotations from the class, and it's members. When we have finished modifying the type, we call
+         <literal>create()</literal> to spit out a new, immutable, <literal>AnnotatedType</literal>.
+      </para>
+      
+      <para>
+        <literal>AnnotatedTypeBuilder</literal> also allows you to specify a "redefinition" which can be applied to the
+        type, a type of member, or all members. The redefiner will receive a callback for any annotations present which 
+        match the annotation type for which the redefinition is applied. For example, to remove the qualifier
+        <literal>@Unique</literal> from any class member and the type:
+      </para>
+      
+      <programlisting role="JAVA" ><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
+      .readFromType(baseType,true)
+      .redefine(Unique.class, new AnnotationRedefiner<Unique>() {
+      
+         public void redefine(RedefinitionContext<A> ctx) {
+            ctx.getAnnotationBuilder().remove(Unique.class);
+         }
+            
+      }
+      .create();]]></programlisting>
+      
+   </section>    
+   <section>
+      <title>Annotation Instance Provider</title>
+      <para>
+         Sometimes you may need an annotation instance for an annotation whose type is not known at development time.
+         Weld extends provides a <literal>AnnotationInstanceProvider</literal> class that can create an 
+         <literal>AnnotationLiteral</literal> instance for any annotation at runtime. Annotation attributes
+         are passed in via a <literal>Map&lt;String,Object&gt;</literal>. For example given the follow annotation:
+      </para>
+      <programlisting role="JAVA"><![CDATA[@Retention(RetentionPolicy.RUNTIME)
+public @interface MultipleMembers {
+   int intMember();
+
+   long longMember();
+
+   short shortMember();
+
+   float floatMember();
+
+   double doubleMember();
+
+   byte byteMember();
+
+   char charMember();
+
+   boolean booleanMember();
+
+   int[] intArrayMember();
+}]]></programlisting>
+
+      <para>
+         We can create an annotation instance as follows:
+      </para>
+      
+      <programlisting role="JAVA"><![CDATA[/* Create a new provider */
+   AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
+
+	/* Set the value for each of attributes */
+	Map<String, Object> values = new HashMap<String, Object>();
+	values.put("intMember", 1);
+	values.put("longMember", 1);
+	values.put("shortMember", 1);
+	values.put("floatMember", 0);
+	values.put("doubleMember", 0);
+	values.put("byteMember", ((byte) 1));
+	values.put("charMember", 'c');
+	values.put("booleanMember", true);
+	values.put("intArrayMember", new int[] { 0, 1 });
+	
+	/* Generate the instance */
+	MultipleMembers an = provider.get(MultipleMembers.class, values);]]></programlisting>
+   </section>
+   
+   <section>
+      <title>Annotation Inspector</title>
+      
+      <para>
+         The Annotation Inspector allows you to easily discover annotations which are meta-annotated. For example:
+      </para>
+      
+      <programlisting role="JAVA"><![CDATA[   /* Discover all annotations on type which are meta-annotated @Constraint */
+   Set<Annotation> constraints = AnnotationInspector.getAnnotations(type, Constraint.class);
+   
+   /* Load the annotation instance for @FacesValidator the annotation may declared on the type, */
+   /* or, if the type has any stereotypes, on the stereotypes */
+   FacesValidator validator = AnnotationInspector.getAnnotation(
+                                                                type,
+                                                                FacesValidator.class,
+                                                                true,
+                                                                beanManager);]]></programlisting>
+   
+   </section>
+   
+   <section>
+      <title>Synthetic Qualifiers</title>
+      
+      <para>
+         When developing an extension to CDI, it can be useful to detect certain injection points, or bean definitions
+         and based on annotations or other metadata, add qualifiers to further disambiguate the injection point or bean
+         definition for the CDI bean resolver. Weld Extension's synthetic qualifers can be used to easily generate and
+         track such qualifers.
+      </para>
+      
+      <para>
+         In this example, we will create a synthetic qualifier provider, and use it to create a qualifier. The provider
+         will track the qualifier, and if a qualifier is requested again for the same original annotation, the same 
+         instance will be returned.
+      </para>
+      
+      <programlisting role="JAVA"><![CDATA[   /* Create a provider, giving it a unique namespace */
+   Synthetic.Provider provider = new Synthetic.Provider("com.acme");
+   
+   /* Get the a synthetic qualifier for the original annotation instance */
+   Synthetic synthetic = provider.get(originalAnnotation);
+   
+   /* Later calls with the same original annotation instance will return the same instance */
+   /* Alternatively, we can "get and forget" */
+   
+   Synthetic synthetic2 = provider.get();]]></programlisting>
+   
+   </section>
+    
+</chapter>
