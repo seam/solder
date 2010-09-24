@@ -16,6 +16,8 @@
  */
 package org.jboss.weld.extensions.unwraps;
 
+import static org.jboss.weld.extensions.reflection.Reflections.cast;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -104,8 +106,6 @@ public class UnwrapsProducerBean<M> implements Bean<M>
          }
          else if (t instanceof ParameterizedType)
          {
-            ParameterizedType p = (ParameterizedType) t;
-            Class<?> c = (Class<?>) p.getRawType();
             types.add(t);
          }
       }
@@ -138,7 +138,7 @@ public class UnwrapsProducerBean<M> implements Bean<M>
             return !m.getName().equals("finalize");
          }
       });
-      proxyClass = f.createClass();
+      proxyClass = cast(f.createClass());
    }
 
    private static Set<Annotation> resolveQualifiers(Annotated method, BeanManager manager)

@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AnnotatedMethod;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
@@ -36,24 +37,34 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 public class UnwrapsExtension implements Extension
 {
 
-   final private Set<UnwrapsProducerBean<?>> beans = new HashSet<UnwrapsProducerBean<?>>();
+   final private Set<Bean<?>> beans;
 
-   public void processAnnotatedType(@Observes ProcessAnnotatedType<?> type, BeanManager manager)
+   public UnwrapsExtension()
    {
-      for (AnnotatedMethod<?> m : type.getAnnotatedType().getMethods())
+      this.beans = new HashSet<Bean<?>>();
+   }
+
+   void processAnnotatedType(@Observes ProcessAnnotatedType<?> type, BeanManager beanManager)
+   {
+      for (AnnotatedMethod<?> method : type.getAnnotatedType().getMethods())
       {
-         if (m.isAnnotationPresent(Unwraps.class))
+         if (method.isAnnotationPresent(Unwraps.class))
          {
             // we have a managed producer
             // lets make a note of it and register it later
-            beans.add(new UnwrapsProducerBean(m, manager));
+            beans.add(createBean(method, beanManager));
          }
       }
    }
 
-   public void afterBeanDiscovery(@Observes AfterBeanDiscovery afterBean)
+   private static <X> Bean<X> createBean(AnnotatedMethod<X> method, BeanManager beanManager)
    {
-      for (UnwrapsProducerBean<?> b : beans)
+      return new UnwrapsProducerBean<X>(method, beanManager);
+   }
+
+   void afterBeanDiscovery(@Observes AfterBeanDiscovery afterBean)
+   {
+      for (Bean<?> b : beans)
       {
          afterBean.addBean(b);
       }
