@@ -2,39 +2,44 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="annotationliterals">
-  <title>Annotation Literals</title>
-<section>
+   <title>Annotation Literals</title>
+   <section>
       <title>Summary</title>
+      
       <para>
          Weld extensions provides a complete set of <literal>AnnotationLiteral</literal>s for every annotation type 
          defined by the JSR-299 and JSR-330 specification. These are located in the 
          <literal>org.jboss.weld.extensions.literal</literal> package. Annotations without members provide a static 
          <literal>INSTANCE</literal> member that should be used rather than creating a new instance every time.
       </para>
-      <para>Literals are provided for the following annotations:</para>
+      
+      <para>
+         Literals are provided for the following annotations:
+      </para>
+      
       <simplelist>
-      <member><literal>@Alternative</literal></member>
-      <member><literal>@Any</literal></member>
-      <member><literal>@ApplicationScoped</literal></member>
-      <member><literal>@ConversationScoped</literal></member>
-      <member><literal>@Decorator</literal></member>
-      <member><literal>@Default</literal></member>
-      <member><literal>@Delegate</literal></member>
-      <member><literal>@Dependent</literal></member>
-      <member><literal>@Disposes</literal></member>
-      <member><literal>@Inject</literal></member>
-      <member><literal>@Model</literal></member>
-      <member><literal>@Named</literal></member>
-      <member><literal>@New</literal></member>
-      <member><literal>@NonBinding</literal></member>
-      <member><literal>@NormalScope</literal></member>
-      <member><literal>@Observes</literal></member>
-      <member><literal>@Produces</literal></member>
-      <member><literal>@RequestScoped</literal></member>
-      <member><literal>@SessionScoped</literal></member>
-      <member><literal>@Specializes</literal></member>
-      <member><literal>@Stereotype</literal></member>
-      <member><literal>@Typed</literal></member>
+         <member><literal>@Alternative</literal></member>
+         <member><literal>@Any</literal></member>
+         <member><literal>@ApplicationScoped</literal></member>
+         <member><literal>@ConversationScoped</literal></member>
+         <member><literal>@Decorator</literal></member>
+         <member><literal>@Default</literal></member>
+         <member><literal>@Delegate</literal></member>
+         <member><literal>@Dependent</literal></member>
+         <member><literal>@Disposes</literal></member>
+         <member><literal>@Inject</literal></member>
+         <member><literal>@Model</literal></member>
+         <member><literal>@Named</literal></member>
+         <member><literal>@New</literal></member>
+         <member><literal>@NonBinding</literal></member>
+         <member><literal>@NormalScope</literal></member>
+         <member><literal>@Observes</literal></member>
+         <member><literal>@Produces</literal></member>
+         <member><literal>@RequestScoped</literal></member>
+         <member><literal>@SessionScoped</literal></member>
+         <member><literal>@Specializes</literal></member>
+         <member><literal>@Stereotype</literal></member>
+         <member><literal>@Typed</literal></member>
       </simplelist>
    </section>
 </chapter>

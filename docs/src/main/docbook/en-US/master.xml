@@ -3,25 +3,26 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
 <book lang="en">
         
-    <title>Weld Extensions</title>   
+   <title>Weld Extensions</title>   
     
-    <preface>
-       <title>Introduction</title>
-        Weld Extensions is a library of Generally Useful Stuff (tm), particularly if you are
-        developing an application based on CDI (JSR-299 Java Contexts and Dependency Injection),
-        or a CDI portable extension.
-    </preface>     
+   <preface>
+      <title>Introduction</title>
+      Weld Extensions is a library of Generally Useful Stuff (tm), particularly if you are
+      developing an application based on CDI (JSR-299 Java Contexts and Dependency Injection),
+      or a CDI portable extension.
+   </preface>
 
-    <xi:include href="annotationutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="beanutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="propertyquery.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="annotationliterals.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="elextensions.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="resourceloading.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="managedproducer.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="logging.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="defaultbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="servicehandler.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="annotationutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="beanutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="propertyquery.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="annotationliterals.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="elextensions.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="resourceloading.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="managedproducer.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="logging.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="defaultbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="servicehandler.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <toc/>
+   <toc/>
+   
 </book>
