@@ -36,17 +36,29 @@
             <executions>
                <execution>
                   <id>attach-zip</id>
-                  <phase>package</phase>
                   <goals>
                      <goal>attach-artifact</goal>
                   </goals>
                   <configuration>
                      <artifacts>
+                        <!-- Attach the build docs to the project as a war -->
                         <artifact>
                            <file>${project.build.outputDirectory}/${project.artifactId}-${project.version}.war</file>
                            <type>war</type>
                         </artifact>
                      </artifacts>
+                  </configuration>
+               </execution>
+               <execution>
+                  <id>add-source</id>
+                  <goals>
+                     <goal>add-source</goal>
+                  </goals>
+                  <configuration>
+                     <sources>
+                        <!-- Add the source directory (helpful in IDE) -->
+                        <source>src/main/docbook</source>
+                     </sources>
                   </configuration>
                </execution>
             </executions>
