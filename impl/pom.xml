@@ -66,6 +66,7 @@
          <groupId>org.javassist</groupId>
          <artifactId>javassist</artifactId>
          <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
       <dependency>

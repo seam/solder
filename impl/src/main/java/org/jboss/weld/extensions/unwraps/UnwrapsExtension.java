@@ -27,6 +27,11 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
+import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.weld.extensions.servicehandler.ServiceHandlerExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * An extension that allows the use of {@link Unwraps} methods
  * 
@@ -37,11 +42,28 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 public class UnwrapsExtension implements Extension
 {
 
-   final private Set<Bean<?>> beans;
+   private final Set<Bean<?>> beans;
+
+   private final static Logger log = LoggerFactory.getLogger(UnwrapsExtension.class);
+
+   private final boolean enabled;
+
+   private final Set<Throwable> problems = new HashSet<Throwable>();
 
    public UnwrapsExtension()
    {
       this.beans = new HashSet<Bean<?>>();
+      boolean en = true;
+      try
+      {
+         Reflections.classForName("javassist.util.proxy.MethodHandler", ServiceHandlerExtension.class.getClassLoader());
+      }
+      catch (ClassNotFoundException e)
+      {
+         en = false;
+         log.debug("Javassist not preset, @Unwraps is disabled");
+      }
+      enabled = en;
    }
 
    void processAnnotatedType(@Observes ProcessAnnotatedType<?> type, BeanManager beanManager)
@@ -50,9 +72,16 @@ public class UnwrapsExtension implements Extension
       {
          if (method.isAnnotationPresent(Unwraps.class))
          {
-            // we have a managed producer
-            // lets make a note of it and register it later
-            beans.add(createBean(method, beanManager));
+            if (!enabled)
+            {
+               problems.add(new RuntimeException("Javassist not found on the class path, @Unwraps requires javassist to work. @Unwraps found on " + type.getAnnotatedType().getJavaClass().getName() + "." + method.getJavaMember().getName()));
+            }
+            else
+            {
+               // we have a managed producer
+               // lets make a note of it and register it later
+               beans.add(createBean(method, beanManager));
+            }
          }
       }
    }
@@ -67,6 +96,10 @@ public class UnwrapsExtension implements Extension
       for (Bean<?> b : beans)
       {
          afterBean.addBean(b);
+      }
+      for (Throwable e : problems)
+      {
+         afterBean.addDefinitionError(e);
       }
    }
 

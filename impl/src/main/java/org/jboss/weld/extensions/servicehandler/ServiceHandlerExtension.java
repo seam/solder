@@ -29,6 +29,9 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.jboss.weld.extensions.bean.BeanBuilder;
+import org.jboss.weld.extensions.reflection.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This extension automatically implements interfaces and abstract classes.
@@ -38,25 +41,54 @@ import org.jboss.weld.extensions.bean.BeanBuilder;
  */
 public class ServiceHandlerExtension implements Extension
 {
-   Set<Bean<?>> beans = new HashSet<Bean<?>>();
+   private final Set<Bean<?>> beans = new HashSet<Bean<?>>();
    
+   private final static Logger log = LoggerFactory.getLogger(ServiceHandlerExtension.class);
+
+   private final boolean enabled;
+
+   private final Set<Throwable> problems = new HashSet<Throwable>();
+
+   public ServiceHandlerExtension()
+   {
+      boolean en = true;
+      try
+      {
+         Reflections.classForName("javassist.util.proxy.MethodHandler", ServiceHandlerExtension.class.getClassLoader());
+      }
+      catch (ClassNotFoundException e)
+      {
+         en = false;
+         log.debug("Javassist not preset, @ServiceHandler is disabled");
+      }
+      enabled = en;
+   }
+
    <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
    {
       ServiceHandler annotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
       if (annotation != null)
       {
-         Class<?> handlerClass = annotation.value();
-         try
+         if (!enabled)
          {
-            BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
-            builder.readFromType(event.getAnnotatedType());
-            builder.beanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
-            builder.toString("Generated @ServiceHandler for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
-            beans.add(builder.create());
+            problems.add(new RuntimeException("Javassist not found on the class path, @ServiceHandler requires javassist to work. @ServiceHandler found on " + event.getAnnotatedType()));
          }
-         catch (IllegalArgumentException e)
+         else
          {
-            throw new RuntimeException(e);
+            Class<?> handlerClass = annotation.value();
+            try
+            {
+               BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
+               builder.readFromType(event.getAnnotatedType());
+               builder.beanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
+               builder.toString("Generated @ServiceHandler for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
+               beans.add(builder.create());
+               log.debug("Adding @ServiceHandler bean for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
+            }
+            catch (IllegalArgumentException e)
+            {
+               throw new RuntimeException(e);
+            }
          }
       }
    }
@@ -67,5 +99,10 @@ public class ServiceHandlerExtension implements Extension
       {
          event.addBean(bean);
       }
+      for (Throwable e : problems)
+      {
+         event.addDefinitionError(e);
+      }
+      beans.clear();
    }
 }
