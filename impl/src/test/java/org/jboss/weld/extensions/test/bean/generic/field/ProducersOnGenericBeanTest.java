@@ -19,10 +19,6 @@ package org.jboss.weld.extensions.test.bean.generic.field;
 import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -68,11 +64,6 @@ public class ProducersOnGenericBeanTest
    @Foo(2) @Wibble
    private String wibble2;
    
-   @Inject
-   @Foo(1)
-   private Map<String, String> map;
-   
-   
    @Test
    public void testGeneric()
    {
@@ -92,13 +83,6 @@ public class ProducersOnGenericBeanTest
       assertEquals("billhello1", wibble1);
       assertNotNull(wibble2);
       assertEquals("billhello2", wibble2);
-   }
-   
-   @Test
-   // WELDX-133
-   public void testProducerSuperclass()
-   {
-      assertTrue(map instanceof HashMap<?, ?>);
    }
    
 }

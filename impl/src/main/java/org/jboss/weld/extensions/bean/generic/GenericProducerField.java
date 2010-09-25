@@ -28,6 +28,7 @@ class GenericProducerField<T, X> extends AbstractGenericProducerBean<T>
    @Override
    protected T getValue(Object receiver, CreationalContext<T> creationalContext)
    {
+      field.getJavaMember().setAccessible(true);
       return getFieldValue(field.getJavaMember(), receiver, Reflections.<T>getRawType(field.getBaseType()));
    }
 

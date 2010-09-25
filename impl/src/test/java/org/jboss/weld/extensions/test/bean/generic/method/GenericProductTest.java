@@ -21,7 +21,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
+
+import junit.framework.Assert;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -65,6 +71,16 @@ public class GenericProductTest
    @WaldoName
    private String waldoName2;
 
+   @Inject
+   @Foo(1)
+   @Formatted
+   private String formattedWaldoName1;
+
+   @Inject
+   @Foo(2)
+   @Formatted
+   private String formattedWaldoName2;
+
    @Test
    public void testGeneric()
    {
@@ -83,5 +99,20 @@ public class GenericProductTest
       
       assertEquals("Pete", waldoName1);
       assertEquals("Stuart", waldoName2);
+
+      assertEquals("[Pete]", formattedWaldoName1);
+      assertEquals("[Stuart]", formattedWaldoName2);
+   }
+
+   @Test
+   public void testDisposerCalled(BeanManager manager)
+   {
+      Bean<?> bean = manager.resolve(manager.getBeans(String.class, new AnnotationLiteral<WaldoName>()
+      {
+      }, new FooLiteral(1)));
+      CreationalContext<?> ctx = manager.createCreationalContext(bean);
+      manager.getReference(bean, String.class, ctx);
+      ctx.release();
+      Assert.assertTrue(Garply.disposerCalled);
    }
 }

@@ -19,9 +19,11 @@ package org.jboss.weld.extensions.bean.generic;
 import static org.jboss.weld.extensions.reflection.AnnotationInspector.getAnnotations;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -38,6 +40,7 @@ import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedMember;
 import javax.enterprise.inject.spi.AnnotatedMethod;
+import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -315,6 +318,19 @@ public class GenericBeanExtension implements Extension
             }
             
          });
+
+         builder.redefine(GenericProduct.class, new AnnotationRedefiner<GenericProduct>()
+         {
+            public void redefine(RedefinitionContext<GenericProduct> ctx)
+            {
+               // if it is a parameter annotation
+               if (!(ctx.getAnnotatedElement() instanceof AccessibleObject))
+               {
+                  // stick an InjectGeneric as a marker.
+                  ctx.getAnnotationBuilder().remove(GenericProduct.class).add(InjectGenericLiteral.INSTANCE);
+               }
+            }
+         });
          event.setAnnotatedType(builder.create());
       }
    }
@@ -353,14 +369,14 @@ public class GenericBeanExtension implements Extension
    {
       // Only register a disposer method if it exists
       // Blocked by WELD-572
-//      if (event.getAnnotatedDisposedParameter() instanceof AnnotatedMethod<?>)
-//      {
-//         return new ProducerMethodHolder<X, T>(event.getAnnotatedProducerMethod(), (AnnotatedMethod<X>) event.getAnnotatedDisposedParameter().getDeclaringCallable(), event.getBean());
-//      }
-//      else
-//      {
+      if (event.getAnnotatedDisposedParameter() instanceof AnnotatedParameter<?>)
+      {
+         return new ProducerMethodHolder<X, T>(event.getAnnotatedProducerMethod(), (AnnotatedMethod<X>) event.getAnnotatedDisposedParameter().getDeclaringCallable(), event.getBean());
+      }
+      else
+      {
          return new ProducerMethodHolder<X, T>(event.getAnnotatedProducerMethod(), null, event.getBean());
-//      }
+      }
    }
 
    <T, X> void registerGenericBeanObserverMethod(@Observes ProcessObserverMethod<T, X> event)
@@ -608,7 +624,8 @@ public class GenericBeanExtension implements Extension
    private <X, T> Bean<T> createGenericProducerMethod(ProducerMethodHolder<X, T> holder, Annotation genericConfiguration, BeanManager beanManager)
    {
       Set<Annotation> qualifiers = getQualifiers(beanManager, genericConfiguration, holder.getBean().getQualifiers());
-      return new GenericProducerMethod<T, X>(holder.getBean(), genericConfiguration, holder.getProducerMethod(), holder.getDisposerMethod(), qualifiers, syntheticProvider, beanManager);
+      Set<Annotation> genericBeanQualifieres = getQualifiers(beanManager, genericConfiguration, Collections.EMPTY_SET);
+      return new GenericProducerMethod<T, X>(holder.getBean(), genericConfiguration, holder.getProducerMethod(), holder.getDisposerMethod(), qualifiers, genericBeanQualifieres, syntheticProvider, productSyntheticProvider, beanManager);
    }
 
    @SuppressWarnings("unchecked")

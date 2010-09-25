@@ -29,11 +29,16 @@ public class InjectableMethod<X>
       this.beanManager = beanManager;
       for (AnnotatedParameter<X> parameter : method.getParameters())
       {
-         InjectionPoint injectionPoint = new InjectionPointImpl(parameter, beanManager, bean, false, false);
+         InjectionPoint injectionPoint = wrapParameterInjectionPoint(new InjectionPointImpl(parameter, beanManager, bean, false, false));
          parameters.add(injectionPoint);
       }
    }
    
+   protected InjectionPoint wrapParameterInjectionPoint(InjectionPoint injectionPoint)
+   {
+      return injectionPoint;
+   }
+
    protected BeanManager getBeanManager()
    {
       return beanManager;

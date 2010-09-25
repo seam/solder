@@ -16,11 +16,16 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.method;
 
+import java.util.HashMap;
+
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
+import junit.framework.Assert;
+
 import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericProduct;
 
 /**
  * A generic bean for the config annotation Message
@@ -32,19 +37,45 @@ import org.jboss.weld.extensions.bean.generic.Generic;
 @Generic(Service.class)
 public class Garply
 {
+
+   static boolean disposerCalled = false;
    
    @Inject @GenericProduct
    private Waldo waldo;
    
+   @Produces
+   public HashMap<String, String> getMap()
+   {
+      return new HashMap<String, String>();
+   }
+
    @Produces @WaldoName
    public String getWaldoName()
    {
       return waldo.getName();
    }
    
+   @Produces
+   @Formatted
+   public String getFormattedWaldoName(@GenericProduct Waldo waldo)
+   {
+      return "[" + waldo.getName() + "]";
+   }
+
+   public void dispose(@Disposes @WaldoName String waldoName, @GenericProduct Waldo waldo)
+   {
+      disposerCalled = true;
+      Assert.assertEquals(waldo.getName(), waldoName);
+   }
+
    public Waldo getWaldo()
    {
       return waldo;
    }
-   
+
+   public static boolean isDisposerCalled()
+   {
+      return disposerCalled;
+   }
+
 }

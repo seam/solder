@@ -60,6 +60,7 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
       for (Entry<AnnotatedField<? super T>, InjectionPoint> field : injectedFields.entrySet())
       {
          Object value = getBeanManager().getInjectableReference(field.getValue(), creationalContext);
+         field.getKey().getJavaMember().setAccessible(true);
          Reflections.setFieldValue(field.getKey().getJavaMember(), instance, value);
       }
       injectionTarget.postConstruct(instance);

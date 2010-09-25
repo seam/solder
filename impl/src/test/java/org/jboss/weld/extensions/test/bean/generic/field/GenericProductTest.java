@@ -93,4 +93,5 @@ public class GenericProductTest
       assertTrue(garply2.getAnnotatedMember().isAnnotationPresent(Service.class));
       assertEquals(2, garply2.getAnnotatedMember().getAnnotation(Service.class).value());
    }
+
 }

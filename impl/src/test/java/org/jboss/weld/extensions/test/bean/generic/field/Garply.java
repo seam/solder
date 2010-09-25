@@ -16,16 +16,13 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AnnotatedMember;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
 import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericProduct;
 
 /**
  * A generic bean for the config annotation Message
@@ -44,18 +41,14 @@ public class Garply
    @Inject @GenericProduct
    private AnnotatedMember<?> annotatedMember;
    
+
    @Produces @WaldoName
    public String getWaldoName()
    {
       return waldo.getName();
    }
    
-   @Produces 
-   public HashMap<String, String> getMap()
-   {
-      return new HashMap<String, String>();
-   }
-   
+
    public Waldo getWaldo()
    {
       return waldo;
@@ -65,5 +58,6 @@ public class Garply
    {
       return annotatedMember;
    }
+
    
 }
