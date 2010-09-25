@@ -24,6 +24,8 @@ import java.util.Set;
 
 import javax.enterprise.inject.spi.Annotated;
 
+import org.jboss.weld.extensions.reflection.HierarchyDiscovery;
+
 /**
  * The base class for all New Annotated types.
  * 
@@ -39,17 +41,16 @@ abstract class AnnotatedImpl implements Annotated
 
    protected AnnotatedImpl(Class<?> type, AnnotationStore annotations, Type genericType, Type overridenType)
    {
-
       if (overridenType == null)
       {
-         this.typeClosure = new TypeClosureBuilder().add(type).getTypes();
          if (genericType != null)
          {
-            typeClosure.add(genericType);
+            typeClosure = new HierarchyDiscovery(genericType).getTypeClosure();
             this.type = genericType;
          }
          else
          {
+            typeClosure = new HierarchyDiscovery(type).getTypeClosure();
             this.type = type;
          }
       }
