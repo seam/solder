@@ -149,5 +149,15 @@ public @interface MultipleMembers {
    Synthetic synthetic2 = provider.get();]]></programlisting>
    
    </section>
+   
+   <section>
+      <title>Reflection Utilities</title>
+      
+      <para>
+         Weld Extensions comes with a number of reflection utilities; these extend JDK reflection, and some also work on
+         CDI's Annotated metadata. See the javadoc on <code>Reflections</code> for more.
+      </para>
+      
+   </section>
     
 </chapter>

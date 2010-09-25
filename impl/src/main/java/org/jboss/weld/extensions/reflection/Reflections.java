@@ -29,12 +29,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 
 /**
- * Utility class for working with Java Reflection
+ * Utility class for working with JDK Reflection and also CDI's
+ * {@link Annotated} metadata.
  * 
  * @author Stuart Douglas
  * @author Pete Muir
@@ -43,14 +45,35 @@ import javax.enterprise.inject.spi.BeanManager;
 public class Reflections
 {
 
+   /**
+    * An empty array of type {@link Annotation}, useful converting lists to
+    * arrays.
+    */
    public static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
 
+   /**
+    * An empty array of type {@link Object}, useful for converting lists to
+    * arrays.
+    */
    public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
-   private Reflections()
-   {
-   }
-   
+   /**
+    * <p>
+    * Perform a runtime cast. Similar to {@link Class#cast(Object)}, but useful
+    * when you do not have a {@link Class} object for type you wish to cast to.
+    * </p>
+    * 
+    * <p>
+    * {@link Class#cast(Object)} should be used if possible
+    * </p>
+    * 
+    * @see Class#cast(Object)
+    * 
+    * @param <T> the type to cast to
+    * @param obj the object to perform the cast on
+    * @return the casted object
+    * @throws ClassCastException if the type T is not a subtype of the object
+    */
    @SuppressWarnings("unchecked")
    public static <T> T cast(Object obj)
    {
@@ -308,18 +331,24 @@ public class Reflections
    }
 
    /**
+    * <p>
     * Loads and initializes a class for the given name.
+    * </p>
     * 
+    * <p>
     * If the Thread Context Class Loader is available, it will be used,
     * otherwise the classloader used to load {@link Reflections} will be used
+    * </p>
     * 
+    * <p>
     * It is also possible to specify additional classloaders to attempt to load
     * the class with. If the first attempt fails, then these additional loaders
     * are tried in order.
+    * </p>
     * 
-    * @param name The name of the class to load
-    * @param loaders Additional classloaders to use to attempt to load the class
-    * @return The class object
+    * @param name the name of the class to load
+    * @param loaders additional classloaders to use to attempt to load the class
+    * @return the class object
     * @throws ClassNotFoundException if the class cannot be found
     */
    public static Class<?> classForName(String name, ClassLoader... loaders) throws ClassNotFoundException
@@ -369,11 +398,87 @@ public class Reflections
       return message.toString();
    }
 
+   /**
+    * <p>
+    * Invoke the method on the instance, with any arguments specified.
+    * </p>
+    * 
+    * <p>
+    * This method wraps {@link Method#invoke(Object, Object...)}, converting the
+    * checked exceptions that {@link Method#invoke(Object, Object...)} specifies
+    * to runtime exceptions.
+    * </p>
+    * 
+    * @param method the method to invoke
+    * @param instance the instance to invoke the method or null if the method is
+    *           static
+    * @param args the arguments to the method
+    * @return the result of invoking the method, or null if the method's return
+    *         type is void
+    * @throws RuntimeException if this <code>Method</code> object enforces Java
+    *            language access control and the underlying method is
+    *            inaccessible or if the underlying method throws an exception or
+    *            if the initialization provoked by this method fails.
+    * @throws IllegalArgumentException if the method is an instance method and
+    *            the specified object argument is not an instance of the class
+    *            or interface declaring the underlying method (or of a subclass
+    *            or implementor thereof); if the number of actual and formal
+    *            parameters differ; if an unwrapping conversion for primitive
+    *            arguments fails; or if, after possible unwrapping, a parameter
+    *            value cannot be converted to the corresponding formal parameter
+    *            type by a method invocation conversion.
+    * @throws NullPointerException if the specified object is null and the
+    *            method is an instance method.
+    * @throws ExceptionInInitializerError if the initialization provoked by this
+    *            method fails.
+    * 
+    * @see Method#invoke(Object, Object...)
+    * 
+    */
    public static Object invokeMethod(Method method, Object instance, Object... args)
    {
       return invokeMethod(method, Object.class, instance, args);
    }
-   
+
+   /**
+    * <p>
+    * Invoke the method on the instance, with any arguments specified, casting
+    * the result of invoking the method to the expected return type.
+    * </p>
+    * 
+    * <p>
+    * This method wraps {@link Method#invoke(Object, Object...)}, converting the
+    * checked exceptions that {@link Method#invoke(Object, Object...)} specifies
+    * to runtime exceptions.
+    * </p>
+    * 
+    * @param method the method to invoke
+    * @param instance the instance to invoke the method
+    * @param args the arguments to the method
+    * @return the result of invoking the method, or null if the method's return
+    *         type is void
+    * @throws RuntimeException if this <code>Method</code> object enforces Java
+    *            language access control and the underlying method is
+    *            inaccessible or if the underlying method throws an exception or
+    *            if the initialization provoked by this method fails.
+    * @throws IllegalArgumentException if the method is an instance method and
+    *            the specified object argument is not an instance of the class
+    *            or interface declaring the underlying method (or of a subclass
+    *            or implementor thereof); if the number of actual and formal
+    *            parameters differ; if an unwrapping conversion for primitive
+    *            arguments fails; or if, after possible unwrapping, a parameter
+    *            value cannot be converted to the corresponding formal parameter
+    *            type by a method invocation conversion.
+    * @throws NullPointerException if the specified object is null and the
+    *            method is an instance method.
+    * @throws ClassCastException if the result of invoking the method cannot be
+    *            cast to the expectedReturnType
+    * @throws ExceptionInInitializerError if the initialization provoked by this
+    *            method fails.
+    * 
+    * @see Method#invoke(Object, Object...)
+    * 
+    */
    public static <T> T invokeMethod(Method method, Class<T> expectedReturnType, Object instance, Object... args)
    {
       try
@@ -400,13 +505,41 @@ public class Reflections
       }
       catch (ExceptionInInitializerError e)
       {
-         throw new RuntimeException(buildInvokeMethodErrorMessage(method, instance, args), e);
+         ExceptionInInitializerError e2 = new ExceptionInInitializerError(buildInvokeMethodErrorMessage(method, instance, args));
+         e2.initCause(e.getCause());
+         throw e2;
       }
    }
 
+   /**
+    * <p>
+    * Set the value of a field on the instance to the specified value.
+    * </p>
+    * 
+    * <p>
+    * This method wraps {@link Field#set(Object, Object)}, converting the
+    * checked exceptions that {@link Field#set(Object, Object)} specifies to
+    * runtime exceptions.
+    * </p>
+    * 
+    * @param field the field on which to operate, or null if the field is static
+    * @param instance the instance on which the field value should be set upon
+    * @param value the value to set the field to
+    * @throws RuntimeException if the underlying field is inaccessible.
+    * @throws IllegalArgumentException if the specified object is not an
+    *            instance of the class or interface declaring the underlying
+    *            field (or a subclass or implementor thereof), or if an
+    *            unwrapping conversion fails.
+    * @throws NullPointerException if the specified object is null and the field
+    *            is an instance field.
+    * @throws ExceptionInInitializerError if the initialization provoked by this
+    *            method fails.
+    * 
+    * @see Field#set(Object, Object)
+    * 
+    */
    public static void setFieldValue(Field field, Object instance, Object value)
    {
-      field.setAccessible(true);
       try
       {
          field.set(instance, value);
@@ -420,6 +553,12 @@ public class Reflections
          NullPointerException ex2 = new NullPointerException(buildSetFieldValueErrorMessage(field, instance, value));
          ex2.initCause(ex.getCause());
          throw ex2;
+      }
+      catch (ExceptionInInitializerError e)
+      {
+         ExceptionInInitializerError e2 = new ExceptionInInitializerError(buildSetFieldValueErrorMessage(field, instance, value));
+         e2.initCause(e.getCause());
+         throw e2;
       }
    }
 
@@ -437,10 +576,34 @@ public class Reflections
    {
       return getFieldValue(field, instance, Object.class);
    }
-   
+
+   /**
+    * <p>
+    * Get the value of the field, on the specified instance, casting the value
+    * of the field to the expected type.
+    * </p>
+    * 
+    * <p>
+    * This method wraps {@link Field#get(Object)}, converting the checked
+    * exceptions that {@link Field#get(Object)} specifies to runtime exceptions.
+    * </p>
+    * 
+    * @param <T> the type of the field's value
+    * @param field the field to operate on
+    * @param instance the instance from which to retrieve the value
+    * @param expectedType the expected type of the field's value
+    * @return the value of the field
+    * @throws RuntimeException if the underlying field is inaccessible.
+    * @throws IllegalArgumentException if the specified object is not an
+    *            instance of the class or interface declaring the underlying
+    *            field (or a subclass or implementor thereof).
+    * @throws NullPointerException if the specified object is null and the field
+    *            is an instance field.
+    * @throws ExceptionInInitializerError if the initialization provoked by this
+    *            method fails.
+    */
    public static <T> T getFieldValue(Field field, Object instance, Class<T> expectedType)
    {
-      field.setAccessible(true);
       try
       {
          return expectedType.cast(field.get(instance));
@@ -455,9 +618,21 @@ public class Reflections
          ex2.initCause(ex.getCause());
          throw ex2;
       }
-
+      catch (ExceptionInInitializerError e)
+      {
+         ExceptionInInitializerError e2 = new ExceptionInInitializerError(buildGetFieldValueErrorMessage(field, instance));
+         e2.initCause(e.getCause());
+         throw e2;
+      }
    }
 
+   /**
+    * Extract the raw type, given a type.
+    * 
+    * @param <T> the type
+    * @param type the type to extract the raw type from
+    * @return the raw type, or null if the raw type cannot be determined.
+    */
    @SuppressWarnings("unchecked")
    public static <T> Class<T> getRawType(Type type)
    {
@@ -484,6 +659,10 @@ public class Reflections
    public static boolean isSerializable(Class<?> clazz)
    {
       return clazz.isPrimitive() || Serializable.class.isAssignableFrom(clazz);
+   }
+
+   private Reflections()
+   {
    }
 
 }
