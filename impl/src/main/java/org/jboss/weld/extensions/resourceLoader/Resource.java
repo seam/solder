@@ -22,27 +22,57 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.io.InputStream;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.net.URL;
 
 import javax.enterprise.util.Nonbinding;
 import javax.inject.Qualifier;
 
 /**
- * An injection point qualifier that may be used to specify a resource to inject
+ * <p>
+ * An injection point qualifier that may be used to specify a resource to
+ * inject. The injection point can specify either a {@link URL} or an
+ * {@link InputStream}. For example:
+ * </p>
+ * 
+ * <pre>
+ * &#064;Inject
+ * &#064;Resource(&quot;WEB-INF/beans.xml&quot;)
+ * URL beansXml;
+ * 
+ * &#064;Inject
+ * &#064;Resource(&quot;WEB-INF/web.xml&quot;)
+ * InputStream webXml;
+ * </pre>
+ * 
+ * <p>
+ * If a input stream is loaded, it will be automatically closed when the
+ * InputStream goes out of scope. If a URL is used to create an input stream,
+ * the application is responsible for closing it. For this reason it is
+ * recommended that managed input streams are used where possible.
+ * </p>
+ * 
+ * <p>
+ * If you don't know the name of the resource to load at development time, then
+ * you may wish to use {@link ResourceProvider} which can dynamicaly load
+ * resources.
+ * </p>
  * 
  * @author Pete Muir
  * 
+ * @see ResourceProvider
  */
 @Retention(RUNTIME)
-@Target( { METHOD, TYPE, FIELD, PARAMETER })
+@Target({ METHOD, TYPE, FIELD, PARAMETER })
 @Documented
 @Qualifier
 public @interface Resource
 {
-   
+
    @Nonbinding
    String value();
-   
+
 }

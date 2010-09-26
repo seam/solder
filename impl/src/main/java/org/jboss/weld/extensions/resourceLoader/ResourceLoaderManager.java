@@ -28,10 +28,10 @@ import org.jboss.weld.extensions.util.Sortable;
 import org.jboss.weld.extensions.util.service.ServiceLoader;
 
 /**
- * Class that is resposible for loading {@link ResourceProvider} implements from
- * the servive loader and using them to load resources
+ * Class that is responsible for loading {@link ResourceProvider}
+ * implementations from the service loader and using them to load resources
  * 
- * @author pmuir
+ * @author Pete Muir
  * @author Stuart Douglas
  * 
  */

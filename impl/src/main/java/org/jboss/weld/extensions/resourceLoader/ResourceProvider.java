@@ -33,19 +33,37 @@ import javax.inject.Inject;
 import org.jboss.weld.extensions.reflection.AnnotationInstanceProvider;
 
 /**
- * The ResourceProvider allows dynamic loading of managed resources.
+ * <p>
+ * The ResourceProvider allows dynamic loading of managed resources. For
+ * example:
+ * </p>
  * 
- * If a input stream is loaded, it will be automatically closed when the InputStream goes 
- * out of scope. If a URL is used to create an input stream, the application is responsible 
- * for closing it. For this reason it is recommended that managed input streams are used
- * where possible.
+ * <pre>
+ * &#64;Inject
+ * void readXml(ResourceProvider provider, String fileName) {
+ *    InputStream webXml = provider.loadResourceStream(fileName);
+ * }
+ * </pre>
  * 
- * @author pmuir
- *
+ * <p>
+ * If you know the name of the resource you are loading at development time you
+ * can inject it directly using the {@link Resource} qualifier.
+ * </p>
+ * 
+ * <p>
+ * If a input stream is loaded, it will be automatically closed when the
+ * InputStream goes out of scope. If a URL is used to create an input stream,
+ * the application is responsible for closing it. For this reason it is
+ * recommended that managed input streams are used where possible.
+ * </p>
+ * 
+ * @author Pete Muir
+ * 
+ * @see Resource
  */
 public class ResourceProvider implements Serializable
 {
-   
+
    private static final long serialVersionUID = -4463427096501401965L;
 
    private final transient AnnotationInstanceProvider annotationInstanceProvider = new AnnotationInstanceProvider();;
@@ -63,11 +81,15 @@ public class ResourceProvider implements Serializable
       this.urlProvider = urlProvider;
       this.streams = new HashSet<InputStream>();
    }
-   
+
    /**
-    * <p>Load a resource.</p>
+    * <p>
+    * Load a resource.
+    * </p>
     * 
-    * <p>The default search order is:</p>
+    * <p>
+    * The default search order is:
+    * </p>
     * 
     * <ul>
     * <li></li>
@@ -90,12 +112,15 @@ public class ResourceProvider implements Serializable
       streams.add(stream);
       return stream;
    }
-   
-   
+
    /**
-    * <p>Load a resource.</p>
+    * <p>
+    * Load a resource.
+    * </p>
     * 
-    * <p>The default search order is:</p>
+    * <p>
+    * The default search order is:
+    * </p>
     * 
     * <ul>
     * <li></li>
@@ -115,7 +140,7 @@ public class ResourceProvider implements Serializable
       values.put("value", name);
       return urlProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
    }
-   
+
    @SuppressWarnings("unused")
    @PreDestroy
    private void cleanup()

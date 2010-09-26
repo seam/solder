@@ -30,9 +30,12 @@ import javax.inject.Inject;
 
 
 /**
- * Resource producer allows injecting of resources
+ * Resource producer allows injecting of resources.
  * 
- * @author pmuir
+ * @author Pete Muir
+ * 
+ * @see Resource
+ * @see ResourceProvider
  *
  */
 @ApplicationScoped

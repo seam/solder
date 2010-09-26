@@ -17,12 +17,12 @@ import org.jboss.weld.extensions.resourceLoader.ResourceLoader;
  * @author stuart
  * 
  */
-public class ServletContextLoader implements ResourceLoader
+class ServletContextLoader implements ResourceLoader
 {
 
    private final ServletContext context;
 
-   public ServletContextLoader(ServletContext context)
+   ServletContextLoader(ServletContext context)
    {
       this.context = context;
    }
