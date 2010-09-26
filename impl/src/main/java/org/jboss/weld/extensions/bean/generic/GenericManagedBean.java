@@ -36,10 +36,18 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
          if (field.isAnnotationPresent(InjectGeneric.class) && field.isAnnotationPresent(GenericProduct.class))
          {
             injectedFields.put(field, new InjectionPointImpl(field, Collections.<Annotation>singleton(genericProductQualifier), this, false, false));
+            if (!field.getJavaMember().isAccessible())
+            {
+               field.getJavaMember().setAccessible(true);
+            }
          }
          else if (field.isAnnotationPresent(InjectGeneric.class))
          {
             injectedFields.put(field, new InjectionPointImpl(field, getQualifiers(), this, false, false));
+            if (!field.getJavaMember().isAccessible())
+            {
+               field.getJavaMember().setAccessible(true);
+            }
          }
       }
    }

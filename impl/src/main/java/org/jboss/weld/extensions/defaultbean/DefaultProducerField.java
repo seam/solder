@@ -23,6 +23,10 @@ class DefaultProducerField<T, X> extends AbstractDefaultProducerBean<T>
    {
       super(originalBean, declaringBeanType, beanTypes, qualifiers, declaringBeanQualifiers, beanManager);
       this.field = field;
+      if (!field.getJavaMember().isAccessible())
+      {
+         field.getJavaMember().setAccessible(true);
+      }
    }
 
    @Override
