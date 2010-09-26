@@ -259,6 +259,10 @@ public class GenericBeanExtension implements Extension
    // The Synthetic qualifier provider for generic product beans
    private final Synthetic.Provider productSyntheticProvider;
 
+   // qualifier that is added to all generic beans so they are not eligable for
+   // injection
+   private final Synthetic genericBeanQualifier;
+
    public GenericBeanExtension()
    {
       this.genericBeans = Multimaps.newSetMultimap(new HashMap<Class<? extends Annotation>, Collection<BeanHolder<?>>>(), GenericBeanExtension.<BeanHolder<?>> createHashSetSupplier());
@@ -271,6 +275,7 @@ public class GenericBeanExtension implements Extension
       this.unwrapsMethods = Multimaps.newSetMultimap(new HashMap<Class<? extends Annotation>, Collection<AnnotatedMethod<?>>>(), GenericBeanExtension.<AnnotatedMethod<?>> createHashSetSupplier());
       this.syntheticProvider = new Synthetic.Provider("org.jboss.weld.extensions.bean.generic");
       this.productSyntheticProvider = new Synthetic.Provider("org.jboss.weld.extensions.bean.generic.product");
+      this.genericBeanQualifier = new Synthetic.SyntheticLiteral("org.jboss.weld.extensions.bean.generic.genericQualifier", Long.valueOf(0));
    }
 
    <X> void replaceInjectOnGenericBeans(@Observes ProcessAnnotatedType<X> event)
@@ -280,6 +285,7 @@ public class GenericBeanExtension implements Extension
       {
          final Class<? extends Annotation> genericConfigurationType = type.getAnnotation(Generic.class).value();
          final AnnotatedTypeBuilder<X> builder = new AnnotatedTypeBuilder<X>().readFromType(type);
+         builder.addToClass(genericBeanQualifier);
          builder.redefine(Inject.class, new AnnotationRedefiner<Inject>()
          {
 
@@ -314,7 +320,7 @@ public class GenericBeanExtension implements Extension
             public void redefine(RedefinitionContext<Produces> ctx)
             {
                // Add the marker qualifier
-               ctx.getAnnotationBuilder().add(GenericMarkerLiteral.INSTANCE);
+               ctx.getAnnotationBuilder().add(GenericMarkerLiteral.INSTANCE).add(genericBeanQualifier);
             }
             
          });
@@ -327,7 +333,7 @@ public class GenericBeanExtension implements Extension
                if (!(ctx.getAnnotatedElement() instanceof AccessibleObject))
                {
                   // stick an InjectGeneric as a marker.
-                  ctx.getAnnotationBuilder().remove(GenericProduct.class).add(InjectGenericLiteral.INSTANCE);
+                  ctx.getAnnotationBuilder().remove(GenericProduct.class).add(InjectGenericLiteral.INSTANCE).add(genericBeanQualifier);
                }
             }
          });
@@ -488,6 +494,7 @@ public class GenericBeanExtension implements Extension
                {
                   beanQualifiers.add(DefaultLiteral.INSTANCE);
                }
+               beanQualifiers.remove(genericBeanQualifier);
                event.addBean(new UnwrapsProducerBean(i, qualifiers, beanQualifiers, beanManager));
             }
          }
