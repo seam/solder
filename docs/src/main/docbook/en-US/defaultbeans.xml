@@ -2,65 +2,63 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="defaultbeans">
-  <title>Default Beans</title>
- <section>
-      <title>Default Beans</title>
-      <para>
-         Suppose you have a situation where you want to provide a default implementation of a particular service 
-         and allow the user to override it as needed. Although this may sound like a job for JSR-299 alternatives, 
-         they have some limitations that may make them undesirable in this situation. If we were to use an alternative
-         it would require an entry in every <literal>beans.xml</literal> file in the application. This means the end 
-         user may have to open up your jar file and edit the beans.xml file within, in order to override your service. 
-         They will also have to do this for every bean archive in their application, and if they miss one it will 
-         result in bugs. This is where default beans come in.
-      </para>
-      <para>
-         Default beans allow you to specify a default bean for a given bean type and set of qualifiers. If no 
-         bean is installed that has the same type and qualifiers then the default bean it installed. 
-      </para>
-      <para>
-         Lets look at a real world example. Say we are writing a module to allow you to evaluate EL. If JSF 
-         is available we want to use the JSF provided <literal>FunctionMapper</literal> to resolve functions in EL, 
-         otherwise we just want to use a a default <literal>FunctionMapper</literal> implementation that does nothing. 
-         We can achieve this as follows:
-      </para>
-      <programlisting role="java">
-@DefaultBean(type = FunctionMapper.class)
+   <title>Default Beans</title>
+  
+   <para>
+      Suppose you have a situation where you want to provide a default implementation of a particular service 
+      and allow the user to override it as needed. Although this may sound like a job for JSR-299 alternatives, 
+      they have some limitations that may make them undesirable in this situation. If we were to use an alternative
+      it would require an entry in every <code>beans.xml</code> file in the application. This means the end 
+      user may have to open up your jar file and edit the beans.xml file within, in order to override your service. 
+      They will also have to do this for every bean archive in their application, and if they miss one it will 
+      result in bugs. This is where default beans come in.
+   </para>
+   
+   <para>
+      Default beans allow you to specify a default bean for a given bean type and set of qualifiers. If no 
+      bean is installed that has the same type and qualifiers then the default bean it installed. 
+   </para>
+   
+   <para>
+      Lets look at a real world example. Say we are writing a module to allow you to evaluate EL. If JSF 
+      is available we want to use the JSF provided <code>FunctionMapper</code> to resolve functions in EL, 
+      otherwise we just want to use a a default <code>FunctionMapper</code> implementation that does nothing. 
+      We can achieve this as follows:
+   </para>
+   
+   <programlisting role="JAVA">@DefaultBean(type = FunctionMapper.class)
 @Mapper
-public class FunctionMapperImpl extends FunctionMapper
-{
+class FunctionMapperImpl extends FunctionMapper {
 
    @Override
-   public Method resolveFunction(String prefix, String localName)
-   {
+   Method resolveFunction(String prefix, String localName) {
       return null;
    }
 
-}
-</programlisting>
-      <para>
-         And in the JSF module:
-      </para>
-<programlisting role="java">
-public class FunctionMapperProvider
-{
+}</programlisting>
+ 
+   <para>
+      And in the JSF module:
+   </para>
+   
+   <programlisting role="JAVA">class FunctionMapperProvider {
+   
    @Produces
    @Mapper
-   public FunctionMapper produceFunctionMapper()
-   {
+   FunctionMapper produceFunctionMapper() {
       return FacesContext.getCurrentInstance().getELContext().getFunctionMapper();
    }
-}
-</programlisting>      
+}</programlisting>
+      
    <para>
-      If <literal>FunctionMapperProvider</literal> is present then it will be used by
-      default, otherwise the default <literal>FunctionMapperImpl</literal> is used.
+      If <code>FunctionMapperProvider</code> is present then it will be used by
+      default, otherwise the default <code>FunctionMapperImpl</code> is used.
    </para>
+
    <warning>
       <para>
-         Producer methods/fields and observer methods will not work on classes annotated <literal>@DefaultBean</literal>. 
+         Producer methods/fields and observer methods will not work on classes annotated <code>@DefaultBean</code>. 
       </para>
    </warning>
-   </section>
     
 </chapter>

@@ -2,66 +2,62 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="managedproducer">
-  <title>Managed Producers</title>
-<section>
+   <title>Managed Producers</title>
+   
+   <section>
       <title>Managed Producer Methods</title>
       <para>
-         Managed producer methods allow you to create injectable objects that have lifecycles that do not exactly match one of the existing scopes.
-         Instead these objects lifecycles are managed by a bean, and changes to the object in the manager are immediately visible to all 
-         clients. 
+         Managed producer methods allow you to create injectable objects that have lifecycles that do not exactly match 
+         one of the existing scopes. Instead these objects lifecycles are managed by a bean, and changes to the object 
+         in the manager are immediately visible to all clients. 
       </para>
       <para>
-         You can declare a method to be a managed producer with the <literal>@ManagedProducer</literal> annotation. The return type of the 
-         managed producer must be proxiable, as the managed producer does not work like a normal producer method. Instead a dependent scoped proxy
-         is created, and this proxy is what is actually injected. Every time a method is called on the proxy, the proxy calls the managed producer 
-         method, and then forwards the call on to the object that the managed producer returns.
+         You can declare a method to be a managed producer with the <code>@ManagedProducer</code> annotation. The 
+         return type of the managed producer must be proxiable, as the managed producer does not work like a normal 
+         producer method. Instead a dependent scoped proxy is created, and this proxy is what is actually injected. 
+         Every time a method is called on the proxy, the proxy calls the managed producer method, and then forwards the 
+         call on to the object that the managed producer returns.
       </para>
-      <programlisting role="java">
-@SessionScoped
-public class PermissionManager
-{
-  private Permission permission;
+      <programlisting role="java">@SessionScoped
+public class PermissionManager {
+   private Permission permission;
   
-  public void setPermission(Permission permission)
-  {
-   this.permission=permission;
-  }
+   public void setPermission(Permission permission) {
+      this.permission=permission;
+   }
   
-  @ManagedProducer
-  @CurrentPermssion
-  public Permission getPermission()
-  {
-   return this.permission;
-  }
+   @ManagedProducer
+   @CurrentPermssion
+   public Permission getPermission() {
+      return this.permission;
+   }
 }   
 
-public class SecurityManager
-{
-  @Inject 
-  @CurrentPermssion
-  Permission permission;
+public class SecurityManager {
+   @Inject 
+   @CurrentPermssion
+   Permission permission;
   
-  public boolean checkAdminPermission()
-  {
-   return permission.getName().equals("admin");
-  }
+   public boolean checkAdminPermission() {
+      return permission.getName().equals("admin");
+   }
 
-}
-      </programlisting>
+}</programlisting>
       <para>
-         In the example above we have a permission manager bean, that manages the current permission, and the security manager, that checks 
-         the current permission level. Any changes to permission in the permission manager are immediately visible to the security manager. 
-         In this example you could raise the permission level before performing a sensitive operation, and then lower it again
-         afterwards. 
+         In the example above we have a permission manager bean, that manages the current permission, and the security 
+         manager, that checks the current permission level. Any changes to permission in the permission manager are 
+         immediately visible to the security manager. In this example you could raise the permission level before 
+         performing a sensitive operation, and then lower it again afterwards. 
       </para>
       <para>
-         When <literal>permission.getName()</literal> is called what actually happens is the <literal>Permission</literal> proxy looks up the
-         current <literal>PermissionManager</literal> bean. It then calls the <literal>getPermission()</literal> method and forwards the 
-         <literal>getName()</literal> call on to the <literal>Permssion</literal> object that is returned.
+         When <code>permission.getName()</code> is called what actually happens is the 
+         <code>Permission</code> proxy looks up the current <code>PermissionManager</code> bean. It then 
+         calls the <code>getPermission()</code> method and forwards the <code>getName()</code> call on to 
+         the <code>Permssion</code> object that is returned.
       </para>
       <para>
-         Managed producer methods can have parameters injected in the same manner as a normal producer method. They can also inject the 
-         <literal>InjectionPoint</literal> that the current method call is coming from. 
+         Managed producer methods can have parameters injected in the same manner as a normal producer method. They can 
+         also inject the <code>InjectionPoint</code> that the current method call is coming from. 
       </para>
    </section>
 </chapter>

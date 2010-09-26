@@ -14,9 +14,9 @@
       <title>Annotated Type Builder</title>
       
       <para>
-         Weld Extensions provides an <literal>AnnotatedType</literal> implementation that should be suitable for most 
-         portable extensions needs. The <literal>AnnotatedType</literal> is created from 
-         <literal>AnnotatedTypeBuilder</literal> as follows:
+         Weld Extensions provides an <code>AnnotatedType</code> implementation that should be suitable for most 
+         portable extensions needs. The <code>AnnotatedType</code> is created from 
+         <code>AnnotatedTypeBuilder</code> as follows:
       </para>
       
       <programlisting role="JAVA" ><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
@@ -25,16 +25,16 @@
       .create();]]></programlisting>
       
       <para>
-         Here we create a new builder, and initialize it using an existing <literal>AnnotatedType</literal>. We can then
+         Here we create a new builder, and initialize it using an existing <code>AnnotatedType</code>. We can then
          add or remove annotations from the class, and it's members. When we have finished modifying the type, we call
-         <literal>create()</literal> to spit out a new, immutable, <literal>AnnotatedType</literal>.
+         <code>create()</code> to spit out a new, immutable, <code>AnnotatedType</code>.
       </para>
       
       <para>
-        <literal>AnnotatedTypeBuilder</literal> also allows you to specify a "redefinition" which can be applied to the
+        <code>AnnotatedTypeBuilder</code> also allows you to specify a "redefinition" which can be applied to the
         type, a type of member, or all members. The redefiner will receive a callback for any annotations present which 
         match the annotation type for which the redefinition is applied. For example, to remove the qualifier
-        <literal>@Unique</literal> from any class member and the type:
+        <code>@Unique</code> from any class member and the type:
       </para>
       
       <programlisting role="JAVA" ><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
@@ -53,9 +53,9 @@
       <title>Annotation Instance Provider</title>
       <para>
          Sometimes you may need an annotation instance for an annotation whose type is not known at development time.
-         Weld extends provides a <literal>AnnotationInstanceProvider</literal> class that can create an 
-         <literal>AnnotationLiteral</literal> instance for any annotation at runtime. Annotation attributes
-         are passed in via a <literal>Map&lt;String,Object&gt;</literal>. For example given the follow annotation:
+         Weld extends provides a <code>AnnotationInstanceProvider</code> class that can create an 
+         <code>AnnotationLiteral</code> instance for any annotation at runtime. Annotation attributes
+         are passed in via a <code>Map&lt;String,Object&gt;</code>. For example given the follow annotation:
       </para>
       <programlisting role="JAVA"><![CDATA[@Retention(RetentionPolicy.RUNTIME)
 public @interface MultipleMembers {
