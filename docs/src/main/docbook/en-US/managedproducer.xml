@@ -1,63 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<chapter id="managedproducer">
-   <title>Managed Producers</title>
+<chapter id="unwraps">
+   <title>Unwrapping Producer Methods</title>
    
-   <section>
-      <title>Managed Producer Methods</title>
-      <para>
-         Managed producer methods allow you to create injectable objects that have lifecycles that do not exactly match 
-         one of the existing scopes. Instead these objects lifecycles are managed by a bean, and changes to the object 
-         in the manager are immediately visible to all clients. 
-      </para>
-      <para>
-         You can declare a method to be a managed producer with the <code>@ManagedProducer</code> annotation. The 
-         return type of the managed producer must be proxiable, as the managed producer does not work like a normal 
-         producer method. Instead a dependent scoped proxy is created, and this proxy is what is actually injected. 
-         Every time a method is called on the proxy, the proxy calls the managed producer method, and then forwards the 
-         call on to the object that the managed producer returns.
-      </para>
-      <programlisting role="java">@SessionScoped
-public class PermissionManager {
-   private Permission permission;
+   <para>
+      Unwrapping producer methods allow you to create injectable objects that have "self-managed"" lifecycles, and are 
+      particularly useful if you have need a bean whose lifecycle does not exactly match one of the lifecycle of one of
+      the existing scopes. The lifecycle of the bean is are managed by the bean that defines the producer method, and 
+      changes to the unwrapped object are immediately visible to all clients.
+   </para>
+   
+   <para>
+      You can declare a method to be an unwrapping producer method by annotating it <code>@Unwraps</code>. The return 
+      type of the managed producer must be proxyable (see Section 5.4.1 of the CDI specification, "Unproxyable bean 
+      types"). Every time a method is called on unwrapped object the invocation is forwarded to the result of calling
+      the unwrapping producer method.  
+   </para>
+   
+   <para>
+      For example consider a permission manager (that manages the current permission), and a security manager (that 
+      checks the current permission level). Any changes to permission in the permission manager are immediately visible
+      to the security manager. 
+   </para>
+   
+   <programlisting role="JAVA">@SessionScoped
+class PermissionManager {
+   
+   Permission permission;
   
-   public void setPermission(Permission permission) {
+   void setPermission(Permission permission) {
       this.permission=permission;
    }
   
-   @ManagedProducer
-   @CurrentPermssion
-   public Permission getPermission() {
+   @Unwraps @Current
+   Permission getPermission() {
       return this.permission;
    }
-}   
+}</programlisting>
 
-public class SecurityManager {
-   @Inject 
-   @CurrentPermssion
+<programlisting role="JAVA">class SecurityManager {
+   
+   @Inject @Current
    Permission permission;
   
-   public boolean checkAdminPermission() {
+   boolean checkAdminPermission() {
       return permission.getName().equals("admin");
    }
 
 }</programlisting>
-      <para>
-         In the example above we have a permission manager bean, that manages the current permission, and the security 
-         manager, that checks the current permission level. Any changes to permission in the permission manager are 
-         immediately visible to the security manager. In this example you could raise the permission level before 
-         performing a sensitive operation, and then lower it again afterwards. 
-      </para>
-      <para>
-         When <code>permission.getName()</code> is called what actually happens is the 
-         <code>Permission</code> proxy looks up the current <code>PermissionManager</code> bean. It then 
-         calls the <code>getPermission()</code> method and forwards the <code>getName()</code> call on to 
-         the <code>Permssion</code> object that is returned.
-      </para>
-      <para>
-         Managed producer methods can have parameters injected in the same manner as a normal producer method. They can 
-         also inject the <code>InjectionPoint</code> that the current method call is coming from. 
-      </para>
-   </section>
+
+   <para>
+      When <code>permission.getName()</code> is called, the unwrapped Permission forwards the invocation of 
+      <code>getName()</code> to the result of calling <code>PermissionManager.getPermission()</code>.
+   </para>
+
+   <para>
+      For example you could raise the permission level before performing a sensitive operation, and then lower it again 
+      afterwards:
+   </para>
+   
+   <programlisting role="JAVA">public class SomeSensitiveOperation {
+   
+   @Inject
+   PermissionManager permissionManager;
+  
+   public void perform() {
+      try {
+         permissionManager.setPermission(Permissions.ADMIN);
+         // Do some sensitive operation
+      } finally {
+         permissionManager.setPermission(Permissions.USER);
+      }
+   }
+
+}</programlisting>
+
+   <para>
+      Unwrapping producer methods can have parameters injected, including <code>InjectionPoint</code> (which repreents)
+      the calling method.
+   </para>
+   
 </chapter>

@@ -15,10 +15,11 @@ import javax.enterprise.inject.Produces;
  * </p>
  * 
  * <p>
- * A method is annotated with <code>&#064;Unwraps</code> is registered with CDI as bean;
- * whenever a method is invoked on the proxy the @Unwraps method is called, and
- * the method invocation is forwarded to the result. This allows you to manual
- * control the lifecycle of the object while still allowing it to be injected.
+ * A method is annotated with <code>&#064;Unwraps</code> is registered with CDI
+ * as bean; whenever a method is invoked on the proxy the @Unwraps method is
+ * called, and the method invocation is forwarded to the result. This allows you
+ * to manual control the lifecycle of the object while still allowing it to be
+ * injected.
  * </p>
  * 
  * <p>
@@ -52,7 +53,14 @@ import javax.enterprise.inject.Produces;
  * }
  * </pre>
  * 
+ * <p>
+ * The return type of the annotated method must be proxyable (see Section 5.4.1
+ * of the CDI specification, "Unproxyable bean types"). The method must not have
+ * a scope annotation.
+ * </p>
+ * 
  * @author Stuart Douglas
+ * @author Pete Muir
  * @see Produces
  * 
  */
