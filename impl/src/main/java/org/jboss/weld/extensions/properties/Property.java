@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.util.properties;
+package org.jboss.weld.extensions.properties;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
@@ -9,10 +9,10 @@ import java.lang.reflect.Type;
  * 
  * @see Properties
  * 
- * @author pmuir
+ * @author Pete Muir
  * @author Shane Bryzak
  *
- * @param <V>
+ * @param <V> the type of the properties value
  */
 public interface Property<V>
 {

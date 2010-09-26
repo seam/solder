@@ -34,7 +34,7 @@
       <title>Extensions and Utilties for Framework Authors</title>
       <xi:include href="typeutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="beanutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="propertyquery.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="properties.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="managedproducer.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="defaultbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="servicehandler.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />

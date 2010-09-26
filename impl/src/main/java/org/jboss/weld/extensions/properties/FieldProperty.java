@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.util.properties;
+package org.jboss.weld.extensions.properties;
 
 import java.lang.reflect.Field;
 

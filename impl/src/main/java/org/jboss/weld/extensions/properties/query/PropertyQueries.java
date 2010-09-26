@@ -1,5 +1,13 @@
-package org.jboss.weld.extensions.util.properties.query;
+package org.jboss.weld.extensions.properties.query;
 
+/**
+ * Utilities for working with property queries
+ * 
+ * @author Shane Bryzak
+ * @author Pete Muir
+ * 
+ * @see PropertyQuery
+ */
 public class PropertyQueries
 {
    

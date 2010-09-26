@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.util.properties.query;
+package org.jboss.weld.extensions.properties.query;
 
 import java.beans.Introspector;
 import java.lang.reflect.Field;
@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
  * A criteria that matches a property based on name
  * 
  * @author Shane Bryzak
+ * 
+ * @see PropertyCriteria
  */
 public class NamedPropertyCriteria implements PropertyCriteria
 {

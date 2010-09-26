@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.util.properties;
+package org.jboss.weld.extensions.properties;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
@@ -7,8 +7,10 @@ import java.lang.reflect.Method;
 /**
  * Utility class for working with JavaBean style properties
  * 
- * @author pmuir
- *
+ * @author Pete Muir
+ * @author Shane Bryzak
+ * 
+ * @see Property
  */
 public class Properties
 {

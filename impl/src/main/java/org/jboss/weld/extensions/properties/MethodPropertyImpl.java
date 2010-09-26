@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.jboss.weld.extensions.util.properties;
+package org.jboss.weld.extensions.properties;
 
 import static org.jboss.weld.extensions.reflection.Reflections.invokeMethod;
 
