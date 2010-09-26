@@ -121,8 +121,6 @@ public class HierarchyDiscovery
          return clazz;
       }
    }
-
-   @SuppressWarnings("unchecked")
    private void discoverFromClass(Class<?> clazz)
    {
       discoverTypes(resolveType(type, type, clazz.getGenericSuperclass()));
