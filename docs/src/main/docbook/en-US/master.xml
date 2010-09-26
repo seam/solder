@@ -15,14 +15,16 @@
       </para>
       
       <para>
-         This guide is split into two parts. <xref linkend="part1"/> details extensions and 
-         utilities which are likely to be of use to any developer using CDI. 
-         <xref linkend="part2"/> describes extensions and utilities which are likely to be of
-         use to developers writing libraries and frameworks that work with CDI. 
+         This guide is split into three parts. <xref linkend="part1"/> details extensions and 
+         utilities which are likely to be of use to any developer using CDI; 
+         <xref linkend="part2"/> describes utilities which are likely to be of
+         use to developers writing libraries and frameworks that work with CDI; <xref linkend="part3" /> discusses
+         extensions which can be used to implement configuration for a framework
       </para>
    </preface>
 
-   <part>
+   <part id="part1">
+      
       <title>Extensions and Utilities for Developers</title>
       <xi:include href="annotationliterals.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="elextensions.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -30,11 +32,15 @@
       <xi:include href="logging.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    </part>
    
-   <part>
-      <title>Extensions and Utilties for Framework Authors</title>
+   <part id="part2">
+      <title>Utilities for Framework Authors</title>
       <xi:include href="typeutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="beanutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="properties.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   </part>
+   
+   <part id="part3">
+      <title>Configuration Extensions for Framework Authors</title>
       <xi:include href="managedproducer.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="defaultbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="servicehandler.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
