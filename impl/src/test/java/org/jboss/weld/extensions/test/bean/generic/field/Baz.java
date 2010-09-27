@@ -23,6 +23,7 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
+import org.jboss.weld.extensions.bean.generic.ApplyScope;
 import org.jboss.weld.extensions.bean.generic.Generic;
 import org.jboss.weld.extensions.bean.generic.GenericBean;
 import org.jboss.weld.extensions.unwraps.Unwraps;
@@ -35,6 +36,7 @@ import org.jboss.weld.extensions.unwraps.Unwraps;
  */
 
 @Generic(Message.class)
+@ApplyScope
 public class Baz implements Serializable
 {
 
@@ -61,12 +63,11 @@ public class Baz implements Serializable
       return corge;
    }
    
-   @Produces
    public Message getMessage()
    {
       return message;
    }
-   
+
    @Produces @Wibble
    public String getCorge(Wobble wobble)
    {

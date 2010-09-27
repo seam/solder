@@ -16,43 +16,13 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.method;
 
-import javax.inject.Inject;
-
-import org.jboss.weld.extensions.bean.generic.Generic;
-import org.jboss.weld.extensions.bean.generic.GenericBean;
-
 /**
- * A generic bean for the config annotation Message
+ * The config type for the @Service annotation
  * 
- * @author pmuir
- *
+ * @author stuart
+ * 
  */
-
-@Generic(Message.class)
-public class Baz
+public class Burt
 {
 
-   @Inject @GenericBean
-   private Bar bar;
-
-   @Inject
-   private Corge corge;
-   
-   @Inject 
-   private Message message;
-
-   public Bar getBar()
-   {
-      return bar;
-   }
-   
-   public Corge getCorge()
-   {
-      return corge;
-   }
-
-   public Message getMessage()
-   {
-      return message;
-   }
 }

@@ -4,10 +4,12 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.AnnotatedField;
+import javax.enterprise.inject.spi.AnnotatedMember;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -24,26 +26,26 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
 
    private final InjectionTarget<T> injectionTarget;
    private final Map<AnnotatedField<? super T>, InjectionPoint> injectedFields;
+   private final Class<? extends Annotation> scopeOverride;
 
-   GenericManagedBean(Bean<T> originalBean, Annotation genericConfiguration, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Synthetic.Provider syntheticProvider, Synthetic.Provider productSyntheticProvider, BeanManager beanManager)
+   GenericManagedBean(Bean<T> originalBean, Annotation genericConfiguration, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Set<Annotation> qualifiers, Class<? extends Annotation> scopeOverride, Synthetic.Provider annotatedMemberSyntheticProvider, BeanManager beanManager)
    {
-      super(originalBean, Collections.<Annotation>singleton(syntheticProvider.get(genericConfiguration)), beanManager); 
+      super(originalBean, qualifiers, beanManager);
       this.injectionTarget = injectionTarget;
       this.injectedFields = new HashMap<AnnotatedField<? super T>, InjectionPoint>();
-      Synthetic genericProductQualifier = productSyntheticProvider.get(genericConfiguration);
+      this.scopeOverride = scopeOverride;
       for (AnnotatedField<? super T> field : type.getFields())
       {
-         if (field.isAnnotationPresent(InjectGeneric.class) && field.isAnnotationPresent(GenericProduct.class))
+         if (field.isAnnotationPresent(InjectGeneric.class))
          {
-            injectedFields.put(field, new InjectionPointImpl(field, Collections.<Annotation>singleton(genericProductQualifier), this, false, false));
-            if (!field.getJavaMember().isAccessible())
+            if (AnnotatedMember.class.isAssignableFrom(field.getJavaMember().getType()))
             {
-               field.getJavaMember().setAccessible(true);
+               injectedFields.put(field, new InjectionPointImpl(field, Collections.<Annotation> singleton(annotatedMemberSyntheticProvider.get(genericConfiguration)), this, false, false));
             }
-         }
-         else if (field.isAnnotationPresent(InjectGeneric.class))
-         {
-            injectedFields.put(field, new InjectionPointImpl(field, getQualifiers(), this, false, false));
+            else
+            {
+               injectedFields.put(field, new InjectionPointImpl(field, getQualifiers(), this, false, false));
+            }
             if (!field.getJavaMember().isAccessible())
             {
                field.getJavaMember().setAccessible(true);
@@ -68,5 +70,15 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
    }
    
    // No need to implement destroy(), default will do
+
+   @Override
+   public Class<? extends Annotation> getScope()
+   {
+      if (scopeOverride != null)
+      {
+         return scopeOverride;
+      }
+      return super.getScope();
+   }
 
 }

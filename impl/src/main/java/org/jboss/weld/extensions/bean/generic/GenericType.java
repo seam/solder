@@ -14,45 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.test.bean.generic.method;
+package org.jboss.weld.extensions.bean.generic;
 
-import javax.inject.Inject;
-
-import org.jboss.weld.extensions.bean.generic.Generic;
-import org.jboss.weld.extensions.bean.generic.GenericBean;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * A generic bean for the config annotation Message
+ * A meta annotation used to indicate that the annotation is used for
+ * configuration of a generic bean
  * 
- * @author pmuir
- *
+ * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * 
+ * @see GenericConfiguration
+ * 
  */
-
-@Generic(Message.class)
-public class Baz
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE })
+@Documented
+public @interface GenericType
 {
+   /**
+    * The type of producer that is used to configure the managed bean.
+    * 
+    */
+   public Class<?> value();
 
-   @Inject @GenericBean
-   private Bar bar;
-
-   @Inject
-   private Corge corge;
-   
-   @Inject 
-   private Message message;
-
-   public Bar getBar()
-   {
-      return bar;
-   }
-   
-   public Corge getCorge()
-   {
-      return corge;
-   }
-
-   public Message getMessage()
-   {
-      return message;
-   }
 }

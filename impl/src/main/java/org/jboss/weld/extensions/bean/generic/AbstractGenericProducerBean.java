@@ -1,3 +1,19 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2010, Red Hat, Inc., and individual contributors
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,  
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.jboss.weld.extensions.bean.generic;
 
 import java.lang.annotation.Annotation;
@@ -9,7 +25,6 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.bean.Beans;
-import org.jboss.weld.extensions.reflection.Synthetic;
 
 /**
  * A helper class for implementing producer methods and fields on generic beans
@@ -21,18 +36,21 @@ abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T>
 {
 
    private final Type declaringBeanType;
-   private final Annotation declaringBeanQualifier;
+   private final Annotation[] declaringBeanQualifiers;
+   private final Class<? extends Annotation> scopeOverride;
+   private static final Annotation[] EMPTY_ANNOTATION_ARRAY = {};
 
-   protected AbstractGenericProducerBean(Bean<T> delegate, Annotation genericConfiguration, Set<Annotation> qualifiers, Synthetic.Provider syntheticProvider, BeanManager beanManager)
+   protected AbstractGenericProducerBean(Bean<T> delegate, Annotation genericConfiguration, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, BeanManager beanManager)
    {
       super(delegate, qualifiers, beanManager);
       this.declaringBeanType = delegate.getBeanClass();
-      this.declaringBeanQualifier = syntheticProvider.get(genericConfiguration);
+      this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(EMPTY_ANNOTATION_ARRAY);
+      this.scopeOverride = scopeOverride;
    }
    
-   protected Annotation getDeclaringBeanQualifier()
+   protected Annotation[] getDeclaringBeanQualifiers()
    {
-      return declaringBeanQualifier;
+      return declaringBeanQualifiers;
    }
    
    protected Type getDeclaringBeanType()
@@ -61,8 +79,18 @@ abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T>
    
    protected Object getReceiver(CreationalContext<T> creationalContext)
    {
-      Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(getDeclaringBeanType(), getDeclaringBeanQualifier()));
+      Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(getDeclaringBeanType(), getDeclaringBeanQualifiers()));
       return getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
+   }
+
+   @Override
+   public Class<? extends Annotation> getScope()
+   {
+      if (scopeOverride == null)
+      {
+         return super.getScope();
+      }
+      return scopeOverride;
    }
 
 }

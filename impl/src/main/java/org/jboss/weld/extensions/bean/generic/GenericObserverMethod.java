@@ -15,7 +15,6 @@ import javax.enterprise.inject.spi.ObserverMethod;
 import org.jboss.weld.extensions.bean.ForwardingObserverMethod;
 import org.jboss.weld.extensions.bean.InjectableMethod;
 import org.jboss.weld.extensions.bean.ParameterValueRedefiner;
-import org.jboss.weld.extensions.reflection.Synthetic;
 
 class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
 {
@@ -24,15 +23,16 @@ class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
    private final InjectableMethod<X> observerMethod;
    private final BeanManager beanManager;
    private final Type declaringBeanType;
-   private final Annotation declaringBeanQualifier;
+   private final Annotation[] declaringBeanQualifiers;
    private final Set<Annotation> qualifiers;
+   private static final Annotation[] EMPTY_ANNOTATION_ARRAY = {};
 
-   GenericObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Annotation declaringBeanQualifier, Set<Annotation> qualifiers, Synthetic.Provider syntheticProvider, BeanManager beanManager)
+   GenericObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Annotation declaringBeanQualifier, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, BeanManager beanManager)
    {
       this.originalObserverMethod = originalObserverMethod;
       this.observerMethod = new InjectableMethod<X>(observerMethod, null, beanManager);
       this.beanManager = beanManager;
-      this.declaringBeanQualifier = syntheticProvider.get(declaringBeanQualifier);
+      this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(EMPTY_ANNOTATION_ARRAY);
       this.declaringBeanType = originalObserverMethod.getBeanClass();
       this.qualifiers = qualifiers;
    }
@@ -52,7 +52,7 @@ class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
    @Override
    public void notify(final T event)
    {
-      Bean<?> declaringBean = beanManager.resolve(beanManager.getBeans(declaringBeanType, declaringBeanQualifier));
+      Bean<?> declaringBean = beanManager.resolve(beanManager.getBeans(declaringBeanType, declaringBeanQualifiers));
       final CreationalContext<?> creationalContext = createCreationalContext(declaringBean);
       try
       {

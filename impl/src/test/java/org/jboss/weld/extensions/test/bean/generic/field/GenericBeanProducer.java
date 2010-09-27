@@ -30,27 +30,27 @@ public class GenericBeanProducer
    @Foo(1)
    @Produces
    @Message("hello1")
-   private Baz baz1;
+   private Burt baz1;
 
    @SuppressWarnings("unused")
    @Foo(2)
    @Produces
    @Message("hello2")
-   private Baz baz2;
+   private Burt baz2;
    
    @SuppressWarnings("unused")
    @Foo(3)
    @Produces
    @Message("hello3")
    @SessionScoped
-   private Baz baz3;
+   private Burt baz3;
    
    @SuppressWarnings("unused")
    @Foo(4)
    @Produces
    @Message("hello4")
    @SessionScoped
-   private Baz baz4;
+   private Burt baz4;
    
    @SuppressWarnings("unused")
    @Foo(1)

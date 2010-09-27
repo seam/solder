@@ -19,7 +19,6 @@ package org.jboss.weld.extensions.test.bean.generic.method;
 import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
@@ -88,8 +87,8 @@ public class GenericProductTest
       // Check injection of product
       assertNotNull(waldo1);
       assertNotNull(waldo2);
-      assertNull(waldo1.getName());
-      assertNull(waldo2.getName());
+      assertEquals("Pete", waldo1.getName());
+      assertEquals("Stuart", waldo2.getName());
       
       assertNotNull(garply1);
       assertNotNull(garply2);

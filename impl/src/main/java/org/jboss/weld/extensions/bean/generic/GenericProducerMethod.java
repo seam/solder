@@ -15,7 +15,6 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.weld.extensions.bean.InjectableMethod;
 import org.jboss.weld.extensions.bean.InjectionPointImpl;
-import org.jboss.weld.extensions.reflection.Synthetic;
 
 // TODO Make this passivation capable
 public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
@@ -24,15 +23,14 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
    private final InjectableMethod<X> producerMethod;
    private final InjectableMethod<X> disposerMethod;
 
-   GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Synthetic.Provider syntheticProvider, Synthetic.Provider productSyntheticProvider, BeanManager beanManager)
+   GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, BeanManager beanManager)
    {
-      super(originalBean, genericConfiguration, qualifiers, syntheticProvider, beanManager);
-      final Synthetic genericProductQualifier = productSyntheticProvider.get(genericConfiguration);
+      super(originalBean, genericConfiguration, qualifiers, genericBeanQualifiers, scopeOverride, beanManager);
       this.producerMethod = new InjectableMethod<X>(method, this, beanManager)
       {
          protected InjectionPoint wrapParameterInjectionPoint(InjectionPoint injectionPoint)
          {
-            return wrapInjectionPoint(injectionPoint, genericBeanQualifiers, genericProductQualifier);
+            return wrapInjectionPoint(injectionPoint, genericBeanQualifiers);
          };
       };
       if (disposerMethod != null)
@@ -41,7 +39,7 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
          {
             protected InjectionPoint wrapParameterInjectionPoint(InjectionPoint injectionPoint)
             {
-               return wrapInjectionPoint(injectionPoint, genericBeanQualifiers, genericProductQualifier);
+               return wrapInjectionPoint(injectionPoint, genericBeanQualifiers);
             };
          };
       }
@@ -67,7 +65,7 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
       // creationalContext.release();
    }
 
-   private static InjectionPoint wrapInjectionPoint(InjectionPoint injectionPoint, Set<Annotation> quals, Synthetic genericProductQualifier)
+   private static InjectionPoint wrapInjectionPoint(InjectionPoint injectionPoint, Set<Annotation> quals)
    {
       Annotated anotated = injectionPoint.getAnnotated();
       boolean genericInjectionPoint = false;
@@ -79,15 +77,8 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
       if (anotated.isAnnotationPresent(Disposes.class) || anotated.isAnnotationPresent(InjectGeneric.class) || genericInjectionPoint)
       {
          Set<Annotation> newQualifiers = new HashSet<Annotation>();
-         if (anotated.isAnnotationPresent(InjectGeneric.class))
-         {
-            newQualifiers.add(genericProductQualifier);
-         }
-         else
-         {
-            newQualifiers.addAll(quals);
-            newQualifiers.addAll(injectionPoint.getQualifiers());
-         }
+         newQualifiers.addAll(quals);
+         newQualifiers.addAll(injectionPoint.getQualifiers());
          return new InjectionPointImpl((AnnotatedParameter<?>) anotated, newQualifiers, injectionPoint.getBean(), injectionPoint.isTransient(), injectionPoint.isDelegate());
       }
       return injectionPoint;

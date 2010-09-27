@@ -16,16 +16,13 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.field;
 
-import org.jboss.weld.extensions.bean.generic.Generic;
 
 /**
- * A generic bean for the config annotation Message
+ * The configuration class for the config annotation Message
  * 
  * @author pmuir
- *
+ * 
  */
-
-@Generic(Service.class)
 public class Waldo
 {
    

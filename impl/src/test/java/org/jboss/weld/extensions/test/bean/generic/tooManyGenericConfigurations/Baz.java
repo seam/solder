@@ -16,16 +16,14 @@
  */
 package org.jboss.weld.extensions.test.bean.generic.tooManyGenericConfigurations;
 
-import org.jboss.weld.extensions.bean.generic.Generic;
 
 /**
- * A generic bean for the config annotation Message
+ * The config type for the config annotation Message
  * 
  * @author pmuir
- *
+ * 
  */
 
-@Generic(Message.class)
 public class Baz
 {
 

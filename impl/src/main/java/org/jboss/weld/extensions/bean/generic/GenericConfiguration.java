@@ -36,5 +36,5 @@ import java.lang.annotation.Target;
 @Documented
 public @interface GenericConfiguration
 {
-
+   Class<?> value();
 }
