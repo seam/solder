@@ -516,7 +516,7 @@ public class GenericBeanExtension implements Extension
       // We don't have a bean created for this generic configuration annotation. Create it, store it to be added later
       Synthetic syntheticQualifier = syntheticProvider.get(genericConfiguration);
       // TODO make this passivation capable?
-      BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager).setBeanClass(genericConfiguration.annotationType()).setTypes(Arrays2.<Type> asSet(genericConfiguration.annotationType(), Object.class)).setScope(Dependent.class).setQualifiers(Arrays2.<Annotation> asSet(syntheticQualifier)).setBeanLifecycle(new BeanLifecycle<Annotation>()
+      BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager).beanClass(genericConfiguration.annotationType()).types(Arrays2.<Type> asSet(genericConfiguration.annotationType(), Object.class)).scope(Dependent.class).qualifiers(Arrays2.<Annotation> asSet(syntheticQualifier)).beanLifecycle(new BeanLifecycle<Annotation>()
       {
 
          public void destroy(Bean<Annotation> bean, Annotation arg0, CreationalContext<Annotation> arg1)
@@ -541,7 +541,7 @@ public class GenericBeanExtension implements Extension
       final ProducerHolder<?, T> holder = (ProducerHolder<?, T>) genericProducers.get(genericConfiguration);
 
       // TODO make this passivation capable?
-      BeanBuilder<T> builder = new BeanBuilder<T>(beanManager).setBeanClass(Reflections.<T> getRawType(holder.getMember().getBaseType())).setQualifiers(Arrays2.<Annotation> asSet(syntheticQualifier)).setBeanLifecycle(new BeanLifecycle<T>()
+      BeanBuilder<T> builder = new BeanBuilder<T>(beanManager).beanClass(Reflections.<T> getRawType(holder.getMember().getBaseType())).qualifiers(Arrays2.<Annotation> asSet(syntheticQualifier)).beanLifecycle(new BeanLifecycle<T>()
       {
 
          public void destroy(Bean<T> bean, T instance, CreationalContext<T> ctx)
@@ -566,7 +566,7 @@ public class GenericBeanExtension implements Extension
       final ProducerHolder<?, ?> holder = genericProducers.get(genericConfiguration);
 
       // TODO make this passivation capable?
-      BeanBuilder<AnnotatedMember<?>> builder = new BeanBuilder<AnnotatedMember<?>>(beanManager).setBeanClass(AnnotatedMember.class).setQualifiers(Arrays2.<Annotation> asSet(syntheticQualifier)).setBeanLifecycle(new BeanLifecycle<AnnotatedMember<?>>()
+      BeanBuilder<AnnotatedMember<?>> builder = new BeanBuilder<AnnotatedMember<?>>(beanManager).beanClass(AnnotatedMember.class).qualifiers(Arrays2.<Annotation> asSet(syntheticQualifier)).beanLifecycle(new BeanLifecycle<AnnotatedMember<?>>()
       {
 
          public void destroy(Bean<AnnotatedMember<?>> bean, AnnotatedMember<?> instance, CreationalContext<AnnotatedMember<?>> ctx)

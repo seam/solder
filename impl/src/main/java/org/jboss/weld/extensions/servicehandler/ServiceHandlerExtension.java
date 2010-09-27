@@ -49,8 +49,8 @@ public class ServiceHandlerExtension implements Extension
          try
          {
             BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
-            builder.defineBeanFromAnnotatedType(event.getAnnotatedType());
-            builder.setBeanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
+            builder.readFromType(event.getAnnotatedType());
+            builder.beanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
             builder.setToString("Generated @ServiceHandler for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
             beans.add(builder.create());
          }

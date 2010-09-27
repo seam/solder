@@ -64,7 +64,7 @@ public class BeanBuilder<T>
       this.beanManager = beanManager;
    }
 
-   public BeanBuilder<T> defineBeanFromAnnotatedType(AnnotatedType<T> type)
+   public BeanBuilder<T> readFromType(AnnotatedType<T> type)
    {
       this.beanClass = type.getJavaClass();
       InjectionTarget<T> injectionTarget;
@@ -139,7 +139,7 @@ public class BeanBuilder<T>
       return qualifiers;
    }
 
-   public BeanBuilder<T> setQualifiers(Set<Annotation> qualifiers)
+   public BeanBuilder<T> qualifiers(Set<Annotation> qualifiers)
    {
       this.qualifiers = qualifiers;
       return this;
@@ -150,7 +150,7 @@ public class BeanBuilder<T>
       return scope;
    }
 
-   public BeanBuilder<T> setScope(Class<? extends Annotation> scope)
+   public BeanBuilder<T> scope(Class<? extends Annotation> scope)
    {
       this.scope = scope;
       return this;
@@ -161,7 +161,7 @@ public class BeanBuilder<T>
       return stereotypes;
    }
 
-   public BeanBuilder<T> setStereotypes(Set<Class<? extends Annotation>> stereotypes)
+   public BeanBuilder<T> stereotypes(Set<Class<? extends Annotation>> stereotypes)
    {
       this.stereotypes = stereotypes;
       return this;
@@ -172,7 +172,7 @@ public class BeanBuilder<T>
       return types;
    }
 
-   public BeanBuilder<T> setTypes(Set<Type> types)
+   public BeanBuilder<T> types(Set<Type> types)
    {
       this.types = types;
       return this;
@@ -183,7 +183,7 @@ public class BeanBuilder<T>
       return alternative;
    }
 
-   public BeanBuilder<T> setAlternative(boolean alternative)
+   public BeanBuilder<T> alternative(boolean alternative)
    {
       this.alternative = alternative;
       return this;
@@ -194,7 +194,7 @@ public class BeanBuilder<T>
       return nullable;
    }
 
-   public BeanBuilder<T> setNullable(boolean nullable)
+   public BeanBuilder<T> nullable(boolean nullable)
    {
       this.nullable = nullable;
       return this;
@@ -205,7 +205,7 @@ public class BeanBuilder<T>
       return beanLifecycle;
    }
 
-   public BeanBuilder<T> setBeanLifecycle(BeanLifecycle<T> beanLifecycle)
+   public BeanBuilder<T> beanLifecycle(BeanLifecycle<T> beanLifecycle)
    {
       this.beanLifecycle = beanLifecycle;
       return this;
@@ -216,7 +216,7 @@ public class BeanBuilder<T>
       return beanClass;
    }
    
-   public BeanBuilder<T> setBeanClass(Class<?> beanClass)
+   public BeanBuilder<T> beanClass(Class<?> beanClass)
    {
       this.beanClass = beanClass;
       return this;
@@ -232,7 +232,7 @@ public class BeanBuilder<T>
       return name;
    }
 
-   public BeanBuilder<T> setName(String name)
+   public BeanBuilder<T> name(String name)
    {
       this.name = name;
       return this;
@@ -243,7 +243,7 @@ public class BeanBuilder<T>
       return passivationCapable;
    }
 
-   public BeanBuilder<T> setPassivationCapable(boolean passivationCapable)
+   public BeanBuilder<T> passivationCapable(boolean passivationCapable)
    {
       this.passivationCapable = passivationCapable;
       return this;
@@ -254,7 +254,7 @@ public class BeanBuilder<T>
       return id;
    }
 
-   public BeanBuilder<T> setId(String id)
+   public BeanBuilder<T> id(String id)
    {
       this.id = id;
       return this;
@@ -265,7 +265,7 @@ public class BeanBuilder<T>
       return injectionPoints;
    }
    
-   public BeanBuilder<T> setInjectionPoints(Set<InjectionPoint> injectionPoints)
+   public BeanBuilder<T> injectionPoints(Set<InjectionPoint> injectionPoints)
    {
       this.injectionPoints = injectionPoints;
       return this;
