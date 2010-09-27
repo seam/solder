@@ -72,7 +72,7 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
       if (injectionPoint.getType() instanceof Class<?>)
       {
          Class<?> c = (Class<?>) injectionPoint.getType();
-         genericInjectionPoint = c.isAnnotationPresent(Generic.class);
+         genericInjectionPoint = c.isAnnotationPresent(GenericConfiguration.class);
       }
       if (anotated.isAnnotationPresent(Disposes.class) || anotated.isAnnotationPresent(InjectGeneric.class) || genericInjectionPoint)
       {

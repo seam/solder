@@ -24,8 +24,8 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.ApplyScope;
+import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 import org.jboss.weld.extensions.bean.generic.Generic;
-import org.jboss.weld.extensions.bean.generic.GenericBean;
 import org.jboss.weld.extensions.unwraps.Unwraps;
 
 /**
@@ -35,7 +35,7 @@ import org.jboss.weld.extensions.unwraps.Unwraps;
  *
  */
 
-@Generic(Message.class)
+@GenericConfiguration(Message.class)
 @ApplyScope
 public class Baz implements Serializable
 {
@@ -44,7 +44,7 @@ public class Baz implements Serializable
 
    private Fred fred = new Fred("Hello Fred");
 
-   @Inject @GenericBean
+   @Inject @Generic
    private Bar bar;
 
    @Inject

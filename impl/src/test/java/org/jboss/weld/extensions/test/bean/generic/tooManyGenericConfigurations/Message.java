@@ -25,7 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
+import org.jboss.weld.extensions.bean.generic.GenericType;
 
 /**
  * The annotation used to configure a generic bean
@@ -36,7 +36,7 @@ import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, TYPE})
-@GenericConfiguration(Baz.class)
+@GenericType(Baz.class)
 public @interface Message
 {
    String value();

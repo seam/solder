@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 
 import javax.enterprise.util.AnnotationLiteral;
 
-public class GenericLiteral extends AnnotationLiteral<Generic> implements Generic
+public class GenericLiteral extends AnnotationLiteral<GenericConfiguration> implements GenericConfiguration
 {
 
    private static final long serialVersionUID = -1931707390692943775L;

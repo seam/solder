@@ -22,7 +22,7 @@ import javax.enterprise.inject.spi.AnnotatedMember;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.Generic;
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
+import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 
 /**
  * A generic bean for the config annotation Message
@@ -31,18 +31,21 @@ import org.jboss.weld.extensions.bean.generic.GenericProduct;
  *
  */
 
-@Generic(Service.class)
+@GenericConfiguration(Service.class)
 public class Garply
 {
    
-   @Inject @GenericProduct
+   @Inject
+   @Generic
    private Waldo waldo;
    
-   @Inject @GenericProduct
+   @Inject
+   @Generic
    private AnnotatedMember<?> annotatedMember;
    
 
-   @Produces @WaldoName
+   @Produces
+   @WaldoName
    public String getWaldoName()
    {
       return waldo.getName();

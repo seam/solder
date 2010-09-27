@@ -21,7 +21,7 @@ import java.io.Serializable;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 
 /**
  * A generic bean for the config annotation Message
@@ -30,7 +30,7 @@ import org.jboss.weld.extensions.bean.generic.Generic;
  *
  */
 
-@Generic(Message.class)
+@GenericConfiguration(Message.class)
 public class Bar implements Serializable
 {
 

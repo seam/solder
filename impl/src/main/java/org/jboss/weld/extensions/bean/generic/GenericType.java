@@ -36,10 +36,5 @@ import java.lang.annotation.Target;
 @Documented
 public @interface GenericType
 {
-   /**
-    * The type of producer that is used to configure the managed bean.
-    * 
-    */
-   public Class<?> value();
-
+   Class<?> value();
 }

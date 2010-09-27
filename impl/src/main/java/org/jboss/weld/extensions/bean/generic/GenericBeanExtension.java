@@ -280,18 +280,18 @@ public class GenericBeanExtension implements Extension
    <X> void replaceInjectOnGenericBeans(@Observes ProcessAnnotatedType<X> event)
    {
       AnnotatedType<X> type = event.getAnnotatedType();
-      if (type.isAnnotationPresent(Generic.class))
+      if (type.isAnnotationPresent(GenericConfiguration.class))
       {
-         final Class<? extends Annotation> genericConfigurationType = type.getAnnotation(Generic.class).value();
+         final Class<? extends Annotation> genericConfigurationType = type.getAnnotation(GenericConfiguration.class).value();
          // validate that the configuration type is annotated correctly
-         if (!genericConfigurationType.isAnnotationPresent(GenericConfiguration.class))
+         if (!genericConfigurationType.isAnnotationPresent(GenericType.class))
          {
-            errors.add("Bean " + type.getJavaClass().getName() + " specifies generic annotation " + type.getAnnotation(Generic.class) + " however " + genericConfigurationType + " is not annotated @GenericConfiguration.");
+            errors.add("Bean " + type.getJavaClass().getName() + " specifies generic annotation " + type.getAnnotation(GenericConfiguration.class) + " however " + genericConfigurationType + " is not annotated @GenericConfiguration.");
          }
          else
          {
-            Class<?> configType = genericConfigurationType.getAnnotation(GenericConfiguration.class).value();
-            if (configType.isAnnotationPresent(Generic.class))
+            Class<?> configType = genericConfigurationType.getAnnotation(GenericType.class).value();
+            if (configType.isAnnotationPresent(GenericConfiguration.class))
             {
                errors.add("Generic configuration type " + genericConfigurationType + " specifies a value() of " + configType + " however " + configType + " is a generic bean. Generic configuration types may not be generic beans");
             }
@@ -311,17 +311,9 @@ public class GenericBeanExtension implements Extension
                      // This is a Generic configuration injection point
                      ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGenericLiteral.INSTANCE);
                   }
-                  else if (ctx.getAnnotatedElement().isAnnotationPresent(GenericBean.class))
+                  else if (ctx.getAnnotatedElement().isAnnotationPresent(Generic.class))
                   {
                      // This is a Generic bean injection point
-                     ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGenericLiteral.INSTANCE);
-                  }
-                  else if (ctx.getAnnotatedElement().isAnnotationPresent(GenericProduct.class))
-                  {
-                     /*
-                      * This is an injection point where @GenericProduct has
-                      * been used, so we have to take control of injection
-                      */
                      ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGenericLiteral.INSTANCE);
                   }
                }
@@ -338,16 +330,16 @@ public class GenericBeanExtension implements Extension
             
          });
 
-         builder.redefine(GenericProduct.class, new AnnotationRedefiner<GenericProduct>()
+         builder.redefine(Generic.class, new AnnotationRedefiner<Generic>()
          {
-            public void redefine(RedefinitionContext<GenericProduct> ctx)
+            public void redefine(RedefinitionContext<Generic> ctx)
             {
                // if it is a parameter annotation
                if (!(ctx.getAnnotatedElement() instanceof AccessibleObject))
                {
                   // stick an InjectGeneric as a marker.
-                  ctx.getAnnotationBuilder().remove(GenericProduct.class).add(InjectGenericLiteral.INSTANCE);
-                  if (ctx.getRawType().isAnnotationPresent(Generic.class))
+                  ctx.getAnnotationBuilder().remove(Generic.class).add(InjectGenericLiteral.INSTANCE);
+                  if (ctx.getRawType().isAnnotationPresent(GenericConfiguration.class))
                   {
                      ctx.getAnnotationBuilder().add(genericBeanQualifier);
                   }
@@ -361,9 +353,9 @@ public class GenericBeanExtension implements Extension
    <X> void registerGenericBean(@Observes ProcessManagedBean<X> event)
    {
       AnnotatedType<X> type = event.getAnnotatedBeanClass();
-      if (type.isAnnotationPresent(Generic.class))
+      if (type.isAnnotationPresent(GenericConfiguration.class))
       {
-         Class<? extends Annotation> genericType = type.getAnnotation(Generic.class).value();
+         Class<? extends Annotation> genericType = type.getAnnotation(GenericConfiguration.class).value();
          genericBeans.put(genericType, new BeanHolder<X>(event.getAnnotatedBeanClass(), event.getBean()));
          for (AnnotatedMethod<? super X> m : event.getAnnotatedBeanClass().getMethods())
          {
@@ -379,9 +371,9 @@ public class GenericBeanExtension implements Extension
    {
       AnnotatedType<X> declaringType = event.getAnnotatedProducerMethod().getDeclaringType();
       Annotation genericConfiguration = getGenericConfiguration(event.getAnnotated());
-      if (declaringType.isAnnotationPresent(Generic.class))
+      if (declaringType.isAnnotationPresent(GenericConfiguration.class))
       {
-         genericBeanProducerMethods.put(declaringType.getAnnotation(Generic.class).value(), getProducerMethodHolder(event));
+         genericBeanProducerMethods.put(declaringType.getAnnotation(GenericConfiguration.class).value(), getProducerMethodHolder(event));
       }
       else if (genericConfiguration != null)
       {
@@ -394,7 +386,7 @@ public class GenericBeanExtension implements Extension
 
    private <X> boolean validateGenericProducer(Annotation genericConfiguration, Bean<?> bean, AnnotatedMember<X> member)
    {
-      Class<?> configType = genericConfiguration.annotationType().getAnnotation(GenericConfiguration.class).value();
+      Class<?> configType = genericConfiguration.annotationType().getAnnotation(GenericType.class).value();
       boolean valid = false;
       for (Type t : bean.getTypes())
       {
@@ -433,10 +425,10 @@ public class GenericBeanExtension implements Extension
    <T, X> void registerGenericBeanObserverMethod(@Observes ProcessObserverMethod<T, X> event)
    {
       AnnotatedType<X> declaringType = event.getAnnotatedMethod().getDeclaringType();
-      if (declaringType.isAnnotationPresent(Generic.class))
+      if (declaringType.isAnnotationPresent(GenericConfiguration.class))
       {
          AnnotatedMethod<X> method = event.getAnnotatedMethod();
-         Class<? extends Annotation> genericConfigurationType = declaringType.getAnnotation(Generic.class).value();
+         Class<? extends Annotation> genericConfigurationType = declaringType.getAnnotation(GenericConfiguration.class).value();
          genericBeanObserverMethods.put(genericConfigurationType, new ObserverMethodHolder<X, T>(method, event.getObserverMethod()));
       }
    }
@@ -446,10 +438,10 @@ public class GenericBeanExtension implements Extension
 
       AnnotatedType<X> declaringType = event.getAnnotatedProducerField().getDeclaringType();
       Annotation genericConfiguration = getGenericConfiguration(event.getAnnotated());
-      if (declaringType.isAnnotationPresent(Generic.class))
+      if (declaringType.isAnnotationPresent(GenericConfiguration.class))
       {
          AnnotatedField<X> field = event.getAnnotatedProducerField();
-         Class<? extends Annotation> genericConfigurationType = declaringType.getAnnotation(Generic.class).value();
+         Class<? extends Annotation> genericConfigurationType = declaringType.getAnnotation(GenericConfiguration.class).value();
          genericBeanProducerFields.put(genericConfigurationType, new FieldHolder<X, T>(field, event.getBean()));
       }
       else if (genericConfiguration != null)
@@ -464,7 +456,7 @@ public class GenericBeanExtension implements Extension
    <X> void registerGenericBeanInjectionTarget(@Observes ProcessInjectionTarget<X> event)
    {
       AnnotatedType<X> type = event.getAnnotatedType();
-      if (type.isAnnotationPresent(Generic.class))
+      if (type.isAnnotationPresent(GenericConfiguration.class))
       {
          genericInjectionTargets.put(type, event.getInjectionTarget());
       }
@@ -481,7 +473,7 @@ public class GenericBeanExtension implements Extension
             throw new IllegalStateException("Generic configuration " + genericConfiguration + " is defined twice [" + event.getAnnotatedMember() + ", " + genericProducers.get(genericConfiguration) + "]");
          }
          Producer<T> originalProducer = event.getProducer();
-         Class<?> requiredProducerType = genericConfiguration.annotationType().getAnnotation(GenericConfiguration.class).value();
+         Class<?> requiredProducerType = genericConfiguration.annotationType().getAnnotation(GenericType.class).value();
 
          // Register the producer for use later
          genericProducers.put(genericConfiguration, new ProducerHolder<X, T>(event.getAnnotatedMember(), originalProducer));
@@ -589,7 +581,7 @@ public class GenericBeanExtension implements Extension
    private static Annotation getGenericConfiguration(Annotated annotated)
    {
       // Only process the producer as a generic producer, if it has an annotation meta-annotated with GenericConfiguration
-      Set<Annotation> genericConfigurationAnnotiations = getAnnotations(annotated, GenericConfiguration.class);
+      Set<Annotation> genericConfigurationAnnotiations = getAnnotations(annotated, GenericType.class);
 
       if (genericConfigurationAnnotiations.size() > 1)
       {

@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
  * 
- * @see Generic
+ * @see GenericConfiguration
  * 
  */
 @Retention(RUNTIME)

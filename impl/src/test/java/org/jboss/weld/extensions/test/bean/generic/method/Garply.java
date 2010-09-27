@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import junit.framework.Assert;
 
 import org.jboss.weld.extensions.bean.generic.Generic;
-import org.jboss.weld.extensions.bean.generic.GenericProduct;
+import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 
 /**
  * A generic bean for the config annotation Message
@@ -34,13 +34,14 @@ import org.jboss.weld.extensions.bean.generic.GenericProduct;
  *
  */
 
-@Generic(Service.class)
+@GenericConfiguration(Service.class)
 public class Garply
 {
 
    static boolean disposerCalled = false;
    
-   @Inject @GenericProduct
+   @Inject
+   @Generic
    private Waldo waldo;
    
    @Produces
@@ -57,12 +58,12 @@ public class Garply
    
    @Produces
    @Formatted
-   public String getFormattedWaldoName(@GenericProduct Waldo waldo)
+   public String getFormattedWaldoName(@Generic Waldo waldo)
    {
       return "[" + waldo.getName() + "]";
    }
 
-   public void dispose(@Disposes @WaldoName String waldoName, @GenericProduct Waldo waldo)
+   public void dispose(@Disposes @WaldoName String waldoName, @Generic Waldo waldo)
    {
       disposerCalled = true;
       Assert.assertEquals(waldo.getName(), waldoName);

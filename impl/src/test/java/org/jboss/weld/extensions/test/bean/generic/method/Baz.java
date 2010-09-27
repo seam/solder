@@ -18,8 +18,8 @@ package org.jboss.weld.extensions.test.bean.generic.method;
 
 import javax.inject.Inject;
 
+import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 import org.jboss.weld.extensions.bean.generic.Generic;
-import org.jboss.weld.extensions.bean.generic.GenericBean;
 
 /**
  * A generic bean for the config annotation Message
@@ -28,11 +28,11 @@ import org.jboss.weld.extensions.bean.generic.GenericBean;
  *
  */
 
-@Generic(Message.class)
+@GenericConfiguration(Message.class)
 public class Baz
 {
 
-   @Inject @GenericBean
+   @Inject @Generic
    private Bar bar;
 
    @Inject
