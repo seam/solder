@@ -19,7 +19,7 @@ package org.jboss.weld.extensions.test.defaultbean;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
+import org.jboss.weld.extensions.bean.defaultbean.DefaultBean;
 
 /**
  * test that producer methods are read from the installed default bean and not

@@ -30,7 +30,7 @@ import javax.el.ResourceBundleELResolver;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
+import org.jboss.weld.extensions.bean.defaultbean.DefaultBean;
 
 /**
  * Default EL resolver that delegates to a CompositeELResolver. This resolver

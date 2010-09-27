@@ -19,7 +19,7 @@ package org.jboss.weld.extensions.el;
 import javax.el.ValueExpression;
 import javax.el.VariableMapper;
 
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
+import org.jboss.weld.extensions.bean.defaultbean.DefaultBean;
 
 /**
  * Default variable mapper bean. Should be overriden by the faces module or any

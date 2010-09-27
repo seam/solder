@@ -18,7 +18,7 @@ package org.jboss.weld.extensions.test.defaultbean;
 
 import javax.enterprise.inject.Produces;
 
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
+import org.jboss.weld.extensions.bean.defaultbean.DefaultBean;
 
 public class ChipManufacturer
 {

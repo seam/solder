@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.defaultbean;
+package org.jboss.weld.extensions.bean.defaultbean;
 
 import static org.jboss.weld.extensions.reflection.Reflections.getFieldValue;
 

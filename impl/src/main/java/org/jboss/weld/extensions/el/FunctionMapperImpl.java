@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 
 import javax.el.FunctionMapper;
 
-import org.jboss.weld.extensions.defaultbean.DefaultBean;
+import org.jboss.weld.extensions.bean.defaultbean.DefaultBean;
 
 /**
  * Default function mapper bean. Should be overriden by the faces module or any

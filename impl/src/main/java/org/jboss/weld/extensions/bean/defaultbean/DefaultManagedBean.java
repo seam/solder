@@ -1,4 +1,4 @@
-package org.jboss.weld.extensions.defaultbean;
+package org.jboss.weld.extensions.bean.defaultbean;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
