@@ -40,9 +40,9 @@ abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T>
    private final Class<? extends Annotation> scopeOverride;
    private static final Annotation[] EMPTY_ANNOTATION_ARRAY = {};
 
-   protected AbstractGenericProducerBean(Bean<T> delegate, Annotation genericConfiguration, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, BeanManager beanManager)
+   protected AbstractGenericProducerBean(Bean<T> delegate, Annotation genericConfiguration, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, String id, BeanManager beanManager)
    {
-      super(delegate, qualifiers, beanManager);
+      super(delegate, qualifiers, genericConfiguration, id, beanManager);
       this.declaringBeanType = delegate.getBeanClass();
       this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(EMPTY_ANNOTATION_ARRAY);
       this.scopeOverride = scopeOverride;

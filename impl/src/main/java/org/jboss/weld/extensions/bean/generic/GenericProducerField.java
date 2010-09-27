@@ -11,8 +11,8 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.weld.extensions.reflection.annotated.Annotateds;
 
-// TODO Make this passivation capable
 class GenericProducerField<T, X> extends AbstractGenericProducerBean<T>
 {
 
@@ -20,7 +20,7 @@ class GenericProducerField<T, X> extends AbstractGenericProducerBean<T>
 
    GenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, BeanManager beanManager)
    {
-      super(originalBean, genericConfiguration, qualifiers, declaringBeanQualifiers, scopeOverride, beanManager);
+      super(originalBean, genericConfiguration, qualifiers, declaringBeanQualifiers, scopeOverride, Annotateds.createFieldId(field), beanManager);
       this.field = field;
    }
 

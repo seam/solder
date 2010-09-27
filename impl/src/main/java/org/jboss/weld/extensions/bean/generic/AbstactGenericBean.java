@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.PassivationCapable;
 
 import org.jboss.weld.extensions.bean.ForwardingBean;
 
@@ -15,14 +16,15 @@ import org.jboss.weld.extensions.bean.ForwardingBean;
  * @author Pete Muir
  *
  */
-abstract class AbstactGenericBean<T> extends ForwardingBean<T>
+abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements PassivationCapable
 {
 
    private final Bean<T> delegate;
    private final Set<Annotation> qualifiers;
    private final BeanManager beanManager;
+   private final String id;
 
-   protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, BeanManager beanManager)
+   protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, Annotation configuration, String id, BeanManager beanManager)
    {
       this.delegate = delegate;
       this.beanManager = beanManager;
@@ -36,6 +38,7 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T>
             this.qualifiers.add(qualifier);
          }
       }
+      this.id = getClass().getName() + "-" + configuration.toString() + "-" + id;
    }
    
    protected BeanManager getBeanManager()
@@ -53,6 +56,11 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T>
    public Set<Annotation> getQualifiers()
    {
       return qualifiers;
+   }
+
+   public String getId()
+   {
+      return id;
    }
 
    @Override

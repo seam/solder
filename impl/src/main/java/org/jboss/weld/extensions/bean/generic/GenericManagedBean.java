@@ -19,8 +19,8 @@ import javax.enterprise.inject.spi.InjectionTarget;
 import org.jboss.weld.extensions.bean.InjectionPointImpl;
 import org.jboss.weld.extensions.reflection.Reflections;
 import org.jboss.weld.extensions.reflection.Synthetic;
+import org.jboss.weld.extensions.reflection.annotated.Annotateds;
 
-// TODO Make this passivation capable
 class GenericManagedBean<T> extends AbstactGenericBean<T>
 {
 
@@ -30,7 +30,7 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
 
    GenericManagedBean(Bean<T> originalBean, Annotation genericConfiguration, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Set<Annotation> qualifiers, Class<? extends Annotation> scopeOverride, Synthetic.Provider annotatedMemberSyntheticProvider, BeanManager beanManager)
    {
-      super(originalBean, qualifiers, beanManager);
+      super(originalBean, qualifiers, genericConfiguration, Annotateds.createTypeId(type), beanManager);
       this.injectionTarget = injectionTarget;
       this.injectedFields = new HashMap<AnnotatedField<? super T>, InjectionPoint>();
       this.scopeOverride = scopeOverride;

@@ -15,8 +15,8 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.weld.extensions.bean.InjectableMethod;
 import org.jboss.weld.extensions.bean.InjectionPointImpl;
+import org.jboss.weld.extensions.reflection.annotated.Annotateds;
 
-// TODO Make this passivation capable
 public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
 {
 
@@ -25,7 +25,7 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
 
    GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, BeanManager beanManager)
    {
-      super(originalBean, genericConfiguration, qualifiers, genericBeanQualifiers, scopeOverride, beanManager);
+      super(originalBean, genericConfiguration, qualifiers, genericBeanQualifiers, scopeOverride, Annotateds.createCallableId(method), beanManager);
       this.producerMethod = new InjectableMethod<X>(method, this, beanManager)
       {
          protected InjectionPoint wrapParameterInjectionPoint(InjectionPoint injectionPoint)
