@@ -1,7 +1,9 @@
 package org.jboss.weld.extensions.bean.generic;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -26,22 +28,22 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
    GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, BeanManager beanManager)
    {
       super(originalBean, genericConfiguration, qualifiers, genericBeanQualifiers, scopeOverride, Annotateds.createCallableId(method), beanManager);
-      this.producerMethod = new InjectableMethod<X>(method, this, beanManager)
+      List<InjectionPoint> injectionPoints = InjectableMethod.createInjectionPoints(method, this, beanManager);
+      List<InjectionPoint> wrappedInjectionPoints = new ArrayList<InjectionPoint>();
+      for (InjectionPoint injectionPoint : injectionPoints)
       {
-         protected InjectionPoint wrapParameterInjectionPoint(InjectionPoint injectionPoint)
-         {
-            return wrapInjectionPoint(injectionPoint, genericBeanQualifiers);
-         };
-      };
+         wrappedInjectionPoints.add(wrapInjectionPoint(injectionPoint, genericBeanQualifiers));
+      }
+      this.producerMethod = new InjectableMethod<X>(method, this, wrappedInjectionPoints, beanManager);
       if (disposerMethod != null)
       {
-         this.disposerMethod = new InjectableMethod<X>(disposerMethod, this, beanManager)
+         injectionPoints = InjectableMethod.createInjectionPoints(disposerMethod, this, beanManager);
+         wrappedInjectionPoints = new ArrayList<InjectionPoint>();
+         for (InjectionPoint injectionPoint : injectionPoints)
          {
-            protected InjectionPoint wrapParameterInjectionPoint(InjectionPoint injectionPoint)
-            {
-               return wrapInjectionPoint(injectionPoint, genericBeanQualifiers);
-            };
-         };
+            wrappedInjectionPoints.add(wrapInjectionPoint(injectionPoint, genericBeanQualifiers));
+         }
+         this.disposerMethod = new InjectableMethod<X>(disposerMethod, this, wrappedInjectionPoints, beanManager);
       }
       else
       {
@@ -62,7 +64,6 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
       {
          disposerMethod.invoke(getReceiver(creationalContext), creationalContext);
       }
-      // creationalContext.release();
    }
 
    private static InjectionPoint wrapInjectionPoint(InjectionPoint injectionPoint, Set<Annotation> quals)

@@ -28,7 +28,7 @@ public class GenericBeanProducer
    @Foo(1)
    @Produces
    @Message("hello1")
-   public Burt getBaz1()
+   public Burt getBurt1()
    {
       return null;
    }
@@ -36,7 +36,7 @@ public class GenericBeanProducer
    @Foo(2)
    @Produces
    @Message("hello2")
-   public Burt getBaz2()
+   public Burt getBurt2()
    {
       return null;
    }

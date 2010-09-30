@@ -388,12 +388,12 @@ public class GenericBeanExtension implements Extension
    {
       Class<?> configType = genericConfiguration.annotationType().getAnnotation(GenericType.class).value();
       boolean valid = false;
-      for (Type t : bean.getTypes())
+      for (Type type : bean.getTypes())
       {
-         if (t instanceof Class<?>)
+         if (type instanceof Class<?>)
          {
-            Class<?> c = (Class<?>) t;
-            if (configType.isAssignableFrom(c))
+            Class<?> clazz = (Class<?>) type;
+            if (configType.isAssignableFrom(clazz))
             {
                valid = true;
                break;
@@ -486,11 +486,11 @@ public class GenericBeanExtension implements Extension
       for (Entry<Annotation, ProducerHolder<?, ?>> genericConfigurationEntry : genericProducers.entrySet())
       {
          Class<? extends Annotation> producerScope = Dependent.class;
-         for (Annotation i : genericConfigurationEntry.getValue().getMember().getAnnotations())
+         for (Annotation annotation : genericConfigurationEntry.getValue().getMember().getAnnotations())
          {
-            if (beanManager.isScope(i.annotationType()))
+            if (beanManager.isScope(annotation.annotationType()))
             {
-               producerScope = i.annotationType();
+               producerScope = annotation.annotationType();
             }
          }
          Annotation genericConfiguration = genericConfigurationEntry.getKey();

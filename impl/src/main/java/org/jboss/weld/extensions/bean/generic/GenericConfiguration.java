@@ -46,14 +46,6 @@ import javax.enterprise.context.Dependent;
  * Each generic configuration may be specified at most once.
  * </p>
  * 
- * This implementation of generic beans has a number of limitations:
- * 
- * <ul>
- * <li>Only field injection is supported for generic configuration annotations,
- * and @GenericBean</li>
- * <li>The user of parameterized types for generic beans is not supported</li>
- * <ul>
- * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
  * 

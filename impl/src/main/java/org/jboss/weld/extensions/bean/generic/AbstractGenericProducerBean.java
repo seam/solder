@@ -25,6 +25,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.bean.Beans;
+import org.jboss.weld.extensions.reflection.Reflections;
 
 /**
  * A helper class for implementing producer methods and fields on generic beans
@@ -38,13 +39,12 @@ abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T>
    private final Type declaringBeanType;
    private final Annotation[] declaringBeanQualifiers;
    private final Class<? extends Annotation> scopeOverride;
-   private static final Annotation[] EMPTY_ANNOTATION_ARRAY = {};
 
    protected AbstractGenericProducerBean(Bean<T> delegate, Annotation genericConfiguration, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, String id, BeanManager beanManager)
    {
       super(delegate, qualifiers, genericConfiguration, id, beanManager);
       this.declaringBeanType = delegate.getBeanClass();
-      this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(EMPTY_ANNOTATION_ARRAY);
+      this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(Reflections.EMPTY_ANNOTATION_ARRAY);
       this.scopeOverride = scopeOverride;
    }
    
@@ -90,7 +90,10 @@ abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T>
       {
          return super.getScope();
       }
-      return scopeOverride;
+      else
+      {
+         return scopeOverride;
+      }
    }
 
 }

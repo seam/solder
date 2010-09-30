@@ -25,18 +25,27 @@ public class InjectableMethod<X>
    public InjectableMethod(AnnotatedMethod<X> method, Bean<?> bean, BeanManager beanManager)
    {
       this.method = method;
-      this.parameters = new ArrayList<InjectionPoint>();
+      this.parameters = createInjectionPoints(method, bean, beanManager);
       this.beanManager = beanManager;
-      for (AnnotatedParameter<X> parameter : method.getParameters())
-      {
-         InjectionPoint injectionPoint = wrapParameterInjectionPoint(new InjectionPointImpl(parameter, beanManager, bean, false, false));
-         parameters.add(injectionPoint);
-      }
+
    }
    
-   protected InjectionPoint wrapParameterInjectionPoint(InjectionPoint injectionPoint)
+   public InjectableMethod(AnnotatedMethod<X> method, Bean<?> bean, List<InjectionPoint> parameters, BeanManager beanManager)
    {
-      return injectionPoint;
+      this.method = method;
+      this.parameters = new ArrayList<InjectionPoint>(parameters);
+      this.beanManager = beanManager;
+   }
+
+   public static <X> List<InjectionPoint> createInjectionPoints(AnnotatedMethod<X> method, Bean<?> bean, BeanManager beanManager)
+   {
+      List<InjectionPoint> injectionPoints = new ArrayList<InjectionPoint>();
+      for (AnnotatedParameter<X> parameter : method.getParameters())
+      {
+         InjectionPoint injectionPoint = new InjectionPointImpl(parameter, beanManager, bean, false, false);
+         injectionPoints.add(injectionPoint);
+      }
+      return injectionPoints;
    }
 
    protected BeanManager getBeanManager()

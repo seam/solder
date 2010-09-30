@@ -78,7 +78,10 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
       {
          return scopeOverride;
       }
-      return super.getScope();
+      else
+      {
+         return super.getScope();
+      }
    }
 
 }

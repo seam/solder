@@ -30,13 +30,13 @@ public class GenericBeanProducer
    @Foo(1)
    @Produces
    @Message("hello1")
-   private Burt baz1;
+   private Burt burt1;
 
    @SuppressWarnings("unused")
    @Foo(2)
    @Produces
    @Message("hello2")
-   private Burt baz2;
+   private Burt burt2;
    
    @SuppressWarnings("unused")
    @Foo(3)
