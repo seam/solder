@@ -43,6 +43,7 @@
       <title>Configuration Extensions for Framework Authors</title>
       <xi:include href="unwraps.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="defaultbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="genericbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="servicehandler.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    </part>
 
