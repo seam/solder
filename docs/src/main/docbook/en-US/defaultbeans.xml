@@ -5,25 +5,28 @@
    <title>Default Beans</title>
   
    <para>
-      Suppose you have a situation where you want to provide a default implementation of a particular service 
-      and allow the user to override it as needed. Although this may sound like a job for JSR-299 alternatives, 
-      they have some limitations that may make them undesirable in this situation. If we were to use an alternative
-      it would require an entry in every <code>beans.xml</code> file in the application. This means the end 
-      user may have to open up your jar file and edit the beans.xml file within, in order to override your service. 
-      They will also have to do this for every bean archive in their application, and if they miss one it will 
-      result in bugs. This is where default beans come in.
+      Suppose you have a situation where you want to provide a default implementation of a particular service and allow
+      the user to override it as needed. Although this may sound like a job for an alternative, they have some 
+      restrictions that may make them undesirable in this situation. If you were to use an alternative it would require
+      an entry in every <code>beans.xml</code> file in an application.
+   </para> 
+      
+   <para>
+      Developers consuming the extension will have to open up the any jar file which references the default bean, and 
+      edit the <code>beans.xml</code> file within, in order to override the service. This is where default beans come 
+      in.
    </para>
    
    <para>
-      Default beans allow you to specify a default bean for a given bean type and set of qualifiers. If no 
-      bean is installed that has the same type and qualifiers then the default bean it installed. 
+      Default beans allow you to create a default bean with a specified type and set of qualifiers. If no other bean is 
+      installed that has the same type and qualifiers, then the default bean will be installed. 
    </para>
    
    <para>
-      Lets look at a real world example. Say we are writing a module to allow you to evaluate EL. If JSF 
-      is available we want to use the JSF provided <code>FunctionMapper</code> to resolve functions in EL, 
-      otherwise we just want to use a a default <code>FunctionMapper</code> implementation that does nothing. 
-      We can achieve this as follows:
+      Let's take a real world example - a module that allows you to evaluate EL (something that Weld Extensions 
+      provides!). If JSF is available we want to use the <code>FunctionMapper</code> provided by the JSF implementation
+      to resolve functions, otherwise we just want to use a a default <code>FunctionMapper</code> implementation that 
+      does nothing. We can achieve this as follows:
    </para>
    
    <programlisting role="JAVA">@DefaultBean(type = FunctionMapper.class)
@@ -51,14 +54,29 @@ class FunctionMapperImpl extends FunctionMapper {
 }</programlisting>
       
    <para>
-      If <code>FunctionMapperProvider</code> is present then it will be used by
-      default, otherwise the default <code>FunctionMapperImpl</code> is used.
+      If <code>FunctionMapperProvider</code> is present then it will be used by default, otherwise the default 
+      <code>FunctionMapperImpl</code> is used.
    </para>
-
-   <warning>
-      <para>
-         Producer methods/fields and observer methods will not work on classes annotated <code>@DefaultBean</code>. 
-      </para>
-   </warning>
-    
+   
+   <para>
+      A producer method or producer field may be defined to be a default producer by placing the
+      <code>@DefaultBean</code> annotation on the producer. For example:
+   </para>
+   
+   <programlisting role="JAVA">class CacheManager {<abbrev>
+   
+   @DefaultBean(Cache.class)
+   Cache getCache() {
+      ...
+   }
+     
+}</abbrev></programlisting>
+   
+   <para>
+      Any producer methods or producer fields declared on a default managed bean are automatically registered as default
+      producers, with <code>Method.getGenericReturnType()</code> or <code>Field.getGenericType()</code> determining the
+      type of the default producer. The default producer type can be overridden by specifying <code>@DefaultBean</code> 
+      on the producer method or field. 
+   </para>
+   
 </chapter>
