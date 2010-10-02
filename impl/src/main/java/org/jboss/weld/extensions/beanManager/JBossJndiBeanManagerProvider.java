@@ -19,8 +19,9 @@ package org.jboss.weld.extensions.beanManager;
 import javax.enterprise.inject.spi.Extension;
 
 /**
- * A temp workaround BeanManagerProvider for JBoss AS 6 <M2 that bound it to a non-standard location 
- *  
+ * A temporary workaround {@link BeanManagerProvider} for JBoss AS 6 <M2 that
+ * bound it to a non-standard location
+ * 
  * @author Nicklas Karlsson
  */
 class JBossJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider implements Extension

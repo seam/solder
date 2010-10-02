@@ -36,6 +36,7 @@
    <part id="part2">
       <title>Utilities for Framework Authors</title>
       <xi:include href="typeutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="beanmanagerprovider.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="beanutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="properties.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    </part>

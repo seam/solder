@@ -21,12 +21,12 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 /**
- * A BeanManager provider for JNDI contexts
+ * A base for building a {@link BeanManagerProvider} backed by JNDI
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
-abstract class AbstractJndiBeanManagerProvider implements BeanManagerProvider
+public abstract class AbstractJndiBeanManagerProvider implements BeanManagerProvider
 {
    public BeanManager getBeanManager()
    {
@@ -40,7 +40,7 @@ abstract class AbstractJndiBeanManagerProvider implements BeanManagerProvider
       }
       return null;
    }
-   
+
    protected abstract String getLocation();
 
 }

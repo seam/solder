@@ -21,19 +21,31 @@ import javax.enterprise.inject.spi.BeanManager;
 import org.jboss.weld.extensions.util.Sortable;
 
 /**
- * BeanManagerProvider is an SPI which allows third parties to
- * register a way of obtaining the BeanManager outside of CDI
- * managed objects.
+ * <p>
+ * {@link BeanManagerProvider} is the SPI for {@link BeanManagerAware} which
+ * allows third parties to register a way of obtaining the {@link BeanManager}
+ * outside of CDI managed objects.
+ * </p>
  * 
- * Built in providers are {@link DefaultJndiBeanManagerProvider}
- * and {@link JBossJndiBeanManagerProvider}.
+ * <p>
+ * Weld Extensions provides a number of built in providers, including:
+ * </p>
  * 
- * Providers can specify a precedence, allowing a provider to be a 
- * "last resort" provider only.
+ * <ul>
+ * <li>{@link DefaultJndiBeanManagerProvider}</li>
+ * <li>{@link JBossJndiBeanManagerProvider}</li>
+ * <li>{@link ServletContainerJndiBeanManagerProvider}</li>
+ * </ul>
  * 
- * Precedence about 100 is reserved for providers that should always
- * be used. Precedence below 10 is reserved for providers of last
- * resort.
+ * <p>
+ * Providers can specify a precedence, allowing a provider to be a "last resort"
+ * provider only.
+ * </p>
+ * 
+ * <p>
+ * Precedence about 100 is suggested for providers that should always be used.
+ * Precedence below 10 is suggested for providers of last resort.
+ * </p>
  * 
  * @author Nicklas Karlsson
  * 

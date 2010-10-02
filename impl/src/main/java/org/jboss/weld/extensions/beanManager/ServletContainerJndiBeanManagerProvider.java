@@ -19,8 +19,8 @@ package org.jboss.weld.extensions.beanManager;
 import javax.enterprise.inject.spi.Extension;
 
 /**
- * A provider that searches the ServletContainer jndi path for a BeanManager
- * entry as specified in the Weld docs.
+ * A {@link BeanManagerProvider} that looks it up from the standard JNDI
+ * location used in servlet containers.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */

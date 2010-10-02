@@ -19,7 +19,7 @@ package org.jboss.weld.extensions.beanManager;
 import javax.enterprise.inject.spi.Extension;
 
 /**
- * A BeanManagerProvider that looks it up from the standard JNDI location
+ * A {@link BeanManagerProvider} that looks it up from the standard JNDI location
  * 
  * @author Nicklas Karlsson
  *

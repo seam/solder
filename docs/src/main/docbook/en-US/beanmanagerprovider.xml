@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="beanmanagerprovider">
+   <title>Obtaining a handle on the BeanManager</title>
+
+   <para>
+      When developing a framework that builds on CDI, you may need to obtain the <code>BeanManager</code> for the 
+      application, can't simply inject it as you are not working in an object managed by the container. The CDI
+      specification allows lookup of <code>java:comp/BeanManager</code> in JNDI, however some environments don't support
+      binding to this location (e.g. servlet containers such as Tomcat and Jetty) and some environments don't support
+      JNDI (e.g. the Weld SE container). For this reason, most framework developers will prefer to avoid a direct JNDI
+      lookup.
+   </para>
+   
+   <para>
+      Often it is possible to pass the correct <code>BeanManager</code> to the object in which you require it, for
+      example via a context object. For example, you might be able to place the <code>BeanManager</code> in the
+      <code>ServletContext</code>, and retrieve it at a later date. 
+   </para>
+   
+   <para>
+      On some occasions however there is no suitable context to use, and in this case, you can take advantage of the
+      abstraction over <code>BeanManager</code> lookup provided by Weld Extensions. To lookup up a 
+      <code>BeanManager</code>, you can extend the <code>BeanManagerAware</code> class, and call 
+      <code>getBeanManager</code>:
+   </para>
+   
+   <programlisting role="JAVA"><![CDATA[class WicketIntegration extends BeanManagerAware {
+
+   public WicketManager getWicketManager() {
+      Bean<?> bean = getBeanManager.getBean(Instance.class);
+      ...   
+   }
+   
+   ...
+
+}]]></programlisting>
+
+   <para>
+      Occasionally you will be working in an existing class hierarchy, in which case you can use the static accessors on
+      <code>BeanManagerAccessor</code>. For example:
+   </para>
+   
+   <programlisting role="JAVA">class ResourceServlet extends HttpServlet {
+
+   protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+         throws ServletException, IOException {
+      BeanManager beanManager = BeanManagerAccessor.getBeanManager();
+      ...
+   }
+}</programlisting>
+
+    
+</chapter>

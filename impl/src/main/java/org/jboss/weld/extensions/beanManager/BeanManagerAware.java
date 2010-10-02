@@ -30,30 +30,33 @@ import org.jboss.weld.extensions.util.service.ServiceLoader;
 
 /**
  * <p>
- * Super-class for non-CDI-native components that need a reference to the
- * {@link BeanManager}. {@link BeanManagerProvider}s can be registered to allow
- * third parties to register custom methods of looking up the BeanManager.
+ * Super-class for objects not able to obtain CDI injection that need a
+ * reference to the {@link BeanManager}. {@link BeanManagerProvider}s can be
+ * registered to allow third parties to register custom methods of looking up
+ * the BeanManager.
  * </p>
  * 
  * <p>
- * <b>**WARNING**</b> This class is <b>NOT</b> a clever way to get the BeanManager,
- * and should be <b>avoided at all costs</b>. If you need a handle to the 
- * {@link BeanManager} you should probably register an {@link Extension} instead of
- * using this class; have you tried using @{@link Inject}?
+ * <b>**WARNING**</b> This class is <b>NOT</b> a clever way to get the
+ * BeanManager, and should be <b>avoided at all costs</b>. If you need a handle
+ * to the {@link BeanManager} you should probably register an {@link Extension}
+ * instead of using this class; have you tried using @{@link Inject}?
  * </p>
  * 
  * <p>
- * If you think you need to use this class, chat to the community and make sure you
- * aren't missing an trick!
+ * If you think you need to use this class, chat to the community and make sure
+ * you aren't missing an trick!
  * </p>
  * 
  * @see BeanManagerProvider
+ * @see BeanManagerAccessor
  * 
+ * @author Pete Muir
  * @author Nicklas Karlsson
  */
 public class BeanManagerAware
 {
-   
+
    // This might be a managed bean, so try for injection
    @Inject
    private BeanManager beanManager;
@@ -70,10 +73,14 @@ public class BeanManagerAware
       }
    }
 
+   protected BeanManagerAware()
+   {
+   }
+
    /**
     * Obtain the {@link BeanManager} from the {@link BeanManagerProvider}s
     * 
-    * @return the current BeanManager for the bean archive
+    * @return the current bean manager for the bean archive
     */
    protected BeanManager getBeanManager()
    {
@@ -87,7 +94,13 @@ public class BeanManagerAware
       }
       return beanManager;
    }
-   
+
+   /**
+    * Check if {@link BeanManagerAware} has been able to find the bean manager
+    * 
+    * @return <code>true</code> if the bean manager has been found, otherwise
+    *         <code>false</code>
+    */
    protected boolean isBeanManagerAvailable()
    {
       if (beanManager == null)
