@@ -26,6 +26,7 @@
    <part id="part1">
       
       <title>Extensions and Utilities for Developers</title>
+      <xi:include href="programmingmodel.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="annotationliterals.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="elextensions.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
       <xi:include href="resourceloading.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />

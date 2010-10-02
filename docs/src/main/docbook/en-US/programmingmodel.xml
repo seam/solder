@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="programmingmodel">
+   <title>Enhancements to the CDI Programming Model</title>
+      
+   <para>
+      Weld Extensions provides a number enhancements to the CDI programming model which are under trial and may be
+      included in later releases of <emphasis>Contexts and Dependency Injection</emphasis>.
+   </para>
+   
+   <section>
+      <title>Preventing a class from being processed</title>
+      
+      <section>
+         <title>@Veto</title>
+      
+         <para>
+            Annotating a class <code>@Veto</code> will cause the type to be ignored, such that any definitions on the 
+            type will not be processed, including:
+         </para>
+      
+         <itemizedlist>
+            <listitem>
+               the managed bean, decorator, interceptor or session bean defined by the type
+            </listitem>
+            <listitem>
+               any producer methods or producer fields defined on the type
+            </listitem>
+            <listitem>
+               any observer methods defined on the type
+            </listitem>
+         </itemizedlist>
+         
+         <para>
+            For example:
+         </para>
+         
+         <programlisting role="JAVA">@Veto
+class Utilities {
+   ...
+}</programlisting>
+         
+         <note>
+            <para>
+               The <code>ProcessAnnotatedType</code> container lifecycle event will be called for vetoed types.
+            </para>
+         </note>
+      
+      </section>
+   
+      <section>
+         <title>@Requires</title>
+      
+         <para>
+            Annotating a class <code>@Requires</code> will cause the type to be ignored if the class dependencies
+            can be satisfied. Any definitions on the type will not be processed:
+         </para>
+         
+         <itemizedlist>
+            <listitem>
+               the managed bean, decorator, interceptor or session bean defined by the type
+            </listitem>
+            <listitem>
+               any producer methods or producer fields defined on the type
+            </listitem>
+            <listitem>
+               any observer methods defined on the type
+            </listitem>
+         </itemizedlist>
+         
+         <tip>
+            <para>
+               Weld will use the Thread Context ClassLoader, as well as the classloader of the type annotated
+               <code>@Requires</code> to attempt to satisfy the class dependency.
+            </para>  
+         </tip>
+         
+         <para>
+            For example:
+         </para>
+         
+         <programlisting role="JAVA">@Requires(EntityManager.class)
+class EntityManagerProducer {
+   
+   @Produces
+   EntityManager getEntityManager() {
+      ...
+   }
+   
+}</programlisting>
+         
+         <note>
+            <para>
+               The <code>ProcessAnnotatedType</code> container lifecycle event will be called for vetoed types.
+            </para>
+         </note>
+         
+      </section>
+   </section>
+   
+   <section>
+      <title>@Exact</title>
+      
+      <para>
+         Annotating an injection point with <code>@Exact</code> allows you to select an exact implementation of the
+         injection point type to inject. For example: 
+      </para>
+      
+      <programlisting role="JAVA">interface PaymentService { 
+   ...
+}</programlisting>
+
+      <programlisting role="JAVA">class ChequePaymentService implements PaymentService { 
+   ...
+}</programlisting>
+
+      <programlisting role="JAVA">class CardPaymentService implements PaymentService { 
+   ...
+}</programlisting>
+
+      <programlisting role="JAVA">class PaymentProcessor { 
+   
+   @Inject @Exact(CardPaymentService.class)
+   PaymentService paymentService;
+   
+   ...
+   
+}</programlisting>
+      
+   </section>
+   
+   <section>
+      <title>@Client</title>
+      
+      <para>
+         It is common to want to qualify a bean as belonging to the current client (for example we want to differentiate
+         the default system locale from the current client's locale). Weld Extensions provides a built in qualifier,
+         <code>@Client</code> for this purpose.
+      </para>
+      
+   </section>
+   
+   <section>
+      <title>Named packages</title>
+      
+      <para>
+         Weld Extensions allows you to annotate the package <code>@Named</code>, which causes every bean defined in the
+         package to be given its default name. Package annotations are defined in the file 
+         <code>package-info.java</code>. For example, to cause any beans defined in <code>com.acme</code> to be given
+         their default name:
+      </para>
+      
+      <programlisting role="JAVA">@Named
+package com.acme</programlisting>
+   </section>
+   
+</chapter>

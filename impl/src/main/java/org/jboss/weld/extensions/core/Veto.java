@@ -23,8 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Veto the processing of the type. Any beans defined by this class will not be
- * installed.
+ * Veto the processing of the type. Any beans or observer methods defined by
+ * this class will not be installed.
  * 
  * @author Stuart Douglas
  * 

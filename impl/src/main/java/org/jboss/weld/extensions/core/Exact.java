@@ -26,7 +26,6 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.enterprise.util.AnnotationLiteral;
 
 /**
  * An injection point qualifier that may be used to select the exact bean to be
@@ -40,23 +39,5 @@ import javax.enterprise.util.AnnotationLiteral;
 @Documented
 public @interface Exact
 {
-   Class<?> value() default void.class;
-   
-   static class ExactLiteral extends AnnotationLiteral<Exact> implements Exact
-   {
-
-      private static final long serialVersionUID = 4907169607105615674L;
-      
-      final Class<?> clazz;
-
-      ExactLiteral(Class<?> clazz)
-      {
-         this.clazz = clazz;
-      }
-
-      public Class<?> value()
-      {
-         return clazz;
-      }
-   }
+   Class<?> value();
 }
