@@ -19,5 +19,9 @@
  * </table>
  * 
  * @author Pete Muir
+ * @see org.jboss.weld.extensions.reflection.AnnotationInspector
+ * @see org.jboss.weld.extensions.reflection.AnnotationInstanceProvider
+ * @see org.jboss.weld.extensions.reflection.Reflections
+ * @see org.jboss.weld.extensions.reflection.Synthetic
  */
 package org.jboss.weld.extensions.reflection;

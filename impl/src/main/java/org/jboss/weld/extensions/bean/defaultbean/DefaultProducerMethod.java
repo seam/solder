@@ -12,7 +12,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import org.jboss.weld.extensions.bean.InjectableMethod;
 
 // TODO Make this passivation capable
-public class DefaultProducerMethod<T, X> extends AbstractDefaultProducerBean<T>
+class DefaultProducerMethod<T, X> extends AbstractDefaultProducerBean<T>
 {
 
    private final InjectableMethod<X> producerMethod;

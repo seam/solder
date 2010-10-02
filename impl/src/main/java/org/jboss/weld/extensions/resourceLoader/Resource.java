@@ -57,7 +57,7 @@ import javax.inject.Qualifier;
  * 
  * <p>
  * If you don't know the name of the resource to load at development time, then
- * you may wish to use {@link ResourceProvider} which can dynamicaly load
+ * you may wish to use {@link ResourceProvider} which can dynamically load
  * resources.
  * </p>
  * 
