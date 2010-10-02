@@ -29,10 +29,10 @@ import javax.enterprise.inject.spi.Extension;
  */
 public class ELExtension implements Extension
 {
-   public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
+   void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
    {
       event.addAnnotatedType(beanManager.createAnnotatedType(ELContextProducer.class));
-      event.addAnnotatedType(beanManager.createAnnotatedType(ELResolverImpl.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(ELResolverProducer.class));
       event.addAnnotatedType(beanManager.createAnnotatedType(ExpressionFactoryProducer.class));
       event.addAnnotatedType(beanManager.createAnnotatedType(Expressions.class));
       event.addAnnotatedType(beanManager.createAnnotatedType(FunctionMapperImpl.class));

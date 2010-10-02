@@ -16,24 +16,30 @@
  */
 package org.jboss.weld.extensions.el;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.el.ELResolver;
 import javax.inject.Qualifier;
 
 /**
- * Qualifier used to specify the ELResolver to use. If this is not specified a
- * default ELResolver will be used instead
+ * Qualifier used to identify a {@link ELResolver} to register with the
+ * application wide {@link ELResolver} provided by Weld Extensions
  * 
  * @author Stuart Douglas
+ * @author Pete Muir
  * 
  */
 @Qualifier
-@Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
+@Retention(RUNTIME)
+@Target({ TYPE, FIELD, METHOD, PARAMETER })
 @Documented
 public @interface Resolver
 {

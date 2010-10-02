@@ -37,7 +37,7 @@ public class ELContextProducer
    Instance<VariableMapper> variableMapper;
 
    @Inject
-   @Resolver
+   @Composite
    ELResolver resolver;
 
    @Produces

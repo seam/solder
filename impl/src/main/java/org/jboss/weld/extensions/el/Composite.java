@@ -22,23 +22,34 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.el.ELResolver;
 import javax.inject.Qualifier;
 
 /**
- * Qualifier used for FunctionMapper and VariableMapper beans, to stop
- * implementation that happen to be present on the classpath from breaking el
- * evaluation
+ * <p>
+ * Qualifier used to identify a {@link ELResolver} that contains the default EL
+ * resolvers and any user registered el resolvers
+ * </p>
+ * 
+ * <p>
+ * By default, Weld Extensions provides access to CDI beans.
+ * </p>
  * 
  * @author Stuart Douglas
+ * @author Pete Muir
+ * 
+ * @see Resolver
  * 
  */
 @Qualifier
 @Retention(RUNTIME)
-@Target( { TYPE, FIELD, METHOD, PARAMETER })
-public @interface Mapper
+@Target({ TYPE, FIELD, METHOD, PARAMETER })
+@Documented
+public @interface Composite
 {
 
 }

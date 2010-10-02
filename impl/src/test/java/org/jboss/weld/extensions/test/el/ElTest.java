@@ -44,7 +44,12 @@ public class ElTest
    public void testElResolver()
    {
       Assert.assertTrue(extressions.evaluateValueExpression("#{ute.speed}").equals("fast"));
-      Assert.assertTrue(extressions.invokeMethodExpression("#{ute.go}").equals(Ute.GO_STRING));
-
+      Assert.assertTrue(extressions.evaluateMethodExpression("#{ute.go}").equals(Ute.GO_STRING));
+   }
+   
+   @Test
+   public void testCustomElResolver()
+   {
+      Assert.assertTrue(extressions.evaluateValueExpression("#{foo}").equals("baz"));
    }
 }
