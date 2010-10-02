@@ -22,26 +22,31 @@ import javax.el.FunctionMapper;
 import javax.el.VariableMapper;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
-public class ELContextProducer
+/**
+ * Responsible for creating and exposing the ELContext
+ * 
+ * @author Stuart Douglas
+ * @author Pete Muir
+ */
+class ELContextProducer
 {
 
    @Inject
    @Mapper
-   Instance<FunctionMapper> functionMapper;
+   private Instance<FunctionMapper> functionMapper;
 
    @Inject
    @Mapper
-   Instance<VariableMapper> variableMapper;
+   private Instance<VariableMapper> variableMapper;
 
    @Inject
    @Composite
-   ELResolver resolver;
+   private ELResolver resolver;
 
    @Produces
-   public ELContext createELContext(BeanManager beanManager)
+   ELContext createELContext()
    {
       return createELContext(resolver, functionMapper.get(), variableMapper.get());
    }

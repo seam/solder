@@ -26,16 +26,25 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.inject.Qualifier;
 
 /**
+ * <p>
  * Qualifier used to identify a {@link ELResolver} to register with the
  * application wide {@link ELResolver} provided by Weld Extensions
+ * </p>
+ * 
+ * <p>
+ * Weld Extensions will inject a {@link ELResolver} for each instantiation of an
+ * {@link ELContext} (and hence for each instantiation of {@link Expressions});
+ * any overrides of this bean should ensure that obtaining the bean instance is
+ * a lightweight operation.
+ * </p>
  * 
  * @author Stuart Douglas
  * @author Pete Muir
- * 
  */
 @Qualifier
 @Retention(RUNTIME)

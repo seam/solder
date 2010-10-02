@@ -20,12 +20,20 @@ import javax.el.ExpressionFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
-public class ExpressionFactoryProducer
+/**
+ * Responsible for producing the {@link ExpressionFactory}
+ * 
+ * @author Stuart Douglas
+ * @author Pete Muir
+ */
+class ExpressionFactoryProducer
 {
-   public @Produces
+   
+   @Produces
    @ApplicationScoped
    ExpressionFactory createExpressionFactory()
    {
       return ExpressionFactory.newInstance();
    }
+   
 }

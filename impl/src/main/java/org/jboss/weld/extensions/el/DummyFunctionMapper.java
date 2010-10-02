@@ -23,15 +23,23 @@ import javax.el.FunctionMapper;
 import org.jboss.weld.extensions.bean.defaultbean.DefaultBean;
 
 /**
- * Default function mapper bean. Should be overriden by the faces module or any
- * other module that provides a 'real' FunctionMapper
+ * <p>
+ * A dummy function mapper that is installed by default. It is not capable of
+ * mapping any functions.
+ * </p>
  * 
+ * <p>
+ * Other Seam modules (such as the Faces Module) may install a bean that
+ * overrides this and provides function mapping.
+ * </p>
+ * 
+ * @author Pete Muir
  * @author Stuart Douglas
  * 
  */
 @DefaultBean(FunctionMapper.class)
 @Mapper
-public class FunctionMapperImpl extends FunctionMapper
+public class DummyFunctionMapper extends FunctionMapper
 {
 
    @Override

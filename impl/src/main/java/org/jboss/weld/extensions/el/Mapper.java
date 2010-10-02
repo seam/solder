@@ -25,19 +25,31 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.el.ELContext;
+import javax.el.FunctionMapper;
+import javax.el.VariableMapper;
 import javax.inject.Qualifier;
 
 /**
- * Qualifier used for FunctionMapper and VariableMapper beans, to stop
- * implementation that happen to be present on the classpath from breaking el
- * evaluation
+ * <p>
+ * Qualifies the {@link FunctionMapper} and {@link VariableMapper} beans used to
+ * create an {@link ELContext} for use in {@link Expressions}.
+ * </p>
+ * 
+ * <p>
+ * Weld Extensions will inject a {@link FunctionMapper} and
+ * {@link VariableMapper} for each instantiation of an {@link ELContext} (and
+ * hence for each instantiation of {@link Expressions}); any overrides of these
+ * beans should ensure that obtaining the bean instance is a lightweight
+ * operation.
+ * </p>
  * 
  * @author Stuart Douglas
- * 
+ * @author Pete Muir
  */
 @Qualifier
 @Retention(RUNTIME)
-@Target( { TYPE, FIELD, METHOD, PARAMETER })
+@Target({ TYPE, FIELD, METHOD, PARAMETER })
 public @interface Mapper
 {
 

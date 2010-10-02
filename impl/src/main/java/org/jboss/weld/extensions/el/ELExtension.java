@@ -24,18 +24,20 @@ import javax.enterprise.inject.spi.Extension;
 /**
  * Extension that adds classes from the el package as AnnotatedTypes
  * 
- * @author stuart
- * 
+ * @author Stuart Douglas
+ * @author Pete Muir
  */
 public class ELExtension implements Extension
 {
+   
    void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
    {
       event.addAnnotatedType(beanManager.createAnnotatedType(ELContextProducer.class));
       event.addAnnotatedType(beanManager.createAnnotatedType(ELResolverProducer.class));
       event.addAnnotatedType(beanManager.createAnnotatedType(ExpressionFactoryProducer.class));
       event.addAnnotatedType(beanManager.createAnnotatedType(Expressions.class));
-      event.addAnnotatedType(beanManager.createAnnotatedType(FunctionMapperImpl.class));
-      event.addAnnotatedType(beanManager.createAnnotatedType(VariableMapperImpl.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(DummyFunctionMapper.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(DummyVariableMapper.class));
    }
+   
 }

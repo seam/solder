@@ -2,27 +2,22 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="elextensions">
-   <title>EL Extensions</title>
+   <title>Unified EL</title>
    
    <para>
-      Weld extensions provides a method to evaluate EL that is not dependent on JSF. To use it 
-      inject the <code>org.jboss.weld.extensions.el.Expressions</code> into your bean.
+      Weld extensions provides a method to evaluate EL that is not dependent on JSF or JSP, a facility sadly missing in
+      Java EE. To use it inject <code>Expressions</code> into your bean. You can evaluate value expressions, or method
+      expressions. The Weld Extensions API provides type inference for you. For example: 
    </para>
    
-   <para>
-      The <code>Expressions</code> class provides several methods for evaluating an EL expressions.
-   </para>
-   <programlisting role="JAVA">public class ElBean {
+   <programlisting role="JAVA">class FruitBowl {
+   
    @Inject Expressions expressions;
   
-   public void runEl() {
-      String fruitName = expressions.evaluateValueExpression("#{fruitBowl.fruitName}",String.class);
-      Apple fruit = (Apple)expressions.invokeMethodExpression("#{fruitBown.getFruit}");
+   public void run() {
+      String fruitName = expressions.evaluateValueExpression("#{fruitBowl.fruitName}");
+      Apple fruit = expressions.evaluateMethodExpression("#{fruitBown.getFruit}");
    }
-}</programlisting>      
- 
-   <para>
-      For more information see the API docs.
-   </para>
+}</programlisting>
    
 </chapter>

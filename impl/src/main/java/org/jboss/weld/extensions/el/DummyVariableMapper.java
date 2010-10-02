@@ -22,15 +22,22 @@ import javax.el.VariableMapper;
 import org.jboss.weld.extensions.bean.defaultbean.DefaultBean;
 
 /**
- * Default variable mapper bean. Should be overriden by the faces module or any
- * other module that provides a 'real' VariableMapper
+ * <p>
+ * A dummy variable mapper that is installed by default. It is not capable of
+ * mapping any variables.
+ * </p>
+ * 
+ * <p>
+ * Other Seam modules (such as the Faces Module) may install a bean that
+ * overrides this and provides variable mapping.
+ * </p>
  * 
  * @author Stuart Douglas
- * 
+ * @author Pete Muir
  */
 @DefaultBean(VariableMapper.class)
 @Mapper
-public class VariableMapperImpl extends VariableMapper
+public class DummyVariableMapper extends VariableMapper
 {
    @Override
    public ValueExpression resolveVariable(String variable)
