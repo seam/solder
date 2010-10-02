@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class DisposesLiteral extends AnnotationLiteral<Disposes> implements Disposes
 {
    private static final long serialVersionUID = 1L;

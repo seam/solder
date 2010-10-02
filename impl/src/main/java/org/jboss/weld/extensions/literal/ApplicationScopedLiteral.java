@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class ApplicationScopedLiteral extends AnnotationLiteral<ApplicationScoped> implements ApplicationScoped
 {
    private static final long serialVersionUID = 771021755170432223L;

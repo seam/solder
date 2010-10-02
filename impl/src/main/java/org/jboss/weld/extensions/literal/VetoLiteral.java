@@ -16,13 +16,14 @@
  */
 package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.context.Dependent;
 import javax.enterprise.util.AnnotationLiteral;
 
+import org.jboss.weld.extensions.core.Veto;
 
-public class DependentLiteral extends AnnotationLiteral<Dependent> implements Dependent
+
+public class VetoLiteral extends AnnotationLiteral<Veto> implements Veto
 {
-   private static final long serialVersionUID = 5192230580203842740L;
+   private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final Dependent INSTANCE = new DependentLiteral();
+   public static final Veto INSTANCE = new VetoLiteral();
 }

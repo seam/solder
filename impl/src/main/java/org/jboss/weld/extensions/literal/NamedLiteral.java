@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Named;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class NamedLiteral extends AnnotationLiteral<Named> implements Named
 {
 

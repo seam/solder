@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class ConversationScopedLiteral extends AnnotationLiteral<ConversationScoped> implements ConversationScoped
 {
    private static final long serialVersionUID = 5401967809387903628L;

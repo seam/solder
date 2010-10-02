@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.decorator.Delegate;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class DelegateLiteral extends AnnotationLiteral<Delegate> implements Delegate
 {
    private static final long serialVersionUID = -533933286126296678L;

@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.decorator.Decorator;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class DecoratorLiteral extends AnnotationLiteral<Decorator> implements Decorator
 {
    private static final long serialVersionUID = -1928591929455611481L;

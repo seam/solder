@@ -16,13 +16,14 @@
  */
 package org.jboss.weld.extensions.literal;
 
-import javax.enterprise.context.Dependent;
 import javax.enterprise.util.AnnotationLiteral;
 
+import org.jboss.weld.extensions.log.MessageBundle;
 
-public class DependentLiteral extends AnnotationLiteral<Dependent> implements Dependent
+
+public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle
 {
-   private static final long serialVersionUID = 5192230580203842740L;
+   private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final Dependent INSTANCE = new DependentLiteral();
+   public static final MessageBundle INSTANCE = new MessageBundleLiteral();
 }

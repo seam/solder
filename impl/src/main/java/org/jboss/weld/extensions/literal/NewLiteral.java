@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.inject.New;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class NewLiteral extends AnnotationLiteral<New> implements New
 {
    private static final long serialVersionUID = 1415328933091019248L;

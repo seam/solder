@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.enterprise.util.Nonbinding;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class NonbindingLiteral extends AnnotationLiteral<Nonbinding> implements Nonbinding
 {
    private static final long serialVersionUID = -7557062245283879531L;

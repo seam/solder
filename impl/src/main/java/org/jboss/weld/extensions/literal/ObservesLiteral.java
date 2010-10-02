@@ -21,11 +21,7 @@ import javax.enterprise.event.Reception;
 import javax.enterprise.event.TransactionPhase;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class ObservesLiteral extends AnnotationLiteral<Observes> implements Observes
 {
    private static final long serialVersionUID = 338211360805208962L;

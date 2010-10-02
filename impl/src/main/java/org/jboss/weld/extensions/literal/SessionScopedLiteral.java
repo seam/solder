@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class SessionScopedLiteral extends AnnotationLiteral<SessionScoped> implements SessionScoped
 {
    private static final long serialVersionUID = 6685344750969701818L;

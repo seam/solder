@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.inject.Typed;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class TypedLiteral extends AnnotationLiteral<Typed> implements Typed
 {
    private static final long serialVersionUID = -5651065504705966480L;

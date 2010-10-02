@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.inject.Default;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class DefaultLiteral extends AnnotationLiteral<Default> implements Default
 {
    private static final long serialVersionUID = -8137340248362361317L;

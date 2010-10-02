@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.inject.Alternative;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class AlternativeLiteral extends AnnotationLiteral<Alternative> implements Alternative
 {
    private static final long serialVersionUID = -6775559481124288825L;

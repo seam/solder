@@ -19,11 +19,7 @@ package org.jboss.weld.extensions.literal;
 import javax.enterprise.inject.Stereotype;
 import javax.enterprise.util.AnnotationLiteral;
 
-/**
- * 
- * @author Stuart Douglas
- * 
- */
+
 public class StereotypeLiteral extends AnnotationLiteral<Stereotype> implements Stereotype
 {
    private static final long serialVersionUID = 6496685599507738216L;

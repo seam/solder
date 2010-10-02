@@ -7,36 +7,55 @@
    <para>
       Weld extensions provides a complete set of <code>AnnotationLiteral</code>s for every annotation type 
       defined by the CDI (JSR-299) and Injection (JSR-330) specification. These are located in the 
-      <code>org.jboss.weld.extensions.literal</code> package. Annotations without members provide a static 
-      <code>INSTANCE</code> member that should be used rather than creating a new instance every time.
+      <code>org.jboss.weld.extensions.literal</code> package. Annotations without listitems provide a static 
+      <code>INSTANCE</code> listitem that should be used rather than creating a new instance every time.
    </para>
    
    <para>
-      Literals are provided for the following annotations:
+      Literals are provided for the following annotations from <emphasis>Context and Dependency Injection</emphasis>:
    </para>
    
-   <simplelist>
-      <member><code>@Alternative</code></member>
-      <member><code>@Any</code></member>
-      <member><code>@ApplicationScoped</code></member>
-      <member><code>@ConversationScoped</code></member>
-      <member><code>@Decorator</code></member>
-      <member><code>@Default</code></member>
-      <member><code>@Delegate</code></member>
-      <member><code>@Dependent</code></member>
-      <member><code>@Disposes</code></member>
-      <member><code>@Inject</code></member>
-      <member><code>@Model</code></member>
-      <member><code>@Named</code></member>
-      <member><code>@New</code></member>
-      <member><code>@NonBinding</code></member>
-      <member><code>@NormalScope</code></member>
-      <member><code>@Observes</code></member>
-      <member><code>@Produces</code></member>
-      <member><code>@RequestScoped</code></member>
-      <member><code>@SessionScoped</code></member>
-      <member><code>@Specializes</code></member>
-      <member><code>@Stereotype</code></member>
-      <member><code>@Typed</code></member>
-   </simplelist>
+   <itemizedlist>
+      <listitem><code>@Alternative</code></listitem>
+      <listitem><code>@Any</code></listitem>
+      <listitem><code>@ApplicationScoped</code></listitem>
+      <listitem><code>@ConversationScoped</code></listitem>
+      <listitem><code>@Decorator</code></listitem>
+      <listitem><code>@Default</code></listitem>
+      <listitem><code>@Delegate</code></listitem>
+      <listitem><code>@Dependent</code></listitem>
+      <listitem><code>@Disposes</code></listitem>
+      <listitem><code>@Inject</code></listitem>
+      <listitem><code>@Model</code></listitem>
+      <listitem><code>@Named</code></listitem>
+      <listitem><code>@New</code></listitem>
+      <listitem><code>@Nonbinding</code></listitem>
+      <listitem><code>@NormalScope</code></listitem>
+      <listitem><code>@Observes</code></listitem>
+      <listitem><code>@Produces</code></listitem>
+      <listitem><code>@RequestScoped</code></listitem>
+      <listitem><code>@SessionScoped</code></listitem>
+      <listitem><code>@Specializes</code></listitem>
+      <listitem><code>@Stereotype</code></listitem>
+      <listitem><code>@Typed</code></listitem>
+   </itemizedlist>
+   
+   <para>
+      Literals are provided for the following annotations from <emphasis>Weld Extensions</emphasis>:
+   </para>
+   
+   <itemizedlist>
+      <listitem><code>@Client</code></listitem>
+      <listitem><code>@DefaultBean</code></listitem>
+      <listitem><code>@Exact</code></listitem>
+      <listitem><code>@Generic</code></listitem>
+      <listitem><code>@GenericType</code></listitem>
+      <listitem><code>@Mapper</code></listitem>
+      <listitem><code>@MessageBundle</code></listitem>
+      <listitem><code>@Requires</code></listitem>
+      <listitem><code>@Resolver</code></listitem>
+      <listitem><code>@Resource</code></listitem>
+      <listitem><code>@Unwraps</code></listitem>
+      <listitem><code>@Veto</code></listitem>
+   </itemizedlist>
 </chapter>
