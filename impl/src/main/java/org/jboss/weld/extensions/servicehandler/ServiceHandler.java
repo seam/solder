@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * Meta annotation that is used to specify an invocation handler for an
+ * Meta annotation that is used to specify an invocation handler for
  * automatically implemented bean.
  * </p>
  * 
@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * If the annotation that is annotated with this meta-annotation is applied to
  * an interface or abstract class then the container will automatically provide
  * a concrete implementation of the class/interface, and delegate all calls to
- * abstract methods through the handler class specified by this annotations.
+ * abstract methods to the handler class specified by this annotations.
  * </p>
  * 
  * <p>
@@ -44,8 +44,8 @@ import java.lang.annotation.Target;
  * </pre>
  * 
  * <p>
- * This is the same as an intercepter class. This handler can be injected into
- * and use initializer methods, however &#64;PreDestory methods are not available
+ * Initializer methods and <code>&#64;PostConstruct</code> methods declared on the invocation
+ * handler will be called, however <code>&#64;PreDestory</code> methods will not be called.
  * </p>
  * 
  * <p>

@@ -6,14 +6,30 @@
    <title>Service Handler</title>
 
    <para>
-      Service handler allow you to declare interfaces and abstract classes as beans with the <code>@ServiceHandler</code> 
-      meta annotation. This is best illustrated with an example:
+      The service handler facility allow you to declare interfaces and abstract classes as automatically implemented 
+      beans. Any call to an abstract method on the interface or abstract class will be forwarded to the invocation 
+      handler for processing.
    </para>
-
-   <programlisting role="JAVA">@ServiceHandler(QueryHandler.class)
+   
+   <para>
+      If you wish to convert some non-type-safe lookup to a type-safe lookup, then service handlers may be useful for
+      you, as they allow the end user to map a lookup to a method using domain specific annotations.
+   </para>
+   
+   <para>
+      We will work through using this facility, taking the example of a service which can execute JPA queries upon
+      abstract method calls. First we define the annotation used to mark interfaces as automatically implemented beans.
+      We meta-annotate it, defining the invocation handler to use:
+   </para>
+   
+      <programlisting role="JAVA">@ServiceHandler(QueryHandler.class)
 @Retention(RUNTIME)
 @Target({TYPE})
 @interface QueryService {}</programlisting>
+
+   <para>
+      We now define an annotation which provides the query to execute:
+   </para>
 
    <programlisting role="JAVA">@Retention(RUNTIME)
 @Target({METHOD})
@@ -22,6 +38,11 @@
    String value();
    
 }</programlisting>
+
+   <para>
+      And finally, the invocation handler, which simply takes the query, and executes it using JPA, returning the 
+      result:
+   </para>
 
    <programlisting role="JAVA">class QueryHandler {
    
@@ -33,6 +54,24 @@
    }
 }</programlisting>
 
+   <note>
+      <itemizedlist>
+      <listitem>
+         The invocation handler is similar to an intercepter. It must have an <code>@AroundInvoke</code> method that 
+         returns and object and takes an <code>InvocationContext</code> as an argument.
+      </listitem>
+      <listitem>
+         Do not call <code>InvocationContext.proceed()</code> as there is no method to proceed to.
+      </listitem>
+      <listitem>
+         Injection is available into the handler class, however the handler is not a bean definition, so observer 
+         methods, producer fields and producer methods defined on the handler will not be registered.
+      </listitem>
+      </itemizedlist>
+   </note>
+
+   <para>Finally, we can define (any number of) interfaces which define our queries:</para>
+
    <programlisting role="JAVA"><![CDATA[@QueryService
 interface UserQuery {
    
@@ -40,40 +79,23 @@ interface UserQuery {
    public List<User> getAllUsers();
 }]]></programlisting>
 
+   <para>
+      Finally, we can inject the query interface, and call methods, automatically executing the JPA query.
+   </para>
+
    <programlisting role="JAVA"><![CDATA[class UserListManager {
    @Inject 
    UserQuery userQuery;
   
    List<User> users;
    
-   @Inject
+   @PostConstruct
    void create() {
       users=userQuery.getAllUsers();
    }
 
 }]]></programlisting>
 
-   <para>
-      The <code>@ServiceHandler(QueryHandler.class)</code> annotation on the<code>@QueryService</code> annotation tells 
-      weld to automatically implement any abstract classes or interfaces that are annotated with 
-      <code>@QueryService</code>, and pass any calls to abstract methods to the <code>QueryHandler</code> class. 
-   </para>
-   
-   <para>   
-      The <code>QueryHandler</code> class works in a similar method to an intercepter. It must have an 
-      <code>@AroundInvoke</code> method that returns and object and takes an <code>InvocationContext</code> as a 
-      parameter.
-   </para>
 
-   <para>
-      Injection is available into the handler class, however the handler is not a proper bean, so observer methods and 
-      producer fields and methods will not work.
-   </para>
-
-   <note>
-      <para>
-         Do not call <code>InvocationContext.proceed()</code> as there is no method to proceed to.
-      </para>
-   </note>
    
 </chapter>
