@@ -2,11 +2,14 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="servicehandler">
+
    <title>Service Handler</title>
+
    <para>
       Service handler allow you to declare interfaces and abstract classes as beans with the <code>@ServiceHandler</code> 
       meta annotation. This is best illustrated with an example:
    </para>
+
    <programlisting role="JAVA">@ServiceHandler(QueryHandler.class)
 @Retention(RUNTIME)
 @Target({TYPE})
@@ -61,12 +64,16 @@ interface UserQuery {
       <code>@AroundInvoke</code> method that returns and object and takes an <code>InvocationContext</code> as a 
       parameter.
    </para>
+
    <para>
       Injection is available into the handler class, however the handler is not a proper bean, so observer methods and 
       producer fields and methods will not work.
    </para>
+
    <note>
-     <para>Do not call <code>InvocationContext.proceed()</code> as there is no method to proceed to.</para>
+      <para>
+         Do not call <code>InvocationContext.proceed()</code> as there is no method to proceed to.
+      </para>
    </note>
    
 </chapter>

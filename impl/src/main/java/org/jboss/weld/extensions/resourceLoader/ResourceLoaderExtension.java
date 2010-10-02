@@ -34,4 +34,5 @@ public class ResourceLoaderExtension implements Extension
       event.addAnnotatedType(manager.createAnnotatedType(ResourceProducer.class));
       event.addAnnotatedType(manager.createAnnotatedType(ResourceLoaderManager.class));
    }
+   
 }

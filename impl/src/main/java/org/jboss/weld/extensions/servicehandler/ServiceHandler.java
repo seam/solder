@@ -40,12 +40,12 @@ import java.lang.annotation.Target;
  * </p>
  * 
  * <pre>
- *  @AroundInvoke public Object aroundInvoke(final InvocationContext invocation) throws Exception
+ *    &#64;AroundInvoke public Object aroundInvoke(final InvocationContext invocation) throws Exception
  * </pre>
  * 
  * <p>
  * This is the same as an intercepter class. This handler can be injected into
- * and use initializer methods, however @PreDestory methods are not available
+ * and use initializer methods, however &#64;PreDestory methods are not available
  * </p>
  * 
  * <p>
@@ -53,8 +53,8 @@ import java.lang.annotation.Target;
  * </p>
  * 
  * <pre>
- * @Retention(RUNTIME)
- * @Target({ TYPE })
+ * &#64;Retention(RUNTIME)
+ * &#64;Target({ TYPE })
  * </pre>
  * 
  * @author Stuart Douglas <stuart.w.douglas@gmail.com>

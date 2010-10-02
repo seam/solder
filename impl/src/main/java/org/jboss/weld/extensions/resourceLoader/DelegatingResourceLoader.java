@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  * Resource loader that delegates to a static list of resource loaders.
  * 
  * @author Stuart Douglas
- * 
  */
 public class DelegatingResourceLoader implements ResourceLoader
 {

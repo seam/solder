@@ -2,16 +2,13 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="logging">
-  <title>Logging Extension</title>
+   <title>Logging Extension</title>
 
-  <section>
-    <title>Summary</title>
-    <para>
-         Weld extensions provides a <code>org.slf4j.Logger</code> bean that can be injected directly into your beans. An optional
-         <code>Category</code> annotation can be applied to the injection point to set the loggers category.      
-     </para>
-<programlisting role="java">
-public class PingService
+   <para>
+      Weld extensions provides a <code>org.slf4j.Logger</code> bean that can be injected directly into your beans. An optional
+      <code>Category</code> annotation can be applied to the injection point to set the loggers category.      
+   </para>
+   <programlisting role="JAVA">public class PingService
 {
    //equivalent to LoggerFactory.getLogger(PingService.class)
    @Inject
@@ -21,9 +18,8 @@ public class PingService
    @Inject
    @Category("Network")
    Logger log2;
-}
-</programlisting>
+}</programlisting>
   
-  </section>
+   </section>
     
 </chapter>

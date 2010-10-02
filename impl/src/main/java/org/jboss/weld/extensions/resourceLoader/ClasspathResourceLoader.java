@@ -140,4 +140,5 @@ class ClasspathResourceLoader implements ResourceLoader
    {
       return name.startsWith("/") ? name.substring(1) : name;
    }
+
 }
