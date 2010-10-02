@@ -2,24 +2,139 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="logging">
-   <title>Logging Extension</title>
+   <title>Logging</title>
 
    <para>
-      Weld extensions provides a <code>org.slf4j.Logger</code> bean that can be injected directly into your beans. An optional
-      <code>Category</code> annotation can be applied to the injection point to set the loggers category.      
+      Weld Extensions integrates JBoss Logging 3 as it's logging framework of choice. JBoss Logging 3 is a modern 
+      logging framework offering:
    </para>
-   <programlisting role="JAVA">public class PingService
-{
-   //equivalent to LoggerFactory.getLogger(PingService.class)
-   @Inject
-   Logger log;
    
-   //equivalent to LoggerFactory.getLogger("Network")
-   @Inject
-   @Category("Network")
-   Logger log2;
+   <itemizedlist>
+      <listitem>
+         Abstracts away from common logging backends and frameworks (such as JDK Logging, log4j and slf4j)
+      </listitem>
+      <listitem>
+         Provides a innovative, typed logger (see below for examples)
+      </listitem>
+      <listitem>
+         Full support for internationalization and localization
+         <itemizedlist>
+           <listitem>
+               Developers can work with interfaces and annotations only
+            </listitem>
+            <listitem>
+               Translators can work with message bundles in properties files
+            </listitem>
+         </itemizedlist>
+      </listitem>
+      <listitem>
+         Build time tooling to generate typed loggers for production, and runtime generation of typed loggers for 
+         development
+      </listitem>
+      <listitem>
+         Access to MDC and NDC (if underlying logger supports it)
+      </listitem>
+      <listitem>
+         Loggers are serializable
+      </listitem>
+   </itemizedlist>
+
+   <note>
+      <para>
+         A number of the features of JBoss Logging 3 are still under development - at the moment only runtime generation
+         of typed is supported, and these loggers only support the default message placed on the typed logger, and will 
+         not look up a localized message.
+      </para>
+   </note>
+   
+   <para>
+      To use a typed logger, first create the logger definition:
+   </para>
+
+   <programlisting role="JAVA">@MessageLogger
+interface TrainSpotterLog {
+
+   // Define log call with message, using printf-style interpolation of parameters
+   @LogMessage @Message("Spotted %s diesel trains") 
+   void dieselTrainsSpotted(int number);
+
 }</programlisting>
-  
-   </section>
+
+   <para>
+      You can then inject the typed logger with no further configuration:
+   </para>
+
+   <programlisting role="JAVA">   // Use the train spotter log, with the log category "trains"
+   @Inject @Category("trains") TrainSpotterLog log;</programlisting>
+
+   <para>
+      and use it:
+   </para>
+
+   <programlisting role="JAVA">log.dieselTrainsSpotted(7);</programlisting>
+
+   <para>
+      JBoss Logging will use the default locale unless overridden:
+   </para>
+
+   <programlisting role="JAVA">   // Use the train spotter log, with the log category "trains", and select the UK locale
+   @Inject @Category("trains") @Locale("en_GB") TrainSpotterLog log;</programlisting>
+
+   <para>
+      You can also log exceptions:
+   </para>
+
+   <programlisting role="JAVA">@MessageLogger
+interface TrainSpotterLog {
+
+   // Define log call with message, using printf-style interpolation of parameters
+   // The exception parameter will be logged as an exception
+   @LogMessage @Message("Failed to spot train %s") 
+   void missedTrain(String trainNumber,@Cause Exception exception);
+
+}</programlisting>
+
+   <para>
+      You can then log a message with an exception:
+   </para>
+
+   <programlisting role="JAVA">log.missedTrain("RH1", cause);</programlisting>
+
+   <para>
+      You can also inject a "plain old" Logger:
+   </para>
+
+   <programlisting role="JAVA">   @Inject Logger log;</programlisting>
+
+   <para>
+      Typed loggers also provide internationalization support, simply add the @MessageBundle annotation to the logger 
+      interface (not currently supported).
+   </para>
+
+   <para>
+      Sometimes you need to access the message directly (for example to localize an exception message). Weld Extensions 
+      let's you inject a typed message bundle. First, declare the message bundle:
+   </para>
+
+   <programlisting role="JAVA">@MessageBundle
+interface TrainMessages {
+
+   // Define a message using printf-style interpolation of parameters
+   @Message("No trains spotted due to %s") 
+   String noTrainsSpotted(String cause);
+
+}</programlisting>
+
+   <para>
+      Inject it:
+   </para>
+
+   <programlisting role="JAVA">@Inject @MessageBundle TrainMessages messages;</programlisting>
+
+   <para>
+      And use it:
+   </para>
+
+   <programlisting role="JAVA">   throw new BadDayException(messages.noTrainsSpotted("leaves on the line"));</programlisting>
     
 </chapter>

@@ -35,11 +35,11 @@
  *   <li>Developers can work with interfaces and annotations only</li>
  *   <li>Translators can work with message bundles in properties files</li>
  *   </ul>
+ * </li>
  * <li>Build time tooling to generate typed loggers for production, and runtime generation of typed 
  * loggers for development</li>
  * <li>Access to MDC and NDC (if underlying logger supports it)
  * <li>Loggers are serializable</li>
- * </li>
  * </ul>
  * 
  * <p>To use a typed logger, first create the logger definition:</p>
@@ -141,6 +141,10 @@
  *   throw new BadDayException(messages.noTrainsSpotted("leaves on the line"));
  * </pre>
  * 
+ * @see org.jboss.weld.extensions.log.Category
+ * @see org.jboss.weld.extensions.log.Suffix
+ * @see org.jboss.weld.extensions.log.Locale
+ * @see org.jboss.weld.extensions.log.MessageBundle
  */
 package org.jboss.weld.extensions.log;
 
