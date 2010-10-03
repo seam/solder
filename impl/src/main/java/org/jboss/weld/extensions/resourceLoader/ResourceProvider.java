@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -71,15 +72,20 @@ public class ResourceProvider implements Serializable
    private final Instance<URL> urlProvider;
    private final Instance<InputStream> inputStreamProvider;
 
+   private final Instance<Collection<URL>> urlsProvider;
+   private final Instance<Collection<InputStream>> inputStreamsProvider;
+
    // Workaround WELD-466
-   private final Set<InputStream> streams;
+   private final Set<InputStream> streamsCache;
 
    @Inject
-   private ResourceProvider(@Any Instance<InputStream> inputStreamProvider, @Any Instance<URL> urlProvider)
+   private ResourceProvider(@Any Instance<InputStream> inputStreamProvider, @Any Instance<URL> urlProvider, @Any Instance<Collection<InputStream>> inputStreamsProvider, @Any Instance<Collection<URL>> urlsProvider)
    {
       this.inputStreamProvider = inputStreamProvider;
       this.urlProvider = urlProvider;
-      this.streams = new HashSet<InputStream>();
+      this.urlsProvider = urlsProvider;
+      this.inputStreamsProvider = inputStreamsProvider;
+      this.streamsCache = new HashSet<InputStream>();
    }
 
    /**
@@ -109,12 +115,25 @@ public class ResourceProvider implements Serializable
       values.put("value", name);
       InputStream stream = inputStreamProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
       // Workaround WELD-466
-      streams.add(stream);
+      streamsCache.add(stream);
       return stream;
    }
 
    /**
     * <p>
+   public Collection<InputStream> loadResourcesStreams(String name)
+   {
+      if (name == null || name.equals(""))
+      {
+         throw new IllegalArgumentException("You must specify the name of the resource to load");
+      }
+      Map<String, Object> values = new HashMap<String, Object>();
+      values.put("value", name);
+      Collection<InputStream> streams = inputStreamsProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
+      // Workaround WELD-466
+      streamsCache.addAll(streams);
+      return streams;
+   }
     * Load a resource.
     * </p>
     * 
@@ -141,11 +160,22 @@ public class ResourceProvider implements Serializable
       return urlProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
    }
 
+   public Collection<URL> loadResources(String name)
+   {
+      if (name == null || name.equals(""))
+      {
+         throw new IllegalArgumentException("You must specify the name of the resource to load");
+      }
+      Map<String, Object> values = new HashMap<String, Object>();
+      values.put("value", name);
+      return urlsProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
+   }
+
    @SuppressWarnings("unused")
    @PreDestroy
    private void cleanup()
    {
-      for (InputStream stream : streams)
+      for (InputStream stream : streamsCache)
       {
          try
          {

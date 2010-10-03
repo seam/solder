@@ -19,6 +19,7 @@ package org.jboss.weld.extensions.resourceLoader;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -55,11 +56,11 @@ public class ResourceLoaderManager
       return Collections.unmodifiableList(resourceLoaders);
    }
 
-   public URL getResource(String resource)
+   public URL getResource(String name)
    {
       for (ResourceLoader loader : resourceLoaders)
       {
-         URL url = loader.getResource(resource);
+         URL url = loader.getResource(name);
          if (url != null)
          {
             return url;
@@ -81,7 +82,17 @@ public class ResourceLoaderManager
       return null;
    }
 
-   public Set<URL> getResources(String name)
+   /**
+    * <p>
+    * Load all resources known to the resource loader by name.
+    * </p>
+    * 
+    * @param name the resource to load
+    * @return a collection of URLs pointing to the resources, or an empty
+    *         collection if no resources are found
+    * @throws RuntimeException if an error occurs loading the resource
+    */
+   public Collection<URL> getResources(String name)
    {
       Set<URL> urls = new HashSet<URL>();
       for (ResourceLoader loader : resourceLoaders)
@@ -89,6 +100,16 @@ public class ResourceLoaderManager
          urls.addAll(loader.getResources(name));
       }
       return urls;
+   }
+
+   public Collection<InputStream> getResourcesAsStream(String name)
+   {
+      Set<InputStream> streams = new HashSet<InputStream>();
+      for (ResourceLoader loader : resourceLoaders)
+      {
+         streams.addAll(loader.getResourcesAsStream(name));
+      }
+      return streams;
    }
 
 }

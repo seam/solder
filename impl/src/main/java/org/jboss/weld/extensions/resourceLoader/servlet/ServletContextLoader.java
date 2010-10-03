@@ -1,9 +1,12 @@
 package org.jboss.weld.extensions.resourceLoader.servlet;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -54,18 +57,36 @@ class ServletContextLoader implements ResourceLoader
 
    public Set<URL> getResources(String name)
    {
-      URL r = getResource(name);
-      if (r != null)
+      URL resource = getResource(name);
+      if (resource != null)
       {
-         return Collections.singleton(r);
+         return singleton(resource);
       }
-      return Collections.emptySet();
+      return emptySet();
    }
-
-   // not used
+   
+   public Collection<InputStream> getResourcesAsStream(String name)
+   {
+      InputStream resource = getResourceAsStream(name);
+      if (resource != null)
+      {
+         return singleton(resource);
+      }
+      else
+      {
+         return emptySet();
+      }
+   }
+   /**
+    * <p>
+    * This loader has precedence 5, and so is searched after the classpath.
+    * </p>
+    * @return a precedence of 5
+    */
+   // NB This is currently not used due to the interference of DelegatingResourceLoader
    public int getPrecedence()
    {
-      return 0;
+      return 5;
    }
 
    @Override

@@ -18,7 +18,7 @@ package org.jboss.weld.extensions.resourceLoader;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Set;
+import java.util.Collection;
 
 import org.jboss.weld.extensions.util.Sortable;
 
@@ -55,7 +55,7 @@ public interface ResourceLoader extends Sortable
     * @param resource the resource to get the {@link URL} for
     * @return the {@link URL}, or null if the resource does not exist
     */
-   public URL getResource(String resource);
+   public URL getResource(String name);
 
    /**
     * Get the {@link InputStream} for a resource.
@@ -66,10 +66,12 @@ public interface ResourceLoader extends Sortable
    public InputStream getResourceAsStream(String name);
 
    /**
+   public Collection<URL> getResources(String name);
+
     * 
     * @param name
     * @return
     */
-   public Set<URL> getResources(String name);
+   public Collection<InputStream> getResourcesAsStream(String name);
 
 }

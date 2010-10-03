@@ -3,6 +3,7 @@ package org.jboss.weld.extensions.resourceLoader;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,29 +28,29 @@ public class DelegatingResourceLoader implements ResourceLoader
       resourceLoaders.add(loader);
    }
 
-   public URL getResource(String resource)
+   public URL getResource(String name)
    {
-      for (ResourceLoader r : resourceLoaders)
+      for (ResourceLoader loader : resourceLoaders)
       {
-         URL res = r.getResource(resource);
-         if (res != null)
+         URL resource = loader.getResource(name);
+         if (resource != null)
          {
-            log.trace("Loaded resource " + resource + " from " + r.toString());
-            return res;
+            log.trace("Loaded resource " + name + " from " + loader.toString());
+            return resource;
          }
       }
       return null;
    }
 
-   public InputStream getResourceAsStream(String resource)
+   public InputStream getResourceAsStream(String name)
    {
-      for (ResourceLoader r : resourceLoaders)
+      for (ResourceLoader loader : resourceLoaders)
       {
-         InputStream res = r.getResourceAsStream(resource);
-         if (res != null)
+         InputStream resource = loader.getResourceAsStream(name);
+         if (resource != null)
          {
-            log.trace("Loaded resource " + resource + " from " + r.toString());
-            return res;
+            log.trace("Loaded resource " + name + " from " + loader.toString());
+            return resource;
          }
       }
       return null;
@@ -57,12 +58,22 @@ public class DelegatingResourceLoader implements ResourceLoader
 
    public Set<URL> getResources(String name)
    {
-      Set<URL> ret = new HashSet<URL>();
-      for (ResourceLoader r : resourceLoaders)
+      Set<URL> resources = new HashSet<URL>();
+      for (ResourceLoader loader : resourceLoaders)
       {
-         ret.addAll(r.getResources(name));
+         resources.addAll(loader.getResources(name));
       }
-      return ret;
+      return resources;
+   }
+   
+   public Collection<InputStream> getResourcesAsStream(String name)
+   {
+      Set<InputStream> resources = new HashSet<InputStream>();
+      for (ResourceLoader loader : resourceLoaders)
+      {
+         resources.addAll(loader.getResourcesAsStream(name));
+      }
+      return resources;
    }
 
    public int getPrecedence()

@@ -19,6 +19,7 @@ package org.jboss.weld.extensions.resourceLoader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -129,6 +130,47 @@ class ClasspathResourceLoader implements ResourceLoader
          }
       }
       return urls;
+   }
+   
+   public Collection<InputStream> getResourcesAsStream(String name)
+   {
+      Set<InputStream> resources = new HashSet<InputStream>();
+      // Always use the strippedName, classloader always assumes no starting /
+      String strippedName = getStrippedName(name);
+      // Try to load from the TCCL
+      if (Thread.currentThread().getContextClassLoader() != null)
+      {
+         try
+         {
+            Enumeration<URL> urlEnum = Thread.currentThread().getContextClassLoader().getResources(strippedName);
+            while (urlEnum.hasMoreElements())
+            {
+               resources.add(urlEnum.nextElement().openStream());
+            }
+         }
+         catch (IOException e)
+         {
+            // we are probably not going to recover from an IOException
+            throw new RuntimeException(e);
+         }
+      }
+      // Try to load from the extension's classloader
+      else
+      {
+         try
+         {
+            Enumeration<URL> urlEnum = ResourceProducer.class.getClassLoader().getResources(strippedName);
+            while (urlEnum.hasMoreElements())
+            {
+               resources.add(urlEnum.nextElement().openStream());
+            }
+         }
+         catch (IOException e)
+         {
+            throw new RuntimeException(e);
+         }
+      }
+      return resources;
    }
    
    public int getPrecedence()

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -64,10 +65,39 @@ class ResourceProducer
    }
    
    @Produces @Resource("")
+   Collection<InputStream> loadResourcesStream(InjectionPoint injectionPoint) throws IOException
+   {
+      String name = getName(injectionPoint);
+      return resourceLoaderManager.getResourcesAsStream(name);
+   }
+   
+   void closeResourcesStream(@Disposes @Resource("") Collection<InputStream> inputStreams) throws IOException
+   {
+      try
+      {
+         for (InputStream is : inputStreams)
+         {
+            is.close();
+         }
+      }
+      catch (IOException e)
+      {
+         // Nothing we can do about this
+      }
+   }
+   
+   @Produces @Resource("")
    URL loadResource(InjectionPoint injectionPoint)
    {
       String name = getName(injectionPoint);
       return resourceLoaderManager.getResource(name);
+   }
+   
+   @Produces @Resource("")
+   Collection<URL> loadResources(InjectionPoint injectionPoint)
+   {
+      String name = getName(injectionPoint);
+      return resourceLoaderManager.getResources(name);
    }
    
    private String getName(InjectionPoint ip)

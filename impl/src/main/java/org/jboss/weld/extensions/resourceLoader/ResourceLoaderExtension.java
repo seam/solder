@@ -28,7 +28,8 @@ import javax.enterprise.inject.spi.Extension;
  */
 public class ResourceLoaderExtension implements Extension
 {
-   public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager manager)
+   
+   void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager manager)
    {
       event.addAnnotatedType(manager.createAnnotatedType(ResourceProvider.class));
       event.addAnnotatedType(manager.createAnnotatedType(ResourceProducer.class));
