@@ -50,27 +50,57 @@ public interface ResourceLoader extends Sortable
 {
 
    /**
+    * <p>
     * Get the {@link URL} for a resource.
+    * </p>
     * 
-    * @param resource the resource to get the {@link URL} for
+    * <p>
+    * The resource loaders are searched in precedence order, stopping when a
+    * resource is found.
+    * </p>
+    * 
+    * @param name the resource to get the {@link URL} for
     * @return the {@link URL}, or null if the resource does not exist
+    * @throws RuntimeException if an error occurs loading the resource
     */
    public URL getResource(String name);
 
    /**
+    * <p>
     * Get the {@link InputStream} for a resource.
+    * </p>
+    * 
+    * <p>
+    * The resource loaders are searched in precedence order, stopping when a
+    * resource is found.
+    * </p>
     * 
     * @param name the resource to get the {@link InputStream} for
     * @return the {@link InputStream}, or null if the resource does not exist
+    * @throws RuntimeException if an error occurs loading the resource
     */
    public InputStream getResourceAsStream(String name);
 
    /**
+    * <p>
+    * Get the URLs known to all resource loaders for a given name.
+    * </p>
+    * 
+    * @param name the resource to get the URLs for
+    * @return the URLs, or an empty collection if no resources are found
+    * @throws RuntimeException if an error occurs loading the resource
+    */
    public Collection<URL> getResources(String name);
 
+   /**
+    * <p>
+    * Get the input streams known to all resource loaders for a given name.
+    * </p>
     * 
-    * @param name
-    * @return
+    * @param name name the resource to get the input streams for
+    * @return the input streams, or an empty collection if no resources are
+    *         found
+    * @throws RuntimeException if an error occurs loading the resource
     */
    public Collection<InputStream> getResourcesAsStream(String name);
 

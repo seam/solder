@@ -48,7 +48,7 @@ import org.jboss.weld.extensions.reflection.AnnotationInstanceProvider;
  * 
  * <p>
  * If you know the name of the resource you are loading at development time you
- * can inject it directly using the {@link Resource} qualifier.
+ * can inject it directly using the <code>&#64;{@link Resource}</code> qualifier.
  * </p>
  * 
  * <p>
@@ -94,16 +94,23 @@ public class ResourceProvider implements Serializable
     * </p>
     * 
     * <p>
-    * The default search order is:
+    * The resource loaders will be searched in precedence order, the first
+    * result found being returned. The default search order is:
     * </p>
     * 
     * <ul>
-    * <li></li>
+    * <li>classpath</li>
+    * <li>servlet context, if available</li>
     * </ul>
     * 
+    * <p>
+    * However extensions may extend this list.
+    * </p>
     * 
-    * @param name
-    * @return
+    * @param name the resource to load
+    * @return an input stream providing access to the resource, or
+    *         <code>null</code> if no resource can be loaded
+    * @throws RuntimeException if an error occurs loading the resource
     */
    public InputStream loadResourceStream(String name)
    {
@@ -121,6 +128,27 @@ public class ResourceProvider implements Serializable
 
    /**
     * <p>
+    * Load all resources known to the resource loader by name.
+    * </p>
+    * 
+    * <p>
+    * By default, Weld Extensions will search:
+    * </p>
+    * 
+    * <ul>
+    * <li>classpath</li>
+    * <li>servlet context, if available</li>
+    * </ul>
+    * 
+    * <p>
+    * However extensions may extend this list.
+    * </p>
+    * 
+    * @param name the resource to load
+    * @return a collection of input streams pointing to the resources, or an
+    *         empty collection if no resources are found
+    * @throws RuntimeException if an error occurs loading the resource
+    */
    public Collection<InputStream> loadResourcesStreams(String name)
    {
       if (name == null || name.equals(""))
@@ -134,20 +162,30 @@ public class ResourceProvider implements Serializable
       streamsCache.addAll(streams);
       return streams;
    }
+
+   /**
+    * <p>
     * Load a resource.
     * </p>
     * 
     * <p>
-    * The default search order is:
+    * The resource loaders will be searched in precedence order, the first
+    * result found being returned. The default search order is:
     * </p>
     * 
     * <ul>
-    * <li></li>
+    * <li>classpath</li>
+    * <li>servlet context, if available</li>
     * </ul>
     * 
+    * <p>
+    * However extensions may extend this list.
+    * </p>
     * 
-    * @param name
-    * @return
+    * @param name the resource to load
+    * @return a URL pointing to the resource, or <code>null</code> if no
+    *         resource can be loaded
+    * @throws RuntimeException if an error occurs loading the resource
     */
    public URL loadResource(String name)
    {
@@ -160,6 +198,29 @@ public class ResourceProvider implements Serializable
       return urlProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
    }
 
+   /**
+    * <p>
+    * Load all resources known to the resource loader by name.
+    * </p>
+    * 
+    * <p>
+    * By default, Weld Extensions will search:
+    * </p>
+    * 
+    * <ul>
+    * <li>classpath</li>
+    * <li>servlet context, if available</li>
+    * </ul>
+    * 
+    * <p>
+    * However extensions may extend this list.
+    * </p>
+    * 
+    * @param name the resource to load
+    * @return a collection of URLs pointing to the resources, or an empty
+    *         collection if no resources are found
+    * @throws RuntimeException if an error occurs loading the resource
+    */
    public Collection<URL> loadResources(String name)
    {
       if (name == null || name.equals(""))

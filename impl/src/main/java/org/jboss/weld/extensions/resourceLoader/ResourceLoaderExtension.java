@@ -22,6 +22,9 @@ import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 
 /**
+ * <p>
+ * CDI portable extension responsible for setting up the resource loader.
+ * </p>
  * 
  * @author Stuart Douglas
  * 

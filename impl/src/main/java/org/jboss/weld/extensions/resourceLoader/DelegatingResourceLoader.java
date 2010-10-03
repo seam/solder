@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
  * Resource loader that delegates to a static list of resource loaders.
  * 
  * @author Stuart Douglas
+ * @deprecated this resource loader can easily leak between application instances
  */
+@Deprecated
 public class DelegatingResourceLoader implements ResourceLoader
 {
    private static final Logger log = LoggerFactory.getLogger("org.jboss.weld.extensions.resources");

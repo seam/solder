@@ -29,18 +29,35 @@ import org.jboss.weld.extensions.util.Sortable;
 import org.jboss.weld.extensions.util.service.ServiceLoader;
 
 /**
- * Class that is responsible for loading {@link ResourceProvider}
- * implementations from the service loader and using them to load resources
+ * <p>
+ * {@link ResourceLoaderManager} discovers and instantiates all
+ * {@link ResourceLoader}s defined. It also provides accesss to these resources,
+ * either as {@link URL}s or {@link InputStream}s.
+ * </p>
+ * 
+ * <p>
+ * If you are working in a CDI managed environment, you should use
+ * {@link ResourceProvider} instead, as it provides automatic, contextual
+ * management of resources. If you are outside a CDI managed environment, then
+ * instantiating {@link ResourceLoaderManager} provides access to the same
+ * resources.
+ * </p>
  * 
  * @author Pete Muir
  * @author Stuart Douglas
  * 
+ * @see ResourceLoader
+ * @see ResourceProvider
  */
 public class ResourceLoaderManager
 {
 
    private final List<ResourceLoader> resourceLoaders;
 
+   /**
+    * Instantiate a new instance, loading any resource loaders from the service
+    * loader, and sorting them by precedence.
+    */
    public ResourceLoaderManager()
    {
       resourceLoaders = new ArrayList<ResourceLoader>();
@@ -51,11 +68,31 @@ public class ResourceLoaderManager
       Collections.sort(resourceLoaders, new Sortable.Comparator());
    }
 
+   /**
+    * The discovered {@link ResourceLoader} instances.
+    * 
+    * @return the resource loaders
+    */
    public Iterable<ResourceLoader> getResourceLoaders()
    {
       return Collections.unmodifiableList(resourceLoaders);
    }
 
+   /**
+    * <p>
+    * Load a resource by name.
+    * </p>
+    * 
+    * <p>
+    * The resource loaders will be searched in precedence order, the first
+    * result found being returned.
+    * </p>
+    * 
+    * @param name the resource to load
+    * @return a URL pointing to the resource, or <code>null</code> if no
+    *         resource can be loaded
+    * @throws RuntimeException if an error occurs loading the resource
+    */
    public URL getResource(String name)
    {
       for (ResourceLoader loader : resourceLoaders)
@@ -69,6 +106,21 @@ public class ResourceLoaderManager
       return null;
    }
 
+   /**
+    * <p>
+    * Load a resource by name.
+    * </p>
+    * 
+    * <p>
+    * The resource loaders will be searched in precedence order, the first
+    * result found being returned.
+    * </p>
+    * 
+    * @param name the resource to load
+    * @return an InputStream providing access to the resource, or
+    *         <code>null</code> if no resource can be loaded
+    * @throws RuntimeException if an error occurs loading the resource
+    */
    public InputStream getResourceAsStream(String name)
    {
       for (ResourceLoader loader : resourceLoaders)
@@ -102,6 +154,16 @@ public class ResourceLoaderManager
       return urls;
    }
 
+   /**
+    * <p>
+    * Load all resources known to the resource loader by name.
+    * </p>
+    * 
+    * @param name the resource to load
+    * @return a collection of input streams pointing to the resources, or an
+    *         empty collection if no resources are found
+    * @throws RuntimeException if an error occurs loading the resource
+    */
    public Collection<InputStream> getResourcesAsStream(String name)
    {
       Set<InputStream> streams = new HashSet<InputStream>();

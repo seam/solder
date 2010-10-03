@@ -41,6 +41,7 @@
  * @see org.jboss.weld.extensions.resourceLoader.Resource
  * @see org.jboss.weld.extensions.resourceLoader.ResourceProvider
  * @see org.jboss.weld.extensions.resourceLoader.ResourceLoader
+ * @see org.jboss.weld.extensions.resourceLoader.ResourceLoaderManager
  */
 package org.jboss.weld.extensions.resourceLoader;
 

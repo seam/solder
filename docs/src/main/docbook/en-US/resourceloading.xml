@@ -4,9 +4,55 @@
 <chapter id="resourceloading">
    <title>Resource Loading</title>
 
+   <para>
+      Weld Extensions provides an extensible, injectable resource loader. The resource loader can provide URLs or 
+      managed input streams. By default the resource loader will look at the classpath, and the servlet context if
+      available.
+   </para>
+
+   <para>
+      If the resource name is known at development time, the resource can be injected:
+   </para>
+
+   <programlisting role="JAVA">   @Inject
+   @Resource("WEB-INF/beans.xml")
+   URL beansXml;
+
+   @Inject
+   @Resource("WEB-INF/web.xml")
+   InputStream webXml;</programlisting>
+
+   <para>
+      If the resource name is not known, the <code>ResourceProvider</code> can be injected, and the resource looked up 
+      dynamically:
+   </para>
+
+   <programlisting role="JAVA">   @Inject
+   void readXml(ResourceProvider provider, String fileName) {
+      InputStream is = provider.loadResourceStream(fileName);
+   }</programlisting>
+
+   <para>
+      Any input stream injected, or created directly by the <code>ResourceProvider</code> is managed, and will be 
+      automatically closed when the bean declaring the injection point of the resource or provider is destroyed. 
+   </para>
+   
    <section>
+      <title>Extending the resource loader</title>
+      
+      <para>
+         If you want to load resources from another location, you can provide an additional resource loader. First,
+         create the resource loader implementation:
+      </para>
+      
+      <programlisting role="JAVA">class MyResourceLoader implements ResourceLoader {
+   ...
+}</programlisting>
 
-
+      <para>
+         And then register it as a service by placing the fully qualified class name of the implementation in a file
+         called <code>META-INF/services/org.jboss.weld.extensions.resourceLoader.ResourceLoader</code>.
+      </para>
    </section>
 
 </chapter>
