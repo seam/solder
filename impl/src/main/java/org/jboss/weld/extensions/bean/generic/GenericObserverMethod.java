@@ -29,10 +29,10 @@ class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
    private final Set<Annotation> qualifiers;
    private static final Annotation[] EMPTY_ANNOTATION_ARRAY = {};
 
-   GenericObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Annotation declaringBeanQualifier, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, BeanManager beanManager)
+   GenericObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Annotation declaringBeanQualifier, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Bean<?> genericBean, BeanManager beanManager)
    {
       this.originalObserverMethod = originalObserverMethod;
-      this.observerMethod = new InjectableMethod<X>(observerMethod, Collections.<InjectionPoint>emptyList(), beanManager);
+      this.observerMethod = new InjectableMethod<X>(observerMethod, genericBean, beanManager);
       this.beanManager = beanManager;
       this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(EMPTY_ANNOTATION_ARRAY);
       this.declaringBeanType = originalObserverMethod.getBeanClass();

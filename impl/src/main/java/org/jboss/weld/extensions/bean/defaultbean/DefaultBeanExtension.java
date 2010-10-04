@@ -496,7 +496,7 @@ public class DefaultBeanExtension implements Extension
             Set<ObserverMethodInfo<?>> observers = defaultObserverMethodsByBean.get(qual);
             for (ObserverMethodInfo<?> i : observers)
             {
-               DefaultObserverMethod<?, ?> obs = DefaultObserverMethod.of(i.getDelegate(), i.getAnnotatedMethod(), qualifiers, i.getObserverParameterQualifier(), manager);
+               DefaultObserverMethod<?, ?> obs = DefaultObserverMethod.of(i.getDelegate(), i.getAnnotatedMethod(), qualifiers, i.getObserverParameterQualifier(), db, manager);
                event.addObserverMethod(obs);
             }
          }

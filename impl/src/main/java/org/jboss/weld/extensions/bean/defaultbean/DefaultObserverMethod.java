@@ -2,7 +2,6 @@ package org.jboss.weld.extensions.bean.defaultbean;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -11,7 +10,6 @@ import javax.enterprise.event.Reception;
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.ObserverMethod;
 
 import org.jboss.weld.extensions.bean.ForwardingObserverMethod;
@@ -30,15 +28,15 @@ class DefaultObserverMethod<T, X> extends ForwardingObserverMethod<T>
 
    private static final Annotation[] EMPTY_QUALIFIER_ARRAY = {};
    
-   static <T, X> DefaultObserverMethod<T, X> of(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Set<Annotation> declaringBeanQualifiers, Set<Annotation> qualifiers, BeanManager beanManager)
+   static <T, X> DefaultObserverMethod<T, X> of(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Set<Annotation> declaringBeanQualifiers, Set<Annotation> qualifiers, Bean<?> defaultBean, BeanManager beanManager)
    {
-      return new DefaultObserverMethod<T, X>(originalObserverMethod, observerMethod, declaringBeanQualifiers, qualifiers, beanManager);
+      return new DefaultObserverMethod<T, X>(originalObserverMethod, observerMethod, declaringBeanQualifiers, qualifiers, defaultBean, beanManager);
    }
 
-   DefaultObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Set<Annotation> declaringBeanQualifiers, Set<Annotation> qualifiers, BeanManager beanManager)
+   DefaultObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Set<Annotation> declaringBeanQualifiers, Set<Annotation> qualifiers, Bean<?> defaultBean, BeanManager beanManager)
    {
       this.originalObserverMethod = originalObserverMethod;
-      this.observerMethod = new InjectableMethod<X>(observerMethod, Collections.<InjectionPoint>emptyList(), beanManager);
+      this.observerMethod = new InjectableMethod<X>(observerMethod, defaultBean, beanManager);
       this.beanManager = beanManager;
       this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(EMPTY_QUALIFIER_ARRAY);
       this.declaringBeanType = originalObserverMethod.getBeanClass();

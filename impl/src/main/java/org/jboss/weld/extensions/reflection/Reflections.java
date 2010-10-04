@@ -491,11 +491,11 @@ public class Reflections
       }
       catch (IllegalArgumentException ex)
       {
-         throw new IllegalArgumentException(buildInvokeMethodErrorMessage(method, instance, args), ex.getCause());
+         throw new IllegalArgumentException(buildInvokeMethodErrorMessage(method, instance, args), ex);
       }
       catch (InvocationTargetException ex)
       {
-         throw new RuntimeException(buildInvokeMethodErrorMessage(method, instance, args), ex);
+         throw new RuntimeException(buildInvokeMethodErrorMessage(method, instance, args), ex.getCause());
       }
       catch (NullPointerException ex)
       {
