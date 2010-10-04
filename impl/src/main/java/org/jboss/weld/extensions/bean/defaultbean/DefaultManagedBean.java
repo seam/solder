@@ -9,6 +9,11 @@ import javax.enterprise.inject.spi.BeanManager;
 
 class DefaultManagedBean<T> extends AbstactDefaultBean<T>
 {
+   
+   static <T> DefaultManagedBean<T> of(Bean<T> originalBean, Type defaultBeanType, Set<Type> types, Set<Annotation> qualifiers, BeanManager beanManager)
+   {
+      return new DefaultManagedBean<T>(originalBean, defaultBeanType, types, qualifiers, beanManager);
+   }
 
    DefaultManagedBean(Bean<T> originalBean, Type defaultBeanType, Set<Type> types, Set<Annotation> qualifiers, BeanManager beanManager)
    {

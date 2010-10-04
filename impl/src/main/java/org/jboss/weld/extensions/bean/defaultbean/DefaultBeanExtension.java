@@ -16,9 +16,12 @@
  */
 package org.jboss.weld.extensions.bean.defaultbean;
 
+import static org.jboss.weld.extensions.util.collections.Multimaps.newSetMultimap;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,8 +29,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
@@ -51,7 +54,6 @@ import org.jboss.weld.extensions.bean.Beans;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.jboss.weld.extensions.reflection.Synthetic;
 import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.util.collections.Multimaps;
 import org.jboss.weld.extensions.util.collections.SetMultimap;
 import org.jboss.weld.extensions.util.collections.Supplier;
 import org.slf4j.Logger;
@@ -111,7 +113,7 @@ public class DefaultBeanExtension implements Extension
    /**
     * qualifiers for observer methods on default managed beans
     */
-   private final SetMultimap<Synthetic, ObserverMethodInfo<?>> defaultObserverMethodsByBean = Multimaps.newSetMultimap(new HashMap(), createHashSetSupplier());
+   private final SetMultimap<Synthetic, ObserverMethodInfo<?>> defaultObserverMethodsByBean = newSetMultimap(new HashMap<Synthetic, Collection<ObserverMethodInfo<?>>>(), DefaultBeanExtension.<ObserverMethodInfo<?>>createHashSetSupplier());
 
 
    private final Map<Method, ObserverMethodInfo<?>> defaultObserverMethods = new HashMap<Method, ObserverMethodInfo<?>>();
@@ -125,7 +127,7 @@ public class DefaultBeanExtension implements Extension
    /**
     * map of producer method info to the annotated method
     */
-   private final Map<Synthetic, DefaultProducerMethodInfo> producerAnnotatedMethods = new HashMap<Synthetic, DefaultProducerMethodInfo>();
+   private final Map<Synthetic, DefaultProducerMethodInfo<?>> producerAnnotatedMethods = new HashMap<Synthetic, DefaultProducerMethodInfo<?>>();
 
    /**
     * map of producer methods to the annotated field
@@ -198,7 +200,7 @@ public class DefaultBeanExtension implements Extension
                   qualifiers.add(DefaultLiteral.INSTANCE);
                }
                builder.addToMethodParameter(m.getJavaMember(), observerParameter.getPosition(), declaringBeanSyntheticQualifier);
-               ObserverMethodInfo<?> info = new ObserverMethodInfo(observerQualifiers, declaringBeanQualifiers, m, declaringBeanSyntheticQualifier);
+               ObserverMethodInfo<?> info = ObserverMethodInfo.of(observerQualifiers, declaringBeanQualifiers, m, declaringBeanSyntheticQualifier);
                defaultObserverMethodsByBean.put(declaringBeanSyntheticQualifier, info);
                defaultObserverMethods.put(m.getJavaMember(), info);
             }
@@ -357,13 +359,13 @@ public class DefaultBeanExtension implements Extension
       {
          // store producer method information
          defaultProducerMethods.put(qualifier, event.getBean());
-         AnnotatedMethod<?> method = event.getAnnotatedProducerMethod();
-         AnnotatedMethod<?> disposerMethod = null;
+         AnnotatedMethod<T> method = event.getAnnotatedProducerMethod();
+         AnnotatedMethod<T> disposerMethod = null;
          if (event.getAnnotatedDisposedParameter() != null)
          {
-            disposerMethod = (AnnotatedMethod<?>) event.getAnnotatedDisposedParameter().getDeclaringCallable();
+            disposerMethod = (AnnotatedMethod<T>) event.getAnnotatedDisposedParameter().getDeclaringCallable();
          }
-         producerAnnotatedMethods.put(qualifier, new DefaultProducerMethodInfo(method, disposerMethod));
+         producerAnnotatedMethods.put(qualifier, new DefaultProducerMethodInfo<T>(method, disposerMethod));
       }
    }
 
@@ -488,13 +490,13 @@ public class DefaultBeanExtension implements Extension
          final Set<Annotation> qualifiers = new HashSet<Annotation>(beanInfo.getQualifiers());
          if (defaultManagedBeans.containsKey(qual))
          {
-            Bean<?> db = new DefaultManagedBean(defaultManagedBeans.get(qual), beanInfo.getType(), types, qualifiers, manager);
+            Bean<?> db = DefaultManagedBean.of(defaultManagedBeans.get(qual), beanInfo.getType(), types, qualifiers, manager);
             log.info("Installing default managed bean " + db);
             event.addBean(db);
             Set<ObserverMethodInfo<?>> observers = defaultObserverMethodsByBean.get(qual);
             for (ObserverMethodInfo<?> i : observers)
             {
-               DefaultObserverMethod<?, ?> obs = new DefaultObserverMethod(i.getDelegate(), i.getAnnotatedMethod(), qualifiers, i.getObserverParameterQualifier(), manager);
+               DefaultObserverMethod<?, ?> obs = DefaultObserverMethod.of(i.getDelegate(), i.getAnnotatedMethod(), qualifiers, i.getObserverParameterQualifier(), manager);
                event.addObserverMethod(obs);
             }
          }
@@ -512,8 +514,8 @@ public class DefaultBeanExtension implements Extension
             {
                declaringBeanQualifiers = this.producerToDeclaringDefaultBean.get(qual).getQualifiers();
             }
-            DefaultProducerMethodInfo info = producerAnnotatedMethods.get(qual);
-            Bean<?> db = new DefaultProducerMethod(defaultProducerMethods.get(qual), beanInfo.getType(), types, qualifiers, declaringBeanQualifiers, info.getProducerMethod(), info.getDisposerMethod(), manager);
+            DefaultProducerMethodInfo<?> info = producerAnnotatedMethods.get(qual);
+            Bean<?> db = createDefaultProducerMethod(defaultProducerMethods.get(qual), qual, beanInfo, types, qualifiers, declaringBeanQualifiers, info, manager);
             log.info("Installing default producer bean " + db);
             event.addBean(db);
          }
@@ -531,7 +533,7 @@ public class DefaultBeanExtension implements Extension
             {
                declaringBeanQualifiers = this.producerToDeclaringDefaultBean.get(qual).getQualifiers();
             }
-            Bean<?> db = new DefaultProducerField(defaultProducerFields.get(qual), beanInfo.getType(), types, qualifiers, declaringBeanQualifiers, producerAnnotatedFields.get(qual), manager);
+            Bean<?> db = DefaultProducerField.of(defaultProducerFields.get(qual), beanInfo.getType(), types, qualifiers, declaringBeanQualifiers, producerAnnotatedFields.get(qual), manager);
             log.info("Installing default producer bean " + db);
             event.addBean(db);
          }
@@ -636,6 +638,11 @@ public class DefaultBeanExtension implements Extension
       private final AnnotatedMethod<T> annotatedMethod;
       private final Synthetic defaultBeanSynthetic;
       private ObserverMethod<?> delegate;
+      
+      public static <T> ObserverMethodInfo<T> of(Set<Annotation> observerParameterQualifier, Set<Annotation> declaringBeanQualfiers, AnnotatedMethod<T> annotatedMethod, Synthetic defaultBeanSynthetic)
+      {
+         return new ObserverMethodInfo<T>(observerParameterQualifier, declaringBeanQualfiers, annotatedMethod, defaultBeanSynthetic);
+      }
 
       public ObserverMethodInfo(Set<Annotation> observerParameterQualifier, Set<Annotation> declaringBeanQualfiers, AnnotatedMethod<T> annotatedMethod, Synthetic defaultBeanSynthetic)
       {
@@ -650,19 +657,9 @@ public class DefaultBeanExtension implements Extension
          return observerParameterQualifier;
       }
 
-      public Set<Annotation> getDeclaringBeanQualfiers()
-      {
-         return declaringBeanQualfiers;
-      }
-
       public AnnotatedMethod<T> getAnnotatedMethod()
       {
          return annotatedMethod;
-      }
-
-      public Synthetic getSynthetic()
-      {
-         return defaultBeanSynthetic;
       }
 
       public ObserverMethod<?> getDelegate()
@@ -695,7 +692,7 @@ public class DefaultBeanExtension implements Extension
             return false;
          if (getClass() != obj.getClass())
             return false;
-         ObserverMethodInfo other = (ObserverMethodInfo) obj;
+         ObserverMethodInfo<?> other = (ObserverMethodInfo<?>) obj;
          if (annotatedMethod == null)
          {
             if (other.annotatedMethod != null)
@@ -729,23 +726,23 @@ public class DefaultBeanExtension implements Extension
 
    }
    
-   private final class DefaultProducerMethodInfo
+   private final class DefaultProducerMethodInfo<X>
    {
-      private final AnnotatedMethod<?> producerMethod;
-      private final AnnotatedMethod<?> disposerMethod;
+      private final AnnotatedMethod<X> producerMethod;
+      private final AnnotatedMethod<X> disposerMethod;
       
-      public DefaultProducerMethodInfo(AnnotatedMethod<?> producerMethod, AnnotatedMethod<?> disposerMethod)
+      public DefaultProducerMethodInfo(AnnotatedMethod<X> producerMethod, AnnotatedMethod<X> disposerMethod)
       {
          this.producerMethod = producerMethod;
          this.disposerMethod = disposerMethod;
       }
 
-      public AnnotatedMethod<?> getProducerMethod()
+      public AnnotatedMethod<X> getProducerMethod()
       {
          return producerMethod;
       }
 
-      public AnnotatedMethod<?> getDisposerMethod()
+      public AnnotatedMethod<X> getDisposerMethod()
       {
          return disposerMethod;
       }
@@ -762,6 +759,11 @@ public class DefaultBeanExtension implements Extension
          }
 
       };
+   }
+   
+   private <T, X> DefaultProducerMethod<T, X> createDefaultProducerMethod(Bean<T> originalBean, Annotation qualifier, DefaultBeanType beanInfo, Set<Type> types, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, DefaultProducerMethodInfo<X> info, BeanManager beanManager)
+   {
+      return DefaultProducerMethod.of(originalBean, beanInfo.getType(), types, qualifiers, declaringBeanQualifiers, info.getProducerMethod(), info.getDisposerMethod(), beanManager);
    }
 
    private static class DefaultBeanQualifiers
@@ -780,19 +782,9 @@ public class DefaultBeanExtension implements Extension
          return syntheticQualifier;
       }
 
-      public void setSyntheticQualifier(Synthetic syntheticQualifier)
-      {
-         this.syntheticQualifier = syntheticQualifier;
-      }
-
       public Set<Annotation> getQualifiers()
       {
          return qualifiers;
-      }
-
-      public void setQualifiers(Set<Annotation> qualifiers)
-      {
-         this.qualifiers = qualifiers;
       }
 
    }

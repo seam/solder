@@ -18,6 +18,11 @@ class DefaultProducerMethod<T, X> extends AbstractDefaultProducerBean<T>
    private final InjectableMethod<X> producerMethod;
    private final InjectableMethod<X> disposerMethod;
    
+   static <T, X> DefaultProducerMethod<T, X> of(Bean<T> originalBean, Type declaringBeanType, Set<Type> beanTypes, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, BeanManager beanManager)
+   {
+      return new DefaultProducerMethod<T, X>(originalBean, declaringBeanType, beanTypes, qualifiers, declaringBeanQualifiers, method, disposerMethod, beanManager);
+   }
+   
    DefaultProducerMethod(Bean<T> originalBean, Type declaringBeanType, Set<Type> beanTypes, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, BeanManager beanManager)
    {
       super(originalBean, declaringBeanType, beanTypes, qualifiers, declaringBeanQualifiers, beanManager);

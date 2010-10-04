@@ -29,6 +29,11 @@ class DefaultObserverMethod<T, X> extends ForwardingObserverMethod<T>
    private final Set<Annotation> qualifiers;
 
    private static final Annotation[] EMPTY_QUALIFIER_ARRAY = {};
+   
+   static <T, X> DefaultObserverMethod<T, X> of(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Set<Annotation> declaringBeanQualifiers, Set<Annotation> qualifiers, BeanManager beanManager)
+   {
+      return new DefaultObserverMethod<T, X>(originalObserverMethod, observerMethod, declaringBeanQualifiers, qualifiers, beanManager);
+   }
 
    DefaultObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Set<Annotation> declaringBeanQualifiers, Set<Annotation> qualifiers, BeanManager beanManager)
    {

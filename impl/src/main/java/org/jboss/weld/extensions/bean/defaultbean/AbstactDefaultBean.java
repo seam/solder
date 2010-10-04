@@ -105,7 +105,7 @@ abstract class AbstactDefaultBean<T> extends ForwardingBean<T> implements Passiv
          return true;
       if (getClass() != obj.getClass())
          return false;
-      AbstactDefaultBean other = (AbstactDefaultBean) obj;
+      AbstactDefaultBean<?> other = (AbstactDefaultBean<?>) obj;
       if (qualifiers == null)
       {
          if (other.qualifiers != null)

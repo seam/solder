@@ -18,6 +18,11 @@ class DefaultProducerField<T, X> extends AbstractDefaultProducerBean<T>
 {
 
    private final AnnotatedField<X> field;
+   
+   static <T, X> DefaultProducerField<T, X> of (Bean<T> originalBean, Type declaringBeanType, Set<Type> beanTypes, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, AnnotatedField<X> field, BeanManager beanManager)
+   {
+      return new DefaultProducerField<T, X>(originalBean, declaringBeanType, beanTypes, qualifiers, declaringBeanQualifiers, field, beanManager);
+   }
 
    DefaultProducerField(Bean<T> originalBean, Type declaringBeanType, Set<Type> beanTypes, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, AnnotatedField<X> field, BeanManager beanManager)
    {
