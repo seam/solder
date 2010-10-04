@@ -420,14 +420,14 @@ public class Reflections
     *            inaccessible or if the underlying method throws an exception or
     *            if the initialization provoked by this method fails.
     * @throws IllegalArgumentException if the method is an instance method and
-    *            the specified object argument is not an instance of the class
+    *            the specified <code>instance</code> argument is not an instance of the class
     *            or interface declaring the underlying method (or of a subclass
     *            or implementor thereof); if the number of actual and formal
     *            parameters differ; if an unwrapping conversion for primitive
     *            arguments fails; or if, after possible unwrapping, a parameter
     *            value cannot be converted to the corresponding formal parameter
     *            type by a method invocation conversion.
-    * @throws NullPointerException if the specified object is null and the
+    * @throws NullPointerException if the specified <code>instance</code> is null and the
     *            method is an instance method.
     * @throws ExceptionInInitializerError if the initialization provoked by this
     *            method fails.
@@ -462,14 +462,14 @@ public class Reflections
     *            inaccessible or if the underlying method throws an exception or
     *            if the initialization provoked by this method fails.
     * @throws IllegalArgumentException if the method is an instance method and
-    *            the specified object argument is not an instance of the class
+    *            the specified <code>instance</code> argument is not an instance of the class
     *            or interface declaring the underlying method (or of a subclass
     *            or implementor thereof); if the number of actual and formal
     *            parameters differ; if an unwrapping conversion for primitive
     *            arguments fails; or if, after possible unwrapping, a parameter
     *            value cannot be converted to the corresponding formal parameter
     *            type by a method invocation conversion.
-    * @throws NullPointerException if the specified object is null and the
+    * @throws NullPointerException if the specified <code>instance</code> is null and the
     *            method is an instance method.
     * @throws ClassCastException if the result of invoking the method cannot be
     *            cast to the expectedReturnType
@@ -526,11 +526,11 @@ public class Reflections
     * @param instance the instance on which the field value should be set upon
     * @param value the value to set the field to
     * @throws RuntimeException if the underlying field is inaccessible.
-    * @throws IllegalArgumentException if the specified object is not an
+    * @throws IllegalArgumentException if the specified <code>instance</code> is not an
     *            instance of the class or interface declaring the underlying
     *            field (or a subclass or implementor thereof), or if an
     *            unwrapping conversion fails.
-    * @throws NullPointerException if the specified object is null and the field
+    * @throws NullPointerException if the specified <code>instance</code> is null and the field
     *            is an instance field.
     * @throws ExceptionInInitializerError if the initialization provoked by this
     *            method fails.
@@ -594,10 +594,10 @@ public class Reflections
     * @param expectedType the expected type of the field's value
     * @return the value of the field
     * @throws RuntimeException if the underlying field is inaccessible.
-    * @throws IllegalArgumentException if the specified object is not an
+    * @throws IllegalArgumentException if the specified <code>instance</code> is not an
     *            instance of the class or interface declaring the underlying
     *            field (or a subclass or implementor thereof).
-    * @throws NullPointerException if the specified object is null and the field
+    * @throws NullPointerException if the specified <code>instance</code> is null and the field
     *            is an instance field.
     * @throws ExceptionInInitializerError if the initialization provoked by this
     *            method fails.
