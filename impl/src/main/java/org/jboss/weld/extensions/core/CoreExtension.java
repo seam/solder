@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedField;
@@ -35,8 +34,6 @@ import javax.inject.Named;
 import org.jboss.weld.extensions.literal.NamedLiteral;
 import org.jboss.weld.extensions.reflection.Reflections;
 import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.reflection.annotated.AnnotationRedefiner;
-import org.jboss.weld.extensions.reflection.annotated.RedefinitionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,35 +96,13 @@ public class CoreExtension implements Extension
 
       // support for @Named packages
       Package pkg = pat.getAnnotatedType().getJavaClass().getPackage();
-      if (pkg.isAnnotationPresent(Named.class))
+      if (pkg.isAnnotationPresent(Named.class) && !pat.getAnnotatedType().isAnnotationPresent(Named.class))
       {
-         final String packageName = getPackageName(pkg);
          if (builder == null)
          {
             builder = new AnnotatedTypeBuilder<X>().readFromType(pat.getAnnotatedType());
          }
-         builder.redefine(Named.class, new AnnotationRedefiner<Named>()
-         {
-            
-            public void redefine(RedefinitionContext<Named> ctx)
-            {
-               if (ctx.getAnnotatedElement().isAnnotationPresent(Produces.class))
-               {
-                  String memberName = ctx.getElementName();
-                  String beanName = getName(ctx.getAnnotatedElement().getAnnotation(Named.class), memberName);
-                  ctx.getAnnotationBuilder().add(new NamedLiteral(packageName + '.' + beanName));
-               }
-            }
-
-         });
-
-         if (pat.getAnnotatedType().isAnnotationPresent(Named.class))
-         {
-            String className = pat.getAnnotatedType().getJavaClass().getSimpleName();
-            String beanName = getName(pat.getAnnotatedType().getAnnotation(Named.class), className);
-            builder.addToClass(new NamedLiteral(packageName + '.' + beanName));
-         }
-
+         builder.addToClass(new NamedLiteral(""));
       }
 
       // support for @Exact
@@ -188,26 +163,6 @@ public class CoreExtension implements Extension
       {
          abd.addBean(bean);
       }
-   }
-
-   private String getPackageName(Package pkg)
-   {
-      String packageName = pkg.getAnnotation(Named.class).value();
-      if (packageName.length() == 0)
-      {
-         packageName = pkg.getName();
-      }
-      return packageName;
-   }
-
-   private <X> String getName(Named named, String defaultName)
-   {
-      String beanName = named.value();
-      if (beanName.length() == 0)
-      {
-         beanName = defaultName.substring(0, 1).toLowerCase() + defaultName.substring(1);
-      }
-      return beanName;
    }
 
 }

@@ -72,5 +72,12 @@ public class CoreTest
       Set<Bean<?>> beans = manager.getBeans(OptionalService.class, DefaultLiteral.INSTANCE);
       Assert.assertEquals(0, beans.size());
    }
+   
+   @Test
+   public void testNamedPackages(BeanManager manager)
+   {
+      Set<Bean<?>> beans = manager.getBeans("raceTrack");
+      Assert.assertEquals(1, beans.size());
+   }
 
 }
