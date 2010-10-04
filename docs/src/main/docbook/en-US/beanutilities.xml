@@ -4,9 +4,135 @@
 <chapter id="beanutilities">
    <title>Bean Utilities</title>
 
-   <section>
-
-
-   </section>
-
+   <para>
+      Weld Extensions provides a number of base classes which can be extended to create custom beans. Weld Extensions
+      also provides bean builders which can be used to dynamically create beans using a fluent API. 
+   </para>
+      
+   <variablelist>
+      <varlistentry>
+         <term><code>AbstractImmutableBean</code></term>
+         <listitem>
+            <para>
+               An immutable (and hence thread-safe) bean, whose constructor will substitute specification defaults if
+               <code>null</code> is passed for a particular attribute. Subclasses must implement the 
+               <code>create()</code> and <code>destroy()</code> methods.
+            </para> 
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>AbstractImmutableProducer</code></term>
+         <listitem>
+            <para>
+               An immutable (and hence thread-safe) abstract class for creating producers. Subclasses must implement
+               <code>produce()</code> and <code>dispose()</code>.
+            </para>
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>BeanBuilder</code></term>
+         <listitem>
+            <para>
+               A builder for creating immutable beans which can read the type and annotations from an 
+               <code>AnnotatedType</code>.
+            </para>
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>Beans</code></term>
+         <listitem>
+            <para>
+               A set of utilities for working with beans.
+            </para> 
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>ForwardingBean</code></term>
+         <listitem>
+            <para>
+               A base class for implementing <code>Bean</code> which forwards all calls to <code>delegate()</code>.
+            </para>
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>ForwardingInjectionTarget</code></term>
+         <listitem>
+            <para>
+               A base class for implementing <code>InjectionTarget</code> which forwards all calls to <code>delegate()</code>.
+            </para>
+         </listitem>
+      </varlistentry>
+         <varlistentry>
+         <term><code>ForwardingObserverMethod</code></term>
+         <listitem>
+            <para>
+               A base class for implementing <code>ObserverMethod</code> which forwards all calls to <code>delegate()</code>.
+            </para>
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>ImmutableBean</code></term>
+         <listitem>
+            <para>
+               An immutable (and hence thread-safe) bean, whose constructor will substitute specification defaults if
+               <code>null</code> is passed for a particular attribute. An implementation of 
+               <code>ContextualLifecycle</code> may be registered to receive lifecycle callbacks.
+            </para> 
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>ImmutableInjectionPoint</code></term>
+         <listitem>
+            <para>
+               An immutable (and hence thread-safe) injection point.
+            </para> 
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>ImmutableNarrowingBean</code></term>
+         <listitem>
+            <para>
+               An immutable (and hence thread-safe) narrowing bean. Narrowing beans allow you to build a general purpose
+               bean (likely a producer method), and register it for a narrowed type (or qualifiers).
+            </para> 
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>ImmutablePassivationCapableBean</code></term>
+         <listitem>
+            <para>
+               An immutable (and hence thread-safe) bean, whose constructor will substitute specification defaults if
+               <code>null</code> is passed for a particular attribute. An implementation of 
+               <code>ContextualLifecycle</code> may be registered to receive lifecycle callbacks. The bean implements
+               <code>PassivationCapable</code>, and an id must be provided.
+            </para> 
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>ImmutablePassivationCapableNarrowingBean</code></term>
+         <listitem>
+            <para>
+               An immutable (and hence thread-safe) narrowing bean. Narrowing beans allow you to build a general purpose
+               bean (likely a producer method), and register it for a narrowed type (or qualifiers). The bean implements
+               <code>PassivationCapable</code>, and an id must be provided.
+            </para> 
+         </listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>NarrowingBeanBuilder</code></term>
+         <listitem>
+            <para>
+               A builder for creating immutable narrowing beans which can read the type and annotations from an 
+               <code>AnnotatedType</code>.
+            </para>
+         </listitem>
+      </varlistentry>
+   </variablelist>
+   
+   <para>
+      The use of these classes is in general trivially understood with an understanding of basic programming patterns
+      and the CDI specification, so no in depth explanation is provided here. The JavaDoc for each class and method 
+      provides more detail.
+   </para>
+   
 </chapter>

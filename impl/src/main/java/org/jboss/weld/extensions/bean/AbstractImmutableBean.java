@@ -18,18 +18,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A base class for implementing {@link Bean}. The base class is immutable, and
- * uses defensive copying for collections. It uses the defaults from the spec
- * for properties if not specified.
+ * <p>
+ * A base class for implementing {@link Bean}. The attributes are immutable, and
+ * collections are defensively copied on instantiation. It uses the defaults
+ * from the specification for properties if not specified.
+ * </p>
+ * 
+ * <p>
+ * This class does not provide any bean lifecycle operations
+ * </p>
  * 
  * @author Pete Muir
- * 
+ * @see ImmutableBean
+ * @see ImmutableNarrowingBean
  */
-public abstract class AbstractImmutableBean<T>
+public abstract class AbstractImmutableBean<T> implements Bean<T>
 {
 
-   private static final Logger log = LoggerFactory.getLogger(AbstractImmutableBean.class);
-   
+   private transient Logger log = LoggerFactory.getLogger(AbstractImmutableBean.class);
+
    private final Class<?> beanClass;
    private final String name;
    private final Set<Annotation> qualifiers;

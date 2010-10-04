@@ -26,7 +26,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.weld.extensions.bean.BeanLifecycle;
+import org.jboss.weld.extensions.bean.ContextualLifecycle;
 
 /**
  * Bean lifecycle for ServiceHandler beans
@@ -36,7 +36,7 @@ import org.jboss.weld.extensions.bean.BeanLifecycle;
  * @param <T>
  * @param <H>
  */
-public class ServiceHandlerBeanLifecycle<T, H> implements BeanLifecycle<T>
+public class ServiceHandlerBeanLifecycle<T, H> implements ContextualLifecycle<T>
 {
    private final ProxyFactory factory;
    private final Class<? extends T> proxyClass;

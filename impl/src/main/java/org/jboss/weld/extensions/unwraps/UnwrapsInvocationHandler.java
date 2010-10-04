@@ -32,7 +32,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.weld.extensions.bean.InjectionPointImpl;
+import org.jboss.weld.extensions.bean.ImmutableInjectionPoint;
 
 public class UnwrapsInvocationHandler implements MethodHandler
 {
@@ -55,7 +55,7 @@ public class UnwrapsInvocationHandler implements MethodHandler
       injectionPoints = new InjectionPoint[this.method.getTypeParameters().length];
       for (int i = 0; i < injectionPoints.length; ++i)
       {
-         injectionPoints[i] = new InjectionPointImpl(method.getParameters().get(i), manager, bean, false, false);
+         injectionPoints[i] = new ImmutableInjectionPoint(method.getParameters().get(i), manager, bean, false, false);
       }
       Type mainType = method.getDeclaringType().getBaseType();
       HashSet<Annotation> mainClassQualifiers = new HashSet<Annotation>(declaringBeanQualifiers);

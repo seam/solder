@@ -2,6 +2,7 @@ package org.jboss.weld.extensions.bean.generic;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -10,11 +11,12 @@ import javax.enterprise.event.Reception;
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.ObserverMethod;
 
 import org.jboss.weld.extensions.bean.ForwardingObserverMethod;
-import org.jboss.weld.extensions.bean.InjectableMethod;
-import org.jboss.weld.extensions.bean.ParameterValueRedefiner;
+import org.jboss.weld.extensions.reflection.annotated.InjectableMethod;
+import org.jboss.weld.extensions.reflection.annotated.ParameterValueRedefiner;
 
 class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
 {
@@ -30,7 +32,7 @@ class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
    GenericObserverMethod(ObserverMethod<T> originalObserverMethod, AnnotatedMethod<X> observerMethod, Annotation declaringBeanQualifier, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, BeanManager beanManager)
    {
       this.originalObserverMethod = originalObserverMethod;
-      this.observerMethod = new InjectableMethod<X>(observerMethod, null, beanManager);
+      this.observerMethod = new InjectableMethod<X>(observerMethod, Collections.<InjectionPoint>emptyList(), beanManager);
       this.beanManager = beanManager;
       this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(EMPTY_ANNOTATION_ARRAY);
       this.declaringBeanType = originalObserverMethod.getBeanClass();

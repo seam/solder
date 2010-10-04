@@ -154,8 +154,14 @@ public @interface MultipleMembers {
       <title>Reflection Utilities</title>
       
       <para>
-         Weld Extensions comes with a number of reflection utilities; these extend JDK reflection, and some also work on
-         CDI's Annotated metadata. See the javadoc on <code>Reflections</code> for more.
+         Weld Extensions comes with a number miscellaneous reflection utilities; these extend JDK reflection, and some 
+         also work on CDI's Annotated metadata. See the javadoc on <code>Reflections</code> for more.
+      </para>
+      
+      <para>
+         <code>InjectableMethod</code> allows an <code>AnnotatedMethod</code> to be injected with parameter values
+         obtained by following the CDI type safe resolution rules, as well as allowing the defautl aparameter values to
+         be overridden.
       </para>
       
    </section>

@@ -20,12 +20,28 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionTarget;
 
-class BeanLifecycleImpl<T> implements BeanLifecycle<T>
+/**
+ * An implementation of {@link ContextualLifecycle} that is backed by an
+ * {@link InjectionTarget}.
+ * 
+ * @author Pete Muir
+ * @author Stuart Douglas
+ * 
+ * @param <T>
+ */
+public class DelegatingContextualLifecycle<T> implements ContextualLifecycle<T>
 {
 
    private final InjectionTarget<T> injectionTarget;
 
-   BeanLifecycleImpl(InjectionTarget<T> injectionTarget)
+   /**
+    * Instantiate a new {@link ContextualLifecycle} backed by an
+    * {@link InjectionTarget}.
+    * 
+    * @param injectionTarget the {@link InjectionTarget} used to create and
+    *           destroy instances
+    */
+   public DelegatingContextualLifecycle(InjectionTarget<T> injectionTarget)
    {
       this.injectionTarget = injectionTarget;
    }

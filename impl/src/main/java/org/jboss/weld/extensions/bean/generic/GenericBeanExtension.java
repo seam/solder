@@ -58,7 +58,7 @@ import javax.enterprise.inject.spi.Producer;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.BeanBuilder;
-import org.jboss.weld.extensions.bean.BeanLifecycle;
+import org.jboss.weld.extensions.bean.ContextualLifecycle;
 import org.jboss.weld.extensions.bean.Beans;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.jboss.weld.extensions.reflection.Synthetic;
@@ -601,7 +601,7 @@ public class GenericBeanExtension implements Extension
    {
       // We don't have a bean created for this generic configuration annotation. Create it, store it to be added later
       // TODO make this passivation capable?
-      BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager).beanClass(genericConfiguration.annotationType()).types(Arrays2.<Type> asSet(genericConfiguration.annotationType(), Object.class)).scope(Dependent.class).qualifiers(qualifiers).beanLifecycle(new BeanLifecycle<Annotation>()
+      BeanBuilder<Annotation> builder = new BeanBuilder<Annotation>(beanManager).beanClass(genericConfiguration.annotationType()).types(Arrays2.<Type> asSet(genericConfiguration.annotationType(), Object.class)).scope(Dependent.class).qualifiers(qualifiers).beanLifecycle(new ContextualLifecycle<Annotation>()
       {
 
          public void destroy(Bean<Annotation> bean, Annotation arg0, CreationalContext<Annotation> arg1)
@@ -623,7 +623,7 @@ public class GenericBeanExtension implements Extension
       final ProducerHolder<?, ?> holder = genericProducers.get(genericConfiguration);
 
       // TODO make this passivation capable?
-      BeanBuilder<AnnotatedMember<?>> builder = new BeanBuilder<AnnotatedMember<?>>(beanManager).beanClass(AnnotatedMember.class).qualifiers(Collections.<Annotation> singleton(annotatedMemberInjectionProvider.get(genericConfiguration))).beanLifecycle(new BeanLifecycle<AnnotatedMember<?>>()
+      BeanBuilder<AnnotatedMember<?>> builder = new BeanBuilder<AnnotatedMember<?>>(beanManager).beanClass(AnnotatedMember.class).qualifiers(Collections.<Annotation> singleton(annotatedMemberInjectionProvider.get(genericConfiguration))).beanLifecycle(new ContextualLifecycle<AnnotatedMember<?>>()
       {
 
          public void destroy(Bean<AnnotatedMember<?>> bean, AnnotatedMember<?> instance, CreationalContext<AnnotatedMember<?>> ctx)

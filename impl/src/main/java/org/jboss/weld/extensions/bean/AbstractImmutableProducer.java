@@ -1,5 +1,7 @@
 package org.jboss.weld.extensions.bean;
 
+import static java.util.Collections.unmodifiableSet;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,8 +9,8 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.Producer;
 
 /**
- * A base class for implementing {@link Producer}. The base class is immutable,
- * and uses defensive copying for collections
+ * A base class for implementing {@link Producer}. The attributes are immutable,
+ * and collections are defensively copied on instantiation.
  * 
  * @author Pete Muir
  * 
@@ -20,12 +22,12 @@ public abstract class AbstractImmutableProducer<T> implements Producer<T>
 
    public AbstractImmutableProducer(Set<InjectionPoint> injectionPoints)
    {
-      this.injectionPoints = injectionPoints;
+      this.injectionPoints = new HashSet<InjectionPoint>(injectionPoints);
    }
 
    public Set<InjectionPoint> getInjectionPoints()
    {
-      return new HashSet<InjectionPoint>(injectionPoints);
+      return unmodifiableSet(injectionPoints);
    }
 
 }

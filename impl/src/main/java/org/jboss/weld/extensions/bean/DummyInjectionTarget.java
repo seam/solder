@@ -16,7 +16,8 @@
  */
 package org.jboss.weld.extensions.bean;
 
-import java.util.Collections;
+import static java.util.Collections.emptySet;
+
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -50,7 +51,7 @@ public class DummyInjectionTarget<T> implements InjectionTarget<T>
 
    public Set<InjectionPoint> getInjectionPoints()
    {
-      return Collections.emptySet();
+      return emptySet();
    }
 
    public T produce(CreationalContext<T> ctx)

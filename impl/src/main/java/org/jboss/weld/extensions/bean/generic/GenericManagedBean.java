@@ -16,7 +16,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 
-import org.jboss.weld.extensions.bean.InjectionPointImpl;
+import org.jboss.weld.extensions.bean.ImmutableInjectionPoint;
 import org.jboss.weld.extensions.reflection.Reflections;
 import org.jboss.weld.extensions.reflection.Synthetic;
 import org.jboss.weld.extensions.reflection.annotated.Annotateds;
@@ -40,11 +40,11 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
          {
             if (AnnotatedMember.class.isAssignableFrom(field.getJavaMember().getType()))
             {
-               injectedFields.put(field, new InjectionPointImpl(field, Collections.<Annotation> singleton(annotatedMemberSyntheticProvider.get(genericConfiguration)), this, false, false));
+               injectedFields.put(field, new ImmutableInjectionPoint(field, Collections.<Annotation> singleton(annotatedMemberSyntheticProvider.get(genericConfiguration)), this, false, false));
             }
             else
             {
-               injectedFields.put(field, new InjectionPointImpl(field, getQualifiers(), this, false, false));
+               injectedFields.put(field, new ImmutableInjectionPoint(field, getQualifiers(), this, false, false));
             }
             if (!field.getJavaMember().isAccessible())
             {

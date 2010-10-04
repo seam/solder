@@ -89,12 +89,12 @@ public class LoggerExtension implements Extension
    
    private static <T> Bean<T> createMessageLoggerBean(Bean<Object> delegate, AnnotatedType<T> type, BeanManager beanManager)
    {
-      return new NarrowingBeanBuilder<T>(delegate).readFromType(type, beanManager).types(type.getBaseType(), Object.class).create();
+      return new NarrowingBeanBuilder<T>(delegate, beanManager).readFromType(type).types(type.getBaseType(), Object.class).create();
    }
    
    private static <T> Bean<T> createMessageBundleBean(Bean<Object> delegate, AnnotatedType<T> type, BeanManager beanManager)
    {
-      return new NarrowingBeanBuilder<T>(delegate).readFromType(type, beanManager).types(type.getBaseType(), Object.class).addQualifier(MessageBundleLiteral.INSTANCE).create();
+      return new NarrowingBeanBuilder<T>(delegate, beanManager).readFromType(type).types(type.getBaseType(), Object.class).addQualifier(MessageBundleLiteral.INSTANCE).create();
    }
    
    void cleanup(@Observes AfterDeploymentValidation event)
