@@ -27,6 +27,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.net.URL;
+import java.util.Properties;
 
 import javax.enterprise.util.Nonbinding;
 import javax.inject.Qualifier;
@@ -34,8 +35,9 @@ import javax.inject.Qualifier;
 /**
  * <p>
  * An injection point qualifier that may be used to specify a resource to
- * inject. The injection point can specify either a {@link URL} or an
- * {@link InputStream}. For example:
+ * inject. The injection point can specify either a {@link URL}, an
+ * {@link InputStream} or a {@link Properties} bundle (if the resource points to
+ * a properties bundle). For example:
  * </p>
  * 
  * <pre>
@@ -46,6 +48,10 @@ import javax.inject.Qualifier;
  * &#064;Inject
  * &#064;Resource(&quot;WEB-INF/web.xml&quot;)
  * InputStream webXml;
+ * 
+ * &#064;Inject
+ * &#064;Resource(&quot;META-INF/aws.properties&quot;)
+ * Properties awsProperties;
  * </pre>
  * 
  * <p>

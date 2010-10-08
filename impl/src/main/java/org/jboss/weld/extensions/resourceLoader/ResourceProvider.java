@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.annotation.PreDestroy;
@@ -40,15 +41,17 @@ import org.jboss.weld.extensions.reflection.AnnotationInstanceProvider;
  * </p>
  * 
  * <pre>
- * &#64;Inject
- * void readXml(ResourceProvider provider, String fileName) {
+ * &#064;Inject
+ * void readXml(ResourceProvider provider, String fileName)
+ * {
  *    InputStream webXml = provider.loadResourceStream(fileName);
  * }
  * </pre>
  * 
  * <p>
  * If you know the name of the resource you are loading at development time you
- * can inject it directly using the <code>&#64;{@link Resource}</code> qualifier.
+ * can inject it directly using the <code>&#64;{@link Resource}</code>
+ * qualifier.
  * </p>
  * 
  * <p>
@@ -71,20 +74,24 @@ public class ResourceProvider implements Serializable
 
    private final Instance<URL> urlProvider;
    private final Instance<InputStream> inputStreamProvider;
+   private final Instance<Properties> propertiesBundleProvider;
 
    private final Instance<Collection<URL>> urlsProvider;
    private final Instance<Collection<InputStream>> inputStreamsProvider;
+   private final Instance<Collection<Properties>> propertiesBundlesProvider;
 
    // Workaround WELD-466
    private final Set<InputStream> streamsCache;
 
    @Inject
-   private ResourceProvider(@Any Instance<InputStream> inputStreamProvider, @Any Instance<URL> urlProvider, @Any Instance<Collection<InputStream>> inputStreamsProvider, @Any Instance<Collection<URL>> urlsProvider)
+   private ResourceProvider(@Any Instance<InputStream> inputStreamProvider, @Any Instance<URL> urlProvider, @Any Instance<Collection<InputStream>> inputStreamsProvider, @Any Instance<Collection<URL>> urlsProvider, @Any Instance<Properties> propertiesBundleProvider, @Any Instance<Collection<Properties>> propertiesBundlesProvider)
    {
       this.inputStreamProvider = inputStreamProvider;
       this.urlProvider = urlProvider;
       this.urlsProvider = urlsProvider;
       this.inputStreamsProvider = inputStreamsProvider;
+      this.propertiesBundleProvider = propertiesBundleProvider;
+      this.propertiesBundlesProvider = propertiesBundlesProvider;
       this.streamsCache = new HashSet<InputStream>();
    }
 
@@ -230,6 +237,75 @@ public class ResourceProvider implements Serializable
       Map<String, Object> values = new HashMap<String, Object>();
       values.put("value", name);
       return urlsProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
+   }
+
+   /**
+    * <p>
+    * Load a properties bundle.
+    * </p>
+    * 
+    * <p>
+    * The resource loaders will be searched in precedence order, the first
+    * result found being returned. The default search order is:
+    * </p>
+    * 
+    * <ul>
+    * <li>classpath</li>
+    * <li>servlet context, if available</li>
+    * </ul>
+    * 
+    * <p>
+    * However extensions may extend this list.
+    * </p>
+    * 
+    * @param name the name of the properties bundle to load
+    * @return a set of properties, or an empty set if no properties bundle can
+    *         be loaded
+    * @throws RuntimeException if an error occurs loading the resource
+    */
+   public Properties loadPropertiesBundle(String name)
+   {
+      if (name == null || name.equals(""))
+      {
+         throw new IllegalArgumentException("You must specify the name of the properties bundle to load");
+      }
+      Map<String, Object> values = new HashMap<String, Object>();
+      values.put("value", name);
+      return propertiesBundleProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
+   }
+
+   /**
+    * <p>
+    * Load all properties bundles known to the resource loader by name.
+    * </p>
+    * 
+    * <p>
+    * By default, Weld Extensions will search:
+    * </p>
+    * 
+    * <ul>
+    * <li>classpath</li>
+    * <li>servlet context, if available</li>
+    * </ul>
+    * 
+    * <p>
+    * However extensions may extend this list.
+    * </p>
+    * 
+    * @param name the name of the properties bundle to load
+    * @return a collection of properties bundles, or an empty collection if no
+    *         resources are found
+    * @throws RuntimeException if an error occurs loading the properties bundle
+    */
+   public Collection<Properties> loadPropertiesBundles(String name)
+   {
+      if (name == null || name.equals(""))
+      {
+         throw new IllegalArgumentException("You must specify the name of the properties bundles to load");
+      }
+      Map<String, Object> values = new HashMap<String, Object>();
+      values.put("value", name);
+      return propertiesBundlesProvider.select(annotationInstanceProvider.get(Resource.class, values)).get();
    }
 
    @SuppressWarnings("unused")

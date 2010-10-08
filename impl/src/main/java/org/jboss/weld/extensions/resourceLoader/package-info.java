@@ -16,6 +16,10 @@
  * &#064;Inject
  * &#064;Resource(&quot;WEB-INF/web.xml&quot;)
  * InputStream webXml;
+ * 
+ * &#064;Inject
+ * &#064;Resource(&quot;META-INF/aws.properties&quot;)
+ * Properties awsProperties;
  * </pre>
  * 
  * <p>

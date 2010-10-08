@@ -16,6 +16,7 @@
  */
 package org.jboss.weld.extensions.resourceLoader;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import org.jboss.weld.extensions.util.Sortable;
@@ -104,6 +106,74 @@ public class ResourceLoaderManager
          }
       }
       return null;
+   }
+
+   /**
+    * <p>
+    * Load a properties bundle by name.
+    * </p>
+    * 
+    * <p>
+    * The resource loaders will be searched in precedence order, the first
+    * result found being returned.
+    * </p>
+    * 
+    * @param name the name of the properties bundle to load
+    * @return a set of properties, or an empty set if no properties bundle can
+    *         be loaded
+    * @throws RuntimeException if an error occurs loading the properties bundle
+    */
+   public Properties getPropertiesBundle(String name)
+   {
+      return loadProperties(getResourceAsStream(name), name);
+   }
+   
+   private Properties loadProperties(InputStream is, String name)
+   {
+      Properties properties = new Properties();
+      if (is != null)
+      {
+         try
+         {
+            properties.load(is);
+         }
+         catch (IOException e)
+         {
+            throw new RuntimeException("Error opening stream " + name, e);
+         }
+         finally
+         {
+            try
+            {
+               is.close();
+            }
+            catch (IOException e)
+            {
+               throw new RuntimeException("Error closing stream " + name, e);
+            }
+         }
+      }
+      return properties;
+   }
+
+   /**
+    * <p>
+    * Load all properties bundles known to the resource loader by name.
+    * </p>
+    * 
+    * @param name the name of the properties bundle to load
+    * @return a collection of properties bundles pointing to the resources, or an empty
+    *         collection if no resources are found
+    * @throws RuntimeException if an error occurs loading the properties bundles
+    */
+   public Collection<Properties> getPropertiesBundles(String name)
+   {
+      Collection<Properties> properties = new HashSet<Properties>();
+      for (InputStream is : getResourcesAsStream(name))
+      {
+         properties.add(loadProperties(is, name));
+      }
+      return properties;
    }
 
    /**

@@ -18,11 +18,14 @@
 package org.jboss.weld.extensions.test.resourceLoader;
 
 import static org.jboss.weld.extensions.test.util.Deployments.baseDeployment;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Properties;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
@@ -32,6 +35,7 @@ import javax.inject.Inject;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.weld.extensions.resourceLoader.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,11 +45,16 @@ public class ResourceLoaderTest
    @Deployment
    public static Archive<?> deployment()
    {
-      return baseDeployment().addPackage(ResourceLoaderTest.class.getPackage()).addResource("com/acme/foo1");
+      return baseDeployment().addPackage(ResourceLoaderTest.class.getPackage())
+         .addResource("com/acme/foo1")
+         .addResource("com/acme/foo2.properties");
    }
 
    @Inject
    ResourceClient resourceClient;
+   
+   @Inject @Resource("com/acme/foo2.properties")
+   Properties foo2;
 
    @Inject
    BeanManager beanManager;
@@ -60,6 +69,15 @@ public class ResourceLoaderTest
       char[] chars = new char[4];
       reader.read(chars, 0, 4);
       assert new String(chars).equals("foo1");
+   }
+   
+   @Test
+   public void testLoadsProperties() throws Throwable
+   {
+      assertNotNull(foo2);
+      assertEquals(2, foo2.size());
+      assertEquals("Pete", foo2.getProperty("name"));
+      assertEquals("28", foo2.getProperty("age"));
    }
 
    @Test

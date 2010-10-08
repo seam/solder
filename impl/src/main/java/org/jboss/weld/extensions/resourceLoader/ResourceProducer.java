@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -98,6 +99,20 @@ class ResourceProducer
    {
       String name = getName(injectionPoint);
       return resourceLoaderManager.getResources(name);
+   }
+   
+   @Produces @Resource("")
+   Properties loadPropertiesBundle(InjectionPoint injectionPoint)
+   {
+      String name = getName(injectionPoint);
+      return resourceLoaderManager.getPropertiesBundle(name);
+   }
+   
+   @Produces @Resource("")
+   Collection<Properties> loadPropertiesBundles(InjectionPoint injectionPoint)
+   {
+      String name = getName(injectionPoint);
+      return resourceLoaderManager.getPropertiesBundles(name);
    }
    
    private String getName(InjectionPoint ip)
