@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Set;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -72,15 +73,22 @@ abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T>
       }
       finally
       {
-         // Generic managed beans must be dependent
-         creationalContext.release();
+         if (getDeclaringBean().getScope().equals(Dependent.class))
+         {
+            creationalContext.release();
+         }
       }
    }
    
    protected Object getReceiver(CreationalContext<T> creationalContext)
    {
-      Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(getDeclaringBeanType(), getDeclaringBeanQualifiers()));
+      Bean<?> declaringBean = getDeclaringBean();
       return getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
+   }
+   
+   protected Bean<?> getDeclaringBean()
+   {
+      return getBeanManager().resolve(getBeanManager().getBeans(getDeclaringBeanType(), getDeclaringBeanQualifiers()));
    }
 
    @Override

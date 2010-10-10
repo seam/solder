@@ -17,7 +17,6 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.weld.extensions.bean.Beans;
 import org.jboss.weld.extensions.bean.ImmutableInjectionPoint;
 import org.jboss.weld.extensions.reflection.annotated.Annotateds;
 import org.jboss.weld.extensions.reflection.annotated.InjectableMethod;

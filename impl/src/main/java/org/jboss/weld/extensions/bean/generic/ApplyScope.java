@@ -16,10 +16,13 @@
  */
 package org.jboss.weld.extensions.bean.generic;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
@@ -30,8 +33,8 @@ import java.lang.annotation.Target;
  * @author Stuart Douglas
  * 
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE })
+@Retention(RUNTIME)
+@Target({ TYPE, METHOD, FIELD })
 @Documented
 public @interface ApplyScope
 {
