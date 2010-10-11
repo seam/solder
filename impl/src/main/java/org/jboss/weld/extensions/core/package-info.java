@@ -1,7 +1,7 @@
 /**
  * <p>
- * Weld Extensions provides a number enhancements to the CDI programming model which are under trial and may be 
- * included in later releases of <em>Contexts and Dependency Injection</em>.
+ * A number enhancements to the CDI programming model which are under trial and may be included in later releases 
+ * of <em>Contexts and Dependency Injection</em>.
  * </p>
  * 
  * <p>

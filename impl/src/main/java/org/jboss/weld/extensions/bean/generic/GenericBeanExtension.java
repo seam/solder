@@ -67,7 +67,7 @@ import org.jboss.weld.extensions.reflection.annotated.AnnotationRedefiner;
 import org.jboss.weld.extensions.reflection.annotated.RedefinitionContext;
 import org.jboss.weld.extensions.unwraps.Unwraps;
 import org.jboss.weld.extensions.unwraps.UnwrapsProducerBean;
-import org.jboss.weld.extensions.util.Arrays2;
+import org.jboss.weld.extensions.util.collections.Arrays2;
 import org.jboss.weld.extensions.util.collections.Multimaps;
 import org.jboss.weld.extensions.util.collections.SetMultimap;
 import org.jboss.weld.extensions.util.collections.Supplier;

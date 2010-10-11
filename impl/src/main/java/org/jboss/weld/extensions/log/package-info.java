@@ -17,6 +17,11 @@
 
 /**
  * <p>
+ * Provides injectable typed loggers and injectable typed message bundles suitable for internationalization and
+ * localization which can use any logging backend.  
+ * </p>
+ * 
+ * <p>
  * Weld Extensions integrates JBoss Logging 3 as it's logging framework of choice. 
  * JBoss Logging 3 is a modern logging framework offering:
  * </p>

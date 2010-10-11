@@ -13,7 +13,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.weld.extensions.literal.DefaultLiteral;
-import org.jboss.weld.extensions.util.Arrays2;
+import org.jboss.weld.extensions.util.collections.Arrays2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

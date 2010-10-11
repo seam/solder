@@ -1,6 +1,6 @@
 /**
  * <p>
- * The service handler facility allow you to declare interfaces and abstract classes as automatically implemented beans.
+ * Allows interfaces and abstract classes to be declated as automatically implemented beans.
  * Any call to an abstract method on the interface or abstract class will be forwarded to the invocation handler for 
  * processing.
  * </p>

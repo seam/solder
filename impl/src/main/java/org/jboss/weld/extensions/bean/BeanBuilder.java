@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.extensions.bean;
 
-import static org.jboss.weld.extensions.util.Arrays2.asSet;
+import static org.jboss.weld.extensions.util.collections.Arrays2.asSet;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;

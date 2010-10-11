@@ -2,11 +2,26 @@ package org.jboss.weld.extensions.util;
 
 import java.util.Locale;
 
+/**
+ * Utilities for working with locales.
+ * 
+ * @author Pete Muir
+ * 
+ */
 public class Locales
 {
-   
-   private Locales() {}
-   
+
+   private Locales()
+   {
+   }
+
+   /**
+    * Utility to convert a string using the standard format for specifying a
+    * Locale to a {@link Locale} object.
+    * 
+    * @param localeName the string providing the locale.
+    * @return the encoded {@link Locale}
+    */
    public static Locale toLocale(String localeName)
    {
       if (localeName == null)

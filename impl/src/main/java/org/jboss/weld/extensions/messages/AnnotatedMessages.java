@@ -7,6 +7,12 @@ import java.lang.reflect.Method;
 import org.jboss.logging.Message;
 import org.jboss.weld.extensions.log.MessageBundle;
 
+/**
+ * Messages used for logging in the reflection.annotated package
+ * 
+ * @author Pete Muir
+ *
+ */
 @MessageBundle
 public interface AnnotatedMessages
 {

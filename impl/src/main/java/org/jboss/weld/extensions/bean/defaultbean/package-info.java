@@ -1,8 +1,9 @@
 /**
+ * 
  * <p>
- * Allows a default implementation of a particular service to be provided and overridden as needed. Although this may 
- * sound identical to an alternative, alternatives have some restrictions that may make them undesirable. Primarily, 
- * alternatives require an entry in every <code>beans.xml</code> file in an application.
+ * Allows a library to provide a default implmentation of a bean, which is used unless overridden by an application. 
+ * Although this may sound identical to an alternative, alternatives have some restrictions that may make them 
+ * undesirable. Primarily, alternatives require an entry in every <code>beans.xml</code> file in an application.
  * </p>
  * 
  * <p>

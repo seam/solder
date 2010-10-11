@@ -1,7 +1,7 @@
 /**
  * <p>
- * Weld Extensions provides an extensible, injectable resource loader. The resource loader 
- * can provide URLs or managed input streams.
+ * An extensible, injectable resource loader that can provide provide URLs, managed input streams and sets of 
+ * properties.
  * </p>
  * 
  * <p>
