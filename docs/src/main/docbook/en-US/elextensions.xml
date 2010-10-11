@@ -2,7 +2,7 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="elextensions">
-   <title>Unified EL</title>
+   <title>Evaluating Unified EL</title>
    
    <para>
       Weld extensions provides a method to evaluate EL that is not dependent on JSF or JSP, a facility sadly missing in
