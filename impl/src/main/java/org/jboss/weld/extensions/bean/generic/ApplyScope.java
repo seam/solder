@@ -28,7 +28,8 @@ import java.lang.annotation.Target;
 /**
  * Specifies that the managed bean or producer should inherit the scope of the
  * generic configuration producer. If you annotate a producer field, producer
- * method or managed bean with @ApplyScope it must not define another scope.
+ * method or managed bean with <code>@ApplyScope</code> it must not define
+ * another scope.
  * 
  * @author Stuart Douglas
  * 

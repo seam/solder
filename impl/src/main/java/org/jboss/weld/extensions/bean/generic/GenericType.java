@@ -23,8 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A meta annotation used to indicate that the annotation is used for
- * configuration of a generic bean
+ * A meta annotation used to indicate that the annotation is a genreic
+ * configuration annotation.
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE })
+@Target({ ElementType.TYPE })
 @Documented
 public @interface GenericType
 {

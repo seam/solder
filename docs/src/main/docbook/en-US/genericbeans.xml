@@ -6,172 +6,62 @@
       
    <para>
       Many common services and API's require the use of more than just one class. When exposing these services via CDI,
-      it would be time consuming and error prone to force the end user to provide producers for all the different 
+      it would be time consuming and error prone to force the end developer to provide producers for all the different 
       classes required. Generic beans provides a solution, allowing a framework author to provide a set of related 
-      beans that can be installed from a single producer configuration point with different qualifiers and 
-      configurations. 
+      beans, one for each single configuration point defined by the end developer. The configuration points specifies 
+      the qualifiers which are inherited by all beans in the set.
+   </para>
+   
+   <para>
+      To illustrate the use of generic beans, we'll use the following example. Imagine we are writing an extension to 
+      integrate our custom messaging solution "ACME Messaging" with CDI. The ACME Messaging API for sending messages 
+      consists of several interfaces:
    </para>
       
+   <variablelist>
+      <varlistentry>
+         <term><code>MessageQueue</code></term>
+         <listitem>The message queue, onto which messages can be placed, and acted upon by ACME Messaging</listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>MessageDispatcher</code></term>
+         <listitem>The dispatcher, responsible for placing messages created by the user onto the queue</listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>DispatcherPolicy</code></term>
+         <listitem>The dispatcher policy, which can be used to tweak the dispatch policy by the client</listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>MessageSystemConfiguration</code></term>
+         <listitem>The messaging system configuration</listitem>
+      </varlistentry>
+   </variablelist>  
+      
+   <para>
+      We want to be able to create as many <code>MessageQueue</code> configurations's as they need, however we do not 
+      want to have to declare each producers and the associated plumbing for every queue. Generic beans are an ideal 
+      solution to this problem.
+   </para>
+   
+   
    <section>
-      <title>Defining Generic Beans</title>
-         
-      <para>
-         Lets start with a simple example. Say we are writing an extension to integrate our companies message solution 
-         'ACME Messaging' with CDI. The ACME Messaging API consists of several classes:
-      </para>
-      
-      <itemizedlist>
-         <listitem><code>MessageQueue</code></listitem>
-         <listitem><code>MessageDispatcher</code></listitem>
-         <listitem><code>MessageReceiver</code></listitem>
-         <listitem><code>MessageSystemConfiguration</code></listitem>
-      </itemizedlist>  
+      <title>Using generic beans</title>
       
       <para>
-         We want to allow the end user to create as many <code>MessageQueue</code>'s as they need, however we do not 
-         want them to have to declare 4 different producers and the associated plumbing for every queue. This is where 
-         generic beans come in.
+         Before we take a look at creating generic beans, let's see how we will use them.
       </para>
       
       <para>
-         Lets create some generic beans:
-      </para>
-
-      <programlisting role="JAVA">@Retention(RUNTIME)
-@GenericType(MessageSystemConfiguration.class)
-@interface ACMEQueue {
-   String value();
-}</programlisting>
-
-      <programlisting role="JAVA">@Generic(ACMEQueue.class)
-class QueueManager {
-
-   @Inject @Generic
-   MessageSystemConfiguration config;
-   
-   @Produces @ApplyScope
-   public MessageQueue messageQueueProducer() {
-      MessageQueueFactory factory = config.getMessageQueueFactory();
-      return factory.createMessageQueue();
-   }
-}</programlisting>
-
-      <programlisting role="JAVA">@Generic(ACMEQueue.class)
-class MessageManager {
-
-   @Inject @Generic
-   MessageQueue queue;
-   
-   @Produces @ConversationScoped
-   MessageReciever messageReceiverProducer() {
-      return queue.createMessageReceiver();
-   }
-   
-   @Produces @ConversationScoped
-   MessageReciever messageDispatcherProducer() {
-      return queue.createMessageDispatcher();
-   }
-   
-   @Produces @QueueName
-   String getQueueName(@Inject @Generic ACMEQueue configuration;) {
-      return configuration.value();
-   }
-}</programlisting>
-      
-      <para>
-         There is quite a bit going on here, lets break down exactly what is happening:
-      </para>
-         
-      <programlisting role="JAVA">
-@Retention(RUNTIME)
-@GenericType(MessageSystemConfiguration.class)
-public @interface ACMEQueue
-{
-   String value();
-}
-      </programlisting>   
-
-      <para>
-         All generic beans must have a generic configuration type, in this case it is <code>ACMEQueue</code>. The 
-         <code>@GenericType</code> means that this is a generic configuration type. The annotation value of 
-         <code>MessageSystemConfiguration.class</code> tells us that this generic bean set is configured via producers 
-         that have a type of <code>MessageSystemConfiguration</code>.
-      </para>
-      
-      <important>
-         <para>
-            All generic configuration annotations should have at least one member. If the annotation has no members 
-            then you will only be able to install one copy of your generic beans.
-         </para>
-      </important>
-   
-      <programlisting role="=JAVA">@Generic(ACMEQueue.class)
-class MessageManager</programlisting>
-
-      <para>
-         The <code>@Generic(ACMEQueue.class)</code> annotation means that this is a generic bean in the 
-         <code>ACMEQueue</code> generic bean set. Generic beans are not available for injection by default, they can 
-         only be injected after they have been configured by a generic producer method.
-      </para>
-      
-      <note>
-         <para>
-            Strictly speaking the beans are still installed, but they have a synthetic qualifier applied to them that 
-            prevents them from being injected.
-         </para>
-      </note>
-         
-      <programlisting role="=JAVA">   @Inject @Generic
-   MessageQueue queue;</programlisting>     
-
-      <para>
-         The <code>@Generic</code> annotation on this injection point means that another generic bean from the same 
-         generic bean set is going to be injected here. You must use the <code>@Generic</code> annotation at every 
-         injection point that is going to be injected with a generic bean or the product of a producer on a generic 
-         bean.   
-      </para>
-               
-      <programlisting role="JAVA">   @Produces @ApplyScope
-   MessageQueue messageQueueProducer()
-      </programlisting>
-         
-      <para>
-         This may look like a normal producer method, however because it is declared on a generic bean it is not 
-         installed by default. The <code>ApplyScope</code> annotation also changes the scope of the producer, instead of
-         having a pre-defined scope the producer will take on the same scope that is defined on the generic bean 
-         configuration point. 
-      </para>
-
-      <programlisting role="JAVA">   @Produces @QueueName
-   String getQueueName(@Inject @Generic ACMEQueue configuration) {
-	   return configuration.value();
-   }</programlisting>
-
-      <para>
-         <code>@Generic</code> can also be used to inject the configuration annotation. This producer method allows the 
-         end user to directly inject the name of the queue as specified in the configuration annotation. 
-      </para>
-         
-   </section>
-   <section>
-      <title>Configuring Generic Beans</title>
-      <para>
-         Now we have our generic beans lets configure them. Generic beans are configured via producer methods/fields, 
-         the producer type must be the type specified in the <code>@GenericType</code> annotation and the producer must 
-         also be annotated with the generic configuration annotation. Continuing with our ACME Messaging example we are 
-         going to configure two queues, a default queue that is installed with qualifier <code>@Default</code> and a 
-         durable queue that has qualifier <code>@Durable</code>:
+         Generic beans are configured via producer methods and fields. We want to create two queues to interact with 
+         ACME Messaging, a default queue that is installed with qualifier <code>@Default</code> and a durable queue that
+         has qualifier <code>@Durable</code>:
       </para>
          
       <programlisting role="JAVA">class MyMessageQueues {
    
    @Produces
    @ACMEQueue("defaultQueue")
-   MessageSystemConfiguration producerDefaultQueue() {
-      MessageSystemConfiguration config = new MessageSystemConfiguration();
-      config.setDurable(false);
-      return config;
-   }
+   MessageSystemConfiguration defaultQueue = new MessageSystemConfiguration();
    
    @Produces @Durable @ConversationScoped
    @ACMEQueue("durableQueue")
@@ -183,44 +73,161 @@ class MessageManager</programlisting>
 }</programlisting>
    
       <para>
-         Lets have a look at what is going on here. When the generic bean extensions sees the <code>@ACMEQueue</code> 
-         annotation it knows that this is a generic bean configuration point. It then installs a new copy of every bean 
-         from the corresponding generic bean set with these extra qualifiers added to the generic beans existing 
-         qualifiers. Qualifiers are also added everywhere that <code>@Generic</code> appeared on an injection point in 
-         the generic bean set. All occurrences of the <code>@ApplyScope</code> annotation are also replaced with the 
-         scope defined on the producer.  
+         Looking first at the default queue, in addition to the <code>@Produces</code> annotation, the generic 
+         configuration annotation <code>ACMEQueue</code>, is used, which defines this to be a generic configuration 
+         point for ACME messaging (and cause a whole set of beans to be created, exposing for example the dispatcher).
+         The generic configuration annotation specifies the queue name, and the value of the producer field defines the
+         messaging system's configuration (in this case we use all the defaults). As no qualifier is placed on the
+         definition, <code>@Default</code> qualifier is inherited by all beans in the set.
+      </para>
+   
+      <para>
+         The durable queue is defined as a producer method (as we want to alter the configuration of the queue before
+         having Weld Extensions use it). Additionally, it specifies that the generic beans created (that allow for 
+         their scope to be overridden) should be placed in the conversation scope. Finally, it specifies that the 
+         generic beans created should inherit the qualifier <code>@Durable</code>.
       </para>
       
       <para>
-         We can now inject our generic beans as normal, using the qualifiers specified on the configuration points:
+         We can now inject our generic beans as normal, using the qualifiers specified on the configuration point:
       </para> 
           
-      <programlisting role="JAVA">class MessageLogger {
+      <programlisting role="JAVA"><![CDATA[class MessageLogger {
   
    @Inject
-   MessageReceiver receiver;
+   MessageDispatcher dispatcher;
   
-   @Inject @QueueName
-   String queueName;
-  
-   void logMessages() {
-      ...
+   void logMessage(Payload payload) {
+      /* Add metaddata to the message */
+      Collection<Header> headers = new ArrayList<Header>();
+      ... 
+      Message message = new Message(headers, payload);
+      dispatcher.send(message);
    }
   
-}</programlisting>
+}]]></programlisting>
 
       <programlisting role="JAVA">class DurableMessageLogger {
   
    @Inject @Durable
-   MessageReceiver receiver;
+   MessageDispatcher dispatcher;
+   
+   @Inject @Durable
+   DispatcherPolicy policy;
+   
+         
+   /* Tweak the dispatch policy to enable duplicate removal */
+   @Inject
+   void tweakPolicy(@Durable DispatcherPolicy policy) {
+      policy.removeDuplicates();
+   }
   
-   @Inject @Durable @QueueName
-   String queueName;
-  
-   void logMessages() {
+   void logMessage(Payload payload) {
       ...
    }
 }</programlisting>      
 
    </section>
+      
+   <section>
+      <title>Defining Generic Beans</title>
+      
+      <para>
+         Having seen how we use the generic beans, let's look at how to define them. We start by creating the generic 
+         configuration annotation:
+      </para>
+
+      <programlisting role="JAVA">@Retention(RUNTIME)
+@GenericType(MessageSystemConfiguration.class)
+@interface ACMEQueue {
+
+   String name();
+   
+}</programlisting>
+
+      <para>
+         The generic configuration annotation a defines the generic configuration type (in this case 
+         <code>MessageSystemConfiguration</code>); the type produced by the generic configuration point must be of this 
+         type. Additionally it defines the member <code>name</code>, used to provide the queue name. 
+      </para>
+      
+      <important>
+         <para>
+            All generic configuration annotations should have at least one member. Each configuration must specify a 
+            unique value for this member.
+         </para>
+      </important>
+
+      <para>
+         Next, we define the queue manager bean. The manager has one producer method, which creates the queue from the
+         configuration:
+      </para>      
+
+      <programlisting role="JAVA">@GenericConfiguration(ACMEQueue.class) @ApplyScope
+class QueueManager {
+
+   @Inject @Generic
+   MessageSystemConfiguration systemConfig;
+   
+   @Inject
+   ACMEQueue config;
+   
+   MessageQueueFactory factory;
+   
+   @PostConstruct
+   void init() {
+      factory = systemConfig.createMessageQueueFactory();
+   }
+   
+   @Produces @ApplyScope
+   public MessageQueue messageQueueProducer() {
+      return factory.createMessageQueue(config.name());
+   }
+}</programlisting>
+
+   <para>
+      The bean is declared to be a generic bean for the <code>@ACMEQueue</code> generic configuration type annotation
+      by placing the <code>@GenericConfiguration</code> annotation on the class. We can inject the generic configuration
+      type using the <code>@Generic</code> qualifier, as well the annotation used to define the queue.
+   </para>
+   
+   <para>
+      Placing the <code>@ApplyScope</code> annotation on the bean causes it to inherit the scope from the generic 
+      configuration point. As creating the queue factory is a heavy operation we don't want to do it more than 
+      necessary.
+   </para>
+   
+   <para>
+      Having created the <code>MessageQueueFactory</code>, we can then expose the queue, obtaining it's name from the
+      generic configuration annotation. Additionally, we define the scope of the producer method to be inherited from 
+      the generic configuration point by placing the annotation <code>@ApplyScope</code> on the producer method. The 
+      producer method automatically inherits the qualifiers specified by the generic configuration point.
+   </para>
+   
+   <para>
+      Finally we define the message manager, which exposes the message dispatcher, as well as allowing the client to
+      inject an object which exposes the policy the dispatcher will use when enqueing messages. The client can then
+      tweak the policy should they wish.
+   </para>
+
+      <programlisting role="JAVA">@Generic(ACMEQueue.class)
+class MessageManager {
+
+   @Inject @Generic
+   MessageQueue queue;
+   
+   @Produces @ApplyScope
+   MessageDispatcher messageDispatcherProducer() {
+      return queue.createMessageDispatcher();
+   }
+   
+   @Produces
+   DispatcherPolicy getPolicy() {
+      return queue.getDispatcherPolicy();
+   }   
+   
+}</programlisting>
+
+   </section>
+   
 </chapter>

@@ -1,8 +1,10 @@
-package org.jboss.weld.extensions.bean.generic;
+package org.jboss.weld.extensions.literal;
 
 import java.lang.annotation.Annotation;
 
 import javax.enterprise.util.AnnotationLiteral;
+
+import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 
 public class GenericConfigurationLiteral extends AnnotationLiteral<GenericConfiguration> implements GenericConfiguration
 {

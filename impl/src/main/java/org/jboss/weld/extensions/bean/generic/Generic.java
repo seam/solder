@@ -31,8 +31,8 @@ import javax.inject.Qualifier;
 /**
  * 
  * Qualifier used to identify generic bean injection points. Generic bean
- * injections can only occur in other generic beans which share the same config
- * annotation.
+ * injections can only occur in other generic beans which share the same generic
+ * configuration annotation annotation.
  * 
  * @author Pete Muir
  * 
@@ -40,7 +40,7 @@ import javax.inject.Qualifier;
  * 
  */
 @Retention(RUNTIME)
-@Target( { METHOD, FIELD, PARAMETER, TYPE })
+@Target({ METHOD, FIELD, PARAMETER, TYPE })
 @Qualifier
 @Documented
 public @interface Generic
