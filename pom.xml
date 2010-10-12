@@ -251,6 +251,11 @@
    <profiles>
       <profile>
          <id>dist</id>
+         <activation>
+            <property>
+               <name>release</name>
+            </property>
+         </activation>
          <modules>
             <module>docs</module>
          </modules>
