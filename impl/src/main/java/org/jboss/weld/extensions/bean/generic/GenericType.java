@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A meta annotation used to indicate that the annotation is a genreic
+ * A meta annotation used to indicate that the annotation is a generic
  * configuration annotation.
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
