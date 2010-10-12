@@ -6,8 +6,8 @@
    
    <para>
       Getting started with Weld Extensions is easy. If you are using Maven, then you can declare a dependency on Weld
-      Extensions (<code>org.jboss.weld:weld-extensions:${weld.extensions.version}</code>, make sure you have the JBoss Maven repository
-      enabled). Otherwise, add the jar to your compile time and runtime classpath. 
+      Extensions (<code>org.jboss.weld:weld-extensions:${weld.extensions.version}</code>, make sure you have the JBoss 
+      Maven repository enabled). Otherwise, add the jar to your compile time and runtime classpath. 
    </para>
    
    <para>
@@ -29,6 +29,9 @@
       </listitem>
       <listitem>
          <code>javax.inject:javax.inject</code>
+      </listitem>
+      <listitem>
+         <code>javax.transaction:jta</code>
       </listitem>
    </itemizedlist>
    
