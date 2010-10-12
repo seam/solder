@@ -117,7 +117,7 @@ public class MavenArtifactResolver
    
    String scanForArtifact(List<String> paths)
    {
-      Pattern pattern = Pattern.compile(artifactId + "-[\\d+\\.]+(?:[\\-\\.]\\p{Alpha}*)?.jar$");
+      Pattern pattern = Pattern.compile(artifactId + "-[\\d+\\.]+(?:[\\-\\.]\\p{Alnum}*)?.jar$");
       for (String path : paths)
       {
          if (pattern.matcher(path).find())
