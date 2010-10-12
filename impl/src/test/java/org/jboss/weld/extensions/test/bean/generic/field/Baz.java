@@ -24,8 +24,8 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.generic.ApplyScope;
-import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 import org.jboss.weld.extensions.bean.generic.Generic;
+import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 import org.jboss.weld.extensions.unwraps.Unwraps;
 
 /**
@@ -51,6 +51,7 @@ public class Baz implements Serializable
    private Corge corge;
    
    @Inject 
+   @Generic
    private Message message;
 
    public Bar getBar()

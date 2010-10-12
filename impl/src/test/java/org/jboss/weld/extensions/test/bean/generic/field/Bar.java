@@ -21,6 +21,7 @@ import java.io.Serializable;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
+import org.jboss.weld.extensions.bean.generic.Generic;
 import org.jboss.weld.extensions.bean.generic.GenericConfiguration;
 
 /**
@@ -37,6 +38,7 @@ public class Bar implements Serializable
    private static final long serialVersionUID = -6679070875886826999L;
 
    @Inject
+   @Generic
    private Message injectedMessage;
 
    // A Message with no @Inject

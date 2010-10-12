@@ -308,12 +308,7 @@ public class GenericBeanExtension implements Extension
             {
                if (ctx.getAnnotatedElement() instanceof Field)
                {
-                  if (ctx.getRawType().equals(genericConfigurationType))
-                  {
-                     // This is a Generic configuration injection point
-                     ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGenericLiteral.INSTANCE);
-                  }
-                  else if (ctx.getAnnotatedElement().isAnnotationPresent(Generic.class))
+                  if (ctx.getAnnotatedElement().isAnnotationPresent(Generic.class))
                   {
                      // This is a Generic bean injection point
                      ctx.getAnnotationBuilder().remove(Inject.class).add(InjectGenericLiteral.INSTANCE);
