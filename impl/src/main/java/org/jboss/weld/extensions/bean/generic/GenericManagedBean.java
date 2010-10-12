@@ -3,6 +3,7 @@ package org.jboss.weld.extensions.bean.generic;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -17,6 +18,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 
 import org.jboss.weld.extensions.bean.ImmutableInjectionPoint;
+import org.jboss.weld.extensions.literal.AnyLiteral;
 import org.jboss.weld.extensions.reflection.Reflections;
 import org.jboss.weld.extensions.reflection.Synthetic;
 import org.jboss.weld.extensions.reflection.annotated.Annotateds;
@@ -34,6 +36,8 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
       this.injectionTarget = injectionTarget;
       this.injectedFields = new HashMap<AnnotatedField<? super T>, InjectionPoint>();
       this.scopeOverride = scopeOverride;
+      Set<Annotation> filteredQualifiers = new HashSet<Annotation>(getQualifiers());
+      filteredQualifiers.remove(AnyLiteral.INSTANCE);
       for (AnnotatedField<? super T> field : type.getFields())
       {
          if (field.isAnnotationPresent(InjectGeneric.class))
@@ -44,7 +48,7 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
             }
             else
             {
-               injectedFields.put(field, new ImmutableInjectionPoint(field, getQualifiers(), this, false, false));
+               injectedFields.put(field, new ImmutableInjectionPoint(field, filteredQualifiers, this, false, false));
             }
             if (!field.getJavaMember().isAccessible())
             {

@@ -61,6 +61,7 @@ import javax.inject.Inject;
 import org.jboss.weld.extensions.bean.BeanBuilder;
 import org.jboss.weld.extensions.bean.Beans;
 import org.jboss.weld.extensions.bean.ContextualLifecycle;
+import org.jboss.weld.extensions.literal.AnyLiteral;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.jboss.weld.extensions.reflection.Synthetic;
 import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
@@ -560,6 +561,7 @@ public class GenericBeanExtension implements Extension
                   unwrapsQualifiers.add(DefaultLiteral.INSTANCE);
                }
                Set<Annotation> beanQualifiers = Beans.getQualifiers(beanManager, i.getDeclaringType().getAnnotations(), member.getAnnotations());
+               beanQualifiers.remove(AnyLiteral.INSTANCE);
                if (beanQualifiers.isEmpty())
                {
                   beanQualifiers.add(DefaultLiteral.INSTANCE);

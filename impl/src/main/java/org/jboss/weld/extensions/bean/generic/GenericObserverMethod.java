@@ -2,7 +2,7 @@ package org.jboss.weld.extensions.bean.generic;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -11,10 +11,10 @@ import javax.enterprise.event.Reception;
 import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.ObserverMethod;
 
 import org.jboss.weld.extensions.bean.ForwardingObserverMethod;
+import org.jboss.weld.extensions.literal.AnyLiteral;
 import org.jboss.weld.extensions.reflection.annotated.InjectableMethod;
 import org.jboss.weld.extensions.reflection.annotated.ParameterValueRedefiner;
 
@@ -34,9 +34,11 @@ class GenericObserverMethod<T, X> extends ForwardingObserverMethod<T>
       this.originalObserverMethod = originalObserverMethod;
       this.observerMethod = new InjectableMethod<X>(observerMethod, genericBean, beanManager);
       this.beanManager = beanManager;
-      this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(EMPTY_ANNOTATION_ARRAY);
       this.declaringBeanType = originalObserverMethod.getBeanClass();
       this.qualifiers = qualifiers;
+      Set<Annotation> filteredDeclaringBeanQualifiers = new HashSet<Annotation>(declaringBeanQualifiers);
+      filteredDeclaringBeanQualifiers.remove(AnyLiteral.INSTANCE);
+      this.declaringBeanQualifiers = filteredDeclaringBeanQualifiers.toArray(EMPTY_ANNOTATION_ARRAY);
    }
 
    @Override

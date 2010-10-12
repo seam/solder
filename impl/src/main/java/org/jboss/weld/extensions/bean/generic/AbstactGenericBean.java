@@ -9,6 +9,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.PassivationCapable;
 
 import org.jboss.weld.extensions.bean.ForwardingBean;
+import org.jboss.weld.extensions.literal.AnyLiteral;
 
 /**
  * A helper class for implementing generic bean functionality
@@ -40,6 +41,7 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements Passiv
             this.qualifiers.add(qualifier);
          }
       }
+      this.qualifiers.add(AnyLiteral.INSTANCE);
       this.id = getClass().getName() + "-" + configuration.toString() + "-" + id;
       this.alternative = alternative;
       this.beanClass = beanClass;
