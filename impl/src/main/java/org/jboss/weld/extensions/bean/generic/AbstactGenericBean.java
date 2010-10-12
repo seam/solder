@@ -23,8 +23,10 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements Passiv
    private final Set<Annotation> qualifiers;
    private final BeanManager beanManager;
    private final String id;
+   private final boolean alternative;
+   private final Class<?> beanClass;
 
-   protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, Annotation configuration, String id, BeanManager beanManager)
+   protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, Annotation configuration, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager)
    {
       this.delegate = delegate;
       this.beanManager = beanManager;
@@ -39,6 +41,8 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements Passiv
          }
       }
       this.id = getClass().getName() + "-" + configuration.toString() + "-" + id;
+      this.alternative = alternative;
+      this.beanClass = beanClass;
    }
    
    protected BeanManager getBeanManager()
@@ -69,7 +73,7 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements Passiv
       if (obj instanceof GenericManagedBean<?>)
       {
          GenericManagedBean<?> that = (GenericManagedBean<?>) obj;
-         return this.delegate().equals(that.delegate()) && this.getBeanClass().equals(that.getBeanClass()) && this.getQualifiers().equals(that.getQualifiers());
+         return this.getId().equals(that.getId());
       }
       else
       {
@@ -80,10 +84,19 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements Passiv
    @Override
    public int hashCode()
    {
-      int hash = 2;
-      hash = 31 * hash + this.getTypes().hashCode();
-      hash = 31 * hash + this.getQualifiers().hashCode();
-      return hash;
+      return id.hashCode();
+   }
+
+   @Override
+   public Class<?> getBeanClass()
+   {
+      return beanClass;
+   }
+
+   @Override
+   public boolean isAlternative()
+   {
+      return alternative;
    }
 
 }

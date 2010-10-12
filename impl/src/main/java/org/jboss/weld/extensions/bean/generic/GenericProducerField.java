@@ -18,9 +18,9 @@ class GenericProducerField<T, X> extends AbstractGenericProducerBean<T>
 
    private final AnnotatedField<X> field;
 
-   GenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, BeanManager beanManager)
+   GenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> declaringBeanClass, BeanManager beanManager)
    {
-      super(originalBean, genericConfiguration, qualifiers, declaringBeanQualifiers, scopeOverride, Annotateds.createFieldId(field), beanManager);
+      super(originalBean, genericConfiguration, qualifiers, declaringBeanQualifiers, scopeOverride, Annotateds.createFieldId(field), alternative, declaringBeanClass, beanManager);
       this.field = field;
    }
 

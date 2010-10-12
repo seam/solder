@@ -28,9 +28,9 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
    private final Map<AnnotatedField<? super T>, InjectionPoint> injectedFields;
    private final Class<? extends Annotation> scopeOverride;
 
-   GenericManagedBean(Bean<T> originalBean, Annotation genericConfiguration, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Set<Annotation> qualifiers, Class<? extends Annotation> scopeOverride, Synthetic.Provider annotatedMemberSyntheticProvider, BeanManager beanManager)
+   GenericManagedBean(Bean<T> originalBean, Annotation genericConfiguration, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Set<Annotation> qualifiers, Class<? extends Annotation> scopeOverride, Synthetic.Provider annotatedMemberSyntheticProvider, boolean alternative, Class<?> beanClass, BeanManager beanManager)
    {
-      super(originalBean, qualifiers, genericConfiguration, Annotateds.createTypeId(type), beanManager);
+      super(originalBean, qualifiers, genericConfiguration, Annotateds.createTypeId(type), alternative, beanClass, beanManager);
       this.injectionTarget = injectionTarget;
       this.injectedFields = new HashMap<AnnotatedField<? super T>, InjectionPoint>();
       this.scopeOverride = scopeOverride;

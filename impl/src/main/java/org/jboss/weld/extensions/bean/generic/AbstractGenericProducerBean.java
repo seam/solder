@@ -41,9 +41,9 @@ abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T>
    private final Annotation[] declaringBeanQualifiers;
    private final Class<? extends Annotation> scopeOverride;
 
-   protected AbstractGenericProducerBean(Bean<T> delegate, Annotation genericConfiguration, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, String id, BeanManager beanManager)
+   protected AbstractGenericProducerBean(Bean<T> delegate, Annotation genericConfiguration, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager)
    {
-      super(delegate, qualifiers, genericConfiguration, id, beanManager);
+      super(delegate, qualifiers, genericConfiguration, id, alternative, beanClass, beanManager);
       this.declaringBeanType = delegate.getBeanClass();
       this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(Reflections.EMPTY_ANNOTATION_ARRAY);
       this.scopeOverride = scopeOverride;

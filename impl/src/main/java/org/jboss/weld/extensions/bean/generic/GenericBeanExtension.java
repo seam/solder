@@ -33,6 +33,7 @@ import java.util.Map.Entry;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
@@ -58,8 +59,8 @@ import javax.enterprise.inject.spi.Producer;
 import javax.inject.Inject;
 
 import org.jboss.weld.extensions.bean.BeanBuilder;
-import org.jboss.weld.extensions.bean.ContextualLifecycle;
 import org.jboss.weld.extensions.bean.Beans;
+import org.jboss.weld.extensions.bean.ContextualLifecycle;
 import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.jboss.weld.extensions.reflection.Synthetic;
 import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
@@ -470,7 +471,7 @@ public class GenericBeanExtension implements Extension
          // Ensure that this generic configuration hasn't been registered yet!
          if (genericProducers.containsKey(genericConfiguration))
          {
-            throw new IllegalStateException("Generic configuration " + genericConfiguration + " is defined twice [" + event.getAnnotatedMember() + ", " + genericProducers.get(genericConfiguration) + "]");
+            throw new IllegalStateException("Generic configuration " + genericConfiguration + " is defined twice [" + event.getAnnotatedMember() + ", " + genericProducers.get(genericConfiguration).getMember() + "]");
          }
          Producer<T> originalProducer = event.getProducer();
          Class<?> requiredProducerType = genericConfiguration.annotationType().getAnnotation(GenericType.class).value();
@@ -493,6 +494,7 @@ public class GenericBeanExtension implements Extension
                producerScope = annotation.annotationType();
             }
          }
+         ProducerHolder<?, ?> producerHolder = genericConfigurationEntry.getValue();
          Annotation genericConfiguration = genericConfigurationEntry.getKey();
          Set<Annotation> qualifiers = new HashSet<Annotation>();
          qualifiers.addAll(Beans.getQualifiers(beanManager, genericConfigurationEntry.getValue().getMember().getAnnotations()));
@@ -503,7 +505,7 @@ public class GenericBeanExtension implements Extension
          Class<? extends Annotation> genericConfigurationType = genericConfiguration.annotationType();
          if (!genericBeans.containsKey(genericConfigurationType))
          {
-            throw new IllegalStateException("No generic bean definition exists for " + genericConfigurationType + ", but a generic producer does: " + genericConfigurationEntry.getValue());
+            throw new IllegalStateException("No generic bean definition exists for " + genericConfigurationType + ", but a generic producer does: " + producerHolder.getMember());
          }
          // Add a generic configuration bean for each generic configuration producer (allows us to inject the generic configuration annotation back into the generic bean)
          event.addBean(createGenericConfigurationBean(beanManager, genericConfiguration, qualifiers));
@@ -511,7 +513,10 @@ public class GenericBeanExtension implements Extension
          // Register the GenericProduct bean
 
          event.addBean(createGenericProductAnnotatedMemberBean(beanManager, genericConfiguration, qualifiers));
-
+         
+         boolean alternative = producerHolder.getMember().isAnnotationPresent(Alternative.class);
+         Class<?> javaClass = producerHolder.getMember().getDeclaringType().getJavaClass();
+         
          if (genericBeanProducerMethods.containsKey(genericConfigurationType))
          {
             for (ProducerMethodHolder<?, ?> holder : genericBeanProducerMethods.get(genericConfigurationType))
@@ -521,7 +526,7 @@ public class GenericBeanExtension implements Extension
                {
                   scopeOverride = producerScope;
                }
-               event.addBean(createGenericProducerMethod(holder, genericConfiguration, beanManager, scopeOverride));
+               event.addBean(createGenericProducerMethod(holder, genericConfiguration, beanManager, scopeOverride,alternative,javaClass));
             }
          }
          if (genericBeanProducerFields.containsKey(genericConfigurationType))
@@ -533,7 +538,7 @@ public class GenericBeanExtension implements Extension
                {
                   scopeOverride = producerScope;
                }
-               event.addBean(createGenericProducerField(holder.getBean(), genericConfiguration, holder.getField(), beanManager, scopeOverride));
+               event.addBean(createGenericProducerField(holder.getBean(), genericConfiguration, holder.getField(), beanManager, scopeOverride, alternative, javaClass));
             }
          }
          if (genericBeanObserverMethods.containsKey(genericConfigurationType))
@@ -548,7 +553,7 @@ public class GenericBeanExtension implements Extension
          {
             for(AnnotatedMethod<?> i : unwrapsMethods.get(genericConfigurationType))
             {
-               AnnotatedMember<?> member = genericConfigurationEntry.getValue().getMember();
+               AnnotatedMember<?> member = producerHolder.getMember();
                Set<Annotation> unwrapsQualifiers = Beans.getQualifiers(beanManager, i.getAnnotations(), member.getAnnotations());
                if (unwrapsQualifiers.isEmpty())
                {
@@ -572,7 +577,7 @@ public class GenericBeanExtension implements Extension
             {
                scopeOverride = producerScope;
             }
-            Bean<?> genericBean = createGenericBean(genericBeanHolder, genericConfiguration, beanManager, scopeOverride);
+            Bean<?> genericBean = createGenericBean(genericBeanHolder, genericConfiguration, beanManager, scopeOverride, alternative, javaClass);
             event.addBean(genericBean);
          }
       }
@@ -639,17 +644,17 @@ public class GenericBeanExtension implements Extension
       return builder.create();
    }
 
-   private <X> Bean<X> createGenericBean(BeanHolder<X> holder, Annotation genericConfiguration, BeanManager beanManager, Class<? extends Annotation> scopeOverride)
+   private <X> Bean<X> createGenericBean(BeanHolder<X> holder, Annotation genericConfiguration, BeanManager beanManager, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> beanClass)
    {
       Set<Annotation> declaringBeanQualifiers = getQualifiers(beanManager, genericConfiguration, Collections.EMPTY_SET);
-      return new GenericManagedBean<X>(holder.getBean(), genericConfiguration, (InjectionTarget<X>) genericInjectionTargets.get(holder.getType()), holder.getType(), declaringBeanQualifiers, scopeOverride, annotatedMemberInjectionProvider, beanManager);
+      return new GenericManagedBean<X>(holder.getBean(), genericConfiguration, (InjectionTarget<X>) genericInjectionTargets.get(holder.getType()), holder.getType(), declaringBeanQualifiers, scopeOverride, annotatedMemberInjectionProvider, alternative, beanClass, beanManager);
    }
 
-   private <X, T> Bean<T> createGenericProducerMethod(ProducerMethodHolder<X, T> holder, Annotation genericConfiguration, BeanManager beanManager, Class<? extends Annotation> scopeOverride)
+   private <X, T> Bean<T> createGenericProducerMethod(ProducerMethodHolder<X, T> holder, Annotation genericConfiguration, BeanManager beanManager, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> javaClass)
    {
       Set<Annotation> qualifiers = getQualifiers(beanManager, genericConfiguration, holder.getBean().getQualifiers());
       Set<Annotation> declaringBeanQualifiers = getQualifiers(beanManager, genericConfiguration, Collections.EMPTY_SET);
-      return new GenericProducerMethod<T, X>(holder.getBean(), genericConfiguration, holder.getProducerMethod(), holder.getDisposerMethod(), qualifiers, declaringBeanQualifiers, scopeOverride, beanManager);
+      return new GenericProducerMethod<T, X>(holder.getBean(), genericConfiguration, holder.getProducerMethod(), holder.getDisposerMethod(), qualifiers, declaringBeanQualifiers, scopeOverride, alternative, javaClass, beanManager);
    }
 
    @SuppressWarnings("unchecked")
@@ -665,11 +670,11 @@ public class GenericBeanExtension implements Extension
       return new GenericObserverMethod<T, X>(originalObserverMethod, method, genericConfiguration, qualifiers, declaringBeanQualifiers, genericBean, beanManager);
    }
 
-   private <X, T> Bean<T> createGenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, BeanManager beanManager, Class<? extends Annotation> scopeOverride)
+   private <X, T> Bean<T> createGenericProducerField(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedField<X> field, BeanManager beanManager, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> javaClass)
    {
       Set<Annotation> qualifiers = getQualifiers(beanManager, genericConfiguration, originalBean.getQualifiers());
       Set<Annotation> declaringBeanQualifiers = getQualifiers(beanManager, genericConfiguration, Collections.EMPTY_SET);
-      return new GenericProducerField<T, X>(originalBean, genericConfiguration, field, qualifiers, declaringBeanQualifiers, scopeOverride, beanManager);
+      return new GenericProducerField<T, X>(originalBean, genericConfiguration, field, qualifiers, declaringBeanQualifiers, scopeOverride, alternative, javaClass, beanManager);
    }
 
    void cleanup(@Observes AfterDeploymentValidation event)

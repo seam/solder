@@ -27,9 +27,9 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
    private final InjectableMethod<X> producerMethod;
    private final InjectableMethod<X> disposerMethod;
 
-   GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, BeanManager beanManager)
+   GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> declaringBeanClass, BeanManager beanManager)
    {
-      super(originalBean, genericConfiguration, qualifiers, genericBeanQualifiers, scopeOverride, Annotateds.createCallableId(method), beanManager);
+      super(originalBean, genericConfiguration, qualifiers, genericBeanQualifiers, scopeOverride, Annotateds.createCallableId(method), alternative, declaringBeanClass, beanManager);
       List<InjectionPoint> injectionPoints = createInjectionPoints(method, this, beanManager);
       List<InjectionPoint> wrappedInjectionPoints = new ArrayList<InjectionPoint>();
       for (InjectionPoint injectionPoint : injectionPoints)
