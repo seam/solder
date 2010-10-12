@@ -22,6 +22,8 @@
          extensions which can be used to implement configuration for a framework
       </para>
    </preface>
+   
+   <xi:include href="gettingstarted.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
    <part id="part1">
       

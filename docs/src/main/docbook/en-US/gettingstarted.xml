@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="gettingstarted">
+   <title>Getting Started</title>
+   
+   <para>
+      Getting started with Weld Extensions is easy. If you are using Maven, then you can declare a dependency on Weld
+      Extensions (<code>org.jboss.weld:weld-extensions:${weld.extensions.version}</code>, make sure you have the JBoss Maven repository
+      enabled). Otherwise, add the jar to your compile time and runtime classpath. 
+   </para>
+   
+   <para>
+      Most of Weld Extensions has very few dependencies:
+   </para>
+   
+   <itemizedlist>
+      <listitem>
+         <code>javax.enterprise:cdi-api</code>
+      </listitem>
+      <listitem>
+         <code>org.slf4j:slf4j-api</code>
+      </listitem>
+      <listitem>
+         <code>org.jboss.logging:jboss-logging-api</code>
+      </listitem>
+      <listitem>
+         <code>javax.el:el-api</code>
+      </listitem>
+      <listitem>
+         <code>javax.inject:javax.inject</code>
+      </listitem>
+   </itemizedlist>
+   
+   <tip>
+      <para>
+         The POM for Weld Extensions specifies the versions required. If you are using Maven 3, you can easily import
+         the <code>dependencyManagement</code> into your POM by declaring the following in your 
+         <code>depdendencyManagement</code> section:
+      </para>
+      
+      <programlisting role="XML"><![CDATA[         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-extensions</artifactId>
+            <version>${weld.extensions.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>]]></programlisting>
+   </tip>
+   
+   <para>
+      Some features of Weld Extensions require additional dependencies (which are declared optional, so will not be 
+      added as transitive dependencies):
+   </para>
+   
+   <variablelist>
+      <varlistentry>
+         <term><code>org.javassist:javassist</code></term>
+         <listitem>Service Handlers, Unwrapping Producer Methods</listitem>
+      </varlistentry>
+      <varlistentry>
+         <term><code>javax.servlet:servlet-api</code></term>
+         <listitem>Accessing resources from the Servlet Context</listitem>
+      </varlistentry>
+   </variablelist>
+   
+</chapter>
