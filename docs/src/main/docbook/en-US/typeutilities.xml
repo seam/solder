@@ -53,7 +53,7 @@
       <title>Annotation Instance Provider</title>
       <para>
          Sometimes you may need an annotation instance for an annotation whose type is not known at development time.
-         Weld extends provides a <code>AnnotationInstanceProvider</code> class that can create an 
+         Weld Extensions provides a <code>AnnotationInstanceProvider</code> class that can create an 
          <code>AnnotationLiteral</code> instance for any annotation at runtime. Annotation attributes
          are passed in via a <code>Map&lt;String,Object&gt;</code>. For example given the follow annotation:
       </para>
