@@ -120,6 +120,7 @@
       <dependency>
          <groupId>javax.el</groupId>
          <artifactId>el-api</artifactId>
+         <scope>provided</scope>
       </dependency>
 
       <dependency>
@@ -183,6 +184,7 @@
             <dependency>
                <groupId>javax.transaction</groupId>
                <artifactId>jta</artifactId>
+               <scope>test</scope>
             </dependency>
 
             <dependency>
