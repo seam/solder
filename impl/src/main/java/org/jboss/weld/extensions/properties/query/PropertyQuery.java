@@ -61,6 +61,31 @@ public class PropertyQuery<V>
       List<Property<V>> results = getResultList();
       return results.isEmpty() ? null : results.get(0);
    }
+   
+   /**
+    * Get a single result from the query, causing the query to be run.
+    * An exception is thrown if the query does not return exactly one
+    * result.
+    * 
+    * @throws RuntimeException if the query does not return exactly one result
+    * @return the single result
+    */
+   public Property<V> getSingleResult()
+   {
+      List<Property<V>> results = getResultList();
+      if (results.size() == 1)
+      {
+         return results.get(0);
+      }
+      else if (results.isEmpty())
+      {
+         throw new RuntimeException("Expected one property match, but the criteria did not match any properties on " + targetClass.getName());
+      }
+      else
+      {
+         throw new RuntimeException("Expected one property match, but the criteria matched " + results.size() + " properties on " + targetClass.getName());
+      }
+   }
 
    /**
     * Get the result from the query, causing the query to be run.

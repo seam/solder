@@ -336,6 +336,21 @@
          If no properties are found, then <code>getFirstResult()</code> will return null.  Alternatively, if more than one
          result is found, then <code>getFirstResult()</code> will return the first property found.
       </para>
+
+      <para>
+         Alternatively, if you know that the query will return exactly one result, and you want to assert that assumption is true,
+         you can use the <code>getSingleResult()</code> method instead:
+      </para>
+
+      <programlisting><![CDATA[   Property<String> result = PropertyQueries.<String>createQuery(Foo.class)
+      .addCriteria(NamedPropertyCriteria("bar"))
+      .getSingleResult();]]></programlisting>
+
+      <para>
+         If no properties are found, or more than one property is found, then <code>getSingleResult()</code> will throw an
+         exception. Otherwise, <code>getSingleResult()</code> will return the sole property found.
+      </para>
+
    </section>  
     
 </chapter>
