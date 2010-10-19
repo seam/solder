@@ -154,5 +154,66 @@ class EntityManagerProducer {
       <programlisting role="JAVA">@Named
 package com.acme</programlisting>
    </section>
+
+   <section>
+      <title>@FullyQualified bean names</title>
+
+      <para>
+         According to the CDI standard, the <code>@Named</code> annotation assigns a name to a bean equal to the value
+         specified in the <code>@Named</code> annotation or, if a value is not provided, the simple name of the bean class.
+         This behavior aligns is with the needs of most application developers. However, framework writers should avoid
+         trampling on the "root" bean namespace. Instead, frameworks should specify qualified names for built-in components.
+         The motivation is the same as qualifying Java types. The <code>@FullyQualified</code> provides this facility without
+         sacrificing type-safety.
+      </para>
+      
+      <para>
+         Weld Extensions allows you to customize the bean name using the complementary <code>@FullyQualified</code>
+         annotation. When the <code>@FullyQualified</code> annotation is added to a <code>@Named</code> bean type, producer
+         method or producer field, the standard bean name is prefixed with the name of the Java package in which the bean
+         resides, the segments separated by a period. The resulting fully-qualified bean name (FQBN) replaces the standard
+         bean name.
+      </para>
+
+      <programlisting role="JAVA">package com.acme;
+      
+@FullyQualified @Named
+public class NamedBean {
+   public String getAge()
+   {
+      return 5;
+   }
+}</programlisting>
+
+      <para>
+         The bean in the previous code listing is assigned the name <code>com.acme.namedBean</code>. The value of its
+         property <code>age</code> would be referenced in an EL expression (perhaps in a JSF view template) as follows:
+      </para>
+
+      <programlisting>#{com.acme.namedBean.age}</programlisting>
+
+      <para>
+         The <code>@FullyQualified</code> annotation is permitted on a bean type, producer method or producer field. It can
+         also be used on a Java package, in which case all <code>@Named</code> beans in that package get a bean name which is
+         fully-qualified.
+      </para>
+
+      <programlisting role="JAVA">@FullyQualified
+package com.acme;
+</programlisting>
+
+      <para>
+         If you want to use a different Java package as the namespace of the bean, rather than the Java package of the bean,
+         you specify any class in that alternative package in the annotation value.
+      </para>
+
+      <programlisting role="JAVA">package com.acme;
+      
+@FullyQualified(ClassInOtherPackage.class) @Named
+public class CustomNamespacedNamedBean {
+   ...
+}</programlisting>
+      
+   </section>
    
 </chapter>

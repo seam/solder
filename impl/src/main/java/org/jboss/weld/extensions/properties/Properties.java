@@ -69,4 +69,20 @@ public class Properties
          throw new IllegalArgumentException("Cannot make a property of " + member + " - it is neither a method or a field");
       }
    }
+   
+   /**
+    * Indicates whether this method is a valid property method.
+    */
+   public static <V> boolean isProperty(Method method)
+   {
+      try
+      {
+         new MethodPropertyImpl<V>(method);
+         return true;
+      }
+      catch (IllegalArgumentException e)
+      {
+         return false;
+      }
+   }
 }

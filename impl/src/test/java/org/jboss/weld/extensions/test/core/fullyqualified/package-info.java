@@ -14,32 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.extensions.literal;
+@FullyQualified
+package org.jboss.weld.extensions.test.core.fullyqualified;
+import org.jboss.weld.extensions.core.FullyQualified;
 
-import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Named;
-
-
-public class NamedLiteral extends AnnotationLiteral<Named> implements Named
-{
-
-   private static final long serialVersionUID = 6678418208030413302L;
-
-   private final String value;
-
-   public NamedLiteral()
-   {
-      this("");
-   }
-   
-   public NamedLiteral(String value)
-   {
-      this.value = value;
-   }
-
-   public String value()
-   {
-      return value;
-   }
-
-}
