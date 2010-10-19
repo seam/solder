@@ -15,31 +15,71 @@ import java.lang.reflect.Type;
  * 
  * @author Pete Muir
  * @author Shane Bryzak
+ * @author Dan Allen
  */
 class MethodPropertyImpl<V> implements MethodProperty<V>
 {
+   private static final String GETTER_METHOD_PREFIX = "get";
+   private static final String SETTER_METHOD_PREFIX = "set";
+   private static final String BOOLEAN_GETTER_METHOD_PREFIX = "is";
+
+   private static final int GETTER_METHOD_PREFIX_LENGTH = GETTER_METHOD_PREFIX.length();
+   private static final int SETTER_METHOD_PREFIX_LENGTH = SETTER_METHOD_PREFIX.length();
+   private static final int BOOLEAN_GETTER_METHOD_PREFIX_LENGTH = BOOLEAN_GETTER_METHOD_PREFIX.length();
+   
    private final Method getterMethod;
    private final String propertyName;
    private final Method setterMethod;
 
    public MethodPropertyImpl(Method method)
    {
-      if (method.getName().startsWith("get"))
+      final String accessorMethodPrefix;
+      final String propertyNameInAccessorMethod;
+      if (method.getName().startsWith(GETTER_METHOD_PREFIX))
       {
-         this.propertyName = Introspector.decapitalize(method.getName().substring(3));
+         if (method.getReturnType() == Void.TYPE)
+         {
+            throw new IllegalArgumentException("Invalid accessor method, must have return value if starts with 'get'. Method: " + method);
+         }
+         else if (method.getParameterTypes().length > 0)
+         {
+            throw new IllegalArgumentException("Invalid accessor method, must have zero arguments if starts with 'get'. Method: " + method);
+         }
+         propertyNameInAccessorMethod = method.getName().substring(GETTER_METHOD_PREFIX_LENGTH);
+         accessorMethodPrefix = GETTER_METHOD_PREFIX;
       }
-      else if (method.getName().startsWith("set"))
+      else if (method.getName().startsWith(SETTER_METHOD_PREFIX))
       {
-         this.propertyName = Introspector.decapitalize(method.getName().substring(3));
+         if (method.getReturnType() != Void.TYPE)
+         {
+            throw new IllegalArgumentException("Invalid accessor method, must not have return value if starts with 'set'. Method: " + method);
+         }
+         else if (method.getParameterTypes().length != 1)
+         {
+            throw new IllegalArgumentException("Invalid accessor method, must have one argument if starts with 'set'. Method: " + method);
+         }
+         propertyNameInAccessorMethod = method.getName().substring(SETTER_METHOD_PREFIX_LENGTH);
+         accessorMethodPrefix = SETTER_METHOD_PREFIX;
       }
-      else if (method.getName().startsWith("is"))
+      else if (method.getName().startsWith(BOOLEAN_GETTER_METHOD_PREFIX))
       {
-         this.propertyName = Introspector.decapitalize(method.getName().substring(2));
+         if (method.getReturnType() != Boolean.class || !method.getReturnType().isPrimitive())
+         {
+            throw new IllegalArgumentException("Invalid accessor method, must return boolean primitive if starts with 'is'. Method: " + method);
+         }
+         propertyNameInAccessorMethod = method.getName().substring(BOOLEAN_GETTER_METHOD_PREFIX_LENGTH);
+         accessorMethodPrefix = BOOLEAN_GETTER_METHOD_PREFIX;
       }
       else
       {
          throw new IllegalArgumentException("Invalid accessor method, must start with 'get', 'set' or 'is'.  " + "Method: " + method);
       }
+      if (propertyNameInAccessorMethod.length() == 0 || !Character.isUpperCase(propertyNameInAccessorMethod.charAt(0)))
+      {
+         throw new IllegalArgumentException("Invalid accessor method, prefix '" + accessorMethodPrefix +
+               "' must be followed a non-empty property name, capitalized. Method: " + method);
+      }
+      this.propertyName = Introspector.decapitalize(propertyNameInAccessorMethod);
       this.getterMethod = getGetterMethod(method.getDeclaringClass(), propertyName);
       this.setterMethod = getSetterMethod(method.getDeclaringClass(), propertyName);
    }
@@ -86,9 +126,9 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
       for (Method method : methods)
       {
          String methodName = method.getName();
-         if (methodName.startsWith("set") && method.getParameterTypes().length == 1)
+         if (methodName.startsWith(SETTER_METHOD_PREFIX) && method.getParameterTypes().length == 1)
          {
-            if (Introspector.decapitalize(methodName.substring(3)).equals(name))
+            if (Introspector.decapitalize(methodName.substring(SETTER_METHOD_PREFIX_LENGTH)).equals(name))
             {
                return method;
             }
@@ -104,16 +144,16 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
          String methodName = method.getName();
          if (method.getParameterTypes().length == 0)
          {
-            if (methodName.startsWith("get"))
+            if (methodName.startsWith(GETTER_METHOD_PREFIX))
             {
-               if (Introspector.decapitalize(methodName.substring(3)).equals(name))
+               if (Introspector.decapitalize(methodName.substring(GETTER_METHOD_PREFIX_LENGTH)).equals(name))
                {
                   return method;
                }
             }
-            else if (methodName.startsWith("is"))
+            else if (methodName.startsWith(BOOLEAN_GETTER_METHOD_PREFIX))
             {
-               if (Introspector.decapitalize(methodName.substring(2)).equals(name))
+               if (Introspector.decapitalize(methodName.substring(BOOLEAN_GETTER_METHOD_PREFIX_LENGTH)).equals(name))
                {
                   return method;
                }
