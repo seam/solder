@@ -71,6 +71,10 @@ public class GenericBeanTest
    @Foo(4)
    private Baz baz4a;
 
+   @Inject
+   @Foo(5)
+   private Baz baz5;
+
    @Test
    public void testGeneric()
    {
@@ -90,6 +94,9 @@ public class GenericBeanTest
       assertNotNull(baz2.getMessage());
       assertEquals(baz2.getMessage().value(), "hello2");
       
+      assertNotNull(baz5.getMessage());
+      assertEquals(baz5.getMessage().value(), "hello5");
+
       // Check that this isn't affecting annotations on the generic bean without @Inject 
       assertNull(baz1.getBar().getMessage());
       assertNull(baz2.getBar().getMessage());

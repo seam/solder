@@ -125,7 +125,34 @@
    void logMessage(Payload payload) {
       ...
    }
-}</programlisting>      
+}</programlisting>     
+   
+   <para>
+      It is also possible to configure generic beans using beans by sub-classing the configuration type, or installing
+      another bean of the configuration type through the SPI (e.g. using Seam XML). For example to configure a durable
+      queue via sub-classing:
+   </para> 
+   
+   <programlisting role="JAVA">@Durable @ConversationScoped
+@ACMEQueue("durableQueue")
+class DurableQueueConfiguration extends MessageSystemConfiguration {
+      
+   public DurableQueueConfiguration()
+   {
+      this.durable = true;
+   }
+}</programlisting>
+
+   <para>
+      And the same thing via Seam XML:
+   </para>
+   
+   <programlisting role="XML"><![CDATA[<my:MessageSystemConfiguration>
+   <my:Durable/>
+   <s:ConversationScoped/>
+   <my:ACMEQueue>durableQueue</my:ACMEQueue>
+   <my:durable>true</my:durable>
+</my:MessageSystemConfiguration>]]></programlisting>
 
    </section>
       
