@@ -1,3 +1,0 @@
-org.jboss.weld.extensions.beanManager.DefaultJndiBeanManagerProvider
-org.jboss.weld.extensions.beanManager.JBossJndiBeanManagerProvider
-org.jboss.weld.extensions.beanManager.ServletContainerJndiBeanManagerProvider

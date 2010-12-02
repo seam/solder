@@ -5,7 +5,7 @@
    <title>Enhancements to the CDI Programming Model</title>
       
    <para>
-      Weld Extensions provides a number enhancements to the CDI programming model which are under trial and may be
+      Seam Solder provides a number enhancements to the CDI programming model which are under trial and may be
       included in later releases of <emphasis>Contexts and Dependency Injection</emphasis>.
    </para>
    
@@ -71,7 +71,7 @@ class Utilities {
          
          <tip>
             <para>
-               Weld will use the Thread Context ClassLoader, as well as the classloader of the type annotated
+               Solder will use the Thread Context ClassLoader, as well as the classloader of the type annotated
                <code>@Requires</code> to attempt to satisfy the class dependency.
             </para>  
          </tip>
@@ -135,7 +135,7 @@ class EntityManagerProducer {
       
       <para>
          It is common to want to qualify a bean as belonging to the current client (for example we want to differentiate
-         the default system locale from the current client's locale). Weld Extensions provides a built in qualifier,
+         the default system locale from the current client's locale). Seam Solder provides a built in qualifier,
          <code>@Client</code> for this purpose.
       </para>
       
@@ -145,7 +145,7 @@ class EntityManagerProducer {
       <title>Named packages</title>
       
       <para>
-         Weld Extensions allows you to annotate the package <code>@Named</code>, which causes every bean defined in the
+         Seam Solder allows you to annotate the package <code>@Named</code>, which causes every bean defined in the
          package to be given its default name. Package annotations are defined in the file 
          <code>package-info.java</code>. For example, to cause any beans defined in <code>com.acme</code> to be given
          their default name:
@@ -168,7 +168,7 @@ package com.acme</programlisting>
       </para>
       
       <para>
-         Weld Extensions allows you to customize the bean name using the complementary <code>@FullyQualified</code>
+         Seam Solder allows you to customize the bean name using the complementary <code>@FullyQualified</code>
          annotation. When the <code>@FullyQualified</code> annotation is added to a <code>@Named</code> bean type, producer
          method or producer field, the standard bean name is prefixed with the name of the Java package in which the bean
          resides, the segments separated by a period. The resulting fully-qualified bean name (FQBN) replaces the standard

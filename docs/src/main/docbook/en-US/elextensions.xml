@@ -5,9 +5,9 @@
    <title>Evaluating Unified EL</title>
    
    <para>
-      Weld extensions provides a method to evaluate EL that is not dependent on JSF or JSP, a facility sadly missing in
+      Seam Solder provides a method to evaluate EL that is not dependent on JSF or JSP, a facility sadly missing in
       Java EE. To use it inject <code>Expressions</code> into your bean. You can evaluate value expressions, or method
-      expressions. The Weld Extensions API provides type inference for you. For example: 
+      expressions. The Seam Solder API provides type inference for you. For example: 
    </para>
    
    <programlisting role="JAVA">class FruitBowl {

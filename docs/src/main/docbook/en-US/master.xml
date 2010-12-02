@@ -3,13 +3,13 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
 <book lang="en">
         
-   <title>Weld Extensions</title>   
+   <title>Seam Solder</title>   
     
    <preface>
       <title>Introduction</title>
       
       <para>
-         Weld Extensions is a library of Generally Useful Stuff (tm), particularly if you are
+         Seam Solder is a library of Generally Useful Stuff (tm), particularly if you are
          developing an application based on CDI (JSR-299 Java Contexts and Dependency Injection),
          or a CDI based library or framework.
       </para>

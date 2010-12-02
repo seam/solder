@@ -1,0 +1,2 @@
+org.jboss.seam.solder.resourceLoader.ClasspathResourceLoader
+org.jboss.seam.solder.resourceLoader.DelegatingResourceLoader

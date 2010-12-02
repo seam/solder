@@ -20,9 +20,9 @@
    
    <important>
       <para>
-         Weld Extensions implements this by injecting a proxy rather than the original object. Every invocation on the
+         Seam Solder implements this by injecting a proxy rather than the original object. Every invocation on the
          injected proxy will cause the unwrapping producer method to be invoked to obtain the instance on which to 
-         invoke the method called. Weld Extensions will then invoke the method on unwrapped instance. 
+         invoke the method called. Seam Solder will then invoke the method on unwrapped instance. 
       </para>
       
       <para>

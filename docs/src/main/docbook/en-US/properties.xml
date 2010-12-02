@@ -202,7 +202,7 @@
       <title>Property Criteria</title>
   
       <para>
-         Once you have created the <code>PropertyQuery</code> instance, you can add search criteria.  Weld Extensions
+         Once you have created the <code>PropertyQuery</code> instance, you can add search criteria.  Seam Solder
          provides three built-in criteria types, and it is very easy to add your own.  A criteria is added to a query via the
          <code>addCriteria()</code> method.  This method returns an instance of the <code>PropertyQuery</code>,
          so multiple <code>addCriteria()</code> invocations can be stacked.
@@ -284,7 +284,7 @@
       
          <para>
             To create your own property criteria, simply implement the 
-            <code>org.jboss.weld.extensions.util.properties.query.PropertyCriteria</code> interface, which declares the 
+            <code>org.jboss.seam.solder.properties.query.PropertyCriteria</code> interface, which declares the 
             two methods <code>fieldMatches()</code> and <code>methodMatches</code>. In the following example, our 
             custom criteria implementation can be used to locate whole number properties:
          </para>

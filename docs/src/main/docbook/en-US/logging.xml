@@ -5,7 +5,7 @@
    <title>Logging</title>
 
    <para>
-      Weld Extensions integrates JBoss Logging 3 as it's logging framework of choice. JBoss Logging 3 is a modern 
+      Seam Solder integrates JBoss Logging 3 as it's logging framework of choice. JBoss Logging 3 is a modern 
       logging framework offering:
    </para>
    
@@ -112,7 +112,7 @@ interface TrainSpotterLog {
    </para>
 
    <para>
-      Sometimes you need to access the message directly (for example to localize an exception message). Weld Extensions 
+      Sometimes you need to access the message directly (for example to localize an exception message). Seam Solder 
       let's you inject a typed message bundle. First, declare the message bundle:
    </para>
 

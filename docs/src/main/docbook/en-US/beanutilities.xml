@@ -5,7 +5,7 @@
    <title>Bean Utilities</title>
 
    <para>
-      Weld Extensions provides a number of base classes which can be extended to create custom beans. Weld Extensions
+      Seam Solder provides a number of base classes which can be extended to create custom beans. Seam Solder
       also provides bean builders which can be used to dynamically create beans using a fluent API. 
    </para>
       

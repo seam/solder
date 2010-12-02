@@ -21,7 +21,7 @@
    
    <para>
       On some occasions however there is no suitable context to use, and in this case, you can take advantage of the
-      abstraction over <code>BeanManager</code> lookup provided by Weld Extensions. To lookup up a 
+      abstraction over <code>BeanManager</code> lookup provided by Seam Solder. To lookup up a 
       <code>BeanManager</code>, you can extend the <code>BeanManagerAware</code> class, and call 
       <code>getBeanManager</code>:
    </para>

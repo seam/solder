@@ -1,25 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jboss.weld</groupId>
-   <artifactId>weld-extensions</artifactId>
+   <groupId>org.jboss.seam.solder</groupId>
+   <artifactId>seam-solder</artifactId>
    <packaging>jar</packaging>
    <version>1.0.0-SNAPSHOT</version>
 
    <parent>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-extensions-parent</artifactId>
+      <groupId>org.jboss.seam.solder</groupId>
+      <artifactId>seam-solder-parent</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
-   <name>Weld Extensions</name>
-   <url>http://www.seamframework.org/Weld</url>
+   <name>Seam Solder</name>
+   <url>http://seamframework.org/Seam3/Solder</url>
 
    <description>Portable extensions for CDI</description>
 
    <issueManagement>
       <system>JIRA</system>
-      <url>https://jira.jboss.org/jira/browse/WELDX/component/12312756</url>
+      <url>https://jira.jboss.org/browse/SOLDER</url>
    </issueManagement>
 
    <licenses>
@@ -29,7 +29,6 @@
          <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
       </license>
    </licenses>
-
 
    <developers>
 
@@ -57,7 +56,6 @@
       <system>Hudson</system>
       <url />
    </ciManagement>
-
 
    <dependencies>
 
@@ -280,11 +278,5 @@
          </build>
       </profile>
    </profiles>
-
-   <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/extensions/trunk/</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/weld/extensions/trunk</developerConnection>
-      <url>http://fisheye.jboss.org/browse/weld/extensions/trunk</url>
-   </scm>
 
 </project>

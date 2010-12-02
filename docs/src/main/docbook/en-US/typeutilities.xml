@@ -5,7 +5,7 @@
    <title>Annotation and AnnotatedType Utilities</title>
 
    <para>
-      Weld Extensions provides a number of utilility classes to make working with Annotations and AnnotatedTypes easier.
+      Seam Solder provides a number of utilility classes to make working with Annotations and AnnotatedTypes easier.
       This chapter will walk you each utility, and give you an idea of how to use it. For more detail, take a look at
       the javaodoc on each class.
    </para>
@@ -14,7 +14,7 @@
       <title>Annotated Type Builder</title>
       
       <para>
-         Weld Extensions provides an <code>AnnotatedType</code> implementation that should be suitable for most 
+         Seam Solder provides an <code>AnnotatedType</code> implementation that should be suitable for most 
          portable extensions needs. The <code>AnnotatedType</code> is created from 
          <code>AnnotatedTypeBuilder</code> as follows:
       </para>
@@ -53,7 +53,7 @@
       <title>Annotation Instance Provider</title>
       <para>
          Sometimes you may need an annotation instance for an annotation whose type is not known at development time.
-         Weld Extensions provides a <code>AnnotationInstanceProvider</code> class that can create an 
+         Seam Solder provides a <code>AnnotationInstanceProvider</code> class that can create an 
          <code>AnnotationLiteral</code> instance for any annotation at runtime. Annotation attributes
          are passed in via a <code>Map&lt;String,Object&gt;</code>. For example given the follow annotation:
       </para>
@@ -127,7 +127,7 @@ public @interface MultipleMembers {
       <para>
          When developing an extension to CDI, it can be useful to detect certain injection points, or bean definitions
          and based on annotations or other metadata, add qualifiers to further disambiguate the injection point or bean
-         definition for the CDI bean resolver. Weld Extension's synthetic qualifers can be used to easily generate and
+         definition for the CDI bean resolver. Solder's synthetic qualifers can be used to easily generate and
          track such qualifers.
       </para>
       
@@ -154,7 +154,7 @@ public @interface MultipleMembers {
       <title>Reflection Utilities</title>
       
       <para>
-         Weld Extensions comes with a number miscellaneous reflection utilities; these extend JDK reflection, and some 
+         Seam Solder comes with a number miscellaneous reflection utilities; these extend JDK reflection, and some 
          also work on CDI's Annotated metadata. See the javadoc on <code>Reflections</code> for more.
       </para>
       

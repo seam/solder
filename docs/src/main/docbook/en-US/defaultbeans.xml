@@ -23,7 +23,7 @@
    </para>
    
    <para>
-      Let's take a real world example - a module that allows you to evaluate EL (something that Weld Extensions 
+      Let's take a real world example - a module that allows you to evaluate EL (something that Seam Solder 
       provides!). If JSF is available we want to use the <code>FunctionMapper</code> provided by the JSF implementation
       to resolve functions, otherwise we just want to use a a default <code>FunctionMapper</code> implementation that 
       does nothing. We can achieve this as follows:

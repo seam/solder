@@ -83,7 +83,7 @@
    
       <para>
          The durable queue is defined as a producer method (as we want to alter the configuration of the queue before
-         having Weld Extensions use it). Additionally, it specifies that the generic beans created (that allow for 
+         having Seam Solder use it). Additionally, it specifies that the generic beans created (that allow for 
          their scope to be overridden) should be placed in the conversation scope. Finally, it specifies that the 
          generic beans created should inherit the qualifier <code>@Durable</code>.
       </para>

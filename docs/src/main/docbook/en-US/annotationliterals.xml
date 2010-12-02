@@ -5,9 +5,9 @@
    <title>Annotation Literals</title>
       
    <para>
-      Weld extensions provides a complete set of <code>AnnotationLiteral</code>s for every annotation type 
+      Seam Solder provides a complete set of <code>AnnotationLiteral</code>s for every annotation type 
       defined by the CDI (JSR-299) and Injection (JSR-330) specification. These are located in the 
-      <code>org.jboss.weld.extensions.literal</code> package. Annotations without listitems provide a static 
+      <code>org.jboss.seam.solder.literal</code> package. Annotations without listitems provide a static 
       <code>INSTANCE</code> listitem that should be used rather than creating a new instance every time.
    </para>
    
@@ -41,7 +41,7 @@
    </itemizedlist>
    
    <para>
-      Literals are provided for the following annotations from <emphasis>Weld Extensions</emphasis>:
+      Literals are provided for the following annotations from <emphasis>Seam Solder</emphasis>:
    </para>
    
    <itemizedlist>

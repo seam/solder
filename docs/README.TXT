@@ -1,3 +1,3 @@
-To build the Weld Extensions docs run the following command:
+To build the Seam Solder docs run the following command:
 
 mvn jdocbook:generate

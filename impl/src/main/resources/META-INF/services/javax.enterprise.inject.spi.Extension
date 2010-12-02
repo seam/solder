@@ -1,9 +1,8 @@
-org.jboss.weld.extensions.bean.generic.GenericBeanExtension
-org.jboss.weld.extensions.bean.defaultbean.DefaultBeanExtension
-org.jboss.weld.extensions.core.CoreExtension
-org.jboss.weld.extensions.interceptor.InterceptorExtension
-org.jboss.weld.extensions.unwraps.UnwrapsExtension
-org.jboss.weld.extensions.log.LoggerExtension
-org.jboss.weld.extensions.servicehandler.ServiceHandlerExtension
-org.jboss.weld.extensions.el.ELExtension
-org.jboss.weld.extensions.resourceLoader.ResourceLoaderExtension
+org.jboss.seam.solder.bean.generic.GenericBeanExtension
+org.jboss.seam.solder.bean.defaultbean.DefaultBeanExtension
+org.jboss.seam.solder.core.CoreExtension
+org.jboss.seam.solder.unwraps.UnwrapsExtension
+org.jboss.seam.solder.log.LoggerExtension
+org.jboss.seam.solder.servicehandler.ServiceHandlerExtension
+org.jboss.seam.solder.el.ELExtension
+org.jboss.seam.solder.resourceLoader.ResourceLoaderExtension

@@ -5,7 +5,7 @@
    <title>Resource Loading</title>
 
    <para>
-      Weld Extensions provides an extensible, injectable resource loader. The resource loader can provide URLs or 
+      Seam Solder provides an extensible, injectable resource loader. The resource loader can provide URLs or 
       managed input streams. By default the resource loader will look at the classpath, and the servlet context if
       available.
    </para>
@@ -76,7 +76,7 @@
 
       <para>
          And then register it as a service by placing the fully qualified class name of the implementation in a file
-         called <code>META-INF/services/org.jboss.weld.extensions.resourceLoader.ResourceLoader</code>.
+         called <code>META-INF/services/org.jboss.seam.solder.resourceLoader.ResourceLoader</code>.
       </para>
    </section>
 
