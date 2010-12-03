@@ -3,6 +3,7 @@ package org.jboss.seam.solder.properties;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
+import java.security.PrivilegedAction;
 
 /**
  * A representation of a JavaBean style property
@@ -86,4 +87,11 @@ public interface Property<V>
     * @return
     */
    boolean isReadOnly();
+
+   /**
+    * Calls the setAccessible method on the underlying member(s).
+    * <p>
+    * The operation should be performed within a {@link PrivilegedAction}
+    */
+   public void setAccessible();
 }

@@ -9,6 +9,9 @@ import static org.jboss.seam.solder.reflection.Reflections.setFieldValue;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
+import java.security.AccessController;
+
+import org.jboss.seam.solder.reflection.SetAccessiblePriviligedAction;
 
 /**
  * A bean property based on the value contained in a field
@@ -73,6 +76,11 @@ class FieldPropertyImpl<V> implements FieldProperty<V>
       return false;
    }
    
+   public void setAccessible()
+   {
+      AccessController.doPrivileged(new SetAccessiblePriviligedAction(field));
+   }
+
    @Override
    public String toString()
    {
