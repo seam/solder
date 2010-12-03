@@ -350,6 +350,14 @@
          If no properties are found, or more than one property is found, then <code>getSingleResult()</code> will throw an
          exception. Otherwise, <code>getSingleResult()</code> will return the sole property found.
       </para>
+      
+      <para>
+         Sometimes you may not be interested in read only properties, so <code>getResultList()</code>,<code>getFirstResult()</code> 
+         and <code>getSingleResult()</code> have corresponding <code>getWritableResultList()</code>,<code>getWritableFirstResult()</code> 
+         and <code>getWritableSingleResult()</code> methods, that will only return properties that are not read-only. This means that
+         if there is a field and a getter method that resolve to the same property, instead of getting a read-only <code>MethodProperty</code>
+         you will get a writable <code>FieldProperty</code>.
+      </para>
 
    </section>  
     
