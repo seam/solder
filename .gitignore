@@ -1,6 +1,9 @@
 .project
 .settings
 .classpath
+*.iml
+*.ipr
+*.iws
 target
 test-output
 impl/src/main/java/META-INF/MANIFEST.MF
