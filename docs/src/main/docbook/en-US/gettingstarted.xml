@@ -5,8 +5,8 @@
    <title>Getting Started</title>
    
    <para>
-      Getting started with Seam Solder is easy. If you are using Maven, then you can declare a dependency on Weld
-      Extensions (<code>org.jboss.seam.solder:seam-solder:${seam.solder.version}</code>, make sure you have the JBoss 
+      Getting started with Seam Solder is easy. If you are using Maven, then you can declare a dependency on Seam
+      Solder (<code>org.jboss.seam.solder:seam-solder:${seam.solder.version}</code>, make sure you have the JBoss 
       Maven repository enabled). Otherwise, add the jar to your compile time and runtime classpath. 
    </para>
    
