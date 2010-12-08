@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.seam.solder.properties.MethodProperty;
 import org.jboss.seam.solder.properties.Properties;
 import org.jboss.seam.solder.properties.Property;
 
@@ -61,11 +62,22 @@ public class PropertyQuery<V>
       List<Property<V>> results = getResultList();
       return results.isEmpty() ? null : results.get(0);
    }
-   
+
    /**
-    * Get a single result from the query, causing the query to be run.
-    * An exception is thrown if the query does not return exactly one
-    * result.
+    * Get the first result from the query that is not marked as read only,
+    * causing the query to be run.
+    * 
+    * @return the first writable result, or null if there are no results
+    */
+   public Property<V> getFirstWritableResult()
+   {
+      List<Property<V>> results = getWritableResultList();
+      return results.isEmpty() ? null : results.get(0);
+   }
+
+   /**
+    * Get a single result from the query, causing the query to be run. An
+    * exception is thrown if the query does not return exactly one result.
     * 
     * @throws RuntimeException if the query does not return exactly one result
     * @return the single result
@@ -88,11 +100,58 @@ public class PropertyQuery<V>
    }
 
    /**
+    * Get a single result from the query that is not marked as read only,
+    * causing the query to be run. An exception is thrown if the query does not
+    * return exactly one result.
+    * 
+    * @throws RuntimeException if the query does not return exactly one result
+    * @return the single writable result
+    */
+   public Property<V> getWritableSingleResult()
+   {
+      List<Property<V>> results = getWritableResultList();
+      if (results.size() == 1)
+      {
+         return results.get(0);
+      }
+      else if (results.isEmpty())
+      {
+         throw new RuntimeException("Expected one property match, but the criteria did not match any properties on " + targetClass.getName());
+      }
+      else
+      {
+         throw new RuntimeException("Expected one property match, but the criteria matched " + results.size() + " properties on " + targetClass.getName());
+      }
+   }
+
+   /**
     * Get the result from the query, causing the query to be run.
     * 
     * @return the results, or an empty list if there are no results
     */
    public List<Property<V>> getResultList()
+   {
+      return getResultList(false);
+   }
+
+   /**
+    * Get the non read only results from the query, causing the query to be run.
+    * 
+    * @return the results, or an empty list if there are no results
+    */
+   public List<Property<V>> getWritableResultList()
+   {
+      return getResultList(true);
+   }
+
+   /**
+    * Get the result from the query, causing the query to be run.
+    * 
+    * @param writable if this query should only return properties that are not
+    *           read only
+    * @return the results, or an empty list if there are no results
+    */
+   private List<Property<V>> getResultList(boolean writable)
    {
       List<Property<V>> results = new ArrayList<Property<V>>();
 
@@ -112,7 +171,13 @@ public class PropertyQuery<V>
             }
          }
          if (match)
-            results.add(Properties.<V> createProperty(method));
+         {
+            MethodProperty<V> property = Properties.<V> createProperty(method);
+            if (!writable || !property.isReadOnly())
+            {
+               results.add(property);
+            }
+         }
       }
 
       Class<?> cls = targetClass;
@@ -133,7 +198,12 @@ public class PropertyQuery<V>
             Property<V> prop = Properties.<V> createProperty(field);
 
             if (match && !resultsContainsProperty(results, prop.getName()))
-               results.add(prop);
+            {
+               if (!writable || !prop.isReadOnly())
+               {
+                  results.add(prop);
+               }
+            }
          }
 
          cls = cls.getSuperclass();
