@@ -53,6 +53,7 @@ import org.jboss.seam.solder.util.service.ServiceLoader;
  * 
  * @author Pete Muir
  * @author Nicklas Karlsson
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public class BeanManagerAware
 {
@@ -81,8 +82,9 @@ public class BeanManagerAware
     * Obtain the {@link BeanManager} from the {@link BeanManagerProvider}s
     * 
     * @return the current bean manager for the bean archive
+    * @throws BeanManagerNotAvailable when the bean manager is not available
     */
-   protected BeanManager getBeanManager()
+   protected BeanManager getBeanManager() throws BeanManagerNotAvailable
    {
       if (beanManager == null)
       {
@@ -90,27 +92,9 @@ public class BeanManagerAware
       }
       if (beanManager == null)
       {
-         throw new IllegalStateException("Could not locate a BeanManager from the providers " + providersToString());
+         throw new BeanManagerNotAvailable("Could not locate a BeanManager from the providers " + providersToString());
       }
       return beanManager;
-   }
-
-   /**
-    * Check if {@link BeanManagerAware} has been able to find the bean manager
-    * 
-    * @return <code>true</code> if the bean manager has been found, otherwise
-    *         <code>false</code>
-    */
-   protected boolean isBeanManagerAvailable()
-   {
-      if (beanManager == null)
-      {
-         return lookupBeanManager() != null;
-      }
-      else
-      {
-         return true;
-      }
    }
 
    private String providersToString()

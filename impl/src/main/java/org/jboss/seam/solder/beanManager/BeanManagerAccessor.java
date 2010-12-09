@@ -29,6 +29,7 @@ import javax.inject.Inject;
  * 
  * @author Pete Muir
  * @author Nicklas Karlsson
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
  */
 public class BeanManagerAccessor
@@ -42,14 +43,10 @@ public class BeanManagerAccessor
     * Obtain the {@link BeanManager} from the {@link BeanManagerProvider}s
     * 
     * @return the current bean manager for the bean archive
+    * @throws BeanManagerNotAvailable when the bean manager is not available
     */
-   public static BeanManager getBeanManager()
+   public static BeanManager getBeanManager() throws BeanManagerNotAvailable
    {
       return new BeanManagerAware().getBeanManager();
-   }
-
-   public static boolean isBeanManagerAvailable()
-   {
-      return new BeanManagerAware().isBeanManagerAvailable();
    }
 }
