@@ -70,7 +70,7 @@
       <testng.version>5.12.1</testng.version>
       <jboss.test.harness.version>1.1.0-CR3</jboss.test.harness.version>
       <servlet.api.version>2.5</servlet.api.version>
-      <arquillian.version>1.0.0.Alpha3</arquillian.version>
+      <arquillian.version>1.0.0.Alpha4</arquillian.version>
       <junit.version>4.8.1</junit.version>
       <elimpl.version>1.0</elimpl.version>
       <jbossas.server.manager.version>1.0.3.GA</jbossas.server.manager.version>
