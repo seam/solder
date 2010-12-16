@@ -20,6 +20,8 @@ import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.HashMap;
+
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -113,5 +115,11 @@ public class GenericProductTest
       manager.getReference(bean, String.class, ctx);
       ctx.release();
       Assert.assertTrue(Garply.disposerCalled);
+
+      bean = manager.resolve(manager.getBeans(HashMap.class, new FooLiteral(1)));
+      ctx = manager.createCreationalContext(bean);
+      manager.getReference(bean, String.class, ctx);
+      ctx.release();
+      Assert.assertTrue(Garply.isMapDisposerCalled());
    }
 }

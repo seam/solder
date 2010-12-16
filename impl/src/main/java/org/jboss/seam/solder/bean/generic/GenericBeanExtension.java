@@ -35,6 +35,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
@@ -329,6 +330,16 @@ public class GenericBeanExtension implements Extension
                ctx.getAnnotationBuilder().add(GenericMarkerLiteral.INSTANCE).add(genericBeanQualifier);
             }
             
+         });
+         builder.redefine(Disposes.class, new AnnotationRedefiner<Disposes>()
+         {
+
+            public void redefine(RedefinitionContext<Disposes> ctx)
+            {
+               // Add the marker qualifier
+               ctx.getAnnotationBuilder().add(GenericMarkerLiteral.INSTANCE).add(genericBeanQualifier);
+            }
+
          });
 
          builder.redefine(Generic.class, new AnnotationRedefiner<Generic>()

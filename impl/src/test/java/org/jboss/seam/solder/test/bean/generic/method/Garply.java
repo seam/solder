@@ -39,6 +39,7 @@ public class Garply
 {
 
    static boolean disposerCalled = false;
+   static boolean mapDisposerCalled = false;
    
    @Inject
    @Generic
@@ -69,6 +70,11 @@ public class Garply
       Assert.assertEquals(waldo.getName(), waldoName);
    }
 
+   public void dispose(@Disposes HashMap<String, String> map)
+   {
+      mapDisposerCalled = true;
+   }
+
    public Waldo getWaldo()
    {
       return waldo;
@@ -77,6 +83,11 @@ public class Garply
    public static boolean isDisposerCalled()
    {
       return disposerCalled;
+   }
+
+   public static boolean isMapDisposerCalled()
+   {
+      return mapDisposerCalled;
    }
 
 }
