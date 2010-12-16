@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.reflection;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
@@ -87,15 +86,15 @@ public @interface Synthetic
    public static class Provider
    {
 
-      //Map of generic Annotation instance to a SyntheticQualifier
-      private final Map<Annotation, Synthetic> synthetics;
+      // Map of generic Object to a SyntheticQualifier
+      private final Map<Object, Synthetic> synthetics;
       private final String namespace;
 
       private AtomicLong count;
 
       public Provider(String namespace)
       {
-         this.synthetics = new HashMap<Annotation, Synthetic>();
+         this.synthetics = new HashMap<Object, Synthetic>();
          this.namespace = namespace;
          this.count = new AtomicLong();
       }
@@ -107,16 +106,16 @@ public @interface Synthetic
        * @param annotation
        * @return
        */
-      public Synthetic get(Annotation annotation)
+      public Synthetic get(Object object)
       {
          // This may give us data races, but these don't matter as Annotation use it's type and it's members values
          // for equality, it does not use instance equality.
          // Note that count is atomic
-         if (!synthetics.containsKey(annotation))
+         if (!synthetics.containsKey(object))
          {
-            synthetics.put(annotation, new Synthetic.SyntheticLiteral(namespace, count.getAndIncrement()));
+            synthetics.put(object, new Synthetic.SyntheticLiteral(namespace, count.getAndIncrement()));
          }
-         return synthetics.get(annotation);
+         return synthetics.get(object);
       }
 
       /**

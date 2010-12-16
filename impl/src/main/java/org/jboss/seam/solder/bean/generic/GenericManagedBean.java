@@ -46,9 +46,9 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
    private final Map<AnnotatedField<? super T>, InjectionPoint> injectedFields;
    private final Class<? extends Annotation> scopeOverride;
 
-   GenericManagedBean(Bean<T> originalBean, Annotation genericConfiguration, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Set<Annotation> qualifiers, Class<? extends Annotation> scopeOverride, Synthetic.Provider annotatedMemberSyntheticProvider, boolean alternative, Class<?> beanClass, BeanManager beanManager)
+   GenericManagedBean(Bean<T> originalBean, GenericIdentifier identifier, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Set<Annotation> qualifiers, Class<? extends Annotation> scopeOverride, Synthetic.Provider annotatedMemberSyntheticProvider, boolean alternative, Class<?> beanClass, BeanManager beanManager)
    {
-      super(originalBean, qualifiers, genericConfiguration, Annotateds.createTypeId(type), alternative, beanClass, beanManager);
+      super(originalBean, qualifiers, identifier, Annotateds.createTypeId(type), alternative, beanClass, beanManager);
       this.injectionTarget = injectionTarget;
       this.injectedFields = new HashMap<AnnotatedField<? super T>, InjectionPoint>();
       this.scopeOverride = scopeOverride;
@@ -60,7 +60,7 @@ class GenericManagedBean<T> extends AbstactGenericBean<T>
          {
             if (AnnotatedMember.class.isAssignableFrom(field.getJavaMember().getType()))
             {
-               injectedFields.put(field, new ImmutableInjectionPoint(field, Collections.<Annotation> singleton(annotatedMemberSyntheticProvider.get(genericConfiguration)), this, false, false));
+               injectedFields.put(field, new ImmutableInjectionPoint(field, Collections.<Annotation> singleton(annotatedMemberSyntheticProvider.get(identifier)), this, false, false));
             }
             else
             {

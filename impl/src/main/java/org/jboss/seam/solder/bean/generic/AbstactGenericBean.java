@@ -43,7 +43,7 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements Passiv
    private final boolean alternative;
    private final Class<?> beanClass;
 
-   protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, Annotation configuration, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager)
+   protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, GenericIdentifier identifier, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager)
    {
       this.delegate = delegate;
       this.beanManager = beanManager;
@@ -58,7 +58,7 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements Passiv
          }
       }
       this.qualifiers.add(AnyLiteral.INSTANCE);
-      this.id = getClass().getName() + "-" + configuration.toString() + "-" + id;
+      this.id = getClass().getName() + "-" + identifier.toString() + "-" + id;
       this.alternative = alternative;
       this.beanClass = beanClass;
    }
