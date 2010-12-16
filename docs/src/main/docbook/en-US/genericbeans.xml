@@ -177,13 +177,6 @@ class DurableQueueConfiguration extends MessageSystemConfiguration {
          <code>MessageSystemConfiguration</code>); the type produced by the generic configuration point must be of this 
          type. Additionally it defines the member <code>name</code>, used to provide the queue name. 
       </para>
-      
-      <important>
-         <para>
-            All generic configuration annotations should have at least one member. Each configuration must specify a 
-            unique value for this member.
-         </para>
-      </important>
 
       <para>
          Next, we define the queue manager bean. The manager has one producer method, which creates the queue from the

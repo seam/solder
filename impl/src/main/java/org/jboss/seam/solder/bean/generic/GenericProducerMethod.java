@@ -21,6 +21,7 @@ import static org.jboss.seam.solder.bean.Beans.createInjectionPoints;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.seam.solder.bean.ImmutableInjectionPoint;
+import org.jboss.seam.solder.reflection.Synthetic;
 import org.jboss.seam.solder.reflection.annotated.Annotateds;
 import org.jboss.seam.solder.reflection.annotated.InjectableMethod;
 
@@ -43,9 +45,9 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
    private final InjectableMethod<X> producerMethod;
    private final InjectableMethod<X> disposerMethod;
 
-   GenericProducerMethod(Bean<T> originalBean, Annotation genericConfiguration, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> declaringBeanClass, BeanManager beanManager)
+   GenericProducerMethod(Bean<T> originalBean, GenericIdentifier identifier, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> declaringBeanClass, BeanManager beanManager)
    {
-      super(originalBean, genericConfiguration, qualifiers, genericBeanQualifiers, scopeOverride, Annotateds.createCallableId(method), alternative, declaringBeanClass, beanManager);
+      super(originalBean, identifier, qualifiers, genericBeanQualifiers, scopeOverride, Annotateds.createCallableId(method), alternative, declaringBeanClass, beanManager);
       List<InjectionPoint> injectionPoints = createInjectionPoints(method, this, beanManager);
       List<InjectionPoint> wrappedInjectionPoints = new ArrayList<InjectionPoint>();
       for (InjectionPoint injectionPoint : injectionPoints)
@@ -98,6 +100,19 @@ public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
          Set<Annotation> newQualifiers = new HashSet<Annotation>();
          newQualifiers.addAll(quals);
          newQualifiers.addAll(injectionPoint.getQualifiers());
+         Iterator<Annotation> it = newQualifiers.iterator();
+         while (it.hasNext())
+         {
+            Annotation annotation = it.next();
+            if (annotation.annotationType().equals(Synthetic.class))
+            {
+               it.remove();
+            }
+            else if (annotation.annotationType().equals(GenericMarker.class))
+            {
+               it.remove();
+            }
+         }
          return new ImmutableInjectionPoint((AnnotatedParameter<?>) anotated, newQualifiers, injectionPoint.getBean(), injectionPoint.isTransient(), injectionPoint.isDelegate());
       }
       return injectionPoint;
