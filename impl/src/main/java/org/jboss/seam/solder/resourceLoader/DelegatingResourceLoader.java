@@ -8,8 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * Resource loader that delegates to a static list of resource loaders.
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
 @Deprecated
 public class DelegatingResourceLoader implements ResourceLoader
 {
-   private static final Logger log = LoggerFactory.getLogger("org.jboss.seam.solder.resources");
+   private static final Logger log = Logger.getLogger("org.jboss.seam.solder.resources");
 
    // TODO: get rid of the static
    private static final List<ResourceLoader> resourceLoaders = new ArrayList<ResourceLoader>();
