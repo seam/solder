@@ -15,6 +15,7 @@
    <url>http://seamframework.org/Seam3/Solder</url>
 
    <modules>
+      <module>api</module>
       <module>impl</module>
    </modules>
 
@@ -112,6 +113,12 @@
          <dependency>
             <groupId>org.jboss.seam.solder</groupId>
             <artifactId>seam-solder</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.seam.solder</groupId>
+            <artifactId>seam-solder-api</artifactId>
             <version>${project.version}</version>
          </dependency>
 
