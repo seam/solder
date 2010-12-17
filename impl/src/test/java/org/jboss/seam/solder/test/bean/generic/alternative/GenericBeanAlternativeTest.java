@@ -34,7 +34,7 @@ public class GenericBeanAlternativeTest
    @Deployment
    public static WebArchive deployment()
    {
-      WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war").addLibrary(MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder"));
+      WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war").addLibraries(MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"), MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-impl"));
       archive.addPackage(GenericBeanAlternativeTest.class.getPackage());
       archive.addWebResource("org/jboss/seam/solder/test/bean/generic/alternative/beans.xml", "beans.xml");
       return archive;
