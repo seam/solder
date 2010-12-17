@@ -30,9 +30,6 @@
       <listitem>
          <code>javax.inject:javax.inject</code>
       </listitem>
-      <listitem>
-         <code>javax.transaction:jta</code>
-      </listitem>
    </itemizedlist>
    
    <tip>
