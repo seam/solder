@@ -1,4 +1,4 @@
-#Seam Servlet
+#Seam Solder
 
 A portable CDI extension library for applications, frameworks and other extensions based on CDI.
 
