@@ -77,7 +77,6 @@
       <seam.version>3.0.0.b03</seam.version>
       <weld.core.version>1.1.0.Beta1</weld.core.version>
       <javassist.version>3.13.0-GA</javassist.version>
-      <slf4j.version>1.5.10</slf4j.version>
       <persistence.api.version>1.0</persistence.api.version>
       <servlet.api.version>2.5</servlet.api.version>
       <elimpl.version>1.0</elimpl.version>

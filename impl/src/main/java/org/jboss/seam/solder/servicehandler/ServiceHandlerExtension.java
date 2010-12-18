@@ -30,8 +30,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.jboss.seam.solder.bean.BeanBuilder;
 import org.jboss.seam.solder.reflection.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * This extension automatically implements interfaces and abstract classes.
@@ -43,7 +42,7 @@ public class ServiceHandlerExtension implements Extension
 {
    private final Set<Bean<?>> beans = new HashSet<Bean<?>>();
    
-   private final static Logger log = LoggerFactory.getLogger(ServiceHandlerExtension.class);
+   private final static Logger log =  Logger.getLogger(ServiceHandlerExtension.class);
 
    private final boolean enabled;
 

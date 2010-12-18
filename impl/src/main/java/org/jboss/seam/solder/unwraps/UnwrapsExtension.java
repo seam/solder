@@ -27,10 +27,9 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.solder.reflection.Reflections;
 import org.jboss.seam.solder.servicehandler.ServiceHandlerExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An extension that allows the use of {@link Unwraps} methods
@@ -44,7 +43,7 @@ public class UnwrapsExtension implements Extension
 
    private final Set<Bean<?>> beans;
 
-   private final static Logger log = LoggerFactory.getLogger(UnwrapsExtension.class);
+   private final static Logger log = Logger.getLogger(UnwrapsExtension.class);
 
    private final boolean enabled;
 

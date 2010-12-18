@@ -34,12 +34,11 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.inject.Named;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.solder.literal.NamedLiteral;
 import org.jboss.seam.solder.properties.Properties;
 import org.jboss.seam.solder.reflection.Reflections;
 import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Extension to install the "core" extensions. Core extensions are those that
@@ -55,7 +54,7 @@ public class CoreExtension implements Extension
 
    private final Collection<Bean<?>> additionalBeans;
 
-   static final Logger log = LoggerFactory.getLogger(CoreExtension.class);
+   static final Logger log = Logger.getLogger(CoreExtension.class);
 
    CoreExtension()
    {

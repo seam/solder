@@ -50,14 +50,13 @@ import javax.enterprise.inject.spi.ProcessObserverMethod;
 import javax.enterprise.inject.spi.ProcessProducerField;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.solder.bean.Beans;
 import org.jboss.seam.solder.literal.DefaultLiteral;
 import org.jboss.seam.solder.reflection.Synthetic;
 import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 import org.jboss.seam.solder.util.collections.SetMultimap;
 import org.jboss.seam.solder.util.collections.Supplier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Registers beans annotated @DefaultBean
@@ -81,7 +80,7 @@ public class DefaultBeanExtension implements Extension
 
    private static final String PRODUCER_QUALIFIER_NAMEPSACE = "org.jboss.seam.solder.defaultbean.producer";
 
-   private static final Logger log = LoggerFactory.getLogger(DefaultBeanExtension.class);
+   private static final Logger log = Logger.getLogger(DefaultBeanExtension.class);
 
    private boolean beanDiscoveryOver = false;
 
