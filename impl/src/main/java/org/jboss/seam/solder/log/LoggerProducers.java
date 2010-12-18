@@ -30,13 +30,13 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import org.jboss.logging.Logger;
 
 /**
- * The <code>Producers</code> provides a producer method for all
+ * The <code>LoggerProducers</code> provides a producer method for all
  * injected loggers and injected typed loggers.
  * 
  * @author David Allen
  * @author Pete Muir
  */
-class Producers
+class LoggerProducers
 {
    
    @Produces

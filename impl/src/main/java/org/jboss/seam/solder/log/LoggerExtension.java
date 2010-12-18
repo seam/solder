@@ -19,7 +19,7 @@ import org.jboss.logging.MessageLogger;
 import org.jboss.seam.solder.bean.NarrowingBeanBuilder;
 
 /**
- * Adds Producers to the deployment, and detects and installs beans for any
+ * Adds LoggerProducers to the deployment, and detects and installs beans for any
  * typed loggers defined.
  * 
  * @author Pete Muir
@@ -47,7 +47,7 @@ public class LoggerExtension implements Extension
 
    void addProducer(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
    {
-      event.addAnnotatedType(beanManager.createAnnotatedType(Producers.class));
+      event.addAnnotatedType(beanManager.createAnnotatedType(LoggerProducers.class));
    }
 
    void detectInterfaces(@Observes ProcessAnnotatedType<?> event, BeanManager beanManager)
@@ -63,7 +63,7 @@ public class LoggerExtension implements Extension
       }
    }
 
-   void detectProducers(@Observes ProcessProducerMethod<Producers, Object> event)
+   void detectProducers(@Observes ProcessProducerMethod<LoggerProducers, Object> event)
    {
       if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedLogger.class))
       {
