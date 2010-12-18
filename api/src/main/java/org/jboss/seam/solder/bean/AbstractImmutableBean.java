@@ -12,10 +12,9 @@ import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.solder.literal.DefaultLiteral;
 import org.jboss.seam.solder.util.collections.Arrays2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -35,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractImmutableBean<T> implements Bean<T>
 {
 
-   private transient Logger log = LoggerFactory.getLogger(AbstractImmutableBean.class);
+   private transient Logger log = Logger.getLogger(AbstractImmutableBean.class);
 
    private final Class<?> beanClass;
    private final String name;

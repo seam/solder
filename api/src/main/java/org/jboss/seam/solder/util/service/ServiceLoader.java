@@ -30,8 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * This class handles looking up service providers on the class path. It
@@ -53,7 +52,7 @@ public class ServiceLoader<S> implements Iterable<S>
 {
    private static final String SERVICES = "META-INF/services";
 
-   private static final Logger log = LoggerFactory.getLogger(ServiceLoader.class);
+   private static final Logger log = Logger.getLogger(ServiceLoader.class);
 
    /**
     * Creates a new service loader for the given service type, using the current
