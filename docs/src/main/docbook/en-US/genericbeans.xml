@@ -218,7 +218,7 @@ class QueueManager {
    </para>
    
    <para>
-      Having created the <code>MessageQueueFactory</code>, we can then expose the queue, obtaining it's name from the
+      Having created the <code>MessageQueueFactory</code>, we can then expose the queue, obtaining its name from the
       generic configuration annotation. Additionally, we define the scope of the producer method to be inherited from 
       the generic configuration point by placing the annotation <code>@ApplyScope</code> on the producer method. The 
       producer method automatically inherits the qualifiers specified by the generic configuration point.

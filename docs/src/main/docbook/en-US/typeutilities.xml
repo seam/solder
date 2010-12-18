@@ -26,7 +26,7 @@
       
       <para>
          Here we create a new builder, and initialize it using an existing <code>AnnotatedType</code>. We can then
-         add or remove annotations from the class, and it's members. When we have finished modifying the type, we call
+         add or remove annotations from the class, and its members. When we have finished modifying the type, we call
          <code>create()</code> to spit out a new, immutable, <code>AnnotatedType</code>.
       </para>
       
