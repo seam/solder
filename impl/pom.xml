@@ -39,6 +39,7 @@
          <artifactId>seam-solder-api</artifactId>
       </dependency>
 
+      <!-- Javassist is required for service handlers, unwrapping producers and type-safe loggers -->
       <dependency>
          <groupId>org.javassist</groupId>
          <artifactId>javassist</artifactId>
@@ -49,12 +50,6 @@
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging</artifactId>
          <scope>provided</scope>
       </dependency>
 
