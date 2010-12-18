@@ -25,11 +25,9 @@ import org.jboss.seam.solder.literal.DefaultLiteral;
  * @author Pete Muir
  * @see ImmutableNarrowingBean
  * @see ImmutablePassivationCapableNarrowingBean
- * 
  */
 public class NarrowingBeanBuilder<T>
 {
-
    private final Bean<Object> delegate;
    private final BeanManager beanManager;
    private Set<Type> types;
@@ -69,15 +67,10 @@ public class NarrowingBeanBuilder<T>
    /**
     * <p>
     * Read the {@link AnnotatedType}, creating a narrowing bean from the class
-    * and it's annotations.
+    * and its annotations.
     * </p>
     * 
-    * <p>
-    * {@link BeanBuilder} does <em>not</em> support reading members of the class
-    * to create producers or observer methods.
-    * </p>
-    * 
-    * @param type the type to read @
+    * @param type the type to read
     */
    public NarrowingBeanBuilder<T> readFromType(AnnotatedType<T> type)
    {
