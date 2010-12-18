@@ -107,7 +107,7 @@
 
          <dependency>
             <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-servlet-impl</artifactId>
+            <artifactId>seam-solder-impl</artifactId>
             <version>${project.version}</version>
          </dependency>
 
