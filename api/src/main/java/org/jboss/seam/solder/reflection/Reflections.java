@@ -18,6 +18,7 @@ package org.jboss.seam.solder.reflection;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -25,6 +26,8 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -399,45 +402,79 @@ public class Reflections
    }
 
    /**
+    * Set the accessibility flag on the {@link AccessibleObject} as described in
+    * {@link AccessibleObject#setAccessible(boolean)} within the context of
+    * a {@link PrivilegedAction}.
+    * 
+    * @param <A> member the accessible object type
+    * @param member the accessible object
+    * @return the accessible object after the accessible flag has been altered
+    */
+   public static <A extends AccessibleObject> A setAccessible(A member)
+   {
+      AccessController.doPrivileged(new SetAccessiblePriviligedAction(member));
+      return member;
+   }
+   
+   /**
     * <p>
-    * Invoke the method on the instance, with any arguments specified.
+    * Invoke the specified method on the provided instance, passing any additional
+    * arguments included in this method as arguments to the specified method.
     * </p>
     * 
-    * <p>
-    * This method wraps {@link Method#invoke(Object, Object...)}, converting the
-    * checked exceptions that {@link Method#invoke(Object, Object...)} specifies
-    * to runtime exceptions.
-    * </p>
+    * <p>This method provides the same functionality and throws the same exceptions as
+    * {@link Reflections#invokeMethod(boolean, Method, Class, Object, Object...)}, with the
+    * expected return type set to {@link Object} and no change to the method's accessibility.</p>
     * 
-    * @param method the method to invoke
-    * @param instance the instance to invoke the method or null if the method is
-    *           static
-    * @param args the arguments to the method
-    * @return the result of invoking the method, or null if the method's return
-    *         type is void
-    * @throws RuntimeException if this <code>Method</code> object enforces Java
-    *            language access control and the underlying method is
-    *            inaccessible or if the underlying method throws an exception or
-    *            if the initialization provoked by this method fails.
-    * @throws IllegalArgumentException if the method is an instance method and
-    *            the specified <code>instance</code> argument is not an instance of the class
-    *            or interface declaring the underlying method (or of a subclass
-    *            or implementor thereof); if the number of actual and formal
-    *            parameters differ; if an unwrapping conversion for primitive
-    *            arguments fails; or if, after possible unwrapping, a parameter
-    *            value cannot be converted to the corresponding formal parameter
-    *            type by a method invocation conversion.
-    * @throws NullPointerException if the specified <code>instance</code> is null and the
-    *            method is an instance method.
-    * @throws ExceptionInInitializerError if the initialization provoked by this
-    *            method fails.
-    * 
+    * @see Reflections#invokeMethod(boolean, Method, Class, Object, Object...)
     * @see Method#invoke(Object, Object...)
-    * 
     */
    public static Object invokeMethod(Method method, Object instance, Object... args)
    {
-      return invokeMethod(method, Object.class, instance, args);
+      return invokeMethod(false, method, Object.class, instance, args);
+   }
+   
+   /**
+    * <p>
+    * Invoke the specified method on the provided instance, passing any additional
+    * arguments included in this method as arguments to the specified method.
+    * </p>
+    * 
+    * <p>
+    * This method attempts to set the accessible flag of the method in a
+    * {@link PrivilegedAction} before invoking the method if the first argument
+    * is true.
+    * </p>
+    * 
+    * <p>This method provides the same functionality and throws the same exceptions as
+    * {@link Reflections#invokeMethod(boolean, Method, Class, Object, Object...)}, with the
+    * expected return type set to {@link Object}.</p>
+    * 
+    * @see Reflections#invokeMethod(boolean, Method, Class, Object, Object...)
+    * @see Method#invoke(Object, Object...)
+    */
+   public static Object invokeMethod(boolean setAccessible, Method method, Object instance, Object... args)
+   {
+      return invokeMethod(setAccessible, method, Object.class, instance, args);
+   }
+
+   /**
+    * <p>
+    * Invoke the specified method on the provided instance, passing any additional
+    * arguments included in this method as arguments to the specified method.
+    * </p>
+    * 
+    * <p>This method provides the same functionality and throws the same exceptions as
+    * {@link Reflections#invokeMethod(boolean, Method, Class, Object, Object...)}, with the
+    * expected return type set to {@link Object} and honoring the accessibility of
+    * the method.</p>
+    * 
+    * @see Reflections#invokeMethod(boolean, Method, Class, Object, Object...)
+    * @see Method#invoke(Object, Object...)
+    */
+   public static <T> T invokeMethod(Method method, Class<T> expectedReturnType, Object instance, Object... args)
+   {
+      return invokeMethod(false, method, expectedReturnType, instance, args);
    }
 
    /**
@@ -452,6 +489,13 @@ public class Reflections
     * to runtime exceptions.
     * </p>
     * 
+    * <p>
+    * If instructed, this method attempts to set the accessible flag of the method in a
+    * {@link PrivilegedAction} before invoking the method.
+    * </p>
+    * 
+    * @param setAccessible flag indicating whether method should first be set as
+    *           accessible
     * @param method the method to invoke
     * @param instance the instance to invoke the method
     * @param args the arguments to the method
@@ -462,15 +506,15 @@ public class Reflections
     *            inaccessible or if the underlying method throws an exception or
     *            if the initialization provoked by this method fails.
     * @throws IllegalArgumentException if the method is an instance method and
-    *            the specified <code>instance</code> argument is not an instance of the class
-    *            or interface declaring the underlying method (or of a subclass
-    *            or implementor thereof); if the number of actual and formal
-    *            parameters differ; if an unwrapping conversion for primitive
-    *            arguments fails; or if, after possible unwrapping, a parameter
-    *            value cannot be converted to the corresponding formal parameter
-    *            type by a method invocation conversion.
-    * @throws NullPointerException if the specified <code>instance</code> is null and the
-    *            method is an instance method.
+    *            the specified <code>instance</code> argument is not an instance
+    *            of the class or interface declaring the underlying method (or
+    *            of a subclass or implementor thereof); if the number of actual
+    *            and formal parameters differ; if an unwrapping conversion for
+    *            primitive arguments fails; or if, after possible unwrapping, a
+    *            parameter value cannot be converted to the corresponding formal
+    *            parameter type by a method invocation conversion.
+    * @throws NullPointerException if the specified <code>instance</code> is
+    *            null and the method is an instance method.
     * @throws ClassCastException if the result of invoking the method cannot be
     *            cast to the expectedReturnType
     * @throws ExceptionInInitializerError if the initialization provoked by this
@@ -479,8 +523,13 @@ public class Reflections
     * @see Method#invoke(Object, Object...)
     * 
     */
-   public static <T> T invokeMethod(Method method, Class<T> expectedReturnType, Object instance, Object... args)
+   public static <T> T invokeMethod(boolean setAccessible, Method method, Class<T> expectedReturnType, Object instance, Object... args)
    {
+      if (setAccessible && !method.isAccessible())
+      {
+         setAccessible(method);
+      }
+      
       try
       {
          return expectedReturnType.cast(method.invoke(instance, args));
@@ -516,10 +565,29 @@ public class Reflections
     * Set the value of a field on the instance to the specified value.
     * </p>
     * 
+    * <p>This method provides the same functionality and throws the same exceptions as
+    * {@link Reflections#setFieldValue(boolean, Method, Class, Object, Object...)}, honoring
+    * the accessibility of the field.</p>
+    */
+   public static void setFieldValue(Field field, Object instance, Object value)
+   {
+      setFieldValue(false, field, instance, value);
+   }
+   
+   /**
+    * <p>
+    * Sets the value of a field on the instance to the specified value.
+    * </p>
+    * 
     * <p>
     * This method wraps {@link Field#set(Object, Object)}, converting the
     * checked exceptions that {@link Field#set(Object, Object)} specifies to
     * runtime exceptions.
+    * </p>
+    * 
+    * <p>
+    * If instructed, this method attempts to set the accessible flag of the method in a
+    * {@link PrivilegedAction} before invoking the method.
     * </p>
     * 
     * @param field the field on which to operate, or null if the field is static
@@ -538,8 +606,13 @@ public class Reflections
     * @see Field#set(Object, Object)
     * 
     */
-   public static void setFieldValue(Field field, Object instance, Object value)
+   public static void setFieldValue(boolean setAccessible, Field field, Object instance, Object value)
    {
+      if (setAccessible && !field.isAccessible())
+      {
+         setAccessible(field);
+      }
+      
       try
       {
          field.set(instance, value);
