@@ -19,16 +19,16 @@ package org.jboss.seam.solder.test.log;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
-import org.jboss.seam.solder.log.Category;
+import org.jboss.seam.solder.log.Suffix;
 
-public class Finch
+class Raven
 {
-   @Inject @Category("Finch")
+   @Inject @Suffix("log")
    private Logger log;
    
    public void generateLogMessage()
    {
-      log.info("Finch");
+      log.info("Raven");
    }
    
    public Logger getLogger()

@@ -30,4 +30,9 @@ class Sparrow
    {
       log.info("Sparrow");
    }
+   
+   public Logger getLogger()
+   {
+      return log;
+   }
 }

@@ -38,26 +38,42 @@ import org.jboss.logging.Logger;
  */
 class LoggerProducers
 {
-   
    @Produces
    Logger produceLog(InjectionPoint injectionPoint)
    {
       Annotated annotated = injectionPoint.getAnnotated();
-      if (annotated.isAnnotationPresent(Category.class) && annotated.isAnnotationPresent(Suffix.class))
+      if (annotated.isAnnotationPresent(Category.class))
       {
-         return getLogger(annotated.getAnnotation(Category.class).value(), annotated.getAnnotation(Suffix.class).value());
+         if (annotated.isAnnotationPresent(Suffix.class))
+         {
+            return getLogger(annotated.getAnnotation(Category.class).value(), annotated.getAnnotation(Suffix.class).value());
+         }
+         else
+         {
+            return getLogger(annotated.getAnnotation(Category.class).value());
+         }
       }
-      else if (annotated.isAnnotationPresent(Category.class))
+      else if (annotated.isAnnotationPresent(TypedCategory.class))
       {
-         return getLogger(annotated.getAnnotation(Category.class).value());
-      }
-      else if (annotated.isAnnotationPresent(Suffix.class))
-      {
-         return getLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(Suffix.class).value());
+         if (annotated.isAnnotationPresent(Suffix.class))
+         {
+            return getLogger(annotated.getAnnotation(TypedCategory.class).value(), annotated.getAnnotation(Suffix.class).value());
+         }
+         else
+         {
+            return getLogger(annotated.getAnnotation(TypedCategory.class).value());
+         }
       }
       else
       {
-         return getLogger(getRawType(injectionPoint.getType()));
+         if (annotated.isAnnotationPresent(Suffix.class))
+         {
+            return getLogger(getRawType(injectionPoint.getBean().getBeanClass()), annotated.getAnnotation(Suffix.class).value());
+         }
+         else
+         {
+            return getLogger(getRawType(injectionPoint.getBean().getBeanClass()));
+         }
       }
    }
    
@@ -66,17 +82,35 @@ class LoggerProducers
    Object produceTypedLogger(InjectionPoint injectionPoint)
    {
       Annotated annotated = injectionPoint.getAnnotated();
-      if (!annotated.isAnnotationPresent(Category.class))
+      if (!(annotated.isAnnotationPresent(Category.class) || annotated.isAnnotationPresent(TypedCategory.class)))
       {
-         throw new IllegalStateException("Must specify @Category for typed loggers at [" + injectionPoint + "]");
       }
-      else if (annotated.isAnnotationPresent(Locale.class))
-      {         
-         return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(Category.class).value(), toLocale(annotated.getAnnotation(Locale.class).value()));
+      
+      if (annotated.isAnnotationPresent(Category.class))
+      {
+         if (annotated.isAnnotationPresent(Locale.class))
+         {         
+            return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(Category.class).value(), toLocale(annotated.getAnnotation(Locale.class).value()));
+         }
+         else
+         {
+            return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(Category.class).value());
+         }   
+      }
+      else if (annotated.isAnnotationPresent(TypedCategory.class))
+      {
+         if (annotated.isAnnotationPresent(Locale.class))
+         {         
+            return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(TypedCategory.class).value().getName(), toLocale(annotated.getAnnotation(Locale.class).value()));
+         }
+         else
+         {
+            return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(TypedCategory.class).value().getName());
+         }
       }
       else
       {
-         return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(Category.class).value());
+         throw new IllegalStateException("Must specify @Category or @TypedCategory for typed loggers at [" + injectionPoint + "]");
       }
    }
    

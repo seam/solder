@@ -107,6 +107,19 @@ interface TrainSpotterLog {
    <programlisting role="JAVA">   @Inject Logger log;</programlisting>
 
    <para>
+      Log messages created from this Logger will have a category (logger name) equal to the fully-qualified class name
+      of the bean implementation class. You can specify a category explicitly using an annotation.
+   </para>
+
+   <programlisting role="JAVA">   @Inject @Category("billing") Logger log;</programlisting>
+
+   <para>
+      You can also specify a category using a reference to a type:
+   </para>
+
+   <programlisting role="JAVA">   @Inject @TypedCategory(BillingService.class) Logger log;</programlisting>
+
+   <para>
       Typed loggers also provide internationalization support, simply add the @MessageBundle annotation to the logger 
       interface (not currently supported).
    </para>
@@ -137,4 +150,7 @@ interface TrainMessages {
 
    <programlisting role="JAVA">   throw new BadDayException(messages.noTrainsSpotted("leaves on the line"));</programlisting>
     
+<!--
+vim:et:ts=3:sw=3:tw=120
+-->
 </chapter>

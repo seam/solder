@@ -19,16 +19,16 @@ package org.jboss.seam.solder.test.log;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
-import org.jboss.seam.solder.log.Category;
+import org.jboss.seam.solder.log.TypedCategory;
 
-public class Finch
+public class Wren
 {
-   @Inject @Category("Finch")
+   @Inject @TypedCategory(BirdLogger.class)
    private Logger log;
    
    public void generateLogMessage()
    {
-      log.info("Finch");
+      log.info("Wren");
    }
    
    public Logger getLogger()

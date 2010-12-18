@@ -31,11 +31,11 @@ import org.jboss.logging.MessageLogger;
 
 /**
  * <p>
- * Specifies a string category for the injected logger.
+ * Specifies a typed category for the injected logger.
  * </p>
  * 
  * <p>
- * A category must be specified for a typed logger.
+ * A category is required for a typed logger.
  * </p>
  * 
  * <p>
@@ -44,7 +44,7 @@ import org.jboss.logging.MessageLogger;
  * implementation class is used as the category.
  * </p>
  * 
- * @author Pete Muir
+ * @author Dan Allen
  * 
  * @see MessageLogger
  * @see Logger#getLogger(String)
@@ -52,11 +52,10 @@ import org.jboss.logging.MessageLogger;
 @Target({ METHOD, FIELD, PARAMETER, TYPE })
 @Retention(RUNTIME)
 @Documented
-public @interface Category
+public @interface TypedCategory
 {
-
    /**
     * The category of the logger.
     */
-   String value();
+   Class<?> value();
 }

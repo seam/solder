@@ -10,5 +10,8 @@ public interface BirdLogger extends BirdMessages
    
    @LogMessage @Message("Spotted %s Hawks") 
    void logHawksSpotted(int number);
+   
+   @LogMessage @Message("Spotted %s Owls") 
+   void logOwlsSpotted(int number);
 
 }
