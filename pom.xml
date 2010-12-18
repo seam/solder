@@ -29,13 +29,14 @@
    <packaging>pom</packaging>
    <version>3.0.0-SNAPSHOT</version>
 
-   <name>Seam Solder</name>
+   <name>Seam Solder Project</name>
    <description>A portable CDI extensions library for developing CDI applications, frameworks or other extensions</description>
    <url>http://seamframework.org/Seam3/Solder</url>
 
    <modules>
       <module>api</module>
       <module>impl</module>
+      <module>combined</module>
    </modules>
 
    <issueManagement>
@@ -238,7 +239,6 @@
             </property>
          </activation>
          <modules>
-            <module>combined</module>
             <module>docs</module>
          </modules>
       </profile>
