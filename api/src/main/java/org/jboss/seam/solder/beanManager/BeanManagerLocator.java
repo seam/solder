@@ -54,7 +54,7 @@ import org.jboss.seam.solder.util.service.ServiceLoader;
  * </p>
  * 
  * @see BeanManagerProvider
- * @see BeanManagerAccessor
+ * @see BeanManagerAware
  * 
  * @author Pete Muir
  * @author Nicklas Karlsson
