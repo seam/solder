@@ -19,6 +19,7 @@ package org.jboss.seam.solder.core;
 import java.beans.Introspector;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
@@ -30,6 +31,7 @@ import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.inject.Named;
@@ -51,7 +53,6 @@ import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
  */
 public class CoreExtension implements Extension
 {
-
    private final Collection<Bean<?>> additionalBeans;
 
    static final Logger log = Logger.getLogger(CoreExtension.class);
@@ -60,7 +61,14 @@ public class CoreExtension implements Extension
    {
       this.additionalBeans = new ArrayList<Bean<?>>();
    }
-
+   
+   void beforeBeanDiscovery(@Observes final BeforeBeanDiscovery bbd)
+   {
+      // TODO make me a utility
+      Logger.getLogger("Version").info("Seam Solder " + CoreExtension.class.getPackage().getSpecificationVersion() +
+         " (build id: " + CoreExtension.class.getPackage().getImplementationVersion() + ")");
+   }
+   
    <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager beanManager)
    {
       AnnotatedType<X> annotatedType = pat.getAnnotatedType();
@@ -203,11 +211,24 @@ public class CoreExtension implements Extension
       }
    }
 
-   void afterBeanDiscovery(@Observes AfterBeanDiscovery abd)
+   void afterBeanDiscovery(@Observes AfterBeanDiscovery abd, BeanManager beanManager)
    {
+      failIfWeldExtensionsDetected(beanManager);
       for (Bean<?> bean : additionalBeans)
       {
          abd.addBean(bean);
+      }
+   }
+   
+   private void failIfWeldExtensionsDetected(BeanManager beanManager)
+   {
+      for (Iterator<Bean<?>> extensions = beanManager.getBeans(Extension.class).iterator(); extensions.hasNext();)
+      {
+         if (extensions.next().getBeanClass().getName().equals("org.jboss.weld.extensions.core.CoreExtension"))
+         {
+            throw new IllegalStateException("Both Weld Extensions and Seam Solder libraries detected on the classpath. " +
+               "If you're migrating to Seam Solder, please remove Weld Extensions from the deployment.");
+         }
       }
    }
    
