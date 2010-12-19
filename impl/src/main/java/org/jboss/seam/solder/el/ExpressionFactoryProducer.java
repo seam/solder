@@ -19,6 +19,7 @@ package org.jboss.seam.solder.el;
 import javax.el.ExpressionFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.BeanManager;
 
 /**
  * Responsible for producing the {@link ExpressionFactory}
@@ -31,9 +32,9 @@ class ExpressionFactoryProducer
    
    @Produces
    @ApplicationScoped
-   ExpressionFactory createExpressionFactory()
+   ExpressionFactory createExpressionFactory(BeanManager beanManager)
    {
-      return ExpressionFactory.newInstance();
+      return beanManager.wrapExpressionFactory(ExpressionFactory.newInstance());
    }
    
 }
