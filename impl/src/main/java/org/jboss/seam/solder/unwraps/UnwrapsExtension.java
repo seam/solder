@@ -29,7 +29,6 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.reflection.Reflections;
-import org.jboss.seam.solder.servicehandler.ServiceHandlerExtension;
 
 /**
  * An extension that allows the use of {@link Unwraps} methods
@@ -55,7 +54,7 @@ public class UnwrapsExtension implements Extension
       boolean en = true;
       try
       {
-         Reflections.classForName("javassist.util.proxy.MethodHandler", ServiceHandlerExtension.class.getClassLoader());
+         Reflections.classForName("javassist.util.proxy.MethodHandler", UnwrapsExtension.class.getClassLoader());
       }
       catch (ClassNotFoundException e)
       {
