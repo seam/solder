@@ -16,15 +16,12 @@
  */
 package org.jboss.seam.solder.beanManager;
 
-import javax.enterprise.inject.spi.Extension;
-
 /**
  * A {@link BeanManagerProvider} that looks it up from the standard JNDI location
  * 
  * @author Nicklas Karlsson
- *
  */
-class DefaultJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider implements Extension
+class DefaultJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider
 {
 
    @Override

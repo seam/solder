@@ -16,15 +16,13 @@
  */
 package org.jboss.seam.solder.beanManager;
 
-import javax.enterprise.inject.spi.Extension;
-
 /**
  * A {@link BeanManagerProvider} that looks it up from the standard JNDI
  * location used in servlet containers.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-class ServletContainerJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider implements Extension
+class ServletContainerJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider
 {
 
    @Override

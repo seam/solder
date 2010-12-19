@@ -16,15 +16,14 @@
  */
 package org.jboss.seam.solder.beanManager;
 
-import javax.enterprise.inject.spi.Extension;
-
 /**
  * A temporary workaround {@link BeanManagerProvider} for JBoss AS 6 <M2 that
  * bound it to a non-standard location
  * 
+ * @deprecated Won't be a problem in the final JBoss AS 6 release, so should be removed
  * @author Nicklas Karlsson
  */
-class JBossJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider implements Extension
+class JBossJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider
 {
 
    @Override

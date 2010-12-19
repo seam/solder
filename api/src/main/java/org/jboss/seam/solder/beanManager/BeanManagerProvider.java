@@ -22,7 +22,7 @@ import org.jboss.seam.solder.util.Sortable;
 
 /**
  * <p>
- * {@link BeanManagerProvider} is the SPI for {@link BeanManagerAware} which
+ * {@link BeanManagerProvider} is the SPI for {@link BeanManagerLocator} which
  * allows third parties to register a way of obtaining the {@link BeanManager}
  * outside of CDI managed objects.
  * </p>
