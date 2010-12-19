@@ -84,6 +84,7 @@
       <arquillian.version>1.0.0.Alpha4</arquillian.version>
       <jbossas.server.manager.version>1.0.3.GA</jbossas.server.manager.version>
       <jbossas.client.version>6.0.0.20101110-CR1</jbossas.client.version>
+      <glassfish.remote.version>3.1-b33</glassfish.remote.version>
    </properties>
 
    <!-- Import the BOMs -->
@@ -151,6 +152,18 @@
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-jbossas-managed-6</artifactId>
             <version>${arquillian.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-glassfish-remote-3</artifactId>
+            <version>${arquillian.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.glassfish.deployment</groupId>
+            <artifactId>deployment-client</artifactId>
+            <version>${glassfish.remote.version}</version>
          </dependency>
 
          <dependency>

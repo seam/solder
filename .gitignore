@@ -1,7 +1,10 @@
 .project
 .settings
 .classpath
+*.iml
+*.ipr
+*.iws
 target
 test-output
-impl/src/main/java/META-INF/MANIFEST.MF
-impl/transaction.log
+MANIFEST.MF
+transaction.log
