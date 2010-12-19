@@ -63,15 +63,19 @@ public class LoggerExtension implements Extension
       }
    }
 
-   void detectProducers(@Observes ProcessProducerMethod<LoggerProducers, Object> event)
+   // FIXME cannot use optimal ProcessProducerMethod<LoggerProducers, Object> because of a bug in Weld 1.1.0.CR1
+   void detectProducers(@Observes ProcessProducerMethod<Object, Object> event)
    {
-      if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedLogger.class))
+      if (event.getBean().getBeanClass().equals(LoggerProducers.class))
       {
-         this.loggerProducerBean = event.getBean();
-      }
-      if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedMessageBundle.class))
-      {
-         this.bundleProducerBean = event.getBean();
+         if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedLogger.class))
+         {
+            this.loggerProducerBean = event.getBean();
+         }
+         if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedMessageBundle.class))
+         {
+            this.bundleProducerBean = event.getBean();
+         }
       }
    }
 
