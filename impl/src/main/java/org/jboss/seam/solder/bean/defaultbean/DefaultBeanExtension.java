@@ -490,7 +490,7 @@ public class DefaultBeanExtension implements Extension
          if (defaultManagedBeans.containsKey(qual))
          {
             Bean<?> db = DefaultManagedBean.of(defaultManagedBeans.get(qual), beanInfo.getType(), types, qualifiers, manager);
-            log.info("Installing default managed bean " + db);
+            log.debug("Installing default managed bean " + db);
             event.addBean(db);
             Set<ObserverMethodInfo<?>> observers = defaultObserverMethodsByBean.get(qual);
             for (ObserverMethodInfo<?> i : observers)
@@ -515,7 +515,7 @@ public class DefaultBeanExtension implements Extension
             }
             DefaultProducerMethodInfo<?> info = producerAnnotatedMethods.get(qual);
             Bean<?> db = createDefaultProducerMethod(defaultProducerMethods.get(qual), qual, beanInfo, types, qualifiers, declaringBeanQualifiers, info, manager);
-            log.info("Installing default producer bean " + db);
+            log.debug("Installing default producer bean " + db);
             event.addBean(db);
          }
          else if (defaultProducerFields.containsKey(qual))
@@ -533,7 +533,7 @@ public class DefaultBeanExtension implements Extension
                declaringBeanQualifiers = this.producerToDeclaringDefaultBean.get(qual).getQualifiers();
             }
             Bean<?> db = DefaultProducerField.of(defaultProducerFields.get(qual), beanInfo.getType(), types, qualifiers, declaringBeanQualifiers, producerAnnotatedFields.get(qual), manager);
-            log.info("Installing default producer bean " + db);
+            log.debug("Installing default producer bean " + db);
             event.addBean(db);
          }
       }
