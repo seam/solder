@@ -6,6 +6,7 @@ import java.util.HashSet;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
+import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -62,20 +63,33 @@ public class LoggerExtension implements Extension
          messageBundleTypes.add(type);
       }
    }
-
-   // FIXME cannot use optimal ProcessProducerMethod<LoggerProducers, Object> because of a bug in Weld 1.1.0.CR1
-   void detectProducers(@Observes ProcessProducerMethod<Object, Object> event)
+   
+   // according to the Java EE 6 javadoc (the authority according to the powers that be),
+   // this is the correct order of type parameters
+   void detectProducers(@Observes ProcessProducerMethod<Object, LoggerProducers> event)
    {
-      if (event.getBean().getBeanClass().equals(LoggerProducers.class))
+      System.out.println("Java EE 6 javadoc version");
+      captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
+   }
+
+   // according to JSR-299 spec, this is the correct order of type parameters
+   @Deprecated
+   void detectProducersInverted(@Observes ProcessProducerMethod<LoggerProducers, Object> event)
+   {
+      System.out.println("JSR-299 spec version");
+      captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
+   }
+   
+   @SuppressWarnings("unchecked")
+   void captureProducers(AnnotatedMethod<?> method, Bean<?> bean)
+   {
+      if (method.isAnnotationPresent(TypedLogger.class))
       {
-         if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedLogger.class))
-         {
-            this.loggerProducerBean = event.getBean();
-         }
-         if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedMessageBundle.class))
-         {
-            this.bundleProducerBean = event.getBean();
-         }
+         this.loggerProducerBean = (Bean<Object>) bean;
+      }
+      if (method.isAnnotationPresent(TypedMessageBundle.class))
+      {
+         this.bundleProducerBean = (Bean<Object>) bean;
       }
    }
 
