@@ -68,7 +68,6 @@ public class LoggerExtension implements Extension
    // this is the correct order of type parameters
    void detectProducers(@Observes ProcessProducerMethod<Object, LoggerProducers> event)
    {
-      System.out.println("Java EE 6 javadoc version");
       captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
    }
 
@@ -76,7 +75,6 @@ public class LoggerExtension implements Extension
    @Deprecated
    void detectProducersInverted(@Observes ProcessProducerMethod<LoggerProducers, Object> event)
    {
-      System.out.println("JSR-299 spec version");
       captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
    }
    
