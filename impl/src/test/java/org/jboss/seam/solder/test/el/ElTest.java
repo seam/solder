@@ -18,6 +18,7 @@ package org.jboss.seam.solder.test.el;
 
 import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
 
+import javax.el.ExpressionFactory;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
@@ -28,6 +29,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.sun.el.ExpressionFactoryImpl;
+
 @RunWith(Arquillian.class)
 public class ElTest
 {
@@ -37,7 +40,8 @@ public class ElTest
    @Deployment
    public static Archive<?> deployment()
    {
-      return baseDeployment().addPackage(ElTest.class.getPackage());
+      // also using META-INF/services/javax.el.ExpressionFactory service on test classpath for Weld embedded
+      return baseDeployment().addPackage(ElTest.class.getPackage()).addServiceProvider(ExpressionFactory.class, ExpressionFactoryImpl.class);
    }
 
    @Test
