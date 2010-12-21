@@ -22,21 +22,18 @@
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder-api</artifactId>
-         <version>${project.version}</version>
-         <optional>false</optional>
+         <optional>true</optional>
       </dependency>
 
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder-impl</artifactId>
-         <version>${project.version}</version>
          <optional>true</optional>
       </dependency>
 
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder</artifactId>
-         <version>${project.version}</version>
          <optional>true</optional>
       </dependency>
 
@@ -58,26 +55,9 @@
 
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder</artifactId>
-         <version>${project.version}</version>
-         <classifier>sources</classifier>
-         <optional>true</optional>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder-api</artifactId>
          <version>${project.version}</version>
          <classifier>javadoc</classifier>
-         <optional>true</optional>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder</artifactId>
-         <version>${project.version}</version>
-         <classifier>javadoc</classifier>
-         <optional>true</optional>
       </dependency>
 
       <dependency>
