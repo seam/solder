@@ -160,7 +160,7 @@ public class AnnotatedTypeBuilder<X>
    {
       if (fields.get(field) == null)
       {
-         throw new IllegalArgumentException(messages.notPresent(field, getJavaClass()));
+         throw new IllegalArgumentException(messages.fieldNotPresent(field, getJavaClass()));
       }
       else
       {
@@ -225,7 +225,7 @@ public class AnnotatedTypeBuilder<X>
    {
       if (methods.get(method) == null)
       {
-         throw new IllegalArgumentException(messages.notPresent(method, getJavaClass()));
+         throw new IllegalArgumentException(messages.methodNotPresent(method, getJavaClass()));
       }
       else
       {
@@ -289,13 +289,13 @@ public class AnnotatedTypeBuilder<X>
    {
       if (methods.get(method) == null)
       {
-         throw new IllegalArgumentException(messages.notPresent(method, getJavaClass()));
+         throw new IllegalArgumentException(messages.methodNotPresent(method, getJavaClass()));
       }
       else
       {
          if (methodParameters.get(method).get(position) == null)
          {
-            throw new IllegalArgumentException(messages.notPresent(method, position, getJavaClass()));
+            throw new IllegalArgumentException(messages.parameterNotPresent(method, position, getJavaClass()));
          }
          else
          {

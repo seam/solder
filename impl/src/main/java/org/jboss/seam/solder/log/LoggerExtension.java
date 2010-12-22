@@ -24,14 +24,14 @@ import org.jboss.seam.solder.bean.NarrowingBeanBuilder;
  * typed loggers defined.
  * 
  * @author Pete Muir
- * 
  */
 public class LoggerExtension implements Extension
 {
-
    static
    {
-      // Until we get tooling, set this globally
+      // We now have tooling, so this isn't necessary. We need to:
+      // 1. document this setting as a development-time convenience
+      // 2. remove this global assignment
       System.setProperty("jboss.i18n.generate-proxies", "true");
    }
 

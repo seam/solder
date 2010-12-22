@@ -125,6 +125,16 @@
                </execution>
             </executions>
          </plugin>
+         <!-- surefire report doesn't work w/ integration-test phase -->
+         <plugin>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>generate-test-report</id>
+                  <phase>none</phase>
+               </execution>
+            </executions>
+         </plugin>
       </plugins>
    </build>
 

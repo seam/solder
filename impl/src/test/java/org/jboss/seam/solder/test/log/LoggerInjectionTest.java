@@ -44,6 +44,12 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class LoggerInjectionTest
 {
+   // TODO temporary, test with dynamic proxies until tool accepts "BirdLogger extends BirdMessages" 
+   static
+   {
+      System.setProperty("jboss.i18n.generate-proxies", "true");
+   }
+   
    @Deployment
    public static Archive<?> deployment()
    {
