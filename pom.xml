@@ -32,17 +32,7 @@
    <name>Seam Solder Project</name>
    <description>A portable CDI extensions library for developing CDI applications, frameworks or other extensions</description>
    <url>http://seamframework.org/Seam3/Solder</url>
-
-   <modules>
-      <module>api</module>
-      <module>impl</module>
-      <module>combined</module>
-   </modules>
-
-   <issueManagement>
-      <system>JIRA</system>
-      <url>http://issues.jboss.org/browse/SOLDER</url>
-   </issueManagement>
+   <inceptionYear>2008</inceptionYear>
 
    <licenses>
       <license>
@@ -52,27 +42,11 @@
       </license>
    </licenses>
 
-   <developers>
-
-      <developer>
-         <name>Pete Muir</name>
-         <email>pete.muir@jboss.org</email>
-         <organization>Red Hat Inc.</organization>
-         <url>http://in.relation.to/Bloggers/Pete</url>
-      </developer>
-
-      <developer>
-         <name>Stuart Douglas</name>
-      </developer>
-
-   </developers>
-
-   <inceptionYear>2008</inceptionYear>
-
-   <ciManagement>
-      <system>Hudson</system>
-      <url />
-   </ciManagement>
+   <modules>
+      <module>api</module>
+      <module>impl</module>
+      <module>combined</module>
+   </modules>
 
    <properties>
       <seam.version>3.0.0.b04</seam.version>
@@ -105,67 +79,6 @@
 
       </dependencies>
    </dependencyManagement>
-
-   <build>
-      <defaultGoal>test</defaultGoal>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-report-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>generate-test-report</id>
-                  <phase>test</phase>
-                  <goals>
-                     <goal>report-only</goal>
-                  </goals>
-               </execution>
-            </executions>
-            <configuration>
-               <outputDirectory>${project.build.directory}/surefire-reports</outputDirectory>
-               <outputName>test-report</outputName>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-               <!--
-                  Set parallel none to force a more modern JUnitCore
-                  provider that understands Suites,
-                  http://old.nabble.com/Maven-Surefire-and-newer-junit-features-td28539796.html
-               -->
-               <parallel>none</parallel>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>enforce</id>
-                  <goals>
-                     <goal>enforce</goal>
-                  </goals>
-                  <configuration>
-                     <rules>
-                        <requireMavenVersion>
-                           <version>[${minimum.maven.version},)</version>
-                        </requireMavenVersion>
-                        <requirePluginVersions>
-                           <unCheckedPlugins>
-                              <unCheckedPlugin>org.apache.maven.plugins:maven-eclipse-plugin</unCheckedPlugin>
-                              <unCheckedPlugin>org.codehaus.mojo:versions-maven-plugin</unCheckedPlugin>
-                              <unCheckedPlugin>org.apache.maven.plugins:maven-surefire-plugin</unCheckedPlugin>
-                           </unCheckedPlugins>
-                        </requirePluginVersions>
-                     </rules>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-      </plugins>
-   </build>
 
    <profiles>
       <profile>
@@ -226,5 +139,60 @@
       <developerConnection>scm:git:git://github.com/seam/solder.git</developerConnection>
       <url>scm:git:git://github.com/seam/solder.git</url>
    </scm>
+
+   <issueManagement>
+      <system>JIRA</system>
+      <url>http://issues.jboss.org/browse/SOLDER</url>
+   </issueManagement>
+
+   <ciManagement>
+      <system>Hudson</system>
+      <url />
+   </ciManagement>
+
+   <developers>
+
+      <developer>
+         <name>Shane Bryzak</name>
+         <email>shane.bryzak@jboss.org</email>
+         <organization>Red Hat Inc.</organization>
+         <url>http://community.jboss.org/people/shane.bryzak%40jboss.com</url>
+         <roles>
+            <role>Lead</role>
+         </roles>
+      </developer>
+
+      <developer>
+         <name>Pete Muir</name>
+         <email>pete.muir@jboss.org</email>
+         <organization>Red Hat Inc.</organization>
+         <url>http://in.relation.to/Bloggers/Pete</url>
+         <roles>
+            <role>Founder</role>
+            <role>Committer</role>
+         </roles>
+      </developer>
+
+      <developer>
+         <name>Stuart Douglas</name>
+         <url>http://community.jboss.org/people/swd847</url>
+         <roles>
+            <role>Committer</role>
+         </roles>
+      </developer>
+
+      <developer>
+         <name>Dan Allen</name>
+         <email>dan.j.allen@gmail.com</email>
+         <url>http://mojavelinux.com</url>
+         <organization>JBoss, by Red Hat</organization>
+         <organizationUrl>http://jboss.org</organizationUrl>
+         <timezone>EST</timezone>
+         <roles>
+            <role>Committer</role>
+         </roles>
+      </developer>
+
+   </developers>
 
 </project>
