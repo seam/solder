@@ -254,6 +254,7 @@
             </plugins>
          </build>
       </profile>
+      <!--
       <profile>
          <id>surefireSnapshot</id>
          <activation>
@@ -273,6 +274,7 @@
             </pluginManagement>
          </build>
       </profile>
+      -->
    </profiles>
 
 </project>

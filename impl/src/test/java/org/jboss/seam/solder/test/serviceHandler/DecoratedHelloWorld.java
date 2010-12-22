@@ -1,4 +1,4 @@
-package org.jboss.seam.solder.test.servicehandler;
+package org.jboss.seam.solder.test.serviceHandler;
 
 @DecoratedEchoService
 public interface DecoratedHelloWorld

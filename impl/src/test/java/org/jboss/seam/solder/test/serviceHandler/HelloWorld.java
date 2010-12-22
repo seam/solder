@@ -14,16 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.servicehandler;
+package org.jboss.seam.solder.test.serviceHandler;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import org.jboss.seam.solder.servicehandler.ServiceHandler;
-
-@Retention(RetentionPolicy.RUNTIME)
-@ServiceHandler(EchoServiceHandler.class)
-public @interface EchoService
+@EchoService
+public interface HelloWorld
 {
-
+   public String helloWorld();
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.servicehandler;
+package org.jboss.seam.solder.serviceHandler;
 
 import static org.jboss.seam.solder.reflection.AnnotationInspector.getMetaAnnotation;
 
@@ -30,6 +30,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.jboss.seam.solder.bean.BeanBuilder;
 import org.jboss.seam.solder.reflection.Reflections;
+import org.jboss.seam.solder.serviceHandler.ServiceHandler;
 import org.jboss.logging.Logger;
 
 /**

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.servicehandler;
+package org.jboss.seam.solder.test.serviceHandler;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -22,7 +22,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.jboss.seam.solder.servicehandler.ServiceHandler;
+import org.jboss.seam.solder.serviceHandler.ServiceHandler;
 
 @Retention(RUNTIME)
 @Target(TYPE)

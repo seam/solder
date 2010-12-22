@@ -14,16 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.servicehandler;
+package org.jboss.seam.solder.test.serviceHandler;
 
-@EchoService
-public abstract class GoodbyeWorld
+public class EchoDecorator
 {
-   public String otherMethod()
+   public String decorate(String message)
    {
-      return "not saying goodbye";
+      return "-" + message + "-";
    }
-
-   public abstract String goodbyeWorld();
-
 }

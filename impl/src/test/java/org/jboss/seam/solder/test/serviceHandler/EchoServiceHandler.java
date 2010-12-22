@@ -14,10 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.servicehandler;
+package org.jboss.seam.solder.test.serviceHandler;
 
-@EchoService
-public interface HelloWorld
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
+
+public class EchoServiceHandler
 {
-   public String helloWorld();
+   @AroundInvoke
+   public Object invoke(InvocationContext ctx)
+   {
+      return ctx.getMethod().getName().toString();
+   }
 }

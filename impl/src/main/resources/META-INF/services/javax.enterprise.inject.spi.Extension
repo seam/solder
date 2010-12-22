@@ -3,6 +3,6 @@ org.jboss.seam.solder.bean.defaultbean.DefaultBeanExtension
 org.jboss.seam.solder.core.CoreExtension
 org.jboss.seam.solder.unwraps.UnwrapsExtension
 org.jboss.seam.solder.log.LoggerExtension
-org.jboss.seam.solder.servicehandler.ServiceHandlerExtension
+org.jboss.seam.solder.serviceHandler.ServiceHandlerExtension
 org.jboss.seam.solder.el.ELExtension
 org.jboss.seam.solder.resourceLoader.ResourceLoaderExtension

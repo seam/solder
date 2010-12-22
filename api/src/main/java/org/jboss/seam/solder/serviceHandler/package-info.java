@@ -10,7 +10,7 @@
  * as they allow the end user to map a lookup to a method using domain specific annotations.
  * </p>
  * 
- * @see org.jboss.seam.solder.servicehandler.ServiceHandler
+ * @see org.jboss.seam.solder.serviceHandler.ServiceHandler
  */
-package org.jboss.seam.solder.servicehandler;
+package org.jboss.seam.solder.serviceHandler;
 

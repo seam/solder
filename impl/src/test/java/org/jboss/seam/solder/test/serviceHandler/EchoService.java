@@ -14,12 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.servicehandler;
+package org.jboss.seam.solder.test.serviceHandler;
 
-public class EchoDecorator
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import org.jboss.seam.solder.serviceHandler.ServiceHandler;
+
+@Retention(RetentionPolicy.RUNTIME)
+@ServiceHandler(EchoServiceHandler.class)
+public @interface EchoService
 {
-   public String decorate(String message)
-   {
-      return "-" + message + "-";
-   }
+
 }
