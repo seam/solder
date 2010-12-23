@@ -77,6 +77,12 @@
             <version>${project.version}</version>
          </dependency>
 
+         <dependency>
+            <groupId>org.jboss.seam.solder</groupId>
+            <artifactId>seam-solder</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+
       </dependencies>
    </dependencyManagement>
 
