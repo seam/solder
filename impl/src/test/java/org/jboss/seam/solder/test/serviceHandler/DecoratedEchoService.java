@@ -22,7 +22,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.jboss.seam.solder.serviceHandler.ServiceHandler;
+import org.jboss.seam.solder.servicehandler.ServiceHandler;
 
 @Retention(RUNTIME)
 @Target(TYPE)

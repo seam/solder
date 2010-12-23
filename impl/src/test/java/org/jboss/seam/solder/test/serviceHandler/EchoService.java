@@ -19,10 +19,10 @@ package org.jboss.seam.solder.test.serviceHandler;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.jboss.seam.solder.serviceHandler.ServiceHandler;
+import org.jboss.seam.solder.serviceHandler.ServiceHandlerType;
 
 @Retention(RetentionPolicy.RUNTIME)
-@ServiceHandler(EchoServiceHandler.class)
+@ServiceHandlerType(EchoServiceHandler.class)
 public @interface EchoService
 {
 

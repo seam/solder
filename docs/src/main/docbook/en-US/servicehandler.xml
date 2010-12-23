@@ -40,7 +40,7 @@
       We meta-annotate it, defining the invocation handler to use:
    </para>
    
-      <programlisting role="JAVA">@ServiceHandler(QueryHandler.class)
+      <programlisting role="JAVA">@ServiceHandlerType(QueryHandler.class)
 @Retention(RUNTIME)
 @Target({TYPE})
 @interface QueryService {}</programlisting>

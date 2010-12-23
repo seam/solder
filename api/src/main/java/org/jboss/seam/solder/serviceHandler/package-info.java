@@ -28,7 +28,7 @@
  * as they allow the end user to map a lookup to a method using domain specific annotations.
  * </p>
  * 
- * @see org.jboss.seam.solder.serviceHandler.ServiceHandler
+ * @see org.jboss.seam.solder.serviceHandler.ServiceHandlerType
  */
 package org.jboss.seam.solder.serviceHandler;
 

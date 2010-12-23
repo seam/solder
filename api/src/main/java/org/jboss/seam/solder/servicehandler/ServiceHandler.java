@@ -23,9 +23,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation has been moved to the org.jboss.seam.solder.serviceHandler package.
+ * This annotation has been moved to the org.jboss.seam.solder.serviceHandler package and renamed to ServiceHandlerType.
  *
- * @see org.jboss.seam.solder.serviceHandler.ServiceHandler
+ * @see org.jboss.seam.solder.serviceHandler.ServiceHandlerType
  */
 @Deprecated
 @Retention(RetentionPolicy.RUNTIME)
