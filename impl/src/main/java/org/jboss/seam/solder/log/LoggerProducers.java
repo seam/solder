@@ -68,11 +68,11 @@ class LoggerProducers
       {
          if (annotated.isAnnotationPresent(Suffix.class))
          {
-            return getLogger(getRawType(injectionPoint.getBean().getBeanClass()), annotated.getAnnotation(Suffix.class).value());
+            return getLogger(getDeclaringRawType(injectionPoint), annotated.getAnnotation(Suffix.class).value());
          }
          else
          {
-            return getLogger(getRawType(injectionPoint.getBean().getBeanClass()));
+            return getLogger(getDeclaringRawType(injectionPoint));
          }
       }
    }
@@ -82,30 +82,26 @@ class LoggerProducers
    Object produceTypedLogger(InjectionPoint injectionPoint)
    {
       Annotated annotated = injectionPoint.getAnnotated();
-      if (!(annotated.isAnnotationPresent(Category.class) || annotated.isAnnotationPresent(TypedCategory.class)))
-      {
-      }
-      
       if (annotated.isAnnotationPresent(Category.class))
       {
          if (annotated.isAnnotationPresent(Locale.class))
          {         
-            return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(Category.class).value(), toLocale(annotated.getAnnotation(Locale.class).value()));
+            return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(Category.class).value(), toLocale(annotated.getAnnotation(Locale.class).value()));
          }
          else
          {
-            return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(Category.class).value());
+            return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(Category.class).value());
          }   
       }
       else if (annotated.isAnnotationPresent(TypedCategory.class))
       {
          if (annotated.isAnnotationPresent(Locale.class))
          {         
-            return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(TypedCategory.class).value().getName(), toLocale(annotated.getAnnotation(Locale.class).value()));
+            return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(TypedCategory.class).value().getName(), toLocale(annotated.getAnnotation(Locale.class).value()));
          }
          else
          {
-            return getMessageLogger(getRawType(injectionPoint.getType()), annotated.getAnnotation(TypedCategory.class).value().getName());
+            return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(TypedCategory.class).value().getName());
          }
       }
       else
@@ -126,6 +122,23 @@ class LoggerProducers
       else
       {
          return getBundle(getRawType(injectionPoint.getType()));
+      }
+   }
+   
+   private Class<?> getInjectionPointRawType(InjectionPoint injectionPoint)
+   {
+      return getRawType(injectionPoint.getType());
+   }
+   
+   private Class<?> getDeclaringRawType(InjectionPoint injectionPoint)
+   {
+      if (injectionPoint.getBean() != null)
+      {
+         return getRawType(injectionPoint.getBean().getBeanClass());
+      }
+      else
+      {
+         return getRawType(injectionPoint.getMember().getDeclaringClass());
       }
    }
    
