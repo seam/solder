@@ -16,7 +16,7 @@
  */
 package org.jboss.seam.solder.serviceHandler;
 
-import static org.jboss.seam.solder.reflection.AnnotationInspector.getMetaAnnotation;
+import org.jboss.seam.solder.reflection.AnnotationInspector;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,75 +37,102 @@ import org.jboss.seam.solder.servicehandler.ServiceHandler;
  * This extension automatically implements interfaces and abstract classes.
  * 
  * @author Stuart Douglas
- * 
+ * @author Walter White
  */
 public class ServiceHandlerExtension implements Extension
 {
-   private final Set<Bean<?>> beans = new HashSet<Bean<?>>();
-   
-   private final static Logger log =  Logger.getLogger(ServiceHandlerExtension.class);
+   private static final Logger log = Logger.getLogger(ServiceHandlerExtension.class);
 
-   private final boolean enabled;
+   protected final Set<Bean<?>> beans = new HashSet<Bean<?>>();
 
-   private final Set<Throwable> problems = new HashSet<Throwable>();
+   protected final boolean enabled;
+
+   protected final Set<Throwable> problems = new HashSet<Throwable>();
 
    public ServiceHandlerExtension()
    {
-      boolean en = true;
+      enabled = isEnabled();
+   }
+
+   /**
+    * Determines if proxying is enabled.
+    */
+   protected boolean isEnabled()
+   {
       try
       {
          Reflections.classForName("javassist.util.proxy.MethodHandler", ServiceHandlerExtension.class.getClassLoader());
+         return (true);
       }
       catch (ClassNotFoundException e)
       {
-         en = false;
          log.debug("Javassist not preset, @ServiceHandler is disabled");
       }
-      enabled = en;
+
+      return (false);
    }
 
+   /**
+    * Processes the event and builds a bean to proxy the interface or abstract
+    * class.
+    * 
+    * @param event the process annotated type event.
+    * @param beanManager the bean manager.
+    */
    <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
    {
-      ServiceHandlerType annotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandlerType.class);
-      ServiceHandler deprecatedAnnotation = null;
-      if (annotation == null)
+      if (!enabled)
       {
-         deprecatedAnnotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
+         problems.add(new RuntimeException("Javassist not found on the class path, @ServiceHandler requires javassist to work. @ServiceHandler found on " + event.getAnnotatedType()));
       }
-      
-      if (annotation != null || deprecatedAnnotation != null)
+      else
       {
-         if (!enabled)
-         {
-            problems.add(new RuntimeException("Javassist not found on the class path, @ServiceHandler requires javassist to work. @ServiceHandler found on " + event.getAnnotatedType()));
-         }
-         else
-         {
-            Class<?> handlerClass;
-            if (annotation != null)
-            {
-               handlerClass = annotation.value();
-            }
-            else
-            {
-               log.info(event.getAnnotatedType().getJavaClass().getName() + " inherits deprecated @ServiceHandler meta-annotation. Please use @org.jboss.seam.solder.serviceHandler.ServiceHandlerType instead.");
-               handlerClass = deprecatedAnnotation.value();
-            }
-            
-            try
-            {
-               BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
-               builder.readFromType(event.getAnnotatedType());
-               builder.beanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
-               builder.toString("Generated @ServiceHandler for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
-               beans.add(builder.create());
-               log.debug("Adding @ServiceHandler bean for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
-            }
-            catch (IllegalArgumentException e)
-            {
-               throw new RuntimeException(e);
-            }
-         }
+         final Class<?> handlerClass = getHandlerClass(event);
+         buildBean(event, beanManager, handlerClass);
+      }
+   }
+
+   /**
+    * Gets the handler type either from the ServiceHandlerType annotation or the
+    * ServiceHandler annotation.
+    * 
+    * @param event the process annotated type event.
+    */
+   protected <X> Class<?> getHandlerClass(ProcessAnnotatedType<X> event)
+   {
+      final ServiceHandlerType annotation = AnnotationInspector.getMetaAnnotation(event.getAnnotatedType(), ServiceHandlerType.class);
+      if (annotation != null)
+      {
+         return (annotation.value());
+      }
+
+      ServiceHandler deprecatedAnnotation = deprecatedAnnotation = AnnotationInspector.getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
+
+      log.info(event.getAnnotatedType().getJavaClass().getName() + " inherits deprecated @ServiceHandler meta-annotation. Please use @org.jboss.seam.solder.serviceHandler.ServiceHandlerType instead.");
+      return (deprecatedAnnotation.value());
+   }
+
+   /**
+    * Builds the bean that will do the intercepting / proxying.
+    * 
+    * @param event the process annotated type event.
+    * @param beanManager the bean manager.
+    * @param handler class, the class that will be proxying the interfaces.
+    */
+   protected <X> void buildBean(ProcessAnnotatedType<X> event, BeanManager beanManager, final Class<?> handlerClass)
+   {
+      try
+      {
+         final BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);
+         builder.readFromType(event.getAnnotatedType());
+         builder.beanLifecycle(new ServiceHandlerBeanLifecycle(event.getAnnotatedType().getJavaClass(), handlerClass, beanManager));
+         builder.toString("Generated @ServiceHandler for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
+         beans.add(builder.create());
+         log.debug("Adding @ServiceHandler bean for [" + builder.getBeanClass() + "] with qualifiers [" + builder.getQualifiers() + "] handled by " + handlerClass);
+      }
+      catch (IllegalArgumentException e)
+      {
+         throw new RuntimeException(e);
       }
    }
 
@@ -119,6 +146,7 @@ public class ServiceHandlerExtension implements Extension
       {
          event.addDefinitionError(e);
       }
+
       beans.clear();
    }
 }
