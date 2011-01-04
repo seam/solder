@@ -186,7 +186,7 @@ public class InjectableMethod<X>
       }
 
       @SuppressWarnings("unchecked")
-      T result = (T) invokeMethod(method.getJavaMember(), receiver, parameterValues.toArray(EMPTY_OBJECT_ARRAY));
+      T result = (T) invokeMethod(true, method.getJavaMember(), receiver, parameterValues.toArray(EMPTY_OBJECT_ARRAY));
 
       return result;
    }
