@@ -186,7 +186,7 @@ public class PropertyQuery<V>
       }
 
       Class<?> cls = targetClass;
-      while (!cls.equals(Object.class))
+      while (cls != null && !cls.equals(Object.class))
       {
          // Now check declared fields
          for (Field field : cls.getDeclaredFields())
