@@ -37,6 +37,11 @@ public class PropertyQuery<V>
 
    PropertyQuery(Class<?> targetClass)
    {
+      if (targetClass == null) 
+      {
+         throw new IllegalArgumentException("targetClass parameter may not be null");
+      }
+      
       this.targetClass = targetClass;
       this.criteria = new ArrayList<PropertyCriteria>();
    }
