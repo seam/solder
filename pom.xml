@@ -21,7 +21,7 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>4</version>
+      <version>5</version>
    </parent>
 
    <groupId>org.jboss.seam.solder</groupId>
@@ -32,17 +32,7 @@
    <name>Seam Solder Project</name>
    <description>A portable CDI extensions library for developing CDI applications, frameworks or other extensions</description>
    <url>http://seamframework.org/Seam3/Solder</url>
-
-   <modules>
-      <module>api</module>
-      <module>impl</module>
-      <module>combined</module>
-   </modules>
-
-   <issueManagement>
-      <system>JIRA</system>
-      <url>http://issues.jboss.org/browse/SOLDER</url>
-   </issueManagement>
+   <inceptionYear>2008</inceptionYear>
 
    <licenses>
       <license>
@@ -52,39 +42,14 @@
       </license>
    </licenses>
 
-   <developers>
-
-      <developer>
-         <name>Pete Muir</name>
-         <email>pete.muir@jboss.org</email>
-         <organization>Red Hat Inc.</organization>
-         <url>http://in.relation.to/Bloggers/Pete</url>
-      </developer>
-
-      <developer>
-         <name>Stuart Douglas</name>
-      </developer>
-
-   </developers>
-
-   <inceptionYear>2008</inceptionYear>
-
-   <ciManagement>
-      <system>Hudson</system>
-      <url />
-   </ciManagement>
+   <modules>
+      <module>api</module>
+      <module>impl</module>
+      <module>combined</module>
+   </modules>
 
    <properties>
-      <seam.version>3.0.0.b03</seam.version>
-      <weld.core.version>1.1.0.Beta1</weld.core.version>
-      <javassist.version>3.13.0-GA</javassist.version>
-      <persistence.api.version>1.0</persistence.api.version>
-      <servlet.api.version>2.5</servlet.api.version>
-      <elimpl.version>1.0</elimpl.version>
-      <arquillian.version>1.0.0.Alpha4</arquillian.version>
-      <jbossas.server.manager.version>1.0.3.GA</jbossas.server.manager.version>
-      <jbossas.client.version>6.0.0.20101110-CR1</jbossas.client.version>
-      <glassfish.remote.version>3.1-b33</glassfish.remote.version>
+      <seam.version>3.0.0.b04</seam.version>
    </properties>
 
    <!-- Import the BOMs -->
@@ -113,139 +78,17 @@
          </dependency>
 
          <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${servlet.api.version}</version>
+            <groupId>org.jboss.seam.solder</groupId>
+            <artifactId>seam-solder</artifactId>
+            <version>${project.version}</version>
          </dependency>
 
-         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>${persistence.api.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>el-impl</groupId>
-            <artifactId>el-impl</artifactId>
-            <version>${elimpl.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>${javassist.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.weld.arquillian.container</groupId>
-            <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-            <version>${weld.core.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-jbossas-remote-6</artifactId>
-            <version>${arquillian.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-jbossas-managed-6</artifactId>
-            <version>${arquillian.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-glassfish-remote-3</artifactId>
-            <version>${arquillian.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.glassfish.deployment</groupId>
-            <artifactId>deployment-client</artifactId>
-            <version>${glassfish.remote.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.jbossas</groupId>
-            <artifactId>jboss-server-manager</artifactId>
-            <version>${jbossas.server.manager.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.jbossas</groupId>
-            <artifactId>jboss-as-client</artifactId>
-            <version>${jbossas.client.version}</version>
-            <type>pom</type>
-         </dependency>
-         
       </dependencies>
    </dependencyManagement>
 
-   <build>
-      <defaultGoal>test</defaultGoal>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-report-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>generate-test-report</id>
-                  <phase>test</phase>
-                  <goals>
-                     <goal>report-only</goal>
-                  </goals>
-               </execution>
-            </executions>
-            <configuration>
-               <outputDirectory>${project.build.directory}/surefire-reports</outputDirectory>
-               <outputName>test-report</outputName>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-               <!--
-                  Set parallel none to force a more modern JUnitCore
-                  provider that understands Suites,
-                  http://old.nabble.com/Maven-Surefire-and-newer-junit-features-td28539796.html
-               -->
-               <parallel>none</parallel>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>enforce</id>
-                  <goals>
-                     <goal>enforce</goal>
-                  </goals>
-                  <configuration>
-                     <rules>
-                        <requireMavenVersion>
-                           <version>[${minimum.maven.version},)</version>
-                        </requireMavenVersion>
-                        <requirePluginVersions>
-                           <unCheckedPlugins>
-                              <unCheckedPlugin>org.apache.maven.plugins:maven-eclipse-plugin</unCheckedPlugin>
-                              <unCheckedPlugin>org.codehaus.mojo:versions-maven-plugin</unCheckedPlugin>
-                              <unCheckedPlugin>org.apache.maven.plugins:maven-surefire-plugin</unCheckedPlugin>
-                           </unCheckedPlugins>
-                        </requirePluginVersions>
-                     </rules>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-      </plugins>
-   </build>
-
    <profiles>
       <profile>
-         <id>dist</id>
+         <id>distribution</id>
          <activation>
             <property>
                <name>release</name>
@@ -253,6 +96,7 @@
          </activation>
          <modules>
             <module>docs</module>
+            <module>dist</module>
          </modules>
       </profile>
       <profile>
@@ -299,7 +143,62 @@
    <scm>
       <connection>scm:git:git://github.com/seam/solder.git</connection>
       <developerConnection>scm:git:git://github.com/seam/solder.git</developerConnection>
-      <url>scm:git:git://github.com/seam/solder.git</url>
+      <url>http://github.com/seam/solder</url>
    </scm>
+
+   <issueManagement>
+      <system>JIRA</system>
+      <url>http://issues.jboss.org/browse/SOLDER</url>
+   </issueManagement>
+
+   <ciManagement>
+      <system>Hudson</system>
+      <url>http://hudson.jboss.org/hudson/view/Seam/job/Seam-3.X-solder-CI</url>
+   </ciManagement>
+
+   <developers>
+
+      <developer>
+         <name>Shane Bryzak</name>
+         <email>shane.bryzak@jboss.org</email>
+         <organization>Red Hat Inc.</organization>
+         <url>http://community.jboss.org/people/shane.bryzak%40jboss.com</url>
+         <roles>
+            <role>Lead</role>
+         </roles>
+      </developer>
+
+      <developer>
+         <name>Pete Muir</name>
+         <email>pete.muir@jboss.org</email>
+         <organization>Red Hat Inc.</organization>
+         <url>http://in.relation.to/Bloggers/Pete</url>
+         <roles>
+            <role>Founder</role>
+            <role>Committer</role>
+         </roles>
+      </developer>
+
+      <developer>
+         <name>Stuart Douglas</name>
+         <url>http://community.jboss.org/people/swd847</url>
+         <roles>
+            <role>Committer</role>
+         </roles>
+      </developer>
+
+      <developer>
+         <name>Dan Allen</name>
+         <email>dan.j.allen@gmail.com</email>
+         <url>http://mojavelinux.com</url>
+         <organization>JBoss, by Red Hat</organization>
+         <organizationUrl>http://jboss.org</organizationUrl>
+         <timezone>EST</timezone>
+         <roles>
+            <role>Committer</role>
+         </roles>
+      </developer>
+
+   </developers>
 
 </project>

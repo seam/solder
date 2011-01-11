@@ -1,3 +1,21 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2010, Red Hat, Inc., and individual contributors
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,  
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.jboss.seam.solder.log;
 
 import java.util.Collection;
@@ -6,6 +24,7 @@ import java.util.HashSet;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
+import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -23,14 +42,14 @@ import org.jboss.seam.solder.bean.NarrowingBeanBuilder;
  * typed loggers defined.
  * 
  * @author Pete Muir
- * 
  */
 public class LoggerExtension implements Extension
 {
-
    static
    {
-      // Until we get tooling, set this globally
+      // We now have tooling, so this isn't necessary. We need to:
+      // 1. document this setting as a development-time convenience
+      // 2. remove this global assignment
       System.setProperty("jboss.i18n.generate-proxies", "true");
    }
 
@@ -62,20 +81,31 @@ public class LoggerExtension implements Extension
          messageBundleTypes.add(type);
       }
    }
-
-   // FIXME cannot use optimal ProcessProducerMethod<LoggerProducers, Object> because of a bug in Weld 1.1.0.CR1
-   void detectProducers(@Observes ProcessProducerMethod<Object, Object> event)
+   
+   // according to the Java EE 6 javadoc (the authority according to the powers that be),
+   // this is the correct order of type parameters
+   void detectProducers(@Observes ProcessProducerMethod<Object, LoggerProducers> event)
    {
-      if (event.getBean().getBeanClass().equals(LoggerProducers.class))
+      captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
+   }
+
+   // according to JSR-299 spec, this is the correct order of type parameters
+   @Deprecated
+   void detectProducersInverted(@Observes ProcessProducerMethod<LoggerProducers, Object> event)
+   {
+      captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
+   }
+   
+   @SuppressWarnings("unchecked")
+   void captureProducers(AnnotatedMethod<?> method, Bean<?> bean)
+   {
+      if (method.isAnnotationPresent(TypedLogger.class))
       {
-         if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedLogger.class))
-         {
-            this.loggerProducerBean = event.getBean();
-         }
-         if (event.getAnnotatedProducerMethod().isAnnotationPresent(TypedMessageBundle.class))
-         {
-            this.bundleProducerBean = event.getBean();
-         }
+         this.loggerProducerBean = (Bean<Object>) bean;
+      }
+      if (method.isAnnotationPresent(TypedMessageBundle.class))
+      {
+         this.bundleProducerBean = (Bean<Object>) bean;
       }
    }
 

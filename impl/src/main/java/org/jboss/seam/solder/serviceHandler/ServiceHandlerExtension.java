@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.servicehandler;
+package org.jboss.seam.solder.serviceHandler;
 
 import static org.jboss.seam.solder.reflection.AnnotationInspector.getMetaAnnotation;
 
@@ -28,9 +28,10 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.solder.bean.BeanBuilder;
 import org.jboss.seam.solder.reflection.Reflections;
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.servicehandler.ServiceHandler;
 
 /**
  * This extension automatically implements interfaces and abstract classes.
@@ -65,8 +66,14 @@ public class ServiceHandlerExtension implements Extension
 
    <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
    {
-      ServiceHandler annotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
-      if (annotation != null)
+      ServiceHandlerType annotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandlerType.class);
+      ServiceHandler deprecatedAnnotation = null;
+      if (annotation == null)
+      {
+         deprecatedAnnotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
+      }
+      
+      if (annotation != null || deprecatedAnnotation != null)
       {
          if (!enabled)
          {
@@ -74,7 +81,17 @@ public class ServiceHandlerExtension implements Extension
          }
          else
          {
-            Class<?> handlerClass = annotation.value();
+            Class<?> handlerClass;
+            if (annotation != null)
+            {
+               handlerClass = annotation.value();
+            }
+            else
+            {
+               log.info(event.getAnnotatedType().getJavaClass().getName() + " inherits deprecated @ServiceHandler meta-annotation. Please use @org.jboss.seam.solder.serviceHandler.ServiceHandlerType instead.");
+               handlerClass = deprecatedAnnotation.value();
+            }
+            
             try
             {
                BeanBuilder<X> builder = new BeanBuilder<X>(beanManager);

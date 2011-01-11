@@ -14,21 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.servicehandler;
+package org.jboss.seam.solder.test.serviceHandler;
 
-import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.InvocationContext;
-
-public class DecoratedEchoServiceHandler
+@EchoService
+public abstract class GoodbyeWorld
 {
-   // test injection into the handler
-   @Inject
-   private EchoDecorator decorator;
-
-   @AroundInvoke
-   public Object invoke(InvocationContext ctx)
+   public String otherMethod()
    {
-      return decorator.decorate(ctx.getMethod().getName().toString());
+      return "not saying goodbye";
    }
+
+   public abstract String goodbyeWorld();
+
 }

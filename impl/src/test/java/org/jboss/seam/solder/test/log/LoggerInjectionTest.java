@@ -20,12 +20,16 @@ package org.jboss.seam.solder.test.log;
 import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.InjectionTarget;
 
 import junit.framework.Assert;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.logging.Logger;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +48,12 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class LoggerInjectionTest
 {
+   // TODO temporary, test with dynamic proxies until tool accepts "BirdLogger extends BirdMessages" 
+   static
+   {
+      System.setProperty("jboss.i18n.generate-proxies", "true");
+   }
+   
    @Deployment
    public static Archive<?> deployment()
    {
@@ -76,6 +86,24 @@ public class LoggerInjectionTest
    {
       raven.generateLogMessage();
       Assert.assertEquals(Raven.class.getName() + ".log", raven.getLogger().getName());
+   }
+   
+   @Test
+   public void testLoggerInjectionIntoNonBean(BeanManager bm)
+   {
+      NonBean nonBean = new NonBean();
+      InjectionTarget<NonBean> target = bm.createInjectionTarget(bm.createAnnotatedType(NonBean.class));
+      CreationalContext<NonBean> cc = bm.createCreationalContext(null);
+      try
+      {
+         target.inject(nonBean, cc);
+         // this will cause a NullPointerException if the injection does not occur
+         nonBean.logMessage();
+      }
+      finally
+      {
+         cc.release();
+      }
    }
    
    @Test(expected = IllegalStateException.class)

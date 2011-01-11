@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.servicehandler;
+package org.jboss.seam.solder.serviceHandler;
 
 import java.lang.reflect.Method;
 import java.util.Collections;

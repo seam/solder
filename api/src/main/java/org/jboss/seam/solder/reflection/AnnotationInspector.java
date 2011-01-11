@@ -18,6 +18,8 @@ package org.jboss.seam.solder.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,70 +28,190 @@ import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.BeanManager;
 
 /**
- * Inspect an {@link AnnotatedElement} or {@link Annotated} to obtain it's meta
- * annotations and annotations, taking into account stereotypes.
+ * Inspect an {@link AnnotatedElement} or {@link Annotated} to obtain its meta-annotations and annotations,
+ * featuring support for {@link Stereotype} annotations as a transitive annotation provider.
  * 
  * @author Pete Muir
- * 
+ * @author Dan Allen
  */
 public class AnnotationInspector
 {
-
    private AnnotationInspector()
    {
    }
 
    /**
-    * Discover if a AnnotatedElement <b>element</b> has been annotated with
-    * <b>annotationType</b>. This also discovers annotations defined through a @
-    * {@link Stereotype} and the CDI SPI.
+    * Discover if the {@link AnnotatedElement} has been annotated with the
+    * specified annotation type. This method discovers annotations defined on
+    * the element as well as annotations inherited from a CDI &#064;
+    * {@link Stereotype} on the element.
     * 
-    * @param element The element to inspect.
-    * @param annotationType
-    * @param metaAnnotation Whether the annotation may be used as a
-    *           meta-annotation or not
+    * @param element The element to inspect
+    * @param annotationType The annotation type to expect
+    * @param beanManager The CDI BeanManager instance
     * 
-    * @return true if annotation is present either on the method itself. Returns
-    *         false if the annotation is not present
-    * @throws IllegalArgumentException if element or annotationType is null
+    * @return <code>true</code> if annotation is present either on the element
+    *         itself or one of its stereotypes, <code>false</code> if the
+    *         annotation is not present
     */
-   public static boolean isAnnotationPresent(AnnotatedElement element, Class<? extends Annotation> annotationType, boolean metaAnnotation, BeanManager beanManager)
+   public static boolean isAnnotationPresent(AnnotatedElement element, Class<? extends Annotation> annotationType, BeanManager beanManager)
    {
-      return getAnnotation(element, annotationType, metaAnnotation, beanManager) != null;
+      if (element.isAnnotationPresent(annotationType))
+      {
+         return true;
+      }
+      
+      return isAnnotationPresentOnStereotype(Arrays.asList(element.getAnnotations()), annotationType, beanManager);
    }
 
    /**
-    * Inspect AnnoatedElement <b>element</b> for a specific <b>type</b> of
-    * annotation. This also discovers annotations defined through a @
-    * {@link Stereotype} and the CDI SPI.
+    * Discover if the {@link Annotated} has been annotated with the specified
+    * annotation type. This method discovers annotations defined on
+    * the element as well as annotations inherited from a CDI &#064;
+    * {@link Stereotype} on the element.
     * 
     * @param element The element to inspect
-    * @param annotationType The annotation type to check for
-    * @param metaAnnotation Whether the annotation may be used as a
-    *           meta-annotation or not
+    * @param annotationType The annotation type to expect
+    * @param beanManager The CDI BeanManager instance
     * 
-    * @return The annotation instance found on this method or null if no
-    *         matching annotation was found.
-    * @throws IllegalArgumentException if element or annotationType is null
+    * @return <code>true</code> if annotation is present either on the element itself or one of its stereotypes,
+    *         <code>false</code> if the annotation is not present
     */
-   public static <A extends Annotation> A getAnnotation(AnnotatedElement element, final Class<A> annotationType, boolean metaAnnotation, BeanManager beanManager)
+   public static boolean isAnnotationPresent(Annotated annotated, Class<? extends Annotation> annotationType, BeanManager beanManager)
    {
-      if (metaAnnotation)
+      if (annotated.isAnnotationPresent(annotationType))
       {
-         for (Annotation annotation : element.getAnnotations())
-         {
-            if (beanManager.isStereotype(annotation.annotationType()))
-            {
-               for (Annotation stereotypedAnnotation : beanManager.getStereotypeDefinition(annotation.annotationType()))
-               {
-                  if (stereotypedAnnotation.annotationType().equals(annotationType))
-                  {
-                     return annotationType.cast(stereotypedAnnotation);
-                  }
-               }
-            }
-         }
-         return null;
+         return true;
+      }
+
+      return isAnnotationPresentOnStereotype(annotated.getAnnotations(), annotationType, beanManager);
+   }
+
+   /**
+    * Discover if the {@link AnnotatedElement} has been annotated with the
+    * specified annotation type. If the transitive argument is <code>true</code>
+    * , this method also discovers annotations inherited from a CDI &#064;
+    * {@link Stereotype} on the element.
+    * 
+    * @param element The element to inspect
+    * @param annotationType The annotation to expect
+    * @param transitive Whether annotations provided by stereotypes should be
+    *           considered
+    * @param beanManager The CDI BeanManager instance
+    * 
+    * @return <code>true</code> if annotation is present on the element itself
+    *         or (if specified) one of its stereotypes, <code>false</code> if the annotation is
+    *         not present
+    */
+   public static boolean isAnnotationPresent(AnnotatedElement element, Class<? extends Annotation> annotationType, boolean transitive, BeanManager beanManager)
+   {
+      if (transitive)
+      {
+         return isAnnotationPresent(element, annotationType, beanManager);
+      }
+      else
+      {
+         return element.isAnnotationPresent(annotationType);
+      }
+   }
+   
+   /**
+    * Discover if the {@link AnnotatedElement} has been annotated with a &#064;
+    * {@link Stereotype} that provides the annotation type.
+    * 
+    * @param element The element to inspect
+    * @param annotationType The annotation type to expect
+    * @param beanManager The CDI BeanManager instance
+    * 
+    * @return <code>true</code> if annotation is provided by a stereotype on the element,
+    *         <code>false</code> if the annotation is not present
+    */
+   public static boolean isAnnotationPresentOnStereotype(AnnotatedElement element, Class<? extends Annotation> annotationType, BeanManager beanManager)
+   {
+      return isAnnotationPresentOnStereotype(Arrays.asList(element.getAnnotations()), annotationType, beanManager);
+   }
+
+   /**
+    * Discover if the {@link Annotated} has been annotated with a &#064;
+    * {@link Stereotype} that provides the specified annotation type.
+    * 
+    * @param element The element to inspect.
+    * @param annotationType The annotation type to expect
+    * @param beanManager The CDI BeanManager instance
+    * 
+    * @return <code>true</code> if annotation is provided by a stereotype on the element,
+    *         <code>false</code> if the annotation is not present
+    */
+   public static boolean isAnnotationPresentOnStereotype(Annotated annotated, Class<? extends Annotation> annotationType, BeanManager beanManager)
+   {
+      return isAnnotationPresentOnStereotype(annotated.getAnnotations(), annotationType, beanManager);
+   }
+   
+   /**
+    * Inspect the {@link AnnotatedElement} and retrieve the specified annotation
+    * type, if present. This method discovers annotations defined on
+    * the element as well as annotations inherited from a CDI &#064;
+    * {@link Stereotype} on the element.
+    * 
+    * @param element The element to inspect
+    * @param annotationType The annotation type to expect
+    * @param beanManager The CDI BeanManager instance
+    * 
+    * @return The annotation instance found on this element or null if no
+    *         matching annotation was found.
+    */
+   public static <A extends Annotation> A getAnnotation(AnnotatedElement element, Class<A> annotationType, BeanManager beanManager)
+   {
+      if (element.isAnnotationPresent(annotationType))
+      {
+         return annotationType.cast(element.getAnnotation(annotationType));
+      }
+
+      return getAnnotationFromStereotype(Arrays.asList(element.getAnnotations()), annotationType, beanManager);
+   }
+
+   /**
+    * Inspect the {@link Annotated} and retrieve the specified annotation
+    * type, if present. This method discovers annotations defined on
+    * the element as well as annotations inherited from a CDI &#064;
+    * {@link Stereotype} on the element.
+    * 
+    * @param annotated The element to inspect
+    * @param annotationType The annotation type to expect
+    * @param beanManager The CDI BeanManager instance
+    * 
+    * @return The annotation instance found on this element or null if no
+    *         matching annotation was found.
+    */
+   public static <A extends Annotation> A getAnnotation(Annotated annotated, Class<A> annotationType, BeanManager beanManager)
+   {
+      if (annotated.isAnnotationPresent(annotationType))
+      {
+         return annotationType.cast(annotated.getAnnotation(annotationType));
+      }
+
+      return getAnnotationFromStereotype(annotated.getAnnotations(), annotationType, beanManager);
+   }
+
+   /**
+    * Inspect the {@link AnnotatedElement} for a specific annotation type. If the
+    * transitive argument is <code>true</code> , this method also discovers
+    * annotations inherited from a CDI &#064; {@link Stereotype} on the element.
+    * 
+    * @param element The element to inspect
+    * @param annotationType The annotation type to expect
+    * @param transitive Whether the annotation may be used as a meta-annotation
+    *           or not
+    * @param beanManager The CDI BeanManager instance
+    * 
+    * @return The annotation instance found on this element or null if no
+    *         matching annotation was found.
+    */
+   public static <A extends Annotation> A getAnnotation(AnnotatedElement element, final Class<A> annotationType, boolean transitive, BeanManager beanManager)
+   {
+      if (transitive)
+      {
+         return getAnnotation(element, annotationType, beanManager);
       }
       else
       {
@@ -98,13 +220,47 @@ public class AnnotationInspector
    }
 
    /**
+    * Discover if the {@link AnnotatedElement} has been annotated with a &#064;
+    * {@link Stereotype} that provides the annotation type and return it.
+    * 
+    * @param element The element to inspect
+    * @param annotationType The annotation type to expect
+    * @param beanManager The CDI BeanManager instance
+    * 
+    * @return The annotation instance found on this element or null if no
+    *         matching annotation was found.
+    */
+   public static <A extends Annotation> A getAnnotationFromStereotype(AnnotatedElement element, Class<A> annotationType, BeanManager beanManager)
+   {
+      return getAnnotationFromStereotype(Arrays.asList(element.getAnnotations()), annotationType, beanManager);
+   }
+
+   /**
+    * Discover if the {@link Annotated} has been annotated with a &#064;
+    * {@link Stereotype} that provides the specified annotation type and
+    * return it.
+    * 
+    * @param element The element to inspect.
+    * @param annotationType The annotation type to expect
+    * @param beanManager The CDI BeanManager instance
+    * 
+    * @return The annotation instance found on this element or null if no
+    *         matching annotation was found.
+    */
+   public static <A extends Annotation> A getAnnotationFromStereotype(Annotated annotated, Class<A> annotationType, BeanManager beanManager)
+   {
+      return getAnnotationFromStereotype(annotated.getAnnotations(), annotationType, beanManager);
+   }
+   
+   /**
     * Inspects an annotated element for the given meta annotation. This should
     * only be used for user defined meta annotations, where the annotation must
     * be physically present.
     * 
     * @param element The element to inspect
     * @param annotationType The meta annotation to search for
-    * @return The annotation instance found on this method or null if no
+    * 
+    * @return The annotation instance found on this element or null if no
     *         matching annotation was found.
     */
    public static <A extends Annotation> A getMetaAnnotation(Annotated element, final Class<A> annotationType)
@@ -126,7 +282,8 @@ public class AnnotationInspector
     * 
     * @param element The element to inspect
     * @param annotationType The meta annotation to search for
-    * @return The annotation instances found on this method or an empty set if
+    * 
+    * @return The annotation instances found on this element or an empty set if
     *         no matching meta-annotation was found.
     */
    public static Set<Annotation> getAnnotations(Annotated element, final Class<? extends Annotation> metaAnnotationType)
@@ -141,5 +298,42 @@ public class AnnotationInspector
       }
       return annotations;
    }
-
+   
+   private static boolean isAnnotationPresentOnStereotype(Collection<Annotation> annotations, Class<? extends Annotation> annotationType, BeanManager beanManager)
+   {
+      for (Annotation candidate : annotations)
+      {
+         if (beanManager.isStereotype(candidate.annotationType()))
+         {
+            for (Annotation stereotyped : beanManager.getStereotypeDefinition(candidate.annotationType()))
+            {
+               if (stereotyped.annotationType().equals(annotationType))
+               {
+                  return true;
+               }
+            }
+         }
+      }
+      
+      return false;
+   }
+   
+   private static <A extends Annotation> A getAnnotationFromStereotype(Collection<Annotation> annotations, Class<A> annotationType, BeanManager beanManager)
+   {
+      for (Annotation candidate : annotations)
+      {
+         if (beanManager.isStereotype(candidate.annotationType()))
+         {
+            for (Annotation stereotyped : beanManager.getStereotypeDefinition(candidate.annotationType()))
+            {
+               if (stereotyped.annotationType().equals(annotationType))
+               {
+                  return annotationType.cast(stereotyped);
+               }
+            }
+         }
+      }
+      
+      return null;
+   }
 }

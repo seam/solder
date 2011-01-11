@@ -14,20 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.servicehandler;
-
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+package org.jboss.seam.solder.test.serviceHandler;
 
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.lang.annotation.RetentionPolicy;
 
-import org.jboss.seam.solder.servicehandler.ServiceHandler;
+import org.jboss.seam.solder.serviceHandler.ServiceHandlerType;
 
-@Retention(RUNTIME)
-@Target(TYPE)
-@ServiceHandler(DecoratedEchoServiceHandler.class)
-public @interface DecoratedEchoService
+@Retention(RetentionPolicy.RUNTIME)
+@ServiceHandlerType(EchoServiceHandler.class)
+public @interface EchoService
 {
 
 }
