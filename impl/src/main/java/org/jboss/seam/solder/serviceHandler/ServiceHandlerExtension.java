@@ -31,13 +31,11 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.bean.BeanBuilder;
 import org.jboss.seam.solder.reflection.Reflections;
-import org.jboss.seam.solder.servicehandler.ServiceHandler;
 
 /**
  * This extension automatically implements interfaces and abstract classes.
  * 
  * @author Stuart Douglas
- * 
  */
 public class ServiceHandlerExtension implements Extension
 {
@@ -67,13 +65,8 @@ public class ServiceHandlerExtension implements Extension
    <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event, BeanManager beanManager)
    {
       ServiceHandlerType annotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandlerType.class);
-      ServiceHandler deprecatedAnnotation = null;
-      if (annotation == null)
-      {
-         deprecatedAnnotation = getMetaAnnotation(event.getAnnotatedType(), ServiceHandler.class);
-      }
       
-      if (annotation != null || deprecatedAnnotation != null)
+      if (annotation != null)
       {
          if (!enabled)
          {
@@ -81,16 +74,7 @@ public class ServiceHandlerExtension implements Extension
          }
          else
          {
-            Class<?> handlerClass;
-            if (annotation != null)
-            {
-               handlerClass = annotation.value();
-            }
-            else
-            {
-               log.info(event.getAnnotatedType().getJavaClass().getName() + " inherits deprecated @ServiceHandler meta-annotation. Please use @org.jboss.seam.solder.serviceHandler.ServiceHandlerType instead.");
-               handlerClass = deprecatedAnnotation.value();
-            }
+            Class<?> handlerClass = annotation.value();
             
             try
             {
