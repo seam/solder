@@ -18,9 +18,9 @@
  */
 package org.jboss.seam.solder.test.log;
 
-import org.jboss.logging.LogMessage;
-import org.jboss.logging.Message;
-import org.jboss.logging.MessageLogger;
+import org.jboss.seam.solder.logging.LogMessage;
+import org.jboss.seam.solder.logging.Message;
+import org.jboss.seam.solder.logging.MessageLogger;
 
 @MessageLogger
 public interface BirdLogger extends BirdMessages

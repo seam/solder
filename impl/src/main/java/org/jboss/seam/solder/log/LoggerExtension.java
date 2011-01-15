@@ -33,9 +33,10 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
-import org.jboss.logging.MessageBundle;
-import org.jboss.logging.MessageLogger;
 import org.jboss.seam.solder.bean.NarrowingBeanBuilder;
+import org.jboss.seam.solder.literal.MessageBundleLiteral;
+import org.jboss.seam.solder.logging.MessageBundle;
+import org.jboss.seam.solder.logging.MessageLogger;
 
 /**
  * Adds LoggerProducers to the deployment, and detects and installs beans for any

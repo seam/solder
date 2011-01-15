@@ -33,7 +33,7 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
-import org.jboss.logging.Messages;
+import org.jboss.seam.solder.logging.Messages;
 import org.jboss.seam.solder.messages.AnnotatedMessages;
 import org.jboss.seam.solder.reflection.Reflections;
 

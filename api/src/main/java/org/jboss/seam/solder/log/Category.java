@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.jboss.logging.Logger;
-import org.jboss.logging.MessageLogger;
+import org.jboss.seam.solder.logging.MessageLogger;
 
 /**
  * <p>
