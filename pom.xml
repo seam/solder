@@ -21,7 +21,7 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>5</version>
+      <version>7</version>
    </parent>
 
    <groupId>org.jboss.seam.solder</groupId>
@@ -49,7 +49,7 @@
    </modules>
 
    <properties>
-      <seam.version>3.0.0.b04</seam.version>
+      <seam.version>3.0.0.b06</seam.version>
    </properties>
 
    <!-- Import the BOMs -->
