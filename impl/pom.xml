@@ -125,6 +125,13 @@
                </execution>
             </executions>
          </plugin>
+         <!-- TEMPORARY: disable jboss-logging-tools proc which is added by integration test deps -->
+         <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+               <compilerArgument>-proc:none</compilerArgument>
+            </configuration>
+         </plugin>
       </plugins>
    </build>
 
@@ -244,27 +251,6 @@
             </plugins>
          </build>
       </profile>
-      <!--
-      <profile>
-         <id>surefireSnapshot</id>
-         <activation>
-            <property>
-               <name>surefireSnapshot</name>
-            </property>
-         </activation>
-         <build>
-            <pluginManagement>
-               <plugins>
-                  <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-surefire-plugin</artifactId>
-                     <version>2.6-SNAPSHOT</version>
-                  </plugin>
-               </plugins>
-            </pluginManagement>
-         </build>
-      </profile>
-      -->
    </profiles>
 
 </project>
