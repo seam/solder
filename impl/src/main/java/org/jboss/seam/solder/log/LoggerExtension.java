@@ -64,11 +64,6 @@ public class LoggerExtension implements Extension
       this.messageBundleTypes = new HashSet<AnnotatedType<?>>();
    }
 
-   void addProducer(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
-   {
-      event.addAnnotatedType(beanManager.createAnnotatedType(LoggerProducers.class));
-   }
-
    void detectInterfaces(@Observes ProcessAnnotatedType<?> event, BeanManager beanManager)
    {
       AnnotatedType<?> type = event.getAnnotatedType();
