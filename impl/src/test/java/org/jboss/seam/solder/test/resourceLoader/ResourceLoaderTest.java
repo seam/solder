@@ -35,7 +35,10 @@ import javax.inject.Inject;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.resourceLoader.Resource;
+import org.jboss.seam.solder.resourceLoader.ResourceLoader;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ArchivePaths;
+import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,6 +49,8 @@ public class ResourceLoaderTest
    public static Archive<?> deployment()
    {
       return baseDeployment().addPackage(ResourceLoaderTest.class.getPackage())
+         .addPackage(ResourceLoader.class.getPackage())
+         .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"))
          .addResource("com/acme/foo1")
          .addResource("com/acme/foo2.properties");
    }

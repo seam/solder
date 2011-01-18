@@ -18,13 +18,17 @@ package org.jboss.seam.solder.test.el;
 
 import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
 
+import javax.el.ELResolver;
 import javax.el.ExpressionFactory;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.seam.solder.el.ELResolverProducer;
 import org.jboss.seam.solder.el.Expressions;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ArchivePaths;
+import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +45,10 @@ public class ElTest
    public static Archive<?> deployment()
    {
       // also using META-INF/services/javax.el.ExpressionFactory service on test classpath for Weld embedded
-      return baseDeployment().addPackage(ElTest.class.getPackage()).addServiceProvider(ExpressionFactory.class, ExpressionFactoryImpl.class);
+      return baseDeployment().addPackage(ElTest.class.getPackage())
+                             .addPackage(ELResolverProducer.class.getPackage())
+                             .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"))
+                             .addServiceProvider(ExpressionFactory.class, ExpressionFactoryImpl.class);
    }
 
    @Test
