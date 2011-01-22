@@ -20,7 +20,7 @@ package org.jboss.seam.solder.test.log;
 
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.log.MessageBundle;
+import org.jboss.seam.solder.logging.MessageBundle;
 
 public class Jay
 {

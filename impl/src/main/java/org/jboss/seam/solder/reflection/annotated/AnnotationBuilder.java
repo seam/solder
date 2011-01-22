@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.jboss.logging.Messages;
+import org.jboss.seam.solder.logging.Messages;
 import org.jboss.seam.solder.messages.AnnotatedMessages;
 import org.jboss.seam.solder.reflection.Reflections;
 

@@ -19,7 +19,7 @@ package org.jboss.seam.solder.log;
 
 import static org.jboss.logging.Logger.getLogger;
 import static org.jboss.logging.Logger.getMessageLogger;
-import static org.jboss.logging.Messages.getBundle;
+import static org.jboss.seam.solder.logging.Messages.getBundle;
 import static org.jboss.seam.solder.reflection.Reflections.getRawType;
 import static org.jboss.seam.solder.util.Locales.toLocale;
 

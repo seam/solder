@@ -18,7 +18,7 @@ package org.jboss.seam.solder.literal;
 
 import javax.enterprise.util.AnnotationLiteral;
 
-import org.jboss.seam.solder.log.MessageBundle;
+import org.jboss.seam.solder.logging.MessageBundle;
 
 
 public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle
@@ -26,4 +26,16 @@ public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> imple
    private static final long serialVersionUID = -8137340248362361317L;
 
    public static final MessageBundle INSTANCE = new MessageBundleLiteral();
+
+   private final String projectCode;
+
+   public MessageBundleLiteral()
+   {
+      projectCode = "";
+   }
+
+   public String projectCode()
+   {
+      return projectCode;
+   }
 }

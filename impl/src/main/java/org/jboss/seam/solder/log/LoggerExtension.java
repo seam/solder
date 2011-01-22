@@ -33,9 +33,10 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
-import org.jboss.logging.MessageBundle;
-import org.jboss.logging.MessageLogger;
 import org.jboss.seam.solder.bean.NarrowingBeanBuilder;
+import org.jboss.seam.solder.literal.MessageBundleLiteral;
+import org.jboss.seam.solder.logging.MessageBundle;
+import org.jboss.seam.solder.logging.MessageLogger;
 
 /**
  * Adds LoggerProducers to the deployment, and detects and installs beans for any
@@ -62,11 +63,6 @@ public class LoggerExtension implements Extension
    {
       this.messageLoggerTypes = new HashSet<AnnotatedType<?>>();
       this.messageBundleTypes = new HashSet<AnnotatedType<?>>();
-   }
-
-   void addProducer(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
-   {
-      event.addAnnotatedType(beanManager.createAnnotatedType(LoggerProducers.class));
    }
 
    void detectInterfaces(@Observes ProcessAnnotatedType<?> event, BeanManager beanManager)

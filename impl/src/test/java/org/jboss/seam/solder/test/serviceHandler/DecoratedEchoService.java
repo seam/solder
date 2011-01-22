@@ -22,12 +22,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.jboss.seam.solder.servicehandler.ServiceHandler;
+import org.jboss.seam.solder.serviceHandler.ServiceHandlerType;
 
 @Retention(RUNTIME)
 @Target(TYPE)
-@ServiceHandler(DecoratedEchoServiceHandler.class)
+@ServiceHandlerType(DecoratedEchoServiceHandler.class)
 public @interface DecoratedEchoService
 {
-
 }

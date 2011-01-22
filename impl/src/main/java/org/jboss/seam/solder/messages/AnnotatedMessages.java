@@ -22,8 +22,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.jboss.logging.Message;
-import org.jboss.logging.MessageBundle;
+import org.jboss.seam.solder.logging.Message;
+import org.jboss.seam.solder.logging.MessageBundle;
 
 /**
  * Messages used for logging in the reflection.annotated package

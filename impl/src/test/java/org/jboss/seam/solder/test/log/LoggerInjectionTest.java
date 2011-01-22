@@ -29,19 +29,20 @@ import junit.framework.Assert;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.log.LoggerExtension;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * Verifies the integration with JBoss Logging, for both raw and type-safe injections.
- * 
+ * <p/>
  * <p>
  * NOTE: Some of these tests must be verified manually as we have no way to plug
  * in a mock logger.
  * </p>
- * 
+ *
  * @author David Allen
  * @author Dan Allen
  */
@@ -53,11 +54,14 @@ public class LoggerInjectionTest
    {
       System.setProperty("jboss.i18n.generate-proxies", "true");
    }
-   
+
    @Deployment
    public static Archive<?> deployment()
    {
-      return baseDeployment().addPackage(LoggerInjectionTest.class.getPackage());
+      return baseDeployment()
+         .addManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+         .addPackage(LoggerExtension.class.getPackage())
+         .addPackage(LoggerInjectionTest.class.getPackage());
    }
 
    @Test
@@ -73,21 +77,21 @@ public class LoggerInjectionTest
       finch.generateLogMessage();
       Assert.assertEquals("Finch", finch.getLogger().getName());
    }
-   
+
    @Test
    public void testLoggerInjectionWithTypedCategory(Wren wren)
    {
       wren.generateLogMessage();
       Assert.assertEquals(BirdLogger.class.getName(), wren.getLogger().getName());
    }
-   
+
    @Test
    public void testLoggerInjectionWithSuffix(Raven raven)
    {
       raven.generateLogMessage();
       Assert.assertEquals(Raven.class.getName() + ".log", raven.getLogger().getName());
    }
-   
+
    @Test
    public void testLoggerInjectionIntoNonBean(BeanManager bm)
    {
@@ -105,23 +109,23 @@ public class LoggerInjectionTest
          cc.release();
       }
    }
-   
+
    @Test(expected = IllegalStateException.class)
    public void testMessageLoggerInjection(Instance<Owl> owlResolver)
    {
       owlResolver.get().generateLogMessage();
    }
-   
+
    @Test
    public void testMessageLoggerInjectionWithCategory(Hawk hawk)
    {
       hawk.generateLogMessage();
    }
-   
+
    @Test
    public void testMessageBundleInjection(Jay jay)
    {
       assertEquals("Spotted 8 jays", jay.getMessage());
    }
-   
+
 }

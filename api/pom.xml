@@ -35,36 +35,26 @@
    <dependencies>
 
       <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging</artifactId>
-      </dependency>
-
-      <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
          <scope>provided</scope>
       </dependency>
       
+      <!-- NOT NEEDED UNTIL EL SUPPORT IS RESTORED TO API -->
+      <!--
       <dependency>
          <groupId>org.jboss.spec.javax.el</groupId>
          <artifactId>jboss-el-api_2.2_spec</artifactId>
          <scope>provided</scope>
       </dependency>
-
-      <!-- JBoss Logging annotation processor for generating type-safe loggers -->
-      <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging-tools</artifactId>
-         <version>1.0.0.Beta1</version>
-         <scope>provided</scope>
-         <optional>true</optional>
-      </dependency>
+      -->
 
    </dependencies>
 
    <build>
       <plugins>
          <!-- Next two plugins configure 1.6 behavior for 1.5 compiler -->
+         <!--
          <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
@@ -90,7 +80,8 @@
                </compilerArguments>
             </configuration>
          </plugin>
-         <!-- Skip test phase in API module -->
+         -->
+         <!-- Skip test phase in API module, tests are in impl -->
          <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
@@ -99,35 +90,5 @@
          </plugin>
       </plugins>
    </build>
-
-   <profiles>
-      <profile>
-         <id>distribution</id>
-         <activation>
-            <property>
-               <name>release</name>
-            </property>
-         </activation>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-javadoc-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                           <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                           <detectOfflineLinks>false</detectOfflineLinks>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-   </profiles>
 
 </project>

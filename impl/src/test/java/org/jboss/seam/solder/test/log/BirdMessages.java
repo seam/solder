@@ -18,8 +18,8 @@
  */
 package org.jboss.seam.solder.test.log;
 
-import org.jboss.logging.Message;
-import org.jboss.logging.MessageBundle;
+import org.jboss.seam.solder.logging.Message;
+import org.jboss.seam.solder.logging.MessageBundle;
 
 @MessageBundle
 public interface BirdMessages
