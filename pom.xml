@@ -159,10 +159,10 @@
    <developers>
 
       <developer>
-         <name>Shane Bryzak</name>
-         <email>shane.bryzak@jboss.org</email>
+         <name>Stuart Douglas</name>
+         <url>http://community.jboss.org/people/swd847</url>
          <organization>Red Hat Inc.</organization>
-         <url>http://community.jboss.org/people/shane.bryzak%40jboss.com</url>
+         <timezone>+11</timezone>
          <roles>
             <role>Lead</role>
          </roles>
@@ -173,6 +173,7 @@
          <email>pete.muir@jboss.org</email>
          <organization>Red Hat Inc.</organization>
          <url>http://in.relation.to/Bloggers/Pete</url>
+         <timezone>0</timezone>
          <roles>
             <role>Founder</role>
             <role>Committer</role>
@@ -180,8 +181,11 @@
       </developer>
 
       <developer>
-         <name>Stuart Douglas</name>
-         <url>http://community.jboss.org/people/swd847</url>
+         <name>Shane Bryzak</name>
+         <email>shane.bryzak@jboss.org</email>
+         <url>http://community.jboss.org/people/shane.bryzak%40jboss.com</url>
+         <organization>Red Hat Inc.</organization>
+         <timezone>+10</timezone>
          <roles>
             <role>Committer</role>
          </roles>
@@ -190,10 +194,9 @@
       <developer>
          <name>Dan Allen</name>
          <email>dan.j.allen@gmail.com</email>
-         <url>http://mojavelinux.com</url>
+         <url>http://community.jboss.org/people/dan.j.allen</url>
          <organization>JBoss, by Red Hat</organization>
-         <organizationUrl>http://jboss.org</organizationUrl>
-         <timezone>EST</timezone>
+         <timezone>-5</timezone>
          <roles>
             <role>Committer</role>
          </roles>

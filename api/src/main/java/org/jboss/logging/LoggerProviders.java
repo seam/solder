@@ -29,20 +29,24 @@ final class LoggerProviders {
 
     private static LoggerProvider findProvider() {
         final LogManager jdkLogManager = LogManager.getLogManager();
-        if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
-            return new JBossLogManagerProvider();
-        }
         final ClassLoader cl = getClassLoader();
         try {
+           if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
+              return (LoggerProvider) Class.forName("org.jboss.logging.JBossLogManagerProvider", true, cl).newInstance();
+           }
+        } catch (Throwable t) {
+           // nope...
+        }
+        try {
             Class.forName("org.apache.log4j.LogManager", true, cl);
-            return new Log4jLoggerProvider();
+            return (LoggerProvider) Class.forName("org.jboss.logging.Log4jLoggerProvider", true, cl).newInstance();
         } catch (Throwable t) {
             // nope...
         }
         try {
             // only use slf4j if Logback is in use
             Class.forName("ch.qos.logback.classic.Logger", false, cl);
-            return new Slf4jLoggerProvider();
+            return (LoggerProvider) Class.forName("org.jboss.logging.Slf4jLoggerProvider", true, cl).newInstance();
         } catch (Throwable t) {
             // nope...
         }

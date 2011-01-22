@@ -40,62 +40,12 @@
          <scope>provided</scope>
       </dependency>
       
+      <!-- NOT NEEDED UNTIL EL SUPPORT IS RESTORED TO API -->
+      <!--
       <dependency>
          <groupId>org.jboss.spec.javax.el</groupId>
          <artifactId>jboss-el-api_2.2_spec</artifactId>
          <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.logmanager</groupId>
-         <artifactId>jboss-logmanager</artifactId>
-         <version>1.2.0.CR4</version>
-         <scope>provided</scope>
-         <optional>true</optional>
-      </dependency>
-
-      <dependency>
-         <groupId>log4j</groupId>
-         <artifactId>log4j</artifactId>
-         <version>1.2.15</version>
-         <scope>provided</scope>
-         <optional>true</optional>
-         <exclusions>
-             <exclusion>
-                 <groupId>com.sun.jdmk</groupId>
-                 <artifactId>jmxtools</artifactId>
-             </exclusion>
-             <exclusion>
-                 <groupId>com.sun.jmx</groupId>
-                 <artifactId>jmxri</artifactId>
-             </exclusion>
-             <exclusion>
-             	<artifactId>mail</artifactId>
-             	<groupId>javax.mail</groupId>
-             </exclusion>
-             <exclusion>
-             	<artifactId>jms</artifactId>
-             	<groupId>javax.jms</groupId>
-             </exclusion>
-         </exclusions>
-      </dependency>
-
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-api</artifactId>
-         <version>1.5.8</version>
-         <scope>provided</scope>
-         <optional>true</optional>
-      </dependency>
-
-      <!-- JBoss Logging annotation processor for generating type-safe loggers -->
-      <!-- DISABLED UNTIL WE WORK OUT COMPATIBILITY ISSUES -->
-      <!--
-      <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging-tools</artifactId>
-         <scope>provided</scope>
-         <optional>true</optional>
       </dependency>
       -->
 
@@ -104,6 +54,7 @@
    <build>
       <plugins>
          <!-- Next two plugins configure 1.6 behavior for 1.5 compiler -->
+         <!--
          <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
@@ -129,6 +80,7 @@
                </compilerArguments>
             </configuration>
          </plugin>
+         -->
          <!-- Skip test phase in API module, tests are in impl -->
          <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
