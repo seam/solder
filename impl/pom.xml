@@ -120,15 +120,10 @@
       </dependency>
       -->
 
+      <!-- EL impl needed for ElTest -->
       <dependency>
          <groupId>org.glassfish.web</groupId>
          <artifactId>el-impl</artifactId>
-         <scope>test</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.weld</groupId>
-         <artifactId>weld-core</artifactId>
          <scope>test</scope>
       </dependency>
 
@@ -217,6 +212,11 @@
                <artifactId>validation-api</artifactId>
                <scope>test</scope>
             </dependency>
+            <dependency>
+               <groupId>org.jboss.weld</groupId>
+               <artifactId>weld-core</artifactId>
+               <scope>test</scope>
+            </dependency>
          </dependencies>
       </profile>
       <profile>
@@ -241,6 +241,11 @@
                <artifactId>jboss-as-client</artifactId>
                <type>pom</type>
             </dependency>
+            <dependency>
+               <groupId>org.jboss.weld</groupId>
+               <artifactId>weld-core</artifactId>
+               <scope>test</scope>
+            </dependency>
          </dependencies>
       </profile>
       <profile>
@@ -260,6 +265,11 @@
                <groupId>org.jboss.jbossas</groupId>
                <artifactId>jboss-as-client</artifactId>
                <type>pom</type>
+            </dependency>
+            <dependency>
+               <groupId>org.jboss.weld</groupId>
+               <artifactId>weld-core</artifactId>
+               <scope>test</scope>
             </dependency>
          </dependencies>
          <build>
