@@ -48,7 +48,7 @@ public class ResourceLoaderTest
    public static Archive<?> deployment()
    {
       return baseDeployment().addPackage(ResourceLoaderTest.class.getPackage())
-         .addPackage(ResourceLoader.class.getPackage())
+         //.addPackage(ResourceLoader.class.getPackage())
          .addManifestResource(EmptyAsset.INSTANCE, "beans.xml")
          .addResource("com/acme/foo1")
          .addResource("com/acme/foo2.properties");
