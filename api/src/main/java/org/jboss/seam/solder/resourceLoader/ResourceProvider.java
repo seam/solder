@@ -32,6 +32,7 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
+import org.jboss.seam.solder.core.Veto;
 import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 
 /**
@@ -65,6 +66,7 @@ import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
  * 
  * @see Resource
  */
+@Veto
 public class ResourceProvider implements Serializable
 {
 
@@ -83,8 +85,8 @@ public class ResourceProvider implements Serializable
    // Workaround WELD-466
    private final Set<InputStream> streamsCache;
 
-   @Inject
-   private ResourceProvider(@Any Instance<InputStream> inputStreamProvider, @Any Instance<URL> urlProvider, @Any Instance<Collection<InputStream>> inputStreamsProvider, @Any Instance<Collection<URL>> urlsProvider, @Any Instance<Properties> propertiesBundleProvider, @Any Instance<Collection<Properties>> propertiesBundlesProvider)
+   //@Inject
+   ResourceProvider(@Any Instance<InputStream> inputStreamProvider, @Any Instance<URL> urlProvider, @Any Instance<Collection<InputStream>> inputStreamsProvider, @Any Instance<Collection<URL>> urlsProvider, @Any Instance<Properties> propertiesBundleProvider, @Any Instance<Collection<Properties>> propertiesBundlesProvider)
    {
       this.inputStreamProvider = inputStreamProvider;
       this.urlProvider = urlProvider;

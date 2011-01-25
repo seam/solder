@@ -30,13 +30,13 @@ import javax.inject.Qualifier;
 
 /**
  * <p>
- * Qualifier used to identify a {@link javax.el.ELResolver} to register with the
- * application wide {@link javax.el.ELResolver} provided by Seam Solder
+ * Qualifier used to identify a javax.el.ELResolver to register with the
+ * application wide javax.el.ELResolver provided by Seam Solder
  * </p>
  * 
  * <p>
- * Seam Solder will inject a {@link javax.el.ELResolver} for each instantiation of an
- * {@link javax.el.ELContext} (and hence for each instantiation of {@link Expressions});
+ * Seam Solder will inject a javax.el.ELResolver for each instantiation of an
+ * javax.el.ELContext (and hence for each instantiation of {@link Expressions});
  * any overrides of this bean should ensure that obtaining the bean instance is
  * a lightweight operation.
  * </p>
