@@ -38,7 +38,7 @@ public class UnwrapsTest
    }
 
    @Inject
-   ManagedReciever bean;
+   ManagedReceiver bean;
 
    @Inject
    @Named("lion")

@@ -46,7 +46,7 @@ public class ServiceHandlerTest
    private HelloWorld helloWorld;
 
    @Inject
-   private GoodbyeWorld goodbyteWorld;
+   private GoodbyeWorld goodbyeWorld;
 
    @Inject
    private DecoratedHelloWorld decoratedHelloWorld;
@@ -60,8 +60,8 @@ public class ServiceHandlerTest
    @Test
    public void testProxiedAbstractClass()
    {
-      Assert.assertTrue(goodbyteWorld.goodbyeWorld().equals("goodbyeWorld"));
-      Assert.assertFalse(goodbyteWorld.otherMethod().equals("otherMethod"));
+      Assert.assertTrue(goodbyeWorld.goodbyeWorld().equals("goodbyeWorld"));
+      Assert.assertFalse(goodbyeWorld.otherMethod().equals("otherMethod"));
    }
 
    @Test

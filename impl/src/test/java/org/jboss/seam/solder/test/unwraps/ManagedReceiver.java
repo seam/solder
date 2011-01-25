@@ -18,7 +18,7 @@ package org.jboss.seam.solder.test.unwraps;
 
 import javax.inject.Inject;
 
-public class ManagedReciever
+public class ManagedReceiver
 {
    @MPType("bean1")
    @Inject
