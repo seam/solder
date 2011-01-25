@@ -17,6 +17,7 @@
 package org.jboss.seam.solder.test.el;
 
 import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
 
 import javax.el.ExpressionFactory;
 import javax.inject.Inject;
@@ -27,6 +28,7 @@ import org.jboss.seam.solder.el.ELResolverProducer;
 import org.jboss.seam.solder.el.Expressions;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,28 +39,37 @@ import com.sun.el.ExpressionFactoryImpl;
 public class ElTest
 {
    @Inject
-   Expressions extressions;
+   Expressions expressions;
 
    @Deployment
    public static Archive<?> deployment()
    {
-      // also using META-INF/services/javax.el.ExpressionFactory service on test classpath for Weld embedded
-      return baseDeployment().addPackage(ElTest.class.getPackage())
-                             .addPackage(ELResolverProducer.class.getPackage())
-                             .addManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                             .addServiceProvider(ExpressionFactory.class, ExpressionFactoryImpl.class);
+      // hack to work around container differences atm
+      boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+      
+      WebArchive war = baseDeployment().addPackage(ElTest.class.getPackage());
+      if (isEmbedded)
+      {
+         war.addPackage(ELResolverProducer.class.getPackage())
+               // set proper EL implementation using META-INF/services/javax.el.ExpressionFactory for Weld embedded
+               .addServiceProvider(ExpressionFactory.class, ExpressionFactoryImpl.class)
+               .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+      }
+      
+      return war;
    }
 
    @Test
    public void testElResolver()
    {
-      Assert.assertTrue(extressions.evaluateValueExpression("#{ute.speed}").equals("fast"));
-      Assert.assertTrue(extressions.evaluateMethodExpression("#{ute.go}").equals(Ute.GO_STRING));
+      Assert.assertTrue(expressions.evaluateValueExpression("#{ute.speed}").equals("fast"));
+      Assert.assertTrue(expressions.evaluateMethodExpression("#{ute.go}").equals(Ute.GO_STRING));
    }
    
    @Test
    public void testCustomElResolver()
    {
-      Assert.assertTrue(extressions.evaluateValueExpression("#{foo}").equals("baz"));
+      Assert.assertTrue(expressions.evaluateValueExpression("#{foo}").equals("baz"));
    }
+   
 }

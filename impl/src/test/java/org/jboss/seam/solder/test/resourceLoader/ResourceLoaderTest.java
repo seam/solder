@@ -18,6 +18,7 @@
 package org.jboss.seam.solder.test.resourceLoader;
 
 import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -38,6 +39,7 @@ import org.jboss.seam.solder.resourceLoader.Resource;
 import org.jboss.seam.solder.resourceLoader.ResourceLoader;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,11 +49,20 @@ public class ResourceLoaderTest
    @Deployment
    public static Archive<?> deployment()
    {
-      return baseDeployment().addPackage(ResourceLoaderTest.class.getPackage())
-         //.addPackage(ResourceLoader.class.getPackage())
-         .addManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-         .addResource("com/acme/foo1")
-         .addResource("com/acme/foo2.properties");
+      // hack to work around container differences atm
+      boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+      
+      WebArchive war = baseDeployment().addPackage(ResourceLoaderTest.class.getPackage())
+            .addResource("com/acme/foo1")
+            .addResource("com/acme/foo2.properties");
+      
+      if (isEmbedded)
+      {
+         war.addPackage(ResourceLoader.class.getPackage())
+               .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+      }
+      
+      return war;
    }
 
    @Inject

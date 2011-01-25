@@ -16,6 +16,11 @@
  */
 package org.jboss.seam.solder.el;
 
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javax.el.ArrayELResolver;
 import javax.el.BeanELResolver;
 import javax.el.CompositeELResolver;
@@ -23,9 +28,14 @@ import javax.el.ELResolver;
 import javax.el.ListELResolver;
 import javax.el.MapELResolver;
 import javax.el.ResourceBundleELResolver;
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+
+import org.jboss.seam.solder.beanManager.BeanManagerLocator;
+import org.jboss.seam.solder.literal.ResolverLiteral;
 
 /**
  * <p>
@@ -43,6 +53,13 @@ public class ELResolverProducer
    @Composite
    public ELResolver getELResolver(@Resolver Instance<ELResolver> resolvers, BeanManager beanManager)
    {
+      boolean isGlassFish = System.getProperty("glassfish.version") != null;
+      // FIXME temporary workaround to deal with visibility problem in GlassFish
+      if (isGlassFish)
+      {
+         beanManager = new BeanManagerLocator().getBeanManager();
+      }
+      
       // Create the default el resolvers
       CompositeELResolver compositeResolver = new CompositeELResolver();
       compositeResolver.add(beanManager.getELResolver());
@@ -52,13 +69,44 @@ public class ELResolverProducer
       compositeResolver.add(new ResourceBundleELResolver());
       compositeResolver.add(new BeanELResolver());
 
-      // Add any user provided
-      for (ELResolver resolver : resolvers)
+      // Add plugin resolvers
+      if (isGlassFish)
       {
-         compositeResolver.add(resolver);
+         for (ELResolver resolver : getReferences(beanManager, ELResolver.class, new ResolverLiteral()))
+         {
+            compositeResolver.add(resolver);
+         }
+      }
+      else
+      {
+         for (ELResolver resolver : resolvers)
+         {
+            compositeResolver.add(resolver);
+         }
       }
 
       return compositeResolver;
+   }
+   
+   @SuppressWarnings("unchecked")
+   private <T> Set<T> getReferences(final BeanManager manager, final Class<T> type, Annotation... qualifiers)
+   {
+      Set<Bean<?>> resolverBeans = manager.getBeans(type, qualifiers);
+      if (resolverBeans.size() == 0)
+      {
+         return Collections.emptySet();
+      }
+      Set<T> refs = new LinkedHashSet<T>();
+      for (Bean<?> bean : resolverBeans)
+      {
+         // FIXME when should the dependent context be cleaned up?
+         CreationalContext<T> context = (CreationalContext<T>) manager.createCreationalContext(bean);
+         if (context != null)
+         {
+            refs.add((T) manager.getReference(bean, type, context));
+         }
+      }
+      return refs;
    }
 
 }
