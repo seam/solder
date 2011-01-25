@@ -26,19 +26,17 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.el.ELContext;
-import javax.el.ELResolver;
 import javax.inject.Qualifier;
 
 /**
  * <p>
- * Qualifier used to identify a {@link ELResolver} to register with the
- * application wide {@link ELResolver} provided by Seam Solder
+ * Qualifier used to identify a {@link javax.el.ELResolver} to register with the
+ * application wide {@link javax.el.ELResolver} provided by Seam Solder
  * </p>
  * 
  * <p>
- * Seam Solder will inject a {@link ELResolver} for each instantiation of an
- * {@link ELContext} (and hence for each instantiation of {@link Expressions});
+ * Seam Solder will inject a {@link javax.el.ELResolver} for each instantiation of an
+ * {@link javax.el.ELContext} (and hence for each instantiation of {@link Expressions});
  * any overrides of this bean should ensure that obtaining the bean instance is
  * a lightweight operation.
  * </p>
@@ -52,5 +50,4 @@ import javax.inject.Qualifier;
 @Documented
 public @interface Resolver
 {
-
 }
