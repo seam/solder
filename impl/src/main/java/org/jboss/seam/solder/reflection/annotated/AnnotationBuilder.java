@@ -37,7 +37,7 @@ import org.jboss.seam.solder.reflection.Reflections;
 public class AnnotationBuilder
 {
    
-   private transient AnnotatedMessages messages = Messages.getBundle(AnnotatedMessages.class);
+   private transient static AnnotatedMessages messages = Messages.getBundle(AnnotatedMessages.class);
    
    private final Map<Class<? extends Annotation>, Annotation> annotationMap;
    private final Set<Annotation> annotationSet;

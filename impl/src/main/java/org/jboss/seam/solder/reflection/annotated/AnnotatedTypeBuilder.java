@@ -56,7 +56,7 @@ import org.jboss.seam.solder.reflection.Reflections;
 public class AnnotatedTypeBuilder<X>
 {
 
-   private transient AnnotatedMessages messages = Messages.getBundle(AnnotatedMessages.class);
+   private transient static AnnotatedMessages messages = Messages.getBundle(AnnotatedMessages.class);
 
    private Class<X> javaClass;
    private final AnnotationBuilder typeAnnotations;
