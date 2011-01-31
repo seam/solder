@@ -18,8 +18,11 @@ package org.jboss.seam.solder.core;
 
 import java.beans.Introspector;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
@@ -50,6 +53,7 @@ import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
  * @author Pete Muir
  * @author Dan Allen
  * @author Gavin King
+ * @author Jozef Hartinger
  */
 public class CoreExtension implements Extension
 {
@@ -75,18 +79,30 @@ public class CoreExtension implements Extension
       Class<X> javaClass = annotatedType.getJavaClass();
       
       // Support for @Veto
-      if (annotatedType.isAnnotationPresent(Veto.class))
+      if (annotatedType.isAnnotationPresent(Veto.class) || annotatedType.getJavaClass().getPackage().isAnnotationPresent(Veto.class))
       {
          pat.veto();
          log.info("Preventing " + javaClass + " from being installed as bean due to @Veto annotation");
          return;
       }
 
-      // support for @Requires
+      // Support for @Requires
+      Set<String> requiredClasses = new HashSet<String>();
+      // package-level @Requires
+      if (annotatedType.getJavaClass().getPackage().isAnnotationPresent(Requires.class))
+      {
+         String[] packageRequiredClasses = annotatedType.getJavaClass().getPackage().getAnnotation(Requires.class).value();
+         requiredClasses.addAll(Arrays.asList(packageRequiredClasses));
+      }
+      // class-level @Requires
       if (annotatedType.isAnnotationPresent(Requires.class))
       {
-         String[] classes = annotatedType.getAnnotation(Requires.class).value();
-         for (String i : classes)
+         String[] typeRequiredClasses = annotatedType.getAnnotation(Requires.class).value();
+         requiredClasses.addAll(Arrays.asList(typeRequiredClasses));
+      }
+      if (!requiredClasses.isEmpty())
+      {
+         for (String i : requiredClasses)
          {
             try
             {

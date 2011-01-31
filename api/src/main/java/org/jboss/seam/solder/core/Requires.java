@@ -29,16 +29,27 @@ import java.lang.annotation.Target;
  * </p>
  * 
  * <p>
+ * When placed on package, all beans in the package are installed if only if 
+ * all of required classes are available.
+ * </p>
+ * 
+ * <p>
+ * If annotation is defined both on the package and the bean, union of
+ * required classes defined by these annotations is considered.
+ * </p>
+ * 
+ * <p>
  * Seam Solder will try both the Thread Context ClassLoader, as well as the
  * classloader of the declaring class.
  * </p>
  * 
  * @author Stuart Douglas
+ * @author Jozef Hartinger
  * 
  * @see Veto
  * 
  */
-@Target(ElementType.TYPE)
+@Target({ ElementType.TYPE, ElementType.PACKAGE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Requires

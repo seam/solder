@@ -26,10 +26,13 @@ import java.lang.annotation.Target;
  * Veto the processing of the type. Any beans or observer methods defined by
  * this class will not be installed.
  * 
+ * When placed on package, all beans in the package are prevented from being
+ * installed.
+ * 
  * @author Stuart Douglas
  * 
  */
-@Target(ElementType.TYPE)
+@Target({ ElementType.TYPE, ElementType.PACKAGE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Veto

@@ -34,6 +34,8 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.core.CoreExtension;
 import org.jboss.seam.solder.literal.DefaultLiteral;
 import org.jboss.seam.solder.test.core.fullyqualified.FullyQualifiedFromPackageNamedBean;
+import org.jboss.seam.solder.test.core.requires.Lion;
+import org.jboss.seam.solder.test.core.veto.Tiger;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +52,9 @@ public class CoreTest
    public static Archive<?> deployment()
    {
       return baseDeployment().addPackage(CoreTest.class.getPackage())
-            .addPackage(FullyQualifiedFromPackageNamedBean.class.getPackage());
+            .addPackage(FullyQualifiedFromPackageNamedBean.class.getPackage())
+            .addPackage(Lion.class.getPackage())
+            .addPackage(Tiger.class.getPackage());
    }
 
    @Inject
@@ -75,6 +79,20 @@ public class CoreTest
    public void testBeanNotInstalled(BeanManager manager)
    {
       Set<Bean<?>> beans = manager.getBeans(OptionalService.class, DefaultLiteral.INSTANCE);
+      Assert.assertEquals(0, beans.size());
+   }
+   
+   @Test
+   public void testPackageLevelVeto(BeanManager manager)
+   {
+      Set<Bean<?>> beans = manager.getBeans(Tiger.class, DefaultLiteral.INSTANCE);
+      Assert.assertEquals(0, beans.size());
+   }
+   
+   @Test
+   public void testPackageLevelRequires(BeanManager manager)
+   {
+      Set<Bean<?>> beans = manager.getBeans(Lion.class, DefaultLiteral.INSTANCE);
       Assert.assertEquals(0, beans.size());
    }
    
