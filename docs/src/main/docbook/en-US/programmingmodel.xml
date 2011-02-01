@@ -58,6 +58,19 @@
 class Utilities {
    ...
 }</programlisting>
+
+		<para>
+			Besides, a package can be annotated with <code>@Veto</code>, causing all beans in the package to be prevented
+			from registration.
+		</para>
+		
+		<example>
+			<title>package-info.java</title>
+			<programlisting role="JAVA">@Veto
+package com.example;
+
+import org.jboss.seam.solder.core.Veto;</programlisting>
+		</example>
          
          <note>
             <para>
@@ -71,8 +84,8 @@ class Utilities {
          <title>@Requires</title>
       
          <para>
-            Annotating a class <code>@Requires</code> will cause the type to be ignored if the class dependencies
-            can be satisfied. Any definitions on the type will not be processed:
+            Annotating a class with <code>@Requires</code> will cause the type to be ignored if the class dependencies
+            cannot be satisfied. Any definitions on the type will not be processed:
          </para>
          
          <itemizedlist>
@@ -107,6 +120,12 @@ class EntityManagerProducer {
    }
    
 }</programlisting>
+
+		<para>
+			Annotating a package with <code>@Requires</code> causes all beans in the package to be ignored if the class dependencies
+            cannot be satisfied. If both a class and it's package are annotated with <code>@Requires</code>, both package-level and
+            class-level dependencies have to be satisfied for the bean to be installed.
+		</para>
          
          <note>
             <para>
