@@ -2250,11 +2250,10 @@ public abstract class Logger implements Serializable, BasicLogger {
         if (loggerClass == null) try {
             loggerClass = Class.forName(join(type.getName(), "$logger", null, null, null), true, type.getClassLoader()).asSubclass(type);
         } catch (ClassNotFoundException e) {
-            if (LoggingProxy.GENERATE_PROXIES) {
-                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, new MessageLoggerInvocationHandler(type, category)));
-            }
-            throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found)");
-        }
+          //warn("Generating proxy for type-safe logger " + type + ". You should generate a concrete implementation using the jboss-logging-tools annotation processor before deploying to production!!");
+          return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, new MessageLoggerInvocationHandler(type, category)));
+        }                
+        
         final Constructor<? extends T> constructor;
         try {
             constructor = loggerClass.getConstructor(Logger.class);
