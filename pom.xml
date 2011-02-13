@@ -49,7 +49,7 @@
    </modules>
 
    <properties>
-      <seam.version>3.0.0.b06</seam.version>
+      <seam.version>3.0.0.b09</seam.version>
    </properties>
 
    <!-- Import the BOMs -->
