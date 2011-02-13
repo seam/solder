@@ -22,6 +22,8 @@ import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
 
 public class ChipManufacturer
 {
+   public ChipManufacturer() {}
+   
    @DefaultBean(CPU.class)
    @Produces
    public CPU createChip()

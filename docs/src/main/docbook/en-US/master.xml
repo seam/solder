@@ -41,32 +41,32 @@
       </para>
    </preface>
    
-   <xi:include href="gettingstarted.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   <xi:include href="solder-gettingstarted.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
    <part id="part1">
       
       <title>Extensions and Utilities for Developers</title>
-      <xi:include href="programmingmodel.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="annotationliterals.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="elextensions.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="resourceloading.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="logging.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-programmingmodel.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-annotationliterals.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-elextensions.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-resourceloading.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-logging.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    </part>
    
    <part id="part2">
       <title>Utilities for Framework Authors</title>
-      <xi:include href="typeutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="beanmanagerprovider.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="beanutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="properties.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-typeutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-beanmanagerprovider.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-beanutilities.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-properties.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    </part>
    
    <part id="part3">
       <title>Configuration Extensions for Framework Authors</title>
-      <xi:include href="unwraps.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="defaultbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="genericbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-      <xi:include href="servicehandler.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-unwraps.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-defaultbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-genericbeans.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="solder-servicehandler.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    </part>
 
    
