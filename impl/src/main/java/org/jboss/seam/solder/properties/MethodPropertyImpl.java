@@ -44,7 +44,7 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
    private static final int GETTER_METHOD_PREFIX_LENGTH = GETTER_METHOD_PREFIX.length();
    private static final int SETTER_METHOD_PREFIX_LENGTH = SETTER_METHOD_PREFIX.length();
    private static final int BOOLEAN_GETTER_METHOD_PREFIX_LENGTH = BOOLEAN_GETTER_METHOD_PREFIX.length();
-   
+
    private final Method getterMethod;
    private final String propertyName;
    private final Method setterMethod;
@@ -130,11 +130,19 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
 
    public V getValue(Object instance)
    {
+      if (getterMethod == null)
+      {
+         throw new UnsupportedOperationException("Property " + this.setterMethod.getDeclaringClass() + "." + propertyName + " cannot be read, as there is no getter method.");
+      }
       return getJavaClass().cast(invokeMethod(getterMethod, instance));
    }
 
    public void setValue(Object instance, V value)
    {
+      if (setterMethod == null)
+      {
+         throw new UnsupportedOperationException("Property " + this.getterMethod.getDeclaringClass() + "." + propertyName + " is read only, as there is no setter method.");
+      }
       invokeMethod(setterMethod, instance, value);
    }
 
