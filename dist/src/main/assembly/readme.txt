@@ -37,7 +37,7 @@
  Downloads:             http://sfwk.org/Seam3/DistributionDownloads
  Forums:                http://sfwk.org/Community/Seam3Users
  Source Code:           http://github.com/seam/solder
- Issue Tracking:        http://jira.jboss.org/jira/browse/SOLDER
+ Issue Tracking:        http://issues.jboss.org/browse/SOLDER
 
  Release Notes
  =============
