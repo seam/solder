@@ -27,7 +27,7 @@
    <groupId>org.jboss.seam.solder</groupId>
    <artifactId>seam-solder-parent</artifactId>
    <packaging>pom</packaging>
-   <version>3.0.0.CR1</version>
+   <version>3.0.0-SNAPSHOT</version>
 
    <name>Seam Solder Project</name>
    <description>A portable CDI extensions library for developing CDI applications, frameworks or other extensions</description>
