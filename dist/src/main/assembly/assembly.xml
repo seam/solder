@@ -31,6 +31,7 @@
       <fileSet>
          <directory>src/main/assembly</directory>
          <outputDirectory>.</outputDirectory>
+         <filtered>true</filtered>
          <includes>
             <include>readme.txt</include>
             <include>license.txt</include>
@@ -46,14 +47,14 @@
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
             <include>org.jboss.seam.solder:seam-solder</include>
-            <include>org.jboss.seam.solder:seam-solder-api</include>
-            <include>org.jboss.seam.solder:seam-solder-impl</include>
          </includes>
          <excludes>
-            <exclude>org.jboss.seam.solder:seam-solder*:jar:javadoc</exclude>
+            <exclude>org.jboss.seam.solder:*:jar:javadoc</exclude>
+            <exclude>org.jboss.seam.solder:*:jar:sources</exclude>
          </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
+      
       <!-- Add necessary dependencies -->
       <dependencySet>
          <outputDirectory>lib</outputDirectory>
@@ -64,6 +65,7 @@
          </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
+      
       <!-- Pull in JavaDoc for api -->
       <dependencySet>
          <outputDirectory>doc/api</outputDirectory>
@@ -78,6 +80,8 @@
             </excludes>
          </unpackOptions>
       </dependencySet>
+      
+      <!-- Add reference documentation -->
       <dependencySet>
          <outputDirectory>doc/reference</outputDirectory>
          <unpack>true</unpack>
@@ -91,5 +95,21 @@
             </excludes>
          </unpackOptions>
       </dependencySet>
-   </dependencySets>
+      
+      <!-- Add the source -->
+      <dependencySet>
+         <outputDirectory>source</outputDirectory>
+         <unpack>true</unpack>
+         <useProjectArtifact>false</useProjectArtifact>
+         <includes>
+            <include>org.jboss.seam.solder:seam-solder-api:*:sources</include>
+            <include>org.jboss.seam.solder:seam-solder-impl:*:sources</include>            
+         </includes>
+         <unpackOptions>
+            <excludes>
+               <exclude>META-INF/</exclude>
+            </excludes>
+         </unpackOptions>
+      </dependencySet>      
+   </dependencySets>      
 </assembly>

@@ -15,13 +15,13 @@
  
     Provided libraries
 
- lib/
-
-    Dependencies
-
- docs/
+ doc/
 
     API Docs and reference guide.
+    
+ source/    
+ 
+    Source code for this module
   
  Licensing
  =========
