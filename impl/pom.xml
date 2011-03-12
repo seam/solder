@@ -39,6 +39,14 @@
          <artifactId>seam-solder-api</artifactId>
       </dependency>
 
+      <!-- JBoss annotation processor for generating type-safe loggers -->
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-tooling</artifactId>
+         <version>${project.version}</version>
+         <optional>true</optional>
+      </dependency>
+
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
@@ -109,17 +117,6 @@
          <optional>true</optional>
       </dependency>
 
-      <!-- JBoss Logging annotation processor for generating type-safe loggers -->
-      <!-- DISABLED UNTIL WE WORK OUT COMPATIBILITY ISSUES -->
-      <!--
-      <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging-tools</artifactId>
-         <scope>provided</scope>
-         <optional>true</optional>
-      </dependency>
-      -->
-
       <!-- EL impl needed for ElTest -->
       <dependency>
          <groupId>org.glassfish.web</groupId>
@@ -183,13 +180,6 @@
                   </configuration>
                </execution>
             </executions>
-         </plugin>
-         <!-- TEMPORARY: disable jboss-logging-tools proc which is added by integration test deps -->
-         <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-               <compilerArgument>-proc:none</compilerArgument>
-            </configuration>
          </plugin>
       </plugins>
    </build>

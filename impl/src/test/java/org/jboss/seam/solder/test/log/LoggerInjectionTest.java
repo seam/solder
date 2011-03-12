@@ -128,4 +128,10 @@ public class LoggerInjectionTest
       assertEquals("Spotted 8 jays", jay.getMessage());
    }
 
+   @Test
+   public void testMessageBundleLocaleInjection(FrenchJay jay)
+   {
+      assertEquals("Spotted 4 geais", jay.getMessage());
+   }
+
 }
