@@ -61,7 +61,8 @@ public class CoreExtension implements Extension
 
    static final Logger log = Logger.getLogger(CoreExtension.class);
 
-   CoreExtension()
+   //this must be public for the service loader to work properly
+   public CoreExtension()
    {
       this.additionalBeans = new ArrayList<Bean<?>>();
    }
