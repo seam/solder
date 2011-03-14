@@ -54,7 +54,8 @@ public class CoreTest
       return baseDeployment().addPackage(CoreTest.class.getPackage())
             .addPackage(FullyQualifiedFromPackageNamedBean.class.getPackage())
             .addPackage(Lion.class.getPackage())
-            .addPackage(Tiger.class.getPackage());
+            .addPackage(Tiger.class.getPackage())
+            .addClass("NoPackageClass");
    }
 
    @Inject
