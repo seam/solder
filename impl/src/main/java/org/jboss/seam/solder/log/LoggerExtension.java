@@ -36,21 +36,14 @@ import org.jboss.seam.solder.logging.MessageBundle;
 import org.jboss.seam.solder.logging.MessageLogger;
 
 /**
- * Adds LoggerProducers to the deployment, and detects and installs beans for any
- * typed loggers defined.
+ * Detects typed loggers and message bundles and registers a dedicated producer
+ * method for each one discovered.
  * 
  * @author Pete Muir
+ * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 public class LoggerExtension implements Extension
 {
-   static
-   {
-      // We now have tooling, so this isn't necessary. We need to:
-      // 1. document this setting as a development-time convenience
-      // 2. remove this global assignment
-      System.setProperty("jboss.i18n.generate-proxies", "true");
-   }
-
    private final Collection<AnnotatedType<?>> messageLoggerTypes;
    private final Collection<AnnotatedType<?>> messageBundleTypes;
    private Bean<Object> loggerProducerBean;
@@ -130,5 +123,4 @@ public class LoggerExtension implements Extension
       this.messageLoggerTypes.clear();
       this.messageBundleTypes.clear();
    }
-
 }
