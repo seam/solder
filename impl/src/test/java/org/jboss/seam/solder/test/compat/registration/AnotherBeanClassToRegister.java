@@ -14,8 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.compat;
+package org.jboss.seam.solder.test.compat.registration;
 
-public class Beer
-{
+import javax.inject.Inject;
+
+public class AnotherBeanClassToRegister {
+    @Inject
+    private BeanClassToRegister collaborator;
+
+    public BeanClassToRegister getCollaborator() {
+        return collaborator;
+    }
 }

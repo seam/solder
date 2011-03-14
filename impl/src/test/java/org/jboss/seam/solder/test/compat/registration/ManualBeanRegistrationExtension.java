@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.compat;
+package org.jboss.seam.solder.test.compat.registration;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.BeanManager;
@@ -23,14 +23,12 @@ import javax.enterprise.inject.spi.Extension;
 
 /**
  * An extension which registers a bean programmatically.
- *
+ * 
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
-public class ManualBeanRegistrationExtension implements Extension
-{
-    public void registerBeans(@Observes BeforeBeanDiscovery event, BeanManager bm)
-    {
+public class ManualBeanRegistrationExtension implements Extension {
+    public void registerBeans(@Observes BeforeBeanDiscovery event, BeanManager bm) {
         event.addAnnotatedType(bm.createAnnotatedType(BeanClassToRegister.class));
     }
 }

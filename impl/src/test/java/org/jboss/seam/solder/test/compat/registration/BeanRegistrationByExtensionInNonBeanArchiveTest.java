@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.compat;
+package org.jboss.seam.solder.test.compat.registration;
 
 import javax.enterprise.inject.spi.Extension;
 
@@ -33,30 +33,28 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Validates that a bean can be registered by an extension that resides in a non-bean archive.
- *
+ * 
+ * @see <a href="http://java.net/jira/browse/GLASSFISH-14808">GLASSFISH-14808</a> (resolved)
+ * 
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 @RunWith(Arquillian.class)
-public class ExtensionInNonBeanArchiveTest
-{
+public class BeanRegistrationByExtensionInNonBeanArchiveTest {
     @Deployment
-    public static Archive<?> createTestArchive()
-    {
+    public static Archive<?> createTestArchive() {
         // Our non-bean archive with an extension
         JavaArchive jar1 = ShrinkWrap.create(JavaArchive.class, "a.jar")
-                                    .addClasses(BeanClassToRegister.class, ManualBeanRegistrationExtension.class)
-                                    .addServiceProvider(Extension.class, ManualBeanRegistrationExtension.class);
+                .addClasses(BeanClassToRegister.class, ManualBeanRegistrationExtension.class)
+                .addServiceProvider(Extension.class, ManualBeanRegistrationExtension.class);
 
         // Web archive is necessary so that Arquillian can find the BeanManager
-        return ShrinkWrap.create(WebArchive.class, "test.war")
-                         .addWebResource(EmptyAsset.INSTANCE, "beans.xml")
-                         .addLibrary(jar1);
+        return ShrinkWrap.create(WebArchive.class, "test.war").addWebResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addLibrary(jar1);
     }
 
     @Test
-    public void shouldFindBeanReference(BeanClassToRegister bean)
-    {
+    public void shouldFindBeanReference(BeanClassToRegister bean) {
         assertThat(bean, is(notNullValue()));
         assertThat(bean.isInvokable(), equalTo(true));
     }

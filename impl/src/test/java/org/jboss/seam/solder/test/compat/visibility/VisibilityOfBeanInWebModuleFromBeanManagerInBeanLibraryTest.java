@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.compat;
+package org.jboss.seam.solder.test.compat.visibility;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -31,36 +31,32 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Validates that a bean in the WEB-INF/classes directory is visible to the BeanManager
- * injected into a bean contained within a library in the same bean (web) archive.
- *
+ * Validates that a bean in the WEB-INF/classes directory is visible to the BeanManager injected into a bean contained within a
+ * bean library in the same bean (web) archive.
+ * 
+ * @see <a href="http://java.net/jira/browse/GLASSFISH-15721">GLASSFISH-15721</a> (unresolved)
+ * 
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 @RunWith(Arquillian.class)
-public class TypeVisibilityWithinBeanArchiveTest
-{
+public class VisibilityOfBeanInWebModuleFromBeanManagerInBeanLibraryTest {
     @Deployment
-    public static Archive<?> createTestArchive()
-    {
+    public static Archive<?> createTestArchive() {
         JavaArchive jar1 = ShrinkWrap.create(JavaArchive.class, "a.jar")
-              .addClasses(Beer.class, BeerCollector.class, American.class)
-              .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addClasses(Beer.class, BeerCollector.class, American.class)
+                .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 
-        return ShrinkWrap.create(WebArchive.class, "test.war")
-              .addClass(CraftBeer.class)
-              .addWebResource(EmptyAsset.INSTANCE, "beans.xml")
-              .addLibrary(jar1);
+        return ShrinkWrap.create(WebArchive.class, "test.war").addClass(CraftBeer.class)
+                .addWebResource(EmptyAsset.INSTANCE, "beans.xml").addLibrary(jar1);
     }
 
     @Test
-    public void shouldFindBeanByType(BeerCollector collector)
-    {
+    public void shouldFindBeanByType(BeerCollector collector) {
         assertThat(collector.getNumDiscovered(), equalTo(2));
     }
-    
+
     @Test
-    public void shouldFindBeanByName(BeerCollector collector)
-    {
-       assertThat(collector.isNamedBeerVisible("americanCraftBeer"), is(true));
+    public void shouldFindBeanByName(BeerCollector collector) {
+        assertThat(collector.isNamedBeerVisible("americanCraftBeer"), is(true));
     }
 }

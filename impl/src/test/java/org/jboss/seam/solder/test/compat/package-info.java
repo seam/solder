@@ -22,3 +22,4 @@
  * @author <a href="http://community.jboss.org/people/lightguard">Jason Porter</a>
  */
 package org.jboss.seam.solder.test.compat;
+

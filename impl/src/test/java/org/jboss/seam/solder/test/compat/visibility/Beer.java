@@ -14,12 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.compat;
+package org.jboss.seam.solder.test.compat.visibility;
 
-import javax.inject.Named;
-
-@Named("americanCraftBeer")
-@American
-public class CraftBeer extends Beer
-{
+public class Beer {
 }

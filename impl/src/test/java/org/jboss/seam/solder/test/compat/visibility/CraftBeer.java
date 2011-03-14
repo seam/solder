@@ -14,33 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.compat;
+package org.jboss.seam.solder.test.compat.visibility;
 
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
+import javax.inject.Named;
 
-public class BeerCollector
-{
-   @Inject
-   private BeanManager beanManager;
-   
-   @Inject @Any
-   private Instance<Beer> beerRefs;
-   
-   public Integer getNumDiscovered()
-   {
-      int cnt = 0;
-      for (@SuppressWarnings("unused") Beer b : beerRefs)
-      {
-         cnt++;
-      }
-      return cnt;
-   }
-   
-   public boolean isNamedBeerVisible(String name)
-   {
-      return beanManager.getBeans(name).size() == 1;
-   }
+@Named("americanCraftBeer")
+@American
+public class CraftBeer extends Beer {
 }

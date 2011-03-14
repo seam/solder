@@ -14,10 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.compat.alternative;
+package org.jboss.seam.solder.test.compat.visibility;
 
-public class Bar {
-    public String ping() {
-        return "bar";
-    }
+public class Soda {
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.compat;
+package org.jboss.seam.solder.test.compat.registration;
 
 import javax.enterprise.inject.spi.Extension;
 
@@ -32,41 +32,40 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Validates that a bean in one non-bean archive can be registered by an
- * extension that resides in another non-bean archive.
+ * Validates that a class in one non-bean archive can be registered as a bean by an extension in another non-bean archive and
+ * that the bean is visible to the web (bean) archive.
  * 
  * <p>
- * This test fails on the reference implementation (GlassFish). It will pass if
- * you add META-INF/beans.xml to a.jar and remove the
- * ManualBeanRegistrationExtension service provider from b.jar
+ * This test fails on the reference implementation (GlassFish). It will pass if you add META-INF/beans.xml to a.jar and remove
+ * the ManualBeanRegistrationExtension service provider from b.jar
  * </p>
+ * 
+ * @see <a href="http://java.net/jira/browse/GLASSFISH-15721">GLASSFISH-15721</a> (unresolved)
  * 
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 @RunWith(Arquillian.class)
-public class TypeVisibilityForExtensionInNonBeanArchiveTest
-{
+public class VisibilityOfBeanRegisteredByExtensionFromNonBeanLibraryTest {
     @Deployment
-    public static Archive<?> createTestArchive()
-    {
+    public static Archive<?> createTestArchive() {
         // Our non-bean archive
-        JavaArchive jar1 = ShrinkWrap.create(JavaArchive.class, "a.jar")
-              .addClasses(BeanClassToRegister.class);
-        
+        JavaArchive jar1 = ShrinkWrap.create(JavaArchive.class, "a.jar").addClasses(BeanClassToRegister.class);
+
         // Our non-bean archive with an extension that programmatically registers two beans
-        JavaArchive jar2 = ShrinkWrap.create(JavaArchive.class, "b.jar")
-              .addClasses(AnotherBeanClassToRegister.class, ManualBeanRegistrationExtension.class, AnotherManualBeanRegistrationExtension.class)
-              .addServiceProvider(Extension.class, ManualBeanRegistrationExtension.class, AnotherManualBeanRegistrationExtension.class);
+        JavaArchive jar2 = ShrinkWrap
+                .create(JavaArchive.class, "b.jar")
+                .addClasses(AnotherBeanClassToRegister.class, ManualBeanRegistrationExtension.class,
+                        AnotherManualBeanRegistrationExtension.class)
+                .addServiceProvider(Extension.class, ManualBeanRegistrationExtension.class,
+                        AnotherManualBeanRegistrationExtension.class);
 
         // Web archive is necessary so that Arquillian can find the BeanManager
-        return ShrinkWrap.create(WebArchive.class, "test.war")
-              .addWebResource(EmptyAsset.INSTANCE, "beans.xml")
-              .addLibraries(jar1, jar2);
+        return ShrinkWrap.create(WebArchive.class, "test.war").addWebResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addLibraries(jar1, jar2);
     }
 
     @Test
-    public void shouldFindBeanReference(AnotherBeanClassToRegister bean)
-    {
+    public void shouldFindBeanReference(AnotherBeanClassToRegister bean) {
         assertThat(bean, is(notNullValue()));
         BeanClassToRegister collaborator = bean.getCollaborator();
         assertThat(collaborator, is(notNullValue()));
