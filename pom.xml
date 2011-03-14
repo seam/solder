@@ -151,7 +151,7 @@
                      <executions>
                         <execution>
                            <id>instrumentation</id>
-                           <phase>process-classes</phase>
+                           <phase>process-test-classes</phase>
                            <goals>
                               <goal>instrument</goal>
                            </goals>
@@ -208,7 +208,7 @@
                      <executions>
                         <execution>
                            <id>complete classpath for tests</id>
-                           <phase>process-classes</phase>
+                           <phase>process-test-classes</phase>
                            <goals>
                               <goal>run</goal>
                            </goals>
