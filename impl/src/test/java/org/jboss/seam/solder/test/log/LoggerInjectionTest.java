@@ -49,12 +49,6 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class LoggerInjectionTest
 {
-   // TODO temporary, test with dynamic proxies until tool accepts "BirdLogger extends BirdMessages" 
-   static
-   {
-      System.setProperty("jboss.i18n.generate-proxies", "true");
-   }
-
    @Deployment
    public static Archive<?> deployment()
    {
@@ -120,6 +114,16 @@ public class LoggerInjectionTest
    public void testMessageLoggerInjectionWithCategory(Hawk hawk)
    {
       hawk.generateLogMessage();
+   }
+   
+    /**
+     * BaldEagle declares a passivating scope and therefore must not have any non-serializable dependencies. This test will fail
+     * deployment if the type-safe logger producer is not serializable. (see SOLDER-81)
+     */
+   @Test
+   public void testMessageLoggerInjectionOnPassivatingBean(BaldEagle baldEagle)
+   {
+       baldEagle.generateLogMessage();
    }
 
    @Test

@@ -23,6 +23,8 @@ import static org.jboss.seam.solder.logging.Messages.getBundle;
 import static org.jboss.seam.solder.reflection.Reflections.getRawType;
 import static org.jboss.seam.solder.util.Locales.toLocale;
 
+import java.io.Serializable;
+
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -36,7 +38,7 @@ import org.jboss.logging.Logger;
  * @author David Allen
  * @author Pete Muir
  */
-class LoggerProducers
+class LoggerProducers implements Serializable
 {
    @Produces
    Logger produceLog(InjectionPoint injectionPoint)
