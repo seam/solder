@@ -18,20 +18,23 @@ package org.jboss.seam.solder.core;
 
 
 import java.lang.annotation.*;
+
 /**
- * Denotes a resource that is managed by Seam. Actual usage will dependent on
- * the resource that is managed.
- * <p/>
- * In general this annotation will be applied to Producer methods/fields
- * to signify that a Seam module is using the produced object to create
- * some kind of managed resource.
- * <p/>
+ * Denotes a resource that is managed by Seam.
+ *
+ * <p>
+ * The meaning of this annotation is dependent on the resource that is managed.
  * For actual usage refer to the documentation of the Seam module that provides
  * the managed resource.
+ * </p>
+ * <p>
+ * In general, this annotation is applied to Producer methods/fields to signify
+ * that a Seam module is using the produced object to create some kind of
+ * managed resource.
+ * </p>
  *
  * @author Stuart Douglas
  */
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 @Documented
