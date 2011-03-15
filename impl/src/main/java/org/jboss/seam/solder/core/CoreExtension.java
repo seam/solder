@@ -76,11 +76,12 @@ public class CoreExtension implements Extension
    
    <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager beanManager)
    {
-      AnnotatedType<X> annotatedType = pat.getAnnotatedType();
-      Class<X> javaClass = annotatedType.getJavaClass();
+      final AnnotatedType<X> annotatedType = pat.getAnnotatedType();
+      final Class<X> javaClass = annotatedType.getJavaClass();
+      final Package pkg = javaClass.getPackage();
       
       // Support for @Veto
-      if (annotatedType.isAnnotationPresent(Veto.class) || annotatedType.getJavaClass().getPackage().isAnnotationPresent(Veto.class))
+      if (annotatedType.isAnnotationPresent(Veto.class) || (pkg != null && pkg.isAnnotationPresent(Veto.class)))
       {
          pat.veto();
          log.info("Preventing " + javaClass + " from being installed as bean due to @Veto annotation");
@@ -90,9 +91,9 @@ public class CoreExtension implements Extension
       // Support for @Requires
       Set<String> requiredClasses = new HashSet<String>();
       // package-level @Requires
-      if (annotatedType.getJavaClass().getPackage().isAnnotationPresent(Requires.class))
+      if (pkg != null && pkg.isAnnotationPresent(Requires.class))
       {
-         String[] packageRequiredClasses = annotatedType.getJavaClass().getPackage().getAnnotation(Requires.class).value();
+         String[] packageRequiredClasses = pkg.getAnnotation(Requires.class).value();
          requiredClasses.addAll(Arrays.asList(packageRequiredClasses));
       }
       // class-level @Requires
@@ -126,16 +127,20 @@ public class CoreExtension implements Extension
       AnnotatedTypeBuilder<X> builder = null;
 
       // support for @Named packages
-      Package pkg = javaClass.getPackage();
       Named namedFromPackage = null;
-      if (pkg.isAnnotationPresent(Named.class) && !annotatedType.isAnnotationPresent(Named.class))
+      if (pkg != null && pkg.isAnnotationPresent(Named.class) && !annotatedType.isAnnotationPresent(Named.class))
       {
          builder = initializeBuilder(builder, annotatedType);
          namedFromPackage = new NamedLiteral();
          builder.addToClass(namedFromPackage);
       }
       
-      FullyQualified qualifiedOnPackage = pkg.getAnnotation(FullyQualified.class);
+      FullyQualified qualifiedOnPackage = null;
+      if (pkg != null)
+      {
+         qualifiedOnPackage = pkg.getAnnotation(FullyQualified.class);
+      }
+      
       // support for @FullyQualified bean names on type (respect @Named if added by previous operation)
       if ((namedFromPackage != null || annotatedType.isAnnotationPresent(Named.class)) &&
             (qualifiedOnPackage != null || annotatedType.isAnnotationPresent(FullyQualified.class)))
