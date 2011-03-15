@@ -39,7 +39,7 @@
          <artifactId>seam-solder-api</artifactId>
       </dependency>
 
-      <!-- JBoss annotation processor for generating type-safe loggers -->
+      <!-- Annotation processor for generating typed loggers -->
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder-tooling</artifactId>
