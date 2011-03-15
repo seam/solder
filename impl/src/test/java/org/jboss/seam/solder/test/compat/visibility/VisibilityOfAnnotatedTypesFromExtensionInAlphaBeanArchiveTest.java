@@ -52,10 +52,10 @@ public class VisibilityOfAnnotatedTypesFromExtensionInAlphaBeanArchiveTest {
         return ShrinkWrap.create(WebArchive.class, "test.war").addWebResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addLibraries(alpha, bravo);
     }
-
+    
     @Test
-    public <X> void shouldObserveExpectedAnnotatedTypes(AnnotatedTypeObserverExtension<X> extension) {
-        Assert.assertTrue(extension.observed.contains(Beer.class));
-        Assert.assertTrue(extension.observed.contains(Soda.class));
+    public void shouldObserveExpectedAnnotatedTypes(AnnotatedTypeObserverExtension observer) {
+        Assert.assertTrue(observer.observed(Beer.class));
+        Assert.assertTrue(observer.observed(Soda.class));
     }
 }

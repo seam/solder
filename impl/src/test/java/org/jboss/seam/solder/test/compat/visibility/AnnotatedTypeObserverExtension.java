@@ -23,15 +23,19 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
-public class AnnotatedTypeObserverExtension<X> implements Extension {
+public class AnnotatedTypeObserverExtension implements Extension {
 
-    public List<Class<?>> observed;
+    private List<Class<?>> observed;
 
     public AnnotatedTypeObserverExtension() {
         observed = new ArrayList<Class<?>>();
     }
 
-    public void processAnnotatedType(@Observes ProcessAnnotatedType<X> event) {
+    public <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> event) {
         observed.add(event.getAnnotatedType().getJavaClass());
+    }
+    
+    public boolean observed(Class<?> c) {
+        return observed.contains(c);
     }
 }
