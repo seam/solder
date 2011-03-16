@@ -27,7 +27,7 @@
    <groupId>org.jboss.seam.solder</groupId>
    <artifactId>seam-solder-parent</artifactId>
    <packaging>pom</packaging>
-   <version>3.0.0-SNAPSHOT</version>
+   <version>3.0.0.CR2</version>
 
    <name>Seam Solder Project</name>
    <description>A portable CDI extensions library for developing CDI applications, frameworks or other extensions</description>
@@ -225,7 +225,7 @@
                                  <mkdir dir="${project.build.directory}/classes" />
                                  <copy todir="${project.build.directory}/classes" overwrite="true">
                                     <fileset dir="${project.build.directory}/generated-classes/emma/classes">
-                                       <include name="**/*"/>
+                                       <include name="**/*" />
                                     </fileset>
                                  </copy>
                               </tasks>
@@ -239,8 +239,7 @@
                            </goals>
                            <configuration>
                               <tasks>
-                                 <move file="${env.JBOSS_HOME}/bin/coverage.ec"
-                                       todir="${basedir}" failonerror="false" verbose="true"/>
+                                 <move file="${env.JBOSS_HOME}/bin/coverage.ec" todir="${basedir}" failonerror="false" verbose="true" />
                               </tasks>
                            </configuration>
                         </execution>
