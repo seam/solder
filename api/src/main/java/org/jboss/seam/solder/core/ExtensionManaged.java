@@ -20,16 +20,16 @@ package org.jboss.seam.solder.core;
 import java.lang.annotation.*;
 
 /**
- * Denotes a resource that is managed by Seam.
+ * Denotes a resource that is managed by a CDI extension (as opposed to container-managed).
  *
  * <p>
  * The meaning of this annotation is dependent on the resource that is managed.
- * For actual usage refer to the documentation of the Seam module that provides
+ * For actual usage refer to the documentation of the extension that provides
  * the managed resource.
  * </p>
  * <p>
  * In general, this annotation is applied to Producer methods/fields to signify
- * that a Seam module is using the produced object to create some kind of
+ * that an extension is using the produced object to create some kind of
  * managed resource.
  * </p>
  *
@@ -38,5 +38,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 @Documented
-public @interface SeamManaged {
+public @interface ExtensionManaged {
 }
