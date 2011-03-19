@@ -14,28 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.literal;
+package org.jboss.seam.solder.test.logging;
 
-import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Inject;
 
-import org.jboss.seam.solder.messages.MessageBundle;
+import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.TypedCategory;
 
-
-public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle
+public class Wren
 {
-   private static final long serialVersionUID = -8137340248362361317L;
-
-   public static final MessageBundle INSTANCE = new MessageBundleLiteral();
-
-   private final String projectCode;
-
-   public MessageBundleLiteral()
+   @Inject @TypedCategory(LoggerInjectionTest.class)
+   private Logger log;
+   
+   public void generateLogMessage()
    {
-      projectCode = "";
+      log.info("Wren");
    }
-
-   public String projectCode()
+   
+   public Logger getLogger()
    {
-      return projectCode;
+      return log;
    }
 }

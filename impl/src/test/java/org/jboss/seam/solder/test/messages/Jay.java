@@ -14,30 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.jboss.seam.solder.test.messages;
 
-package org.jboss.seam.solder.logging;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import javax.inject.Inject;
 
 import org.jboss.seam.solder.messages.MessageBundle;
 
-/**
- * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
- * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
- *
- * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface MessageLogger {
+public class Jay
+{
+   
+   @Inject @MessageBundle
+   BirdMessages messages;
+   
+   String getMessage()
+   {
+      return messages.numberOfJaysSpotted(8);
+   }
 
-    /**
-     * Get the project code for messages that have an associated code.
-     *
-     * @return the project code
-     */
-    String projectCode() default "";
 }

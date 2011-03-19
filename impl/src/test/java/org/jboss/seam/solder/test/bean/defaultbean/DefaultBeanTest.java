@@ -29,13 +29,13 @@ import org.jboss.seam.solder.core.Client;
 import org.jboss.seam.solder.core.CoreExtension;
 import org.jboss.seam.solder.el.Resolver;
 import org.jboss.seam.solder.literal.DefaultLiteral;
-import org.jboss.seam.solder.log.Category;
-import org.jboss.seam.solder.log.LoggerExtension;
-import org.jboss.seam.solder.logging.Messages;
-import org.jboss.seam.solder.messages.AnnotatedMessages;
+import org.jboss.seam.solder.logging.Category;
+import org.jboss.seam.solder.logging.TypedMessageLoggerExtension;
+import org.jboss.seam.solder.messages.Messages;
 import org.jboss.seam.solder.reflection.Synthetic;
 import org.jboss.seam.solder.resourceLoader.ResourceLoader;
 import org.jboss.seam.solder.serviceHandler.ServiceHandlerExtension;
+import org.jboss.seam.solder.support.SolderMessages;
 import org.jboss.seam.solder.test.properties.ClassToIntrospect;
 import org.jboss.seam.solder.unwraps.UnwrapsExtension;
 import org.jboss.seam.solder.util.Sortable;
@@ -87,7 +87,7 @@ public class DefaultBeanTest
       jar.addPackages(true, Category.class.getPackage()); // .log
       jar.addPackages(true, Messages.class.getPackage()); // .logging
       jar.addPackages(true, ClassToIntrospect.class.getPackage()); // .properties
-      jar.addPackages(true, AnnotatedMessages.class.getPackage()); // .messages
+      jar.addPackages(true, SolderMessages.class.getPackage()); // .messages
       jar.addPackages(true, Synthetic.class.getPackage()); // .reflection
       jar.addPackages(true, ResourceLoader.class.getPackage()); // .resourceLoader 
       jar.addPackages(true, ServiceHandlerExtension.class.getPackage()); // .serviceHandler
@@ -95,7 +95,7 @@ public class DefaultBeanTest
       jar.addPackages(true, Sortable.class.getPackage()); // .util
       jar.addPackages(false, ParameterConverter.class.getPackage()); // org.jboss.logging
       
-      jar.addServiceProvider(Extension.class, GenericBeanExtension.class, DefaultBeanExtension.class, CoreExtension.class, UnwrapsExtension.class, LoggerExtension.class, ServiceHandlerExtension.class);
+      jar.addServiceProvider(Extension.class, GenericBeanExtension.class, DefaultBeanExtension.class, CoreExtension.class, UnwrapsExtension.class, TypedMessageLoggerExtension.class, ServiceHandlerExtension.class);
       jar.addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       return jar;
    }

@@ -14,30 +14,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jboss.seam.solder.logging;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.seam.solder.messages.MessageBundle;
+import org.jboss.logging.Logger;
 
 /**
- * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
- * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
- *
- * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
+ * <p>
+ * A suffix to use on the specified category (or fully qualified name of the
+ * injection point type if no category is specified). The category and suffix
+ * will be separated by a logger separator.
+ * </p>
+ * 
+ * <p>
+ * Suffixes are not supported by typed loggers.
+ * </p>
+ * 
+ * @author Pete Muir
+ * 
+ * @see Logger#getLogger(String, String)
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface MessageLogger {
-
-    /**
-     * Get the project code for messages that have an associated code.
-     *
-     * @return the project code
-     */
-    String projectCode() default "";
+@Target({ METHOD, FIELD, PARAMETER, TYPE })
+@Retention(RUNTIME)
+@Documented
+public @interface Suffix
+{
+   /**
+    * The suffix to use
+    */
+   String value();
 }

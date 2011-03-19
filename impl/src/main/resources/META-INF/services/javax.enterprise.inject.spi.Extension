@@ -2,5 +2,6 @@ org.jboss.seam.solder.bean.generic.GenericBeanExtension
 org.jboss.seam.solder.bean.defaultbean.DefaultBeanExtension
 org.jboss.seam.solder.core.CoreExtension
 org.jboss.seam.solder.unwraps.UnwrapsExtension
-org.jboss.seam.solder.log.LoggerExtension
+org.jboss.seam.solder.messages.TypedMessageBundleExtension
+org.jboss.seam.solder.logging.TypedMessageLoggerExtension
 org.jboss.seam.solder.serviceHandler.ServiceHandlerExtension

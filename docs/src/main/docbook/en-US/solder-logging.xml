@@ -41,7 +41,7 @@
             An abstraction over common logging backends and frameworks (such as JDK Logging, log4j and slf4j)
          </listitem>
          <listitem>
-            An innovative, typed logger defined using an interface (see below for examples)
+            An innovative, typed message logger (and bundle) defined using an interface (see below for examples)
          </listitem>
          <listitem>
             Full support for internationalization and localization
@@ -73,14 +73,14 @@
          To define a typed logger, first create an annotated interface with methods configured as log commands:
       </para>
 
-      <programlisting role="JAVA">import org.jboss.seam.solder.logging.LogMessage;
-import org.jboss.seam.solder.logging.Message;
+      <programlisting role="JAVA">import org.jboss.seam.solder.messages.Message;
+import org.jboss.seam.solder.logging.Log;
 import org.jboss.seam.solder.logging.MessageLogger;
       
 @MessageLogger
 public interface TrainSpotterLog {
 
-   @LogMessage @Message("Spotted %s diesel trains") 
+   @Log @Message("Spotted %s diesel trains") 
    void dieselTrainsSpotted(int number);
 
 }</programlisting>
@@ -91,8 +91,8 @@ public interface TrainSpotterLog {
 
       <note>
          <para>
-            Make sure you are using the annotations from Seam Solder (<literal>org.jboss.seam.solder.logging</literal>
-            package).
+            Make sure you are using the annotations from Seam Solder (<literal>org.jboss.seam.solder.messages</literal>
+            and <literal>org.jboss.seam.solder.logging</literal> packages only).
          </para>
       </note>
 
@@ -118,7 +118,7 @@ public interface TrainSpotterLog {
    private TrainSpotterLog log;</programlisting>
 
       <para>
-         Typed loggers also provide internationalization support. Simply add the @MessageBundle annotation to the logger 
+         Typed loggers also provide internationalization support. Simply add the <literal>@MessageBundle</literal> annotation to the logger 
          interface (planned).
       </para>
 
@@ -126,15 +126,15 @@ public interface TrainSpotterLog {
          You can also log exceptions.
       </para>
 
-      <programlisting role="JAVA">import org.jboss.seam.solder.logging.Cause;
-import org.jboss.seam.solder.logging.LogMessage;
-import org.jboss.seam.solder.logging.Message;
+      <programlisting role="JAVA">import org.jboss.seam.solder.messages.Message;
+import org.jboss.seam.solder.messages.Cause;
+import org.jboss.seam.solder.logging.Log;
 import org.jboss.seam.solder.logging.MessageLogger;
 
 @MessageLogger
 public interface TrainSpotterLog {
 
-   @LogMessage @Message("Failed to spot train %s") 
+   @Log @Message("Failed to spot train %s") 
    void missedTrain(String trainNumber, @Cause Exception exception);
 
 }</programlisting>
@@ -192,15 +192,16 @@ public class LogService {
       <title>Typed message bundles</title>
 
       <para>
-         Often times you need to access a message directly. For example, you need to localize an exception message. Solder
-         let's you define an injectable typed message bundle.
+         Often times you need to access a localized message. For example, you need to localize an exception message.
+         Seam Solder let's you retrieve this message from a typed message logger to avoid having to use hard-coded
+         string messages.
       </para>
       <para>
          First, declare the message bundle as an annotated interface with methods configured as message retrievers:
       </para>
 
-      <programlisting role="JAVA">import org.jboss.seam.solder.logging.Message;
-import org.jboss.seam.solder.logging.MessageBundle;
+      <programlisting role="JAVA">import org.jboss.seam.solder.messages.Message;
+import org.jboss.seam.solder.messages.MessageBundle;
    
 @MessageBundle
 public interface TrainMessages {

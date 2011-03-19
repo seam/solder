@@ -14,28 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.literal;
+package org.jboss.seam.solder.test.logging;
 
-import javax.enterprise.util.AnnotationLiteral;
+import javax.enterprise.inject.Alternative;
+import javax.inject.Inject;
 
-import org.jboss.seam.solder.messages.MessageBundle;
+import org.jboss.logging.Logger;
 
-
-public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle
+@Alternative
+public class NonBean
 {
-   private static final long serialVersionUID = -8137340248362361317L;
-
-   public static final MessageBundle INSTANCE = new MessageBundleLiteral();
-
-   private final String projectCode;
-
-   public MessageBundleLiteral()
+   @Inject
+   private Logger log;
+   
+   void logMessage()
    {
-      projectCode = "";
-   }
-
-   public String projectCode()
-   {
-      return projectCode;
+      log.info("Log message from non-bean");
    }
 }

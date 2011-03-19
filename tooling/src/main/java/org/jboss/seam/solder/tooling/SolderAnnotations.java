@@ -22,12 +22,12 @@ import javax.lang.model.element.TypeElement;
 
 import org.jboss.logging.Annotations;
 import org.jboss.logging.Logger;
-import org.jboss.seam.solder.logging.Cause;
-import org.jboss.seam.solder.logging.FormatWith;
-import org.jboss.seam.solder.logging.LogMessage;
-import org.jboss.seam.solder.logging.Message;
-import org.jboss.seam.solder.logging.MessageBundle;
+import org.jboss.seam.solder.logging.Log;
 import org.jboss.seam.solder.logging.MessageLogger;
+import org.jboss.seam.solder.messages.Cause;
+import org.jboss.seam.solder.messages.Formatter;
+import org.jboss.seam.solder.messages.Message;
+import org.jboss.seam.solder.messages.MessageBundle;
 
 /**
  *
@@ -36,11 +36,11 @@ import org.jboss.seam.solder.logging.MessageLogger;
  */
 public class SolderAnnotations implements Annotations {
 
-    public static final Class<FormatWith> FORMAT_WITH_ANNOTATION = FormatWith.class;
+    public static final Class<Formatter> FORMAT_WITH_ANNOTATION = Formatter.class;
     public static final Class<Cause> CAUSE_ANNOTATION = Cause.class;
     public static final Class<MessageBundle> MESSAGE_BUNDLE_ANNOTATION = MessageBundle.class;
     public static final Class<MessageLogger> MESSAGE_LOGGER_ANNOTATION = MessageLogger.class;
-    public static final Class<LogMessage> LOG_MESSAGE_ANNOTATION = LogMessage.class;
+    public static final Class<Log> LOG_MESSAGE_ANNOTATION = Log.class;
     public static final Class<Message> MESSAGE_ANNOTATION = Message.class;
 
     @Override
@@ -124,7 +124,7 @@ public class SolderAnnotations implements Annotations {
     @Override
     public String loggerMethod(final ExecutableElement method, final FormatType formatType) {
         String result = null;
-        final LogMessage logMessage = method.getAnnotation(LOG_MESSAGE_ANNOTATION);
+        final Log logMessage = method.getAnnotation(LOG_MESSAGE_ANNOTATION);
         if (logMessage != null) {
             final Logger.Level logLevel = (logMessage.level() == null ? Logger.Level.INFO : logMessage.level());
             result = String.format("%s%c", logLevel.name().toLowerCase(), formatType.logType());

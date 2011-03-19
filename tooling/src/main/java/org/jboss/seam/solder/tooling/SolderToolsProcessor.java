@@ -85,7 +85,7 @@ public class SolderToolsProcessor extends AbstractProcessor {
         annotations = LoggingTools.findAnnotations();
         loggers = LoggingTools.findLoggers();
 
-        //Tools generator -  Note the order these are excuted in.
+        //Tools generator -  Note the order these are executed in.
         processors.add(new ImplementorClassGenerator(processingEnv, annotations, loggers));
         processors.add(new TranslationClassGenerator(processingEnv, annotations, loggers));
         processors.add(new TranslationFileGenerator(processingEnv, annotations, loggers));

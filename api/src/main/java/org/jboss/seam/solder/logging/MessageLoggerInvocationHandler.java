@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 import org.jboss.logging.BasicLogger;
 import org.jboss.logging.Logger;
+import org.jboss.seam.solder.messages.Message;
+import org.jboss.seam.solder.messages.MessageBundleInvocationHandler;
 
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
@@ -47,7 +49,7 @@ public class MessageLoggerInvocationHandler extends MessageBundleInvocationHandl
             return null;
         }
         final Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        final LogMessage logMessage = method.getAnnotation(LogMessage.class);
+        final Log logMessage = method.getAnnotation(Log.class);
         if (logMessage != null) {
 
             try {

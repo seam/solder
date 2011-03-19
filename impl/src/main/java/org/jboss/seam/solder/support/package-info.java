@@ -17,10 +17,8 @@
  * limitations under the License.
  */
 /**
- * Seam Solder integrates with JBoss Logging 3 to provide native and typed
- * injectable loggers and choice of logging backend.
- *
- * <p>This package contains the JBoss Logging 3 library.</p>
- * <p>Version imported: <a href="http://repository.jboss.org/nexus/content/groups/public/org/jboss/logging/jboss-logging/3.0.0.Beta4">jboss-logging-3.0.0.Beta4</a></p>
+ * Support classes for the Solder implementation, including typed message loggers
+ * and bundles.
  */
-package org.jboss.logging;
+package org.jboss.seam.solder.support;
+

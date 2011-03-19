@@ -33,9 +33,9 @@ import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 
-import org.jboss.seam.solder.logging.Messages;
-import org.jboss.seam.solder.messages.AnnotatedMessages;
+import org.jboss.seam.solder.messages.Messages;
 import org.jboss.seam.solder.reflection.Reflections;
+import org.jboss.seam.solder.support.SolderMessages;
 
 /**
  * <p>
@@ -56,7 +56,7 @@ import org.jboss.seam.solder.reflection.Reflections;
 public class AnnotatedTypeBuilder<X>
 {
 
-   private transient static AnnotatedMessages messages = Messages.getBundle(AnnotatedMessages.class);
+   private transient static SolderMessages messages = Messages.getBundle(SolderMessages.class);
 
    private Class<X> javaClass;
    private final AnnotationBuilder typeAnnotations;

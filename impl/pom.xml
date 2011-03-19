@@ -207,10 +207,13 @@
                   <artifactId>maven-surefire-plugin</artifactId>
                   <configuration>
                      <excludes>
-                        <!-- The compatibility tests are not relevant in a mock environment -->
+                        <!-- compatibility tests are not relevant in a mock environment -->
                         <exclude>org/jboss/seam/solder/test/compat/**/*Test.java</exclude>
-                        <!-- LoggerInjectionTest requires forthcoming extension support in Weld EE Embedded -->
-                        <exclude>org/jboss/seam/solder/test/log/LoggerInjectionTest.java</exclude>
+                        <!-- typed message logger & bundle support requires extension loading supported
+                             added to the Weld EE Embedded adapter in Arquillian 1.0.0.Alpha5 -->
+                        <exclude>org/jboss/seam/solder/test/messages/TypedMessageBundleInjectionTest.java</exclude>
+                        <exclude>org/jboss/seam/solder/test/logging/LoggerInjectionTest.java</exclude>
+                        <exclude>org/jboss/seam/solder/test/logging/TypedMessageLoggerInjectionTest.java</exclude>
                      </excludes>
                   </configuration>
                </plugin>

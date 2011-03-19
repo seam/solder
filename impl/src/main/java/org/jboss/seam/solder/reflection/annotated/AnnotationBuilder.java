@@ -24,9 +24,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.jboss.seam.solder.logging.Messages;
-import org.jboss.seam.solder.messages.AnnotatedMessages;
+import org.jboss.seam.solder.messages.Messages;
 import org.jboss.seam.solder.reflection.Reflections;
+import org.jboss.seam.solder.support.SolderMessages;
 
 /**
  * Helper class used to build annotation stores
@@ -37,7 +37,7 @@ import org.jboss.seam.solder.reflection.Reflections;
 public class AnnotationBuilder
 {
    
-   private transient static AnnotatedMessages messages = Messages.getBundle(AnnotatedMessages.class);
+   private transient static SolderMessages messages = Messages.getBundle(SolderMessages.class);
    
    private final Map<Class<? extends Annotation>, Annotation> annotationMap;
    private final Set<Annotation> annotationSet;

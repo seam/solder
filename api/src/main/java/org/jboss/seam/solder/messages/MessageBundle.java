@@ -15,24 +15,30 @@
  * limitations under the License.
  */
 
-package org.jboss.seam.solder.logging;
+package org.jboss.seam.solder.messages;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.seam.solder.messages.MessageBundle;
+import javax.inject.Qualifier;
 
 /**
- * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
- * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
+ * Signify that an interface is a message bundle interface.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
+@Qualifier
+@Target({ TYPE, METHOD, PARAMETER, FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface MessageLogger {
+@Documented
+public @interface MessageBundle {
 
     /**
      * Get the project code for messages that have an associated code.

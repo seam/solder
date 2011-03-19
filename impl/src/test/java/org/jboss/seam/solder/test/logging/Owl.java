@@ -14,28 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.literal;
+package org.jboss.seam.solder.test.logging;
 
-import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Inject;
 
-import org.jboss.seam.solder.messages.MessageBundle;
-
-
-public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle
+public class Owl
 {
-   private static final long serialVersionUID = -8137340248362361317L;
-
-   public static final MessageBundle INSTANCE = new MessageBundleLiteral();
-
-   private final String projectCode;
-
-   public MessageBundleLiteral()
+   @Inject
+   private BirdLogger logger;
+   
+   public void generateLogMessage()
    {
-      projectCode = "";
-   }
-
-   public String projectCode()
-   {
-      return projectCode;
+      logger.logOwlsSpotted(5);
    }
 }

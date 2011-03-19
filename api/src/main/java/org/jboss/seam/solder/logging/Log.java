@@ -22,22 +22,23 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.seam.solder.messages.MessageBundle;
+import org.jboss.logging.Logger;
+import org.jboss.seam.solder.messages.Message;
 
 /**
- * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
- * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
+ * A typed logger method. Indicates that this method will log the associated {@link Message} to the logger system, as
+ * opposed to being a simple message lookup.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface MessageLogger {
+@Target(ElementType.METHOD)
+public @interface Log {
 
     /**
-     * Get the project code for messages that have an associated code.
+     * The log level at which this message should be logged.  Defaults to {@code INFO}.
      *
-     * @return the project code
+     * @return the log level
      */
-    String projectCode() default "";
+    Logger.Level level() default Logger.Level.INFO;
 }

@@ -14,28 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.literal;
+package org.jboss.seam.solder.test.logging;
 
-import javax.enterprise.util.AnnotationLiteral;
+import org.jboss.seam.solder.logging.Log;
+import org.jboss.seam.solder.logging.MessageLogger;
+import org.jboss.seam.solder.messages.Message;
 
-import org.jboss.seam.solder.messages.MessageBundle;
-
-
-public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle
+@MessageLogger
+public interface BirdLogger extends BirdMessages
 {
-   private static final long serialVersionUID = -8137340248362361317L;
-
-   public static final MessageBundle INSTANCE = new MessageBundleLiteral();
-
-   private final String projectCode;
-
-   public MessageBundleLiteral()
-   {
-      projectCode = "";
-   }
-
-   public String projectCode()
-   {
-      return projectCode;
-   }
+   @Log @Message("Spotted %s Hawks") 
+   void logHawksSpotted(int number);
+   
+   @Log @Message("Spotted %s Owls") 
+   void logOwlsSpotted(int number);
+   
+   @Log @Message("Spotted %s Bald Eagles")
+   void logBaldEaglesSpotted(int number);
 }
