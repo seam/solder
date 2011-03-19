@@ -50,7 +50,7 @@
    </modules>
 
    <properties>
-      <seam.version>3.0.0.CR6</seam.version>
+      <seam.version>3.0.0.CR7</seam.version>
       <emma.version>2.0.5312</emma.version>
    </properties>
 
