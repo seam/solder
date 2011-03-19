@@ -53,8 +53,6 @@ public class LoggerInjectionTest
    public static Archive<?> deployment()
    {
       return baseDeployment()
-         .addManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-         .addPackage(LoggerExtension.class.getPackage())
          .addPackage(LoggerInjectionTest.class.getPackage());
    }
 
