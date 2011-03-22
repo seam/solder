@@ -46,7 +46,7 @@ public class ServiceHandlerExtension implements Extension
    protected final boolean enabled;
    protected final Set<Throwable> problems = new HashSet<Throwable>();
 
-   ServiceHandlerExtension()
+   public ServiceHandlerExtension()
    {
       enabled = isEnabled();
    }

@@ -44,7 +44,7 @@ public class TypedMessageLoggerExtension implements Extension
    private final Collection<AnnotatedType<?>> messageLoggerTypes;
    private Bean<Object> loggerProducerBean;
 
-   TypedMessageLoggerExtension()
+   public TypedMessageLoggerExtension()
    {
       this.messageLoggerTypes = new HashSet<AnnotatedType<?>>();
    }

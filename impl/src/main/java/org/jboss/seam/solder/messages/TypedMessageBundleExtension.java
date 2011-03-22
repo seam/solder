@@ -44,7 +44,7 @@ public class TypedMessageBundleExtension implements Extension
    private final Collection<AnnotatedType<?>> messageBundleTypes;
    private Bean<Object> bundleProducerBean;
 
-   TypedMessageBundleExtension()
+   public TypedMessageBundleExtension()
    {
       this.messageBundleTypes = new HashSet<AnnotatedType<?>>();
    }
