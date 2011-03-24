@@ -16,8 +16,8 @@
  */
 package org.jboss.seam.solder.unwraps;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.jboss.logging.Logger;
+import org.jboss.seam.solder.reflection.Reflections;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
@@ -26,16 +26,16 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
-
-import org.jboss.logging.Logger;
-import org.jboss.seam.solder.reflection.Reflections;
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An extension that allows the use of {@link Unwraps} methods
- * 
- * 
+ *
+ *
  * @author Stuart Douglas
- * 
+ *
  */
 public class UnwrapsExtension implements Extension
 {
@@ -76,6 +76,14 @@ public class UnwrapsExtension implements Extension
             }
             else
             {
+               for(Annotation annotation : method.getAnnotations())
+               {
+                   if(beanManager.isScope(annotation.annotationType()))
+                   {
+                       problems.add(new RuntimeException("@Unwraps producer method declared a scope: " + method));
+                   }
+               }
+
                // we have a managed producer
                // lets make a note of it and register it later
                beans.add(createBean(method, beanManager));
