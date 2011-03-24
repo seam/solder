@@ -74,7 +74,7 @@ class LoggerProducer
       }
    }
    
-   private Class<?> getDeclaringRawType(InjectionPoint injectionPoint)
+   static Class<?> getDeclaringRawType(InjectionPoint injectionPoint)
    {
       if (injectionPoint.getBean() != null)
       {

@@ -19,6 +19,7 @@ package org.jboss.seam.solder.logging;
 
 import static org.jboss.logging.Logger.getMessageLogger;
 import static org.jboss.seam.solder.reflection.Reflections.getRawType;
+import static org.jboss.seam.solder.logging.LoggerProducer.getDeclaringRawType;
 import static org.jboss.seam.solder.util.Locales.toLocale;
 
 import java.io.Serializable;
@@ -27,8 +28,6 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.seam.solder.logging.Category;
-import org.jboss.seam.solder.logging.TypedCategory;
 import org.jboss.seam.solder.messages.Locale;
 
 /**
@@ -69,7 +68,14 @@ class TypedMessageLoggerProducer implements Serializable
       }
       else
       {
-         throw new IllegalStateException("Must specify @Category or @TypedCategory for typed loggers at [" + injectionPoint + "]");
+         if (annotated.isAnnotationPresent(Locale.class))
+         {         
+            return getMessageLogger(getInjectionPointRawType(injectionPoint), getDeclaringRawType(injectionPoint).getName(), toLocale(annotated.getAnnotation(Locale.class).value()));
+         }
+         else
+         {
+            return getMessageLogger(getInjectionPointRawType(injectionPoint), getDeclaringRawType(injectionPoint).getName());
+         }
       }
    }
  
