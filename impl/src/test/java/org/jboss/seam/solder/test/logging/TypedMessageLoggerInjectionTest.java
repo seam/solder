@@ -50,14 +50,14 @@ public class TypedMessageLoggerInjectionTest
          .addPackage(TypedMessageLoggerInjectionTest.class.getPackage());
    }
 
-   @Test(expected = IllegalStateException.class)
-   public void testMessageLoggerInjection(Instance<Owl> owlResolver)
+   @Test
+   public void testMessageLoggerInjectionWithCategoryDefaulted(Instance<Owl> owlResolver)
    {
       owlResolver.get().generateLogMessage();
    }
 
    @Test
-   public void testMessageLoggerInjectionWithCategory(Hawk hawk)
+   public void testMessageLoggerInjectionWithExplicitCategory(Hawk hawk)
    {
       hawk.generateLogMessage();
    }
