@@ -16,23 +16,21 @@
  */
 package org.jboss.seam.solder.serviceHandler;
 
-import java.lang.reflect.Method;
-
 import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.ProxyObject;
+import org.jboss.seam.solder.bean.ContextualLifecycle;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-
-import org.jboss.seam.solder.bean.ContextualLifecycle;
+import java.lang.reflect.Method;
 
 /**
  * Bean lifecycle for ServiceHandler beans
- * 
+ *
  * @author Stuart Douglas
- * 
+ *
  * @param <T>
  * @param <H>
  */
@@ -42,7 +40,7 @@ public class ServiceHandlerBeanLifecycle<T, H> implements ContextualLifecycle<T>
    private final Class<? extends T> proxyClass;
    private final ServiceHandlerManager<H> handler;
 
-   
+
    public ServiceHandlerBeanLifecycle(Class<? extends T> classToImplement, Class<H> handlerClass, BeanManager manager)
    {
       handler = new ServiceHandlerManager<H>(handlerClass, manager);
@@ -67,7 +65,7 @@ public class ServiceHandlerBeanLifecycle<T, H> implements ContextualLifecycle<T>
             return !m.getName().equals("finalize");
          }
       });
-      
+
       this.proxyClass = ((Class<?>) factory.createClass()).asSubclass(classToImplement);
    }
 
@@ -78,13 +76,17 @@ public class ServiceHandlerBeanLifecycle<T, H> implements ContextualLifecycle<T>
          // Make sure to pass the creational context along, allowing dependents to be cleaned up properly
          @SuppressWarnings("unchecked")
          H handlerInstance = handler.create((CreationalContext) creationalContext);
-         
+
          ServiceHandlerMethodHandler<T, H> methodHandler = new ServiceHandlerMethodHandler<T, H>(handler, handlerInstance);
          T instance = proxyClass.newInstance();
          ((ProxyObject) instance).setHandler(methodHandler);
          return instance;
       }
-      catch (Exception e)
+      catch (IllegalAccessException e)
+      {
+         throw new RuntimeException(e);
+      }
+      catch (InstantiationException e)
       {
          throw new RuntimeException(e);
       }
