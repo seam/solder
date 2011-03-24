@@ -69,9 +69,9 @@ public class CoreExtension implements Extension
    
    void beforeBeanDiscovery(@Observes final BeforeBeanDiscovery bbd)
    {
-      // TODO make me a utility
-      Logger.getLogger("org.jboss.seam.solder.Version").info("Seam Solder " + CoreExtension.class.getPackage().getSpecificationVersion() +
-         " (build id: " + CoreExtension.class.getPackage().getImplementationVersion() + ")");
+      VersionLoggerUtil.logVersionInformation(this.getClass(), 
+              "Seam Solder %s (build id: %s)",
+              "org.jboss.seam.solder.Version");
    }
    
    <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager beanManager)

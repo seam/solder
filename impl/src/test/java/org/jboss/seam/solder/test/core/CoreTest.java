@@ -32,6 +32,7 @@ import junit.framework.Assert;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.core.CoreExtension;
+import org.jboss.seam.solder.core.VersionLoggerUtil;
 import org.jboss.seam.solder.literal.DefaultLiteral;
 import org.jboss.seam.solder.test.core.fullyqualified.FullyQualifiedFromPackageNamedBean;
 import org.jboss.seam.solder.test.core.requires.Lion;
@@ -116,6 +117,16 @@ public class CoreTest
       assertEquals(1, manager.getBeans(qualifyBeanName("custom", FullyQualifiedCustomNamedBean.class.getPackage())).size());
       assertEquals(1, manager.getBeans(getQualifiedBeanNameForType(FullyQualifiedToTargetNamedBean.class, CoreExtension.class.getPackage())).size());
       assertEquals(1, manager.getBeans(getQualifiedBeanNameForType(FullyQualifiedFromPackageNamedBean.class)).size());
+   }
+
+   @Test
+   public void testVersionInformation()
+   {
+      String expected = String.format("a %s b %s",
+              CoreExtension.class.getPackage().getSpecificationVersion(),
+              CoreExtension.class.getPackage().getImplementationVersion());
+      String actual = VersionLoggerUtil.createVersionMessage(CoreExtension.class, "a %s b %s");
+      assertEquals(expected,actual);
    }
 
    private String getQualifiedBeanNameForType(Class<?> type, Package targetPackage)
