@@ -24,9 +24,8 @@ import java.beans.Introspector;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.security.AccessController;
 
-import org.jboss.seam.solder.reflection.SetAccessiblePriviligedAction;
+import org.jboss.seam.solder.reflection.Reflections;
 
 /**
  * A bean property based on the value represented by a getter/setter method pair
@@ -203,11 +202,11 @@ class MethodPropertyImpl<V> implements MethodProperty<V>
    {
       if (setterMethod != null)
       {
-         AccessController.doPrivileged(new SetAccessiblePriviligedAction(setterMethod));
+         Reflections.setAccessible(setterMethod);
       }
       if (getterMethod != null)
       {
-         AccessController.doPrivileged(new SetAccessiblePriviligedAction(getterMethod));
+         Reflections.setAccessible(getterMethod);
       }
    }
 
