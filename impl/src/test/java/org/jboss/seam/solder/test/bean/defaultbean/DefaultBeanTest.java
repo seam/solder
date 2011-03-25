@@ -66,8 +66,8 @@ public class DefaultBeanTest
    {
       WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war");
       war.addPackage(DefaultBeanTest.class.getPackage());
-      war.addWebResource(EmptyAsset.INSTANCE, "beans.xml");
-      war.addLibrary(createSeamSolder());
+      war.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+      war.addAsLibrary(createSeamSolder());
       return war;
    }
    
@@ -95,8 +95,8 @@ public class DefaultBeanTest
       jar.addPackages(true, Sortable.class.getPackage()); // .util
       jar.addPackages(false, ParameterConverter.class.getPackage()); // org.jboss.logging
       
-      jar.addServiceProvider(Extension.class, GenericBeanExtension.class, DefaultBeanExtension.class, CoreExtension.class, UnwrapsExtension.class, TypedMessageLoggerExtension.class, ServiceHandlerExtension.class);
-      jar.addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+      jar.addAsServiceProvider(Extension.class, GenericBeanExtension.class, DefaultBeanExtension.class, CoreExtension.class, UnwrapsExtension.class, TypedMessageLoggerExtension.class, ServiceHandlerExtension.class);
+      jar.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       return jar;
    }
    

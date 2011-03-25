@@ -44,10 +44,10 @@ public class VisibilityOfBeanInWebModuleFromBeanManagerInBeanLibraryTest {
     public static Archive<?> createTestArchive() {
         JavaArchive jar1 = ShrinkWrap.create(JavaArchive.class, "a.jar")
                 .addClasses(Beer.class, BeerCollector.class, American.class)
-                .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 
         return ShrinkWrap.create(WebArchive.class, "test.war").addClass(CraftBeer.class)
-                .addWebResource(EmptyAsset.INSTANCE, "beans.xml").addLibrary(jar1);
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml").addAsLibrary(jar1);
     }
 
     @Test

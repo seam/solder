@@ -37,10 +37,10 @@ public class JarToJarAlphaVisibilityTest {
     @Deployment
     public static WebArchive getDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war");
-        war.addWebResource(EmptyAsset.INSTANCE, "beans.xml");
-        war.addLibrary(create(JavaArchive.class, "alpha.jar").addClass(Foo.class).addManifestResource(EmptyAsset.INSTANCE,
+        war.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        war.addAsLibrary(create(JavaArchive.class, "alpha.jar").addClass(Foo.class).addAsManifestResource(EmptyAsset.INSTANCE,
                 "beans.xml"));
-        war.addLibrary(create(JavaArchive.class, "bravo.jar").addClass(Bar.class).addManifestResource(EmptyAsset.INSTANCE,
+        war.addAsLibrary(create(JavaArchive.class, "bravo.jar").addClass(Bar.class).addAsManifestResource(EmptyAsset.INSTANCE,
                 "beans.xml"));
         return war;
     }

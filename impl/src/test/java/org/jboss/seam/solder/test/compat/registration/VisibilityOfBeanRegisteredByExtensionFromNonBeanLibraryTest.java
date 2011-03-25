@@ -56,12 +56,12 @@ public class VisibilityOfBeanRegisteredByExtensionFromNonBeanLibraryTest {
                 .create(JavaArchive.class, "b.jar")
                 .addClasses(AnotherBeanClassToRegister.class, ManualBeanRegistrationExtension.class,
                         AnotherManualBeanRegistrationExtension.class)
-                .addServiceProvider(Extension.class, ManualBeanRegistrationExtension.class,
+                .addAsServiceProvider(Extension.class, ManualBeanRegistrationExtension.class,
                         AnotherManualBeanRegistrationExtension.class);
 
         // Web archive is necessary so that Arquillian can find the BeanManager
-        return ShrinkWrap.create(WebArchive.class, "test.war").addWebResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addLibraries(jar1, jar2);
+        return ShrinkWrap.create(WebArchive.class, "test.war").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsLibraries(jar1, jar2);
     }
 
     @Test

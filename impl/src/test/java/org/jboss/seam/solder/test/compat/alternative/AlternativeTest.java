@@ -43,14 +43,14 @@ public class AlternativeTest {
 
     @Deployment
     public static WebArchive getDeployment() {
-        return create(WebArchive.class, "test.war").addWebResource(EmptyAsset.INSTANCE, "beans.xml").addLibrary(getJar());
+        return create(WebArchive.class, "test.war").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml").addAsLibrary(getJar());
     }
 
     public static JavaArchive getJar() {
         return create(JavaArchive.class, "test.jar")
                 .addClasses(Foo.class, Bar.class, BarAlternative.class, NoopExtension.class)
-                .addManifestResource("org/jboss/seam/solder/test/compat/alternative/beans.xml", "beans.xml")
-                .addServiceProvider(Extension.class, NoopExtension.class);
+                .addAsManifestResource("org/jboss/seam/solder/test/compat/alternative/beans.xml", "beans.xml")
+                .addAsServiceProvider(Extension.class, NoopExtension.class);
     }
 
     @Test

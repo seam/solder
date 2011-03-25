@@ -42,15 +42,15 @@ public class VisibilityOfAnnotatedTypesFromExtensionInBravoBeanArchiveTest {
     @Deployment
     public static Archive<?> createTestArchive() {
         JavaArchive alpha = ShrinkWrap.create(JavaArchive.class, "alpha.jar").addClasses(Soda.class)
-                .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 
         JavaArchive bravo = ShrinkWrap.create(JavaArchive.class, "bravo.jar")
                 .addClasses(Beer.class, AnnotatedTypeObserverExtension.class)
-                .addManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addServiceProvider(Extension.class, AnnotatedTypeObserverExtension.class);
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsServiceProvider(Extension.class, AnnotatedTypeObserverExtension.class);
 
-        return ShrinkWrap.create(WebArchive.class, "test.war").addWebResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addLibraries(alpha, bravo);
+        return ShrinkWrap.create(WebArchive.class, "test.war").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsLibraries(alpha, bravo);
     }
     
     @Test

@@ -46,11 +46,11 @@ public class BeanRegistrationByExtensionInNonBeanArchiveTest {
         // Our non-bean archive with an extension
         JavaArchive jar1 = ShrinkWrap.create(JavaArchive.class, "a.jar")
                 .addClasses(BeanClassToRegister.class, ManualBeanRegistrationExtension.class)
-                .addServiceProvider(Extension.class, ManualBeanRegistrationExtension.class);
+                .addAsServiceProvider(Extension.class, ManualBeanRegistrationExtension.class);
 
         // Web archive is necessary so that Arquillian can find the BeanManager
-        return ShrinkWrap.create(WebArchive.class, "test.war").addWebResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addLibrary(jar1);
+        return ShrinkWrap.create(WebArchive.class, "test.war").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsLibrary(jar1);
     }
 
     @Test

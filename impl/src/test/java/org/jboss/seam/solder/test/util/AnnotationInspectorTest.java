@@ -59,7 +59,7 @@ public class AnnotationInspectorTest
    @Inject
    BeanManager beanManager;
 
-   @Before
+   //@Before
    public void resolveMethods() throws Exception
    {
       dogMethod = Animals.class.getMethod("dog");
@@ -82,6 +82,7 @@ public class AnnotationInspectorTest
    @Test
    public void testAnnotationOnElement() throws Exception
    {
+      resolveMethods();
       assertTrue(dogMethod.isAnnotationPresent(Animal.class));
       
       assertTrue(AnnotationInspector.isAnnotationPresent(dogMethod, Animal.class, false, beanManager));
@@ -97,6 +98,7 @@ public class AnnotationInspectorTest
    @Test
    public void testAnnotationOnStereotype() throws Exception
    {
+      resolveMethods();
       assertFalse(catMethod.isAnnotationPresent(Animal.class));
       
       assertTrue(AnnotationInspector.isAnnotationPresent(catMethod, Animal.class, true, beanManager));
