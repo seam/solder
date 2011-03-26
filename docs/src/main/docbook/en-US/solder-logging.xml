@@ -42,8 +42,10 @@
          JBoss Logging acts as a logging bridge. If you don't add any other logging libraries to your project, it will
          delegate all logging calls it handles to the logging facility built into the Java platform (commonly referred
          to as JDK logging). That's nice, because it means your deployment headaches caused by missing logging jars are
-         gone.
+         gone. And you accomplish it all through the use of this interface:
       </para>
+
+      <programlisting>org.jboss.logging.Logger</programlisting>
 
       <para>
          If you want to use another logging engine, such as SLF4J or Log4J, you just have to add the native library to
