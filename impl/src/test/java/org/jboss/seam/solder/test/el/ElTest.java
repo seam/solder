@@ -52,8 +52,8 @@ public class ElTest
       {
          war.addPackage(ELResolverProducer.class.getPackage())
                // set proper EL implementation using META-INF/services/javax.el.ExpressionFactory for Weld embedded
-               .addServiceProvider(ExpressionFactory.class, ExpressionFactoryImpl.class)
-               .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+               .addAsServiceProvider(ExpressionFactory.class, ExpressionFactoryImpl.class)
+               .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       }
       
       return war;

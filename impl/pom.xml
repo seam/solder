@@ -32,6 +32,10 @@
    <!-- url required for JAR Manifest -->
    <url>${project.parent.url}</url>
 
+	<properties>
+		<version.arquillian>1.0.0.Alpha5</version.arquillian>
+	</properties>
+
    <dependencies>
    
       <dependency>
@@ -122,6 +126,7 @@
       <dependency>
          <groupId>org.jboss.arquillian</groupId>
          <artifactId>arquillian-junit</artifactId>
+         <version>${version.arquillian}</version>
       </dependency>
 
       <dependency>
@@ -176,8 +181,9 @@
          </activation>
          <dependencies>
             <dependency>
-               <groupId>org.jboss.weld.arquillian.container</groupId>
+               <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+               <version>${version.arquillian}</version>
             </dependency>
             <dependency>
                <groupId>org.jboss.spec.javax.transaction</groupId>
@@ -232,6 +238,7 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-jbossas-managed-6</artifactId>
+               <version>${version.arquillian}</version>
             </dependency>
             <dependency>
                <groupId>org.jboss.jbossas</groupId>
@@ -261,6 +268,7 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-jbossas-remote-6</artifactId>
+               <version>${version.arquillian}</version>
             </dependency>
             <dependency>
                <groupId>org.jboss.jbossas</groupId>
@@ -271,36 +279,6 @@
                <groupId>org.jboss.weld</groupId>
                <artifactId>weld-core</artifactId>
                <scope>test</scope>
-            </dependency>
-         </dependencies>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-surefire-plugin</artifactId>
-                  <configuration>
-                     <parallel>none</parallel>
-                  </configuration>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-      <profile>
-         <id>incontainer-glassfish-jsr88</id>
-         <activation>
-            <activeByDefault>false</activeByDefault>
-            <property>
-               <name>incontainer-glassfish-jsr88</name>
-            </property>
-         </activation>
-         <dependencies>
-            <dependency>
-               <groupId>org.jboss.arquillian.container</groupId>
-               <artifactId>arquillian-glassfish-remote-3</artifactId>
-            </dependency>
-            <dependency>
-               <groupId>org.glassfish.deployment</groupId>
-               <artifactId>deployment-client</artifactId>
             </dependency>
          </dependencies>
          <build>
@@ -328,7 +306,7 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-glassfish-remote-3.1</artifactId>
-               <version>1.0.0-SNAPSHOT</version>
+               <version>${version.arquillian}</version>
                <scope>test</scope>
             </dependency>
             <dependency>

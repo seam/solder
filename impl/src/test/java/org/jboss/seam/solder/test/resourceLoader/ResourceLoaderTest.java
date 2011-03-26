@@ -53,13 +53,13 @@ public class ResourceLoaderTest
       boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
       
       WebArchive war = baseDeployment().addPackage(ResourceLoaderTest.class.getPackage())
-            .addResource("com/acme/foo1")
-            .addResource("com/acme/foo2.properties");
+            .addAsResource("com/acme/foo1")
+            .addAsResource("com/acme/foo2.properties");
       
       if (isEmbedded)
       {
          war.addPackage(ResourceLoader.class.getPackage())
-               .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+               .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       }
       
       return war;
