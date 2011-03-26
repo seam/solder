@@ -19,18 +19,26 @@
 --> 
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<chapter id="annotationliterals">
+<chapter id="solder-annotationliterals">
    <title>Annotation Literals</title>
       
    <para>
-      Seam Solder provides a complete set of <code>AnnotationLiteral</code>s for every annotation type 
-      defined by the CDI (JSR-299) and Injection (JSR-330) specifications. These are located in the 
-      <code>org.jboss.seam.solder.literal</code> package. Annotations not listed below provide a static 
-      <code>INSTANCE</code> member that should be used rather than creating a new instance every time.
+      Seam Solder provides a complete set of <literal>AnnotationLiteral</literal> classes cooresponding to the
+      annotation types defined in the CDI (JSR-299) and Injection (JSR-330) specifications. These literals are located
+      in the <literal>org.jboss.seam.solder.literal</literal> package.
    </para>
    
    <para>
-      Literals are provided for the following annotations from <emphasis>Context and Dependency Injection</emphasis>:
+      For any annotation that does not define an attribute, its cooresponding <literal>AnnotationLiteral</literal>
+      contains a static <literal>INSTANCE</literal> member. You should use this static member whenever you need a
+      reference to an annotation instance rather than creating a new instance explicitly.
+   </para>
+
+   <programlisting role="JAVA"><![CDATA[new AnnotatedTypeBuilder<X>().readFromType(type).addToClass(NamedLiteral.INSTANCE);]]></programlisting>
+   
+   <para>
+      Literals are provided for the following annotations from <emphasis>Context and Dependency Injection</emphasis>
+      (including annotations from <emphasis>Dependency Injection for Java</emphasis>):
    </para>
    
    <itemizedlist>
@@ -59,7 +67,7 @@
    </itemizedlist>
    
    <para>
-      Literals are provided for the following annotations from <emphasis>Seam Solder</emphasis>:
+      Literals are also provided for the following annotations from <emphasis>Seam Solder</emphasis>:
    </para>
    
    <itemizedlist>
@@ -76,4 +84,8 @@
       <listitem><code>@Unwraps</code></listitem>
       <listitem><code>@Veto</code></listitem>
    </itemizedlist>
+
+   <para>
+      For more information about these annotations, consult the cooresponding API documentation.
+   </para>
 </chapter>
