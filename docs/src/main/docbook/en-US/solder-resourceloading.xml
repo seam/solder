@@ -81,7 +81,7 @@
    
    
    <section>
-      <title>Extending the resource loader</title>
+      <title>Extending the Resource Loader</title>
       
       <para>
          If you want to load resources from another location, you can provide an additional resource loader. First,

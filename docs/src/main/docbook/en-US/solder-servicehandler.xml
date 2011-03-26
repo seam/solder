@@ -75,7 +75,7 @@
    <note>
       <itemizedlist>
       <listitem>
-         The invocation handler is similar to an intercepter. It must have an <code>@AroundInvoke</code> method that 
+         The invocation handler is similar to an interceptor. It must have an <code>@AroundInvoke</code> method that 
          returns and object and takes an <code>InvocationContext</code> as an argument.
       </listitem>
       <listitem>

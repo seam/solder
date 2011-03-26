@@ -24,9 +24,9 @@
       
    <para>
       Seam Solder provides a complete set of <code>AnnotationLiteral</code>s for every annotation type 
-      defined by the CDI (JSR-299) and Injection (JSR-330) specification. These are located in the 
-      <code>org.jboss.seam.solder.literal</code> package. Annotations without listitems provide a static 
-      <code>INSTANCE</code> listitem that should be used rather than creating a new instance every time.
+      defined by the CDI (JSR-299) and Injection (JSR-330) specifications. These are located in the 
+      <code>org.jboss.seam.solder.literal</code> package. Annotations not listed below provide a static 
+      <code>INSTANCE</code> member that should be used rather than creating a new instance every time.
    </para>
    
    <para>

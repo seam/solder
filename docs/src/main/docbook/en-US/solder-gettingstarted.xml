@@ -101,9 +101,6 @@
          <listitem>
             <code>javax.el:el-api</code> (provided by Java EE 6)
          </listitem>
-         <listitem>
-            <code>org.jboss.logging:jboss-logging</code>
-         </listitem>
       </itemizedlist>
       
       <tip>
@@ -138,7 +135,9 @@
          </varlistentry>
       </variablelist>
    </section>
-
+   <para>
+      In addition, a logger implementation (SLF4J, Log4J, JBoss Log Manager) is required.
+   </para>
    <section id="gettingstarted.pre-servlet-3">
       <title>Pre-Servlet 3.0 configuration</title>
       <para>
