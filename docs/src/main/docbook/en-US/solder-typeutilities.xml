@@ -137,8 +137,8 @@ public @interface MultipleMembers {
                                                                 true,
                                                                 beanManager);]]></programlisting>
       <para>
-         In addition, the utility methods work correctly on Stereotypes as well.  Let's say you're working with a bean
-         that was decorated @Model, running the following example with still work:
+         The utility methods work correctly on <code>Stereotype</code>s as well.  Let's say you're working with a bean
+         that was decorated <code>@Model</code>, running the following example will still show you the underlying <code>@Named</code>
       </para>
 
       <programlisting role="JAVA"><![CDATA[
@@ -147,7 +147,7 @@ public @interface MultipleMembers {
          public class User {
             ...
          }
-         //Let's say that type represents this User class
+         //Let's say that type represents the User class
          if(AnnotationInspector.isAnnotationPresent(type,Named.class,beanManager)) {
             //returns true
          }
@@ -160,21 +160,15 @@ public @interface MultipleMembers {
       <para>
          The search algorithm will first check to see if the annotation is present
          directly on the annotated element first, then searches within the stereotype
-         annotations on the element.  If you only want to search for Annotations on
-         Stereotypes, then you can use either of the methods
-         AnnotationInspector.getAnnotationFromStereotype.
+         annotations on the element.  If you only want to search for <code>Annotation</code>s on
+         <code>Stereotype</code>s, then you can use either of the methods
+         <code>AnnotationInspector.getAnnotationFromStereotype</code>.
       </para>
 
       <para>
-         You can also search for meta annotations using the utility.  This works
-         to both get the annotation as well as only returning annotations that have
-         a specific annotation on them.
+         There is an overloaded form of <code>isAnnotationPresent<code> and <code>getAnnotation</code> to control whether it will search on <code>Stereotype<.code>s or not.
+         For both of these methods, a search is performed first directly on the element before searching in stereotypes.
       </para>
-      <programlisting role="JAVA"><![CDATA[
-         //Get all of the annotations on the element that have the annotation Documented
-         Set<Annnotation> annotations = AnnotationInspector.getAnnotations(type, Documented.class);
-         //Gets the first instance found of @Isolated
-         Isolated i = AnnotationInspector.getMetaAnnotation(type,Isolated.class);]]></programlisting>
 
    </section>
 
