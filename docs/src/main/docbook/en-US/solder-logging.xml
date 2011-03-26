@@ -59,7 +59,7 @@
             development
          </listitem>
          <listitem>
-            Access to MDC and NDC (if underlying logger supports it)
+            Access to the "Mapped Diagonostic Context" and/or the "Nested Diagonostic Context" (if underlying logger supports it)
          </listitem>
          <listitem>
             Serializable loggers
