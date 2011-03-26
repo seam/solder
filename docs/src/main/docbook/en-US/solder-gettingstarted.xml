@@ -19,7 +19,7 @@
 --> 
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<chapter id="gettingstarted">
+<chapter id="solder-gettingstarted">
    <title>Getting Started</title>
 
    <para>
@@ -136,7 +136,8 @@
       </variablelist>
    </section>
    <para>
-      In addition, a logger implementation (SLF4J, Log4J, JBoss Log Manager) is required.
+      In addition, a logger implementation (SLF4J, Log4J, JBoss Log Manager or the JDK core logging facility) is
+      required. Refer to <xref linkend="solder-logging"/> for more information about how logging is handled in Solder.
    </para>
    <section id="gettingstarted.pre-servlet-3">
       <title>Pre-Servlet 3.0 configuration</title>

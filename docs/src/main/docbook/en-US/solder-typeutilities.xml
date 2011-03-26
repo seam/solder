@@ -19,28 +19,27 @@
 -->
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<chapter id="annotationutilities">
+<chapter id="solder-annotationutilities">
    <title>Annotation and AnnotatedType Utilities</title>
 
    <para>
-      Seam Solder provides a number of utilility classes to make working with Annotations and AnnotatedTypes easier.
-      This chapter will walk you through each utility, and give you an idea of how to use it. For more detail, take a look at
-      the javadoc on each class.
+      Seam Solder provides a number of utilility classes that make working with annotations and
+      <code>AnnotatedType</code>s easier. This chapter walks you through each utility, and gives you some ideas about
+      how to use it. For more detail, take a look at the JavaDoc on each class.
    </para>
 
    <section>
       <title>Annotated Type Builder</title>
 
       <para>
-         Seam Solder provides an <code>AnnotatedType</code> implementation that should be suitable for most
-         portable extensions' needs. The <code>AnnotatedType</code> is created from
-         <code>AnnotatedTypeBuilder</code> as follows:
+         Seam Solder provides an <code>AnnotatedType</code> implementation that should be suitable for the needs of most
+         portable extensions. The <code>AnnotatedType</code> is created from <code>AnnotatedTypeBuilder</code>,
+         typically in an extension's observer method, as follows:
       </para>
 
       <programlisting role="JAVA" ><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
-      .readFromType(baseType,true) /* readFromType can read from an AnnotatedType or a class */
-      .addToClass(ModelLiteral.INSTANCE) /* add the @Model annotation */
-      .create();]]></programlisting>
+        .readFromType(type, true) /* readFromType can read from an AnnotatedType or a class */
+        .addToClass(ModelLiteral.INSTANCE); /* add the @Model annotation */]]></programlisting>
 
       <para>
          Here we create a new builder, and initialize it using an existing <code>AnnotatedType</code>. We can then
@@ -48,24 +47,50 @@
          <code>create()</code> to spit out a new, immutable, <code>AnnotatedType</code>.
       </para>
 
+      <programlisting role="JAVA"><![CDATA[AnnotatedType redefinedType = builder.create();]]></programlisting>
+
       <para>
-        <code>AnnotatedTypeBuilder</code> also allows you to specify a "redefinition" which can be applied to the
-        type, a type of member, or all members. The redefiner will receive a callback for any annotations present which
-        match the annotation type for which the redefinition is applied. For example, to remove the qualifier
-        <code>@Unique</code> from any class member and the type:
+         One place this is immensely useful is for replacing the <code>AnnotatedType</code> in an extension that
+         observes the <code>ProcessAnnotatedType</code> event:
+      </para>
+
+      <programlisting role="JAVA" ><![CDATA[public <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> evt) {
+    AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
+            .readFromType(evt.getAnnotatedType(), true)
+            .addToClass(ModelLiteral.INSTANCE);
+    evt.setAnnotatedType(builder.create());
+}]]></programlisting>
+
+      <para>
+        This type is now effectively annotated with <code>@Model</code>, even if the annotation is not present on the
+        class definition in the Java source file.
+      </para>
+
+      <para>
+        <code>AnnotatedTypeBuilder</code> also allows you to specify a "redefinition", which can be applied to the type,
+        a type of member, or all members. The redefiner will receive a callback for any annotations present which match
+        the annotation type for which the redefinition is applied.
+      </para>
+      
+      <para>
+        For example, to remove the qualifier <code>@Unique</code> from the type and any of its members, use this:
       </para>
 
       <programlisting role="JAVA" ><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
-      .readFromType(baseType,true)
-      .redefine(Unique.class, new AnnotationRedefiner<Unique>() {
+        .readFromType(type, true)
+        .redefine(Unique.class, new AnnotationRedefiner<Unique>() {
 
-         public void redefine(RedefinitionContext<A> ctx) {
-            ctx.getAnnotationBuilder().remove(Unique.class);
-         }
+            public void redefine(RedefinitionContext<A> ctx) {
+                ctx.getAnnotationBuilder().remove(Unique.class);
+            }
 
-      }
-      .create();]]></programlisting>
+        });
+AnnotatedType redefinedType = builder.create();]]></programlisting>
 
+      <para>
+         No doubt, this is a key blade in Solder's army knife arsenal of tools. You can quite effectively change the
+         picture of the type metadata CDI discovers when it scans and processes the classpath of a bean archive.
+      </para>
    </section>
    <section>
       <title>Annotation Instance Provider</title>
@@ -77,23 +102,23 @@
       </para>
       <programlisting role="JAVA"><![CDATA[@Retention(RetentionPolicy.RUNTIME)
 public @interface MultipleMembers {
-   int intMember();
+    int intMember();
 
-   long longMember();
+    long longMember();
 
-   short shortMember();
+    short shortMember();
 
-   float floatMember();
+    float floatMember();
 
-   double doubleMember();
+    double doubleMember();
 
-   byte byteMember();
+    byte byteMember();
 
-   char charMember();
+    char charMember();
 
-   boolean booleanMember();
+    boolean booleanMember();
 
-   int[] intArrayMember();
+    int[] intArrayMember();
 }]]></programlisting>
 
       <para>
@@ -101,22 +126,22 @@ public @interface MultipleMembers {
       </para>
 
       <programlisting role="JAVA"><![CDATA[/* Create a new provider */
-   AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
+AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
 
-	/* Set the value for each of attributes */
-	Map<String, Object> values = new HashMap<String, Object>();
-	values.put("intMember", 1);
-	values.put("longMember", 1);
-	values.put("shortMember", 1);
-	values.put("floatMember", 0);
-	values.put("doubleMember", 0);
-	values.put("byteMember", ((byte) 1));
-	values.put("charMember", 'c');
-	values.put("booleanMember", true);
-	values.put("intArrayMember", new int[] { 0, 1 });
+/* Set the value for each of attributes */
+Map<String, Object> values = new HashMap<String, Object>();
+values.put("intMember", 1);
+values.put("longMember", 1);
+values.put("shortMember", 1);
+values.put("floatMember", 0);
+values.put("doubleMember", 0);
+values.put("byteMember", ((byte) 1));
+values.put("charMember", 'c');
+values.put("booleanMember", true);
+values.put("intArrayMember", new int[] { 0, 1 });
 
-	/* Generate the instance */
-	MultipleMembers an = provider.get(MultipleMembers.class, values);]]></programlisting>
+/* Generate the instance */
+MultipleMembers an = provider.get(MultipleMembers.class, values);]]></programlisting>
    </section>
 
    <section>
@@ -126,37 +151,29 @@ public @interface MultipleMembers {
          The Annotation Inspector allows you to easily discover annotations which are meta-annotated. For example:
       </para>
 
-      <programlisting role="JAVA"><![CDATA[   /* Discover all annotations on type which are meta-annotated @Constraint */
-   Set<Annotation> constraints = AnnotationInspector.getAnnotations(type, Constraint.class, beanManager);
+      <programlisting role="JAVA"><![CDATA[/* Discover all annotations on type which are meta-annotated @Constraint */
+Set<Annotation> constraints = AnnotationInspector.getAnnotations(type, Constraint.class, beanManager);
 
-   /* Load the annotation instance for @FacesValidator the annotation may declared on the type, */
-   /* or, if the type has any stereotypes, on the stereotypes */
-   FacesValidator validator = AnnotationInspector.getAnnotation(
-                                                                type,
-                                                                FacesValidator.class,
-                                                                true,
-                                                                beanManager);]]></programlisting>
+/* Load the annotation instance for @FacesValidator the annotation may declared on the type, */
+/* or, if the type has any stereotypes, on the stereotypes */
+FacesValidator validator = AnnotationInspector.getAnnotation(
+        type, FacesValidator.class, true, beanManager);]]></programlisting>
       <para>
          The utility methods work correctly on <code>Stereotype</code>s as well.  Let's say you're working with a bean
          that was decorated <code>@Model</code>, running the following example will still show you the underlying <code>@Named</code>
       </para>
 
-      <programlisting role="JAVA"><![CDATA[
-         //assuming you have a class..
-         @Model
-         public class User {
-            ...
-         }
-         //Let's say that type represents the User class
-         if(AnnotationInspector.isAnnotationPresent(type,Named.class,beanManager)) {
-            //returns true
-         }
-         //This will return the underlying @Named on the stereotype
-         Named name = AnnotationInspector.getAnnotation(
-                                                        type,
-                                                        Named.class,
-                                                        true,
-                                                        beanManager);]]></programlisting>
+      <programlisting role="JAVA"><![CDATA[// assuming you have a class..
+@Model
+public class User {
+    ...
+}
+
+// Assume type represents the User class
+assert AnnotationInspector.isAnnotationPresent(type, Named.class, beanManager);
+
+// Retrieves the underlying @Named instance on the stereotype
+Named name = AnnotationInspector.getAnnotation(type, Named.class, true, beanManager);]]></programlisting>
       <para>
          The search algorithm will first check to see if the annotation is present
          directly on the annotated element first, then searches within the stereotype
@@ -166,7 +183,8 @@ public @interface MultipleMembers {
       </para>
 
       <para>
-         There is an overloaded form of <code>isAnnotationPresent<code> and <code>getAnnotation</code> to control whether it will search on <code>Stereotype<.code>s or not.
+         There is an overloaded form of <code>isAnnotationPresent</code> and <code>getAnnotation</code> to control
+         whether it will search on <code>Stereotype</code>s or not.
          For both of these methods, a search is performed first directly on the element before searching in stereotypes.
       </para>
 
@@ -188,16 +206,16 @@ public @interface MultipleMembers {
          instance will be returned.
       </para>
 
-      <programlisting role="JAVA"><![CDATA[   /* Create a provider, giving it a unique namespace */
-   Synthetic.Provider provider = new Synthetic.Provider("com.acme");
+      <programlisting role="JAVA"><![CDATA[/* Create a provider, giving it a unique namespace */
+Synthetic.Provider provider = new Synthetic.Provider("com.acme");
 
-   /* Get the a synthetic qualifier for the original annotation instance */
-   Synthetic synthetic = provider.get(originalAnnotation);
+/* Get the a synthetic qualifier for the original annotation instance */
+Synthetic synthetic = provider.get(originalAnnotation);
 
-   /* Later calls with the same original annotation instance will return the same instance */
-   /* Alternatively, we can "get and forget" */
+/* Later calls with the same original annotation instance will return the same instance */
+/* Alternatively, we can "get and forget" */
 
-   Synthetic synthetic2 = provider.get();]]></programlisting>
+Synthetic synthetic2 = provider.get();]]></programlisting>
 
    </section>
 
