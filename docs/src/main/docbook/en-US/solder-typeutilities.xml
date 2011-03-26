@@ -24,8 +24,8 @@
 
    <para>
       Seam Solder provides a number of utilility classes to make working with Annotations and AnnotatedTypes easier.
-      This chapter will walk you each utility, and give you an idea of how to use it. For more detail, take a look at
-      the javaodoc on each class.
+      This chapter will walk you through each utility, and give you an idea of how to use it. For more detail, take a look at
+      the javadoc on each class.
    </para>
 
    <section>
@@ -33,7 +33,7 @@
 
       <para>
          Seam Solder provides an <code>AnnotatedType</code> implementation that should be suitable for most
-         portable extensions needs. The <code>AnnotatedType</code> is created from
+         portable extensions' needs. The <code>AnnotatedType</code> is created from
          <code>AnnotatedTypeBuilder</code> as follows:
       </para>
 

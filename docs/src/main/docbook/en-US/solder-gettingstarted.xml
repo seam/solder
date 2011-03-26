@@ -102,7 +102,10 @@
             <code>javax.el:el-api</code> (provided by Java EE 6)
          </listitem>
          <listitem>
-            <code>org.jboss.logging:jboss-logging</code>
+            <code>org.javassist:javassist</code> (provided by Weld, needed for proxy generation)
+         </listitem>
+         <listeitem>
+            <para>In addition, a logger implementation (SLF4J, Log4J, JBoss Log Manager) is required.
          </listitem>
       </itemizedlist>
       
