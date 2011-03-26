@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookinfo PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<bookinfo>
+   <title>Seam Solder</title>
+   <subtitle>Reference Guide</subtitle>
+
+   <authorgroup>
+      <author>
+         <firstname>Pete</firstname>
+         <surname>Muir</surname>
+      </author>
+      <author>
+         <firstname>Stuart</firstname>
+         <surname>Douglas</surname>
+      </author>
+      <author>
+         <firstname>Dan</firstname>
+         <surname>Allen</surname>
+      </author>
+      <author>
+         <firstname>John</firstname>
+         <surname>Ament</surname>
+      </author>
+   
+   </authorgroup>
+<!--
+vim:et:ts=3:sw=3:tw=120
+-->
+</bookinfo>
