@@ -42,10 +42,18 @@
          JBoss Logging acts as a logging bridge. If you don't add any other logging libraries to your project, it will
          delegate all logging calls it handles to the logging facility built into the Java platform (commonly referred
          to as JDK logging). That's nice, because it means your deployment headaches caused by missing logging jars are
-         gone. And you accomplish it all through the use of this interface:
+         gone. And you accomplish it all through the use of the <ulink
+         url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/logging/Logger.html">Logger</ulink> interface. It
+         has the usual level-based log methods and complimentary ones that provide formatting.
       </para>
 
-      <programlisting>org.jboss.logging.Logger</programlisting>
+      <para>
+         Here's an example of how you obtain a logger and log a basic message:
+      </para>
+
+      <programlisting role="JAVA"><![CDATA[Logger log = Logger.getLogger(Bean.class);
+// log a plain text method
+log.debug("I'm using JBoss Logging.");]]></programlisting>
 
       <para>
          If you want to use another logging engine, such as SLF4J or Log4J, you just have to add the native library to
@@ -75,21 +83,49 @@
          messages based on contextual information.
       </para>
 
+      <programlisting role="JAVA"><![CDATA[Logger log = Logger.getLogger(Bean.class);
+// log a message formatted using printf-style substitutions
+log.infof("My name is %s.", "David");
+// log a message formatted using MessageFormat-style substitutions
+log.errorv("The license for Seam is the {0}", "APL");]]></programlisting>
+
       <para>
          The most significant and distinguishing feature of JBoss Logging is support for typed loggers. A typed logger
          is an interface that defines methods which serve as logging operations. When a method is invoked on one of
          these interfaces, the message defined in an annotation on the method is interpolated and written to the
-         underlying logging engine. These messages can also be internationalized. (There is also parallel suppot for
-         typed message bundles, which return the formatted message rather than log it). This feature is the centerpiece
-         of Solder's logging (and message bundle) programming model. We'll get into the details of typed loggers and how
-         to use them in a later section.
+         underlying logging engine.
+      </para>
+
+      <para>Here's an example of a typed logger:</para>
+
+      <programlisting role="JAVA">import org.jboss.logging.Message;
+import org.jboss.logging.LogMessage;
+import org.jboss.logging.MessageLogger;
+
+@MessageLogger
+public interface CelebritySightingLog {
+
+    @LogMessage @Message("Spotted celebrity %s!") 
+    void spottedCelebrity(String name);
+
+}</programlisting>
+      
+      <para>
+         JBoss Logging has is parallel support for typed message bundles, whose methods return a formatted message
+         rather than log it. Combined, these features form the centerpiece of Solder's logging and message bundle
+         programming model (and a foundation for additional support provided by the Seam international module). After
+         looking at the samples provided so far, don't pull out your IDE just yet. We'll get into the details of typed
+         loggers and how to use them in Solder in a later section.
       </para>
 
       <para>
-         There you have it. JBoss Logging is a low-level API that provides logging abstraction, message formatting and
-         internationalization, and typed loggers. <emphasis>But it doesn't tie you to JBoss AS!</emphasis> With that
-         understanding, we'll now move on to what Solder does to turn this foundation into a programming model and how
-         to make use of it.
+         There you have it! JBoss Logging is a low-level API that provides logging abstraction, message formatting and
+         internationalization, and typed loggers. <emphasis>But it doesn't tie you to JBoss AS!</emphasis>
+      </para>
+      
+      <para>
+         With that understanding, we'll now move on to what Solder does to turn this foundation into a programming model
+         and how to use it in your CDI-based application.
       </para>
 
    </section>
@@ -106,28 +142,31 @@
             An abstraction over common logging backends and frameworks (such as JDK Logging, log4j and slf4j)
          </listitem>
          <listitem>
-            An innovative, typed message logger (and bundle) defined using an interface (see below for examples)
+            Injectable loggers and message bundles
          </listitem>
          <listitem>
-            Full support for internationalization and localization
+            Innovative, typed message loggers and message bundles defined using interfaces
+         </listitem>
+         <listitem>
+            Build time tooling to generate typed loggers for production<!--, and runtime generation of typed loggers for 
+            development-->
+         </listitem>
+         <listitem>
+            Full support for internationalization and localization:
             <itemizedlist>
               <listitem>
-                  Developers can work with interfaces and annotations only
+                  Developers work with interfaces and annotations only
                </listitem>
                <listitem>
-                  Translators can work with message bundles in properties files
+                  Translators work with message bundles in properties files
                </listitem>
             </itemizedlist>
-         </listitem>
-         <listitem>
-            Build time tooling to generate typed loggers for production, and runtime generation of typed loggers for 
-            development
          </listitem>
          <listitem>
             Access to the "Mapped Diagonostic Context" (MDC) and/or the "Nested Diagonostic Context" (NDC) (if the underlying logger supports it)
          </listitem>
          <listitem>
-            Serializable loggers
+            Serializable loggers for use in contextual components
          </listitem>
       </itemizedlist>
 
@@ -157,8 +196,8 @@ import org.jboss.seam.solder.logging.MessageLogger;
 @MessageLogger
 public interface TrainSpotterLog {
 
-   @Log @Message("Spotted %s diesel trains") 
-   void dieselTrainsSpotted(int number);
+    @Log @Message("Spotted %s diesel trains") 
+    void dieselTrainsSpotted(int number);
 
 }</programlisting>
 
@@ -174,12 +213,13 @@ public interface TrainSpotterLog {
       </note>
 
       <para>
-         You can then inject the typed logger with no further configuration necessary. We use another
-         annotation to set the category of the logger to "trains" at the injection point:
+         You can then inject the typed logger with no further configuration necessary. We use another optional
+         annotation to set the category of the logger to "trains" at the injection point, overriding the default
+         category of the fully-qualified class name of the component receiving the injection:
       </para>
 
-      <programlisting role="JAVA">   @Inject @Category("trains")
-   private TrainSpotterLog log;</programlisting>
+      <programlisting role="JAVA">    @Inject @Category("trains")
+    private TrainSpotterLog log;</programlisting>
 
       <para>
          We log a message by simply invoking a method of the typed logger interface:
@@ -191,8 +231,8 @@ public interface TrainSpotterLog {
          The default locale will be used unless overridden. Here we configure the logger to use the UK locale:
       </para>
 
-      <programlisting role="JAVA">   @Inject @Category("trains") @Locale("en_GB")
-   private TrainSpotterLog log;</programlisting>
+      <programlisting role="JAVA">    @Inject @Category("trains") @Locale("en_GB")
+    private TrainSpotterLog log;</programlisting>
 
       <para>
          Typed loggers also provide internationalization support. Simply add the <literal>@MessageBundle</literal> annotation to the logger 
@@ -211,8 +251,8 @@ import org.jboss.seam.solder.logging.MessageLogger;
 @MessageLogger
 public interface TrainSpotterLog {
 
-   @Log @Message("Failed to spot train %s") 
-   void missedTrain(String trainNumber, @Cause Exception exception);
+    @Log @Message("Failed to spot train %s") 
+    void missedTrain(String trainNumber, @Cause Exception exception);
 
 }</programlisting>
 
@@ -220,8 +260,10 @@ public interface TrainSpotterLog {
          You can then log a message with an exception as follows:
       </para>
 
-      <programlisting role="JAVA">catch (Exception e) {
-   log.missedTrain("RH1", e);
+      <programlisting role="JAVA">try {
+    ...
+} catch (Exception e) {
+    log.missedTrain("RH1", e);
 }</programlisting>
 
       <para>
@@ -240,12 +282,12 @@ public interface TrainSpotterLog {
 import org.jboss.logging.Logger;
 
 public class LogService {
-   @Inject
-   private Logger log;
+    @Inject
+    private Logger log;
 
-   public void logMessage() {
-      log.info("Hey sysadmins!");
-   }
+    public void logMessage() {
+        log.info("Hey sysadmins!");
+    }
 }</programlisting>
 
       <para>
@@ -253,15 +295,15 @@ public class LogService {
          of the bean implementation class. You can specify a category explicitly using an annotation.
       </para>
 
-      <programlisting role="JAVA">   @Inject @Category("billing")
-   private Logger log;</programlisting>
+      <programlisting role="JAVA">    @Inject @Category("billing")
+    private Logger log;</programlisting>
 
       <para>
          You can also specify a category using a reference to a type:
       </para>
 
-      <programlisting role="JAVA">   @Inject @TypedCategory(BillingService.class)
-   private Logger log;</programlisting>
+      <programlisting role="JAVA">    @Inject @TypedCategory(BillingService.class)
+    private Logger log;</programlisting>
 
    </section>
 
@@ -284,8 +326,8 @@ import org.jboss.seam.solder.messages.MessageBundle;
 @MessageBundle
 public interface TrainMessages {
 
-   @Message("No trains spotted due to %s") 
-   String noTrainsSpotted(String cause);
+    @Message("No trains spotted due to %s") 
+    String noTrainsSpotted(String cause);
 
 }</programlisting>
 
@@ -293,8 +335,8 @@ public interface TrainMessages {
          Inject it:
       </para>
 
-      <programlisting role="JAVA">   @Inject @MessageBundle
-   private TrainMessages messages;</programlisting>
+      <programlisting role="JAVA">    @Inject @MessageBundle
+    private TrainMessages messages;</programlisting>
 
       <para>
          And use it:
