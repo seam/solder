@@ -43,8 +43,8 @@
          delegate all logging calls it handles to the logging facility built into the Java platform (commonly referred
          to as JDK logging). That's nice, because it means your deployment headaches caused by missing logging jars are
          gone. And you accomplish it all through the use of the <ulink
-         url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/logging/Logger.html">Logger</ulink> interface. It
-         has the usual level-based log methods and complimentary ones that provide formatting.
+         url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/logging/Logger.html">Logger</ulink> type. It has
+         the usual level-based log methods and complimentary ones that provide formatting.
       </para>
 
       <para>
@@ -235,11 +235,6 @@ public interface TrainSpotterLog {
     private TrainSpotterLog log;</programlisting>
 
       <para>
-         Typed loggers also provide internationalization support. Simply add the <literal>@MessageBundle</literal> annotation to the logger 
-         interface.
-      </para>
-
-      <para>
          You can also log exceptions.
       </para>
 
@@ -268,6 +263,24 @@ public interface TrainSpotterLog {
 
       <para>
          The stacktrace of the exception parameter will be written to the log along with the message.
+      </para>
+
+      <para>
+         Typed loggers also provide internationalization support. Simply add the <literal>@MessageBundle</literal> annotation to the logger 
+         interface.
+      </para>
+
+      <para>
+         If injecting a typed logger seems to "enterprisy" to you, or you need to get a reference to it from outside of
+         CDI, you can use a static accessor method on <literal>Logger</literal>:
+      </para>
+
+      <programlisting role="JAVA">TrainSpotterLog log = Logger.getMessageLogger(TrainSpotterLog.class, "trains");
+log.dieselTrainsSpotted(7);</programlisting>
+
+      <para>
+         The injected version is a convenience for those who prefer the declarative style of programming. If you are
+         looking for a simpler starting point, you can simply use the <literal>Logger</literal> directly.
       </para>
    </section>
    <section id="native-logger">
