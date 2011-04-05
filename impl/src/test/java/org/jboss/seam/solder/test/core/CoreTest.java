@@ -78,23 +78,9 @@ public class CoreTest
    }
 
    @Test
-   public void testBeanNotInstalled(BeanManager manager)
-   {
-      Set<Bean<?>> beans = manager.getBeans(OptionalService.class, DefaultLiteral.INSTANCE);
-      Assert.assertEquals(0, beans.size());
-   }
-   
-   @Test
    public void testPackageLevelVeto(BeanManager manager)
    {
       Set<Bean<?>> beans = manager.getBeans(Tiger.class, DefaultLiteral.INSTANCE);
-      Assert.assertEquals(0, beans.size());
-   }
-   
-   @Test
-   public void testPackageLevelRequires(BeanManager manager)
-   {
-      Set<Bean<?>> beans = manager.getBeans(Lion.class, DefaultLiteral.INSTANCE);
       Assert.assertEquals(0, beans.size());
    }
    

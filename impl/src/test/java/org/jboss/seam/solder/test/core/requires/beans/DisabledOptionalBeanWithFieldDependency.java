@@ -14,12 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.core;
+package org.jboss.seam.solder.test.core.requires.beans;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.jboss.seam.solder.core.Requires;
+import org.jboss.seam.solder.test.core.requires.CommonInterface;
+import org.jboss.seam.solder.test.core.requires.Jaguar;
 
-@Requires( { "class.does.not.exist.SomeClass", "org.jboss.seam.solder.test.core.Greyhound", "org.jboss.seam.solder.test.core.CoreTest" })
-public class OptionalService
-{
+@Requires({ "org.jboss.seam.solder.test.core.requires.Tiger", "org.jboss.seam.solder.test.core.requires.Jaguar",
+        "java.lang.Integer" })
+@Named
+public class DisabledOptionalBeanWithFieldDependency implements CommonInterface {
 
+    @Inject
+    public Jaguar tiger;
 }

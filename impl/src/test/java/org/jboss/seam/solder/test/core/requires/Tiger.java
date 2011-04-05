@@ -17,11 +17,10 @@
 package org.jboss.seam.solder.test.core.requires;
 
 /**
- * The entire "beans" package depends on this class.
+ * Every bean in the "beans" package depends on this class.
  * 
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  * 
  */
-public class Lion {
-
+public class Tiger {
 }
