@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-public interface GPU
-{
-   public String getSpeed();
+public interface GPU {
+    public String getSpeed();
 }

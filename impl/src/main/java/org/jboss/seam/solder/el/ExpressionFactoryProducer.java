@@ -23,18 +23,16 @@ import javax.enterprise.inject.spi.BeanManager;
 
 /**
  * Responsible for producing the {@link ExpressionFactory}
- * 
+ *
  * @author Stuart Douglas
  * @author Pete Muir
  */
-class ExpressionFactoryProducer
-{
-   
-   @Produces
-   @ApplicationScoped
-   ExpressionFactory createExpressionFactory(BeanManager beanManager)
-   {
-      return beanManager.wrapExpressionFactory(ExpressionFactory.newInstance());
-   }
-   
+class ExpressionFactoryProducer {
+
+    @Produces
+    @ApplicationScoped
+    ExpressionFactory createExpressionFactory(BeanManager beanManager) {
+        return beanManager.wrapExpressionFactory(ExpressionFactory.newInstance());
+    }
+
 }

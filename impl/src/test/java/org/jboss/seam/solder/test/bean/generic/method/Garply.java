@@ -23,71 +23,61 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-
 import org.jboss.seam.solder.bean.generic.Generic;
 import org.jboss.seam.solder.bean.generic.GenericConfiguration;
 
 /**
  * A generic bean for the config annotation Message
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
 
 @GenericConfiguration(Service.class)
-public class Garply
-{
+public class Garply {
 
-   static boolean disposerCalled = false;
-   static boolean mapDisposerCalled = false;
-   
-   @Inject
-   @Generic
-   private Waldo waldo;
-   
-   @Produces
-   public HashMap<String, String> getMap()
-   {
-      return new HashMap<String, String>();
-   }
+    static boolean disposerCalled = false;
+    static boolean mapDisposerCalled = false;
 
-   @Produces @WaldoName
-   public String getWaldoName()
-   {
-      return waldo.getName();
-   }
-   
-   @Produces
-   @Formatted
-   public String getFormattedWaldoName(@Generic Waldo waldo)
-   {
-      return "[" + waldo.getName() + "]";
-   }
+    @Inject
+    @Generic
+    private Waldo waldo;
 
-   public void dispose(@Disposes @WaldoName String waldoName, @Generic Waldo waldo)
-   {
-      disposerCalled = true;
-      Assert.assertEquals(waldo.getName(), waldoName);
-   }
+    @Produces
+    public HashMap<String, String> getMap() {
+        return new HashMap<String, String>();
+    }
 
-   public void dispose(@Disposes HashMap<String, String> map)
-   {
-      mapDisposerCalled = true;
-   }
+    @Produces
+    @WaldoName
+    public String getWaldoName() {
+        return waldo.getName();
+    }
 
-   public Waldo getWaldo()
-   {
-      return waldo;
-   }
+    @Produces
+    @Formatted
+    public String getFormattedWaldoName(@Generic Waldo waldo) {
+        return "[" + waldo.getName() + "]";
+    }
 
-   public static boolean isDisposerCalled()
-   {
-      return disposerCalled;
-   }
+    public void dispose(@Disposes @WaldoName String waldoName, @Generic Waldo waldo) {
+        disposerCalled = true;
+        Assert.assertEquals(waldo.getName(), waldoName);
+    }
 
-   public static boolean isMapDisposerCalled()
-   {
-      return mapDisposerCalled;
-   }
+    public void dispose(@Disposes HashMap<String, String> map) {
+        mapDisposerCalled = true;
+    }
+
+    public Waldo getWaldo() {
+        return waldo;
+    }
+
+    public static boolean isDisposerCalled() {
+        return disposerCalled;
+    }
+
+    public static boolean isMapDisposerCalled() {
+        return mapDisposerCalled;
+    }
 
 }

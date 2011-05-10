@@ -20,9 +20,8 @@ import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class ConversationScopedLiteral extends AnnotationLiteral<ConversationScoped> implements ConversationScoped
-{
-   private static final long serialVersionUID = 5401967809387903628L;
+public class ConversationScopedLiteral extends AnnotationLiteral<ConversationScoped> implements ConversationScoped {
+    private static final long serialVersionUID = 5401967809387903628L;
 
-   public static final ConversationScoped INSTANCE = new ConversationScopedLiteral();
+    public static final ConversationScoped INSTANCE = new ConversationScopedLiteral();
 }

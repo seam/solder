@@ -22,25 +22,19 @@ import javax.naming.NamingException;
 
 /**
  * A base for building a {@link BeanManagerProvider} backed by JNDI
- * 
+ *
  * @author Nicklas Karlsson
- * 
  */
-public abstract class AbstractJndiBeanManagerProvider implements BeanManagerProvider
-{
-   public BeanManager getBeanManager()
-   {
-      try
-      {
-         return (BeanManager) new InitialContext().lookup(getLocation());
-      }
-      catch (NamingException e)
-      {
-         // No panic, it's just not there
-      }
-      return null;
-   }
+public abstract class AbstractJndiBeanManagerProvider implements BeanManagerProvider {
+    public BeanManager getBeanManager() {
+        try {
+            return (BeanManager) new InitialContext().lookup(getLocation());
+        } catch (NamingException e) {
+            // No panic, it's just not there
+        }
+        return null;
+    }
 
-   protected abstract String getLocation();
+    protected abstract String getLocation();
 
 }

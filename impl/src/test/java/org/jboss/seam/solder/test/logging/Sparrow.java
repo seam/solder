@@ -21,18 +21,15 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 
 
-class Sparrow
-{
-   @Inject
-   private Logger log;
-   
-   public void generateLogMessage()
-   {
-      log.info("Sparrow");
-   }
-   
-   public Logger getLogger()
-   {
-      return log;
-   }
+class Sparrow {
+    @Inject
+    private Logger log;
+
+    public void generateLogMessage() {
+        log.info("Sparrow");
+    }
+
+    public Logger getLogger() {
+        return log;
+    }
 }

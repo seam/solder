@@ -18,9 +18,8 @@ package org.jboss.seam.solder.test.core.requires;
 
 /**
  * Every bean in the "beans" package depends on this class.
- * 
+ *
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
- * 
  */
 public class Tiger {
 }

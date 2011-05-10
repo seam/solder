@@ -16,28 +16,26 @@
  */
 package org.jboss.seam.solder.bean.generic;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 
 /**
  * Specifies that the managed bean or producer should inherit the scope of the
  * generic configuration producer. If you annotate a producer field, producer
  * method or managed bean with <code>@ApplyScope</code> it must not define
  * another scope.
- * 
+ *
  * @author Stuart Douglas
- * 
  */
 @Retention(RUNTIME)
-@Target({ TYPE, METHOD, FIELD })
+@Target({TYPE, METHOD, FIELD})
 @Documented
-public @interface ApplyScope
-{
+public @interface ApplyScope {
 
 }

@@ -33,12 +33,12 @@ import javax.enterprise.inject.spi.AfterBeanDiscovery;
  * instance with the same type and qualifiers is registered. The bean only has
  * the type specified in the <code>value</code> attribute and {@link Object}.
  * </p>
- * 
+ * <p/>
  * <p>
  * Managed beans, producer methods and producer fields can all be made into
  * default beans.
  * </p>
- * 
+ * <p/>
  * <p>
  * If a managed bean is declared to be a default bean then all producers methods
  * and fields on the bean are also considered to be default beans. In this case
@@ -47,7 +47,7 @@ import javax.enterprise.inject.spi.AfterBeanDiscovery;
  * {@link Method#getGenericReturnType} or {@link Field#getGenericType()} for a
  * field.
  * </p>
- * 
+ * <p/>
  * <p>
  * In some ways this is similar to the functionality provided by &#64;
  * {@link Alternative} however there are some important distinctions
@@ -57,29 +57,27 @@ import javax.enterprise.inject.spi.AfterBeanDiscovery;
  * used automatically</li>
  * <li>The bean is registered across all modules, not on a per module basis</li>
  * </ul>
- * 
+ * <p/>
  * <p>
  * It is also important to note that beans registered in the
  * {@link AfterBeanDiscovery} event may not be picked up as default beans.
  * </p>
- * 
+ *
  * @author Stuart Douglas
- * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.METHOD, ElementType.FIELD })
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 @Documented
-public @interface DefaultBean
-{
-   /**
-    * <p>
-    * The type of the bean. If another bean is found with this type and the same
-    * qualifiers this bean will not be installed.
-    * </p>
-    * 
-    * <p>
-    * This bean will only be installed with the type specified here
-    * </p>
-    */
-   public Class<?> value();
+public @interface DefaultBean {
+    /**
+     * <p>
+     * The type of the bean. If another bean is found with this type and the same
+     * qualifiers this bean will not be installed.
+     * </p>
+     * <p/>
+     * <p>
+     * This bean will only be installed with the type specified here
+     * </p>
+     */
+    public Class<?> value();
 }

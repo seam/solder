@@ -21,18 +21,16 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.TypedCategory;
 
-public class Wren
-{
-   @Inject @TypedCategory(LoggerInjectionTest.class)
-   private Logger log;
-   
-   public void generateLogMessage()
-   {
-      log.info("Wren");
-   }
-   
-   public Logger getLogger()
-   {
-      return log;
-   }
+public class Wren {
+    @Inject
+    @TypedCategory(LoggerInjectionTest.class)
+    private Logger log;
+
+    public void generateLogMessage() {
+        log.info("Wren");
+    }
+
+    public Logger getLogger() {
+        return log;
+    }
 }

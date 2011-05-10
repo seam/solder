@@ -25,8 +25,7 @@ import javax.inject.Qualifier;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.FIELD })
-public @interface SASHardDrive
-{
+@Target({ElementType.FIELD})
+public @interface SASHardDrive {
 
 }

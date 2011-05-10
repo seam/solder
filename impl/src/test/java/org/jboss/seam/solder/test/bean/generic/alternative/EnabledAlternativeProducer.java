@@ -21,20 +21,17 @@ import javax.enterprise.inject.Produces;
 
 /**
  * Produces the enabled alternative generic beans
- * 
+ *
  * @author stuart
- * 
  */
 @Alternative
-public class EnabledAlternativeProducer
-{
-   @Boom("Alternative Big")
-   @Big
-   @Alternative
-   @Produces
-   public Bam getBigBam()
-   {
-      return new Bam("Alternative Big Bam");
-   }
+public class EnabledAlternativeProducer {
+    @Boom("Alternative Big")
+    @Big
+    @Alternative
+    @Produces
+    public Bam getBigBam() {
+        return new Bam("Alternative Big Bam");
+    }
 
 }

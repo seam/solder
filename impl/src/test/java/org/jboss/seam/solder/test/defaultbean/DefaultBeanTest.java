@@ -16,8 +16,6 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
@@ -29,78 +27,73 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+
 @RunWith(Arquillian.class)
-public class DefaultBeanTest
-{
-   @Inject
-   OpticalDrive opticalDrive;
+public class DefaultBeanTest {
+    @Inject
+    OpticalDrive opticalDrive;
 
-   @Inject
-   MagneticDrive magneticDrive;
+    @Inject
+    MagneticDrive magneticDrive;
 
-   @Inject
-   CPU cpu;
+    @Inject
+    CPU cpu;
 
-   @Inject
-   GPU gpu;
+    @Inject
+    GPU gpu;
 
-   @Inject
-   HardDrive hardDrive;
+    @Inject
+    HardDrive hardDrive;
 
-   @Inject
-   HardDriveFactory factory;
+    @Inject
+    HardDriveFactory factory;
 
-   @Inject
-   BeanManager manager;
+    @Inject
+    BeanManager manager;
 
-   @Inject
-   @SASHardDrive
-   HardDrive sasHardDrive;
+    @Inject
+    @SASHardDrive
+    HardDrive sasHardDrive;
 
-   @Inject
-   @LaptopHardDrive
-   HardDrive laptopHardDrive;
+    @Inject
+    @LaptopHardDrive
+    HardDrive laptopHardDrive;
 
-   @Deployment
-   public static WebArchive deployment()
-   {
-      return baseDeployment().addPackage(DefaultBeanTest.class.getPackage());
-   }
+    @Deployment
+    public static WebArchive deployment() {
+        return baseDeployment().addPackage(DefaultBeanTest.class.getPackage());
+    }
 
-   @Test
-   public void testDefaultBean()
-   {
-      Assert.assertTrue(opticalDrive instanceof DVDDrive);
-      Assert.assertTrue(magneticDrive instanceof FloppyDrive);
-   }
+    @Test
+    public void testDefaultBean() {
+        Assert.assertTrue(opticalDrive instanceof DVDDrive);
+        Assert.assertTrue(magneticDrive instanceof FloppyDrive);
+    }
 
-   @Test
-   public void testDefaultProducerMethod()
-   {
-      Assert.assertEquals("fast", cpu.getSpeed());
-      Assert.assertEquals("slow", gpu.getSpeed());
-   }
+    @Test
+    public void testDefaultProducerMethod() {
+        Assert.assertEquals("fast", cpu.getSpeed());
+        Assert.assertEquals("slow", gpu.getSpeed());
+    }
 
-   @Test
-   public void testDefaultProducerUsesCorrectDelegate()
-   {
-      factory.setSize("big");
-      Assert.assertEquals("big", hardDrive.size());
-   }
+    @Test
+    public void testDefaultProducerUsesCorrectDelegate() {
+        factory.setSize("big");
+        Assert.assertEquals("big", hardDrive.size());
+    }
 
-   @Test
-   public void testDefaultProducerFields()
-   {
-      Assert.assertEquals("100MB", sasHardDrive.size());
-      Assert.assertEquals("200MB", laptopHardDrive.size());
-   }
+    @Test
+    public void testDefaultProducerFields() {
+        Assert.assertEquals("100MB", sasHardDrive.size());
+        Assert.assertEquals("200MB", laptopHardDrive.size());
+    }
 
-   @Test
-   public void testDefaultBeanObserverMethods()
-   {
-      WriteEvent event = new WriteEvent();
-      manager.fireEvent(event, DefaultLiteral.INSTANCE);
-      Assert.assertEquals(1, event.getCount());
-   }
+    @Test
+    public void testDefaultBeanObserverMethods() {
+        WriteEvent event = new WriteEvent();
+        manager.fireEvent(event, DefaultLiteral.INSTANCE);
+        Assert.assertEquals(1, event.getCount());
+    }
 
 }

@@ -21,78 +21,65 @@ import java.util.Set;
 
 /**
  * Uniquely identifies a generic bean set
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class GenericIdentifier
-{
+public class GenericIdentifier {
 
-   private final Set<Annotation> qualifiers;
-   private final Annotation configuration;
+    private final Set<Annotation> qualifiers;
+    private final Annotation configuration;
 
-   @Override
-   public String toString()
-   {
-      return "GenericIdentifier [configuration=" + configuration + ", qualifiers=" + qualifiers + "]";
-   }
+    @Override
+    public String toString() {
+        return "GenericIdentifier [configuration=" + configuration + ", qualifiers=" + qualifiers + "]";
+    }
 
-   @Override
-   public int hashCode()
-   {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((configuration == null) ? 0 : configuration.hashCode());
-      result = prime * result + ((qualifiers == null) ? 0 : qualifiers.hashCode());
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((configuration == null) ? 0 : configuration.hashCode());
+        result = prime * result + ((qualifiers == null) ? 0 : qualifiers.hashCode());
+        return result;
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-         return true;
-      if (obj == null)
-         return false;
-      if (getClass() != obj.getClass())
-         return false;
-      GenericIdentifier other = (GenericIdentifier) obj;
-      if (configuration == null)
-      {
-         if (other.configuration != null)
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-      }
-      else if (!configuration.equals(other.configuration))
-         return false;
-      if (qualifiers == null)
-      {
-         if (other.qualifiers != null)
+        if (getClass() != obj.getClass())
             return false;
-      }
-      else if (!qualifiers.equals(other.qualifiers))
-         return false;
-      return true;
-   }
+        GenericIdentifier other = (GenericIdentifier) obj;
+        if (configuration == null) {
+            if (other.configuration != null)
+                return false;
+        } else if (!configuration.equals(other.configuration))
+            return false;
+        if (qualifiers == null) {
+            if (other.qualifiers != null)
+                return false;
+        } else if (!qualifiers.equals(other.qualifiers))
+            return false;
+        return true;
+    }
 
-   public GenericIdentifier(Set<Annotation> qualifiers, Annotation configuration)
-   {
-      this.qualifiers = qualifiers;
-      this.configuration = configuration;
-   }
+    public GenericIdentifier(Set<Annotation> qualifiers, Annotation configuration) {
+        this.qualifiers = qualifiers;
+        this.configuration = configuration;
+    }
 
-   public Set<Annotation> getQualifiers()
-   {
-      return qualifiers;
-   }
+    public Set<Annotation> getQualifiers() {
+        return qualifiers;
+    }
 
-   public Class<? extends Annotation> getAnnotationType()
-   {
-      return configuration.annotationType();
-   }
+    public Class<? extends Annotation> getAnnotationType() {
+        return configuration.annotationType();
+    }
 
-   public Annotation getConfiguration()
-   {
-      return configuration;
-   }
+    public Annotation getConfiguration() {
+        return configuration;
+    }
 
 }

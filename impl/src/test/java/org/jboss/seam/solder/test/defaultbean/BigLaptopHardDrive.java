@@ -17,12 +17,10 @@
 package org.jboss.seam.solder.test.defaultbean;
 
 @LaptopHardDrive
-public class BigLaptopHardDrive implements HardDrive
-{
+public class BigLaptopHardDrive implements HardDrive {
 
-   public String size()
-   {
-      return "200MB";
-   }
+    public String size() {
+        return "200MB";
+    }
 
 }

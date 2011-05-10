@@ -16,12 +16,6 @@
  */
 package org.jboss.seam.solder.el;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -29,27 +23,30 @@ import java.lang.annotation.Target;
 import javax.el.ELResolver;
 import javax.inject.Qualifier;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * <p>
  * Qualifier used to identify a {@link ELResolver} that contains the default EL
  * resolvers and any user registered el resolvers
  * </p>
- * 
+ * <p/>
  * <p>
  * By default, Seam Solder provides access to CDI beans.
  * </p>
- * 
+ *
  * @author Stuart Douglas
  * @author Pete Muir
- * 
  * @see Resolver
- * 
  */
 @Qualifier
 @Retention(RUNTIME)
-@Target({ TYPE, FIELD, METHOD, PARAMETER })
+@Target({TYPE, FIELD, METHOD, PARAMETER})
 @Documented
-public @interface Composite
-{
+public @interface Composite {
 
 }

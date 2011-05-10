@@ -22,16 +22,15 @@ import javax.enterprise.inject.Produces;
 import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
 
 @DefaultBean(SmallHardDriveFactory.class)
-public class SmallHardDriveFactory
-{
-   @Produces
-   @SASHardDrive
-   @ApplicationScoped
-   private HardDrive sasHardDrive = new HardDriveImpl("100MB");
+public class SmallHardDriveFactory {
+    @Produces
+    @SASHardDrive
+    @ApplicationScoped
+    private HardDrive sasHardDrive = new HardDriveImpl("100MB");
 
-   @Produces
-   @LaptopHardDrive
-   @ApplicationScoped
-   private HardDrive laptopHardDrive = new HardDriveImpl("100MB");
+    @Produces
+    @LaptopHardDrive
+    @ApplicationScoped
+    private HardDrive laptopHardDrive = new HardDriveImpl("100MB");
 
 }

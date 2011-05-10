@@ -30,13 +30,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Internal-qualifier used to identify the typed message logger producer for the wrapping bean.
- * 
+ *
  * @author Pete Muir
  */
 @Qualifier
-@Target({ TYPE, METHOD, PARAMETER, FIELD })
+@Target({TYPE, METHOD, PARAMETER, FIELD})
 @Retention(RUNTIME)
 @Documented
-@interface TypedMessageLogger
-{
+        @interface TypedMessageLogger {
 }

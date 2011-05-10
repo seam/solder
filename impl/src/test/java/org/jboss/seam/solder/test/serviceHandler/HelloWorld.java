@@ -17,7 +17,6 @@
 package org.jboss.seam.solder.test.serviceHandler;
 
 @EchoService
-public interface HelloWorld
-{
-   public String helloWorld();
+public interface HelloWorld {
+    public String helloWorld();
 }

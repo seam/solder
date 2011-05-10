@@ -16,8 +16,6 @@
  */
 package org.jboss.seam.solder.unwraps;
 
-import static org.jboss.seam.solder.reflection.Reflections.cast;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -25,10 +23,6 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import javassist.util.proxy.MethodFilter;
-import javassist.util.proxy.ProxyFactory;
-import javassist.util.proxy.ProxyObject;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
@@ -39,188 +33,160 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Named;
 
+import javassist.util.proxy.MethodFilter;
+import javassist.util.proxy.ProxyFactory;
+import javassist.util.proxy.ProxyObject;
 import org.jboss.seam.solder.bean.Beans;
 import org.jboss.seam.solder.literal.DefaultLiteral;
 
+import static org.jboss.seam.solder.reflection.Reflections.cast;
+
 /**
  * Bean implementation that produces a JDK proxy
- * 
+ * <p/>
  * when a method is invoked on the proxy it calls the Unwraps producer method
  * and invokes the method on the returned object
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class UnwrapsProducerBean<M> implements Bean<M>
-{
+public class UnwrapsProducerBean<M> implements Bean<M> {
 
-   final private Class<?> beanClass;
+    final private Class<?> beanClass;
 
-   final private String name;
+    final private String name;
 
-   final private Set<Annotation> qualifiers;
+    final private Set<Annotation> qualifiers;
 
-   final private Set<Annotation> declaringClassQualifiers;
+    final private Set<Annotation> declaringClassQualifiers;
 
-   final private Set<Type> types;
+    final private Set<Type> types;
 
-   final private Class<M> proxyClass;
+    final private Class<M> proxyClass;
 
-   final private BeanManager manager;
+    final private BeanManager manager;
 
-   final private AnnotatedMethod<?> method;
+    final private AnnotatedMethod<?> method;
 
-   private final static Annotation[] defaultQualifiers = { DefaultLiteral.INSTANCE };
+    private final static Annotation[] defaultQualifiers = {DefaultLiteral.INSTANCE};
 
-   public UnwrapsProducerBean(AnnotatedMethod<?> method, BeanManager manager)
-   {
-      this(method, resolveQualifiers(method, manager), resolveQualifiers(method.getDeclaringType(), manager), manager);
-   }
+    public UnwrapsProducerBean(AnnotatedMethod<?> method, BeanManager manager) {
+        this(method, resolveQualifiers(method, manager), resolveQualifiers(method.getDeclaringType(), manager), manager);
+    }
 
-   public UnwrapsProducerBean(AnnotatedMethod<?> method, Set<Annotation> methodQualifiers, Set<Annotation> beanQualifiers, BeanManager manager)
-   {
-      this.method = method;
-      beanClass = method.getDeclaringType().getJavaClass();
-      // get the name
-      if (method.isAnnotationPresent(Named.class))
-      {
-         name = method.getAnnotation(Named.class).value();
-      }
-      else
-      {
-         name = null;
-      }
-      // get the qualifiers
-      qualifiers = new HashSet<Annotation>(methodQualifiers);
-      declaringClassQualifiers = new HashSet<Annotation>(beanQualifiers);
-      // get the bean types
-      types = new HashSet<Type>();
-      Set<Class<?>> classes = new HashSet<Class<?>>();
-      for (Type t : method.getTypeClosure())
-      {
-         if (t instanceof Class<?>)
-         {
-            Class<?> c = (Class<?>) t;
-            types.add(c);
-            classes.add(c);
-         }
-         else if (t instanceof ParameterizedType)
-         {
-            types.add(t);
-         }
-      }
-      // build the properties
-      Class<?>[] iarray = new Class[classes.size()];
-      int count = 0;
-      this.manager = manager;
-      for (Class<?> c : classes)
-      {
-         iarray[count++] = c;
-      }
-      ProxyFactory f = new ProxyFactory();
-      Class<?> retType = method.getJavaMember().getReturnType();
-      if (retType.isInterface())
-      {
-         f.setSuperclass(Object.class);
-         Class<?>[] ifaces = { retType };
-         f.setInterfaces(ifaces);
-      }
-      else
-      {
-         f.setSuperclass(retType);
-      }
+    public UnwrapsProducerBean(AnnotatedMethod<?> method, Set<Annotation> methodQualifiers, Set<Annotation> beanQualifiers, BeanManager manager) {
+        this.method = method;
+        beanClass = method.getDeclaringType().getJavaClass();
+        // get the name
+        if (method.isAnnotationPresent(Named.class)) {
+            name = method.getAnnotation(Named.class).value();
+        } else {
+            name = null;
+        }
+        // get the qualifiers
+        qualifiers = new HashSet<Annotation>(methodQualifiers);
+        declaringClassQualifiers = new HashSet<Annotation>(beanQualifiers);
+        // get the bean types
+        types = new HashSet<Type>();
+        Set<Class<?>> classes = new HashSet<Class<?>>();
+        for (Type t : method.getTypeClosure()) {
+            if (t instanceof Class<?>) {
+                Class<?> c = (Class<?>) t;
+                types.add(c);
+                classes.add(c);
+            } else if (t instanceof ParameterizedType) {
+                types.add(t);
+            }
+        }
+        // build the properties
+        Class<?>[] iarray = new Class[classes.size()];
+        int count = 0;
+        this.manager = manager;
+        for (Class<?> c : classes) {
+            iarray[count++] = c;
+        }
+        ProxyFactory f = new ProxyFactory();
+        Class<?> retType = method.getJavaMember().getReturnType();
+        if (retType.isInterface()) {
+            f.setSuperclass(Object.class);
+            Class<?>[] ifaces = {retType};
+            f.setInterfaces(ifaces);
+        } else {
+            f.setSuperclass(retType);
+        }
 
-      f.setFilter(new MethodFilter()
-      {
-         public boolean isHandled(Method m)
-         {
-            // ignore finalize()
-            return !m.getName().equals("finalize");
-         }
-      });
-      proxyClass = cast(f.createClass());
-   }
+        f.setFilter(new MethodFilter() {
+            public boolean isHandled(Method m) {
+                // ignore finalize()
+                return !m.getName().equals("finalize");
+            }
+        });
+        proxyClass = cast(f.createClass());
+    }
 
-   private static Set<Annotation> resolveQualifiers(Annotated method, BeanManager manager)
-   {
-      Set<Annotation> qualifiers = Beans.getQualifiers(manager, method.getAnnotations());
-      if (qualifiers.isEmpty())
-      {
-         qualifiers.add(DefaultLiteral.INSTANCE);
-      }
-      return qualifiers;
-   }
+    private static Set<Annotation> resolveQualifiers(Annotated method, BeanManager manager) {
+        Set<Annotation> qualifiers = Beans.getQualifiers(manager, method.getAnnotations());
+        if (qualifiers.isEmpty()) {
+            qualifiers.add(DefaultLiteral.INSTANCE);
+        }
+        return qualifiers;
+    }
 
-   public Class<?> getBeanClass()
-   {
-      return beanClass;
-   }
+    public Class<?> getBeanClass() {
+        return beanClass;
+    }
 
-   public Set<InjectionPoint> getInjectionPoints()
-   {
-      return Collections.emptySet();
-   }
+    public Set<InjectionPoint> getInjectionPoints() {
+        return Collections.emptySet();
+    }
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public Set<Annotation> getQualifiers()
-   {
-      return qualifiers;
-   }
+    public Set<Annotation> getQualifiers() {
+        return qualifiers;
+    }
 
-   /**
-    * the proxies that are injected all have Dependant scope
-    */
-   public Class<? extends Annotation> getScope()
-   {
-      return Dependent.class;
-   }
+    /**
+     * the proxies that are injected all have Dependant scope
+     */
+    public Class<? extends Annotation> getScope() {
+        return Dependent.class;
+    }
 
-   public Set<Class<? extends Annotation>> getStereotypes()
-   {
-      return Collections.emptySet();
-   }
+    public Set<Class<? extends Annotation>> getStereotypes() {
+        return Collections.emptySet();
+    }
 
-   public Set<Type> getTypes()
-   {
-      return types;
-   }
+    public Set<Type> getTypes() {
+        return types;
+    }
 
-   public boolean isAlternative()
-   {
-      return false;
-   }
+    public boolean isAlternative() {
+        return false;
+    }
 
-   public boolean isNullable()
-   {
-      return false;
-   }
+    public boolean isNullable() {
+        return false;
+    }
 
-   public M create(CreationalContext<M> creationalContext)
-   {
-      Set<Bean<?>> beans = manager.getBeans(InjectionPoint.class, defaultQualifiers);
-      Bean<?> injectionPointBean = (Bean<?>) beans.iterator().next();
-      InjectionPoint injectionPoint = (InjectionPoint) manager.getReference(injectionPointBean, InjectionPoint.class, creationalContext);
-      UnwrapsInvocationHandler hdl = new UnwrapsInvocationHandler(manager, this.method, this, injectionPoint, declaringClassQualifiers);
-      try
-      {
-         M obj = proxyClass.newInstance();
-         ((ProxyObject) obj).setHandler(hdl);
-         creationalContext.push(obj);
-         return obj;
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException(e);
-      }
-   }
+    public M create(CreationalContext<M> creationalContext) {
+        Set<Bean<?>> beans = manager.getBeans(InjectionPoint.class, defaultQualifiers);
+        Bean<?> injectionPointBean = (Bean<?>) beans.iterator().next();
+        InjectionPoint injectionPoint = (InjectionPoint) manager.getReference(injectionPointBean, InjectionPoint.class, creationalContext);
+        UnwrapsInvocationHandler hdl = new UnwrapsInvocationHandler(manager, this.method, this, injectionPoint, declaringClassQualifiers);
+        try {
+            M obj = proxyClass.newInstance();
+            ((ProxyObject) obj).setHandler(hdl);
+            creationalContext.push(obj);
+            return obj;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-   public void destroy(M instance, CreationalContext<M> creationalContext)
-   {
-      creationalContext.release();
-   }
+    public void destroy(M instance, CreationalContext<M> creationalContext) {
+        creationalContext.release();
+    }
 
 }

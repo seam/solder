@@ -18,21 +18,18 @@ package org.jboss.seam.solder.beanManager;
 
 /**
  * A {@link BeanManagerProvider} that looks it up from the standard JNDI location
- * 
+ *
  * @author Nicklas Karlsson
  */
-class DefaultJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider
-{
+class DefaultJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider {
 
-   @Override
-   protected String getLocation()
-   {
-      return "java:comp/BeanManager";
-   }
+    @Override
+    protected String getLocation() {
+        return "java:comp/BeanManager";
+    }
 
-   public int getPrecedence()
-   {
-      return 11;
-   }
+    public int getPrecedence() {
+        return 11;
+    }
 
 }

@@ -20,8 +20,7 @@ import org.jboss.seam.solder.messages.Message;
 import org.jboss.seam.solder.messages.MessageBundle;
 
 @MessageBundle
-public interface BirdMessages
-{
-   @Message("Spotted %s jays")
-   String numberOfJaysSpotted(int number);
+public interface BirdMessages {
+    @Message("Spotted %s jays")
+    String numberOfJaysSpotted(int number);
 }

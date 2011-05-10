@@ -20,15 +20,14 @@ import javax.inject.Inject;
 
 import org.jboss.seam.solder.messages.MessageBundle;
 
-public class Jay
-{
-   
-   @Inject @MessageBundle
-   BirdMessages messages;
-   
-   String getMessage()
-   {
-      return messages.numberOfJaysSpotted(8);
-   }
+public class Jay {
+
+    @Inject
+    @MessageBundle
+    BirdMessages messages;
+
+    String getMessage() {
+        return messages.numberOfJaysSpotted(8);
+    }
 
 }

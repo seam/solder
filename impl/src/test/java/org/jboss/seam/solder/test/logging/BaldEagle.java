@@ -9,11 +9,11 @@ import org.jboss.seam.solder.logging.Category;
 
 @SessionScoped
 public class BaldEagle implements Serializable {
-    @Inject @Category("Birds")
+    @Inject
+    @Category("Birds")
     private BirdLogger logger;
-    
-    public void generateLogMessage()
-    {
-       logger.logBaldEaglesSpotted(2);
+
+    public void generateLogMessage() {
+        logger.logBaldEaglesSpotted(2);
     }
 }

@@ -25,16 +25,13 @@ import java.lang.annotation.Target;
 /**
  * A meta annotation used to indicate that the annotation is a generic
  * configuration annotation.
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  * @see GenericConfiguration
- * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Documented
-public @interface GenericType
-{
-   Class<?> value();
+public @interface GenericType {
+    Class<?> value();
 }

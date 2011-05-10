@@ -16,12 +16,6 @@
  */
 package org.jboss.seam.solder.bean.generic;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -29,31 +23,35 @@ import java.lang.annotation.Target;
 
 import javax.enterprise.context.Dependent;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * <p>
  * Defines a set of generic beans which can inject the configuration annotation,
  * any other generic bean for the same configuration type, and the product of
  * the generic producer.
  * </p>
- * 
+ * <p/>
  * <p>
  * Generic beans must be {@link Dependent} scoped. If you wish to give your
  * generic bean a scope, you should do this on the generic producers which
  * configure the generic bean.
  * </p>
- * 
+ * <p/>
  * <p>
  * Each generic configuration may be specified at most once.
  * </p>
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
- * 
  */
 @Retention(RUNTIME)
-@Target( { METHOD, FIELD, PARAMETER, TYPE })
+@Target({METHOD, FIELD, PARAMETER, TYPE})
 @Documented
-public @interface GenericConfiguration
-{
-   Class<? extends Annotation> value();
+public @interface GenericConfiguration {
+    Class<? extends Annotation> value();
 }

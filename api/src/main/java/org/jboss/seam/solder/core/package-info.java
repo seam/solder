@@ -18,13 +18,13 @@
  */
 /**
  * <p>
- * A number enhancements to the CDI programming model which are under trial and may be included in later releases 
+ * A number enhancements to the CDI programming model which are under trial and may be included in later releases
  * of <em>Contexts and Dependency Injection</em>.
  * </p>
- * 
+ *
  * <p>
  * Included are:
- * 
+ *
  * <table>
  *    <tr>
  *       <td><code>&#64;{@link org.jboss.seam.solder.core.Veto}</code></td>
@@ -47,7 +47,7 @@
  *       <td>Named packages</td>
  *    </tr>
  * </table>
- * 
+ *
  * @see org.jboss.seam.solder.core.Veto
  * @see org.jboss.seam.solder.core.Requires
  * @see org.jboss.seam.solder.core.Exact

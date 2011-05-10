@@ -21,9 +21,8 @@ import javax.enterprise.util.AnnotationLiteral;
 import org.jboss.seam.solder.el.Resolver;
 
 
-public class ResolverLiteral extends AnnotationLiteral<Resolver> implements Resolver
-{
-   private static final long serialVersionUID = -8137340248362361317L;
+public class ResolverLiteral extends AnnotationLiteral<Resolver> implements Resolver {
+    private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final Resolver INSTANCE = new ResolverLiteral();
+    public static final Resolver INSTANCE = new ResolverLiteral();
 }

@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.test.core;
 
-public class Greyhound extends Dog
-{
+public class Greyhound extends Dog {
 
 }

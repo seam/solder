@@ -17,28 +17,23 @@
 package org.jboss.seam.solder.test.bean.generic.alternative;
 
 
-public class Bam
-{
-   private String name;
+public class Bam {
+    private String name;
 
-   public Bam()
-   {
+    public Bam() {
 
-   }
+    }
 
-   public Bam(String name)
-   {
-      this.name = name;
-   }
+    public Bam(String name) {
+        this.name = name;
+    }
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public void setName(String name)
-   {
-      this.name = name;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

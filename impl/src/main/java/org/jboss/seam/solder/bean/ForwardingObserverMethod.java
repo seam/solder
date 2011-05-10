@@ -27,68 +27,57 @@ import javax.enterprise.inject.spi.ObserverMethod;
 /**
  * An implementation of {@link ObserverMethod} that forwards all calls to
  * {@link #delegate()}.
- * 
- * @author Pete Muir
- * 
+ *
  * @param <T> The event type
+ * @author Pete Muir
  */
-public abstract class ForwardingObserverMethod<T> implements ObserverMethod<T>
-{
+public abstract class ForwardingObserverMethod<T> implements ObserverMethod<T> {
 
-   /**
-    * All calls to this {@link ObserverMethod} instance are forwarded to the
-    * delegate unless overridden.
-    * 
-    * @return the delegate {@link ObserverMethod}
-    */
-   protected abstract ObserverMethod<T> delegate();
+    /**
+     * All calls to this {@link ObserverMethod} instance are forwarded to the
+     * delegate unless overridden.
+     *
+     * @return the delegate {@link ObserverMethod}
+     */
+    protected abstract ObserverMethod<T> delegate();
 
-   public Class<?> getBeanClass()
-   {
-      return delegate().getBeanClass();
-   }
+    public Class<?> getBeanClass() {
+        return delegate().getBeanClass();
+    }
 
-   public Set<Annotation> getObservedQualifiers()
-   {
-      return delegate().getObservedQualifiers();
-   }
+    public Set<Annotation> getObservedQualifiers() {
+        return delegate().getObservedQualifiers();
+    }
 
-   public Type getObservedType()
-   {
-      return delegate().getObservedType();
-   }
+    public Type getObservedType() {
+        return delegate().getObservedType();
+    }
 
-   public Reception getReception()
-   {
-      return delegate().getReception();
-   }
+    public Reception getReception() {
+        return delegate().getReception();
+    }
 
-   public TransactionPhase getTransactionPhase()
-   {
-      return delegate().getTransactionPhase();
-   }
+    public TransactionPhase getTransactionPhase() {
+        return delegate().getTransactionPhase();
+    }
 
-   public void notify(T event)
-   {
-      delegate().notify(event);
-   }
+    public void notify(T event) {
+        delegate().notify(event);
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      return delegate().equals(obj);
-   }
+    @Override
+    public boolean equals(Object obj) {
+        return delegate().equals(obj);
+    }
 
-   @Override
-   public int hashCode()
-   {
-      return delegate().hashCode();
-   }
+    @Override
+    public int hashCode() {
+        return delegate().hashCode();
+    }
 
-   @Override
-   public String toString()
-   {
-      return delegate().toString();
-   }
+    @Override
+    public String toString() {
+        return delegate().toString();
+    }
 
 }

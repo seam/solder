@@ -16,18 +16,15 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-public class WriteEvent
-{
-   private int count = 0;
+public class WriteEvent {
+    private int count = 0;
 
-   public void increment()
-   {
-      count++;
-   }
+    public void increment() {
+        count++;
+    }
 
-   public int getCount()
-   {
-      return count;
-   }
+    public int getCount() {
+        return count;
+    }
 
 }

@@ -20,34 +20,33 @@ import javax.enterprise.inject.Produces;
 
 /**
  * A producer of generic beans
- * @author pmuir
  *
+ * @author pmuir
  */
-public class GenericBeanProducer
-{
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Message("hello1")
-   private Baz baz1;
+public class GenericBeanProducer {
+    @SuppressWarnings("unused")
+    @Foo(1)
+    @Produces
+    @Message("hello1")
+    private Baz baz1;
 
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Message("hello2")
-   private Baz baz2;
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Message("hello1")
-   private Bar bar1;
+    @SuppressWarnings("unused")
+    @Foo(2)
+    @Produces
+    @Message("hello2")
+    private Baz baz2;
 
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Message("hello2")
-   private Bar bar2;
-   
+    @SuppressWarnings("unused")
+    @Foo(1)
+    @Produces
+    @Message("hello1")
+    private Bar bar1;
+
+    @SuppressWarnings("unused")
+    @Foo(2)
+    @Produces
+    @Message("hello2")
+    private Bar bar2;
+
 
 }

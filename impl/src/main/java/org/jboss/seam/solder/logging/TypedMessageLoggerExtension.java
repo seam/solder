@@ -31,72 +31,59 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
 import org.jboss.seam.solder.bean.NarrowingBeanBuilder;
-import org.jboss.seam.solder.logging.MessageLogger;
 
 /**
  * Detects typed message loggers and registers a dedicated producer method for each one discovered.
- * 
+ *
  * @author Pete Muir
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
-public class TypedMessageLoggerExtension implements Extension
-{
-   private final Collection<AnnotatedType<?>> messageLoggerTypes;
-   private Bean<Object> loggerProducerBean;
+public class TypedMessageLoggerExtension implements Extension {
+    private final Collection<AnnotatedType<?>> messageLoggerTypes;
+    private Bean<Object> loggerProducerBean;
 
-   public TypedMessageLoggerExtension()
-   {
-      this.messageLoggerTypes = new HashSet<AnnotatedType<?>>();
-   }
+    public TypedMessageLoggerExtension() {
+        this.messageLoggerTypes = new HashSet<AnnotatedType<?>>();
+    }
 
-   void detectInterfaces(@Observes ProcessAnnotatedType<?> event, BeanManager beanManager)
-   {
-      AnnotatedType<?> type = event.getAnnotatedType();
-      if (type.isAnnotationPresent(MessageLogger.class))
-      {
-         messageLoggerTypes.add(type);
-      }
-   }
-   
-   // according to the Java EE 6 javadoc (the authority according to the powers that be),
-   // this is the correct order of type parameters
-   void detectProducers(@Observes ProcessProducerMethod<Object, TypedMessageLoggerProducer> event)
-   {
-      captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
-   }
+    void detectInterfaces(@Observes ProcessAnnotatedType<?> event, BeanManager beanManager) {
+        AnnotatedType<?> type = event.getAnnotatedType();
+        if (type.isAnnotationPresent(MessageLogger.class)) {
+            messageLoggerTypes.add(type);
+        }
+    }
 
-   // according to JSR-299 spec, this is the correct order of type parameters
-   @Deprecated
-   void detectProducersInverted(@Observes ProcessProducerMethod<TypedMessageLoggerProducer, Object> event)
-   {
-      captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
-   }
-   
-   @SuppressWarnings("unchecked")
-   void captureProducers(AnnotatedMethod<?> method, Bean<?> bean)
-   {
-      if (method.isAnnotationPresent(TypedMessageLogger.class))
-      {
-         this.loggerProducerBean = (Bean<Object>) bean;
-      }
-   }
+    // according to the Java EE 6 javadoc (the authority according to the powers that be),
+    // this is the correct order of type parameters
+    void detectProducers(@Observes ProcessProducerMethod<Object, TypedMessageLoggerProducer> event) {
+        captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
+    }
 
-   void installBeans(@Observes AfterBeanDiscovery event, BeanManager beanManager)
-   {
-      for (AnnotatedType<?> type : messageLoggerTypes)
-      {
-         event.addBean(createMessageLoggerBean(loggerProducerBean, type, beanManager));
-      }
-   }
-   
-   private static <T> Bean<T> createMessageLoggerBean(Bean<Object> delegate, AnnotatedType<T> type, BeanManager beanManager)
-   {
-      return new NarrowingBeanBuilder<T>(delegate, beanManager).readFromType(type).types(type.getBaseType(), Object.class).create();
-   }
-   
-   void cleanup(@Observes AfterDeploymentValidation event)
-   {
-      // defensively clear the set to help with gc
-      this.messageLoggerTypes.clear();
-   }
+    // according to JSR-299 spec, this is the correct order of type parameters
+    @Deprecated
+    void detectProducersInverted(@Observes ProcessProducerMethod<TypedMessageLoggerProducer, Object> event) {
+        captureProducers(event.getAnnotatedProducerMethod(), event.getBean());
+    }
+
+    @SuppressWarnings("unchecked")
+    void captureProducers(AnnotatedMethod<?> method, Bean<?> bean) {
+        if (method.isAnnotationPresent(TypedMessageLogger.class)) {
+            this.loggerProducerBean = (Bean<Object>) bean;
+        }
+    }
+
+    void installBeans(@Observes AfterBeanDiscovery event, BeanManager beanManager) {
+        for (AnnotatedType<?> type : messageLoggerTypes) {
+            event.addBean(createMessageLoggerBean(loggerProducerBean, type, beanManager));
+        }
+    }
+
+    private static <T> Bean<T> createMessageLoggerBean(Bean<Object> delegate, AnnotatedType<T> type, BeanManager beanManager) {
+        return new NarrowingBeanBuilder<T>(delegate, beanManager).readFromType(type).types(type.getBaseType(), Object.class).create();
+    }
+
+    void cleanup(@Observes AfterDeploymentValidation event) {
+        // defensively clear the set to help with gc
+        this.messageLoggerTypes.clear();
+    }
 }

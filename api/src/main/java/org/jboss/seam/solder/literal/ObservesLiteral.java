@@ -22,33 +22,28 @@ import javax.enterprise.event.TransactionPhase;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class ObservesLiteral extends AnnotationLiteral<Observes> implements Observes
-{
-   private static final long serialVersionUID = 338211360805208962L;
-   private final TransactionPhase during;
-   private final Reception notifyObserver;
-   private final Reception receives;
+public class ObservesLiteral extends AnnotationLiteral<Observes> implements Observes {
+    private static final long serialVersionUID = 338211360805208962L;
+    private final TransactionPhase during;
+    private final Reception notifyObserver;
+    private final Reception receives;
 
-   public ObservesLiteral(TransactionPhase during, Reception notifyObserver, Reception receives)
-   {
-      this.during = during;
-      this.notifyObserver = notifyObserver;
-      this.receives = receives;
-   }
+    public ObservesLiteral(TransactionPhase during, Reception notifyObserver, Reception receives) {
+        this.during = during;
+        this.notifyObserver = notifyObserver;
+        this.receives = receives;
+    }
 
-   public TransactionPhase during()
-   {
-      return during;
-   }
+    public TransactionPhase during() {
+        return during;
+    }
 
-   public Reception notifyObserver()
-   {
-      return notifyObserver;
-   }
+    public Reception notifyObserver() {
+        return notifyObserver;
+    }
 
-   public Reception receive()
-   {
-      return receives;
-   }
+    public Reception receive() {
+        return receives;
+    }
 
 }

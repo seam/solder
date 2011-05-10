@@ -26,8 +26,7 @@ import javax.enterprise.inject.Stereotype;
 @Retention(RetentionPolicy.RUNTIME)
 @Stereotype
 @Target(ElementType.METHOD)
-@Animal(species="Cat")
-public @interface Cat
-{
+@Animal(species = "Cat")
+public @interface Cat {
 
 }

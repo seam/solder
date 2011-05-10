@@ -19,11 +19,9 @@ package org.jboss.seam.solder.test.serviceHandler;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 
-public class EchoServiceHandler
-{
-   @AroundInvoke
-   public Object invoke(InvocationContext ctx)
-   {
-      return ctx.getMethod().getName().toString();
-   }
+public class EchoServiceHandler {
+    @AroundInvoke
+    public Object invoke(InvocationContext ctx) {
+        return ctx.getMethod().getName().toString();
+    }
 }

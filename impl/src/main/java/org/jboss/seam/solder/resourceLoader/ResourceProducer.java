@@ -33,99 +33,84 @@ import javax.inject.Inject;
 
 /**
  * Resource producer allows injecting of resources.
- * 
+ *
  * @author Pete Muir
- * 
  * @see Resource
  * @see ResourceProvider
- *
  */
 @ApplicationScoped
-class ResourceProducer
-{
-   @Inject
-   private ResourceLoaderManager resourceLoaderManager;
-   
-   @Produces @Resource("")
-   InputStream loadResourceStream(InjectionPoint injectionPoint) throws IOException
-   {
-      String name = getName(injectionPoint);
-      return resourceLoaderManager.getResourceAsStream(name);
-   }
-   
-   void closeResourceStream(@Disposes @Resource("") InputStream inputStream) throws IOException
-   {
-      try
-      {
-         inputStream.close();
-      }
-      catch (IOException e)
-      {
-         // Nothing we can do about this
-      }
-   }
-   
-   @Produces @Resource("")
-   Collection<InputStream> loadResourcesStream(InjectionPoint injectionPoint) throws IOException
-   {
-      String name = getName(injectionPoint);
-      return resourceLoaderManager.getResourcesAsStream(name);
-   }
-   
-   void closeResourcesStream(@Disposes @Resource("") Collection<InputStream> inputStreams) throws IOException
-   {
-      try
-      {
-         for (InputStream is : inputStreams)
-         {
-            is.close();
-         }
-      }
-      catch (IOException e)
-      {
-         // Nothing we can do about this
-      }
-   }
-   
-   @Produces @Resource("")
-   URL loadResource(InjectionPoint injectionPoint)
-   {
-      String name = getName(injectionPoint);
-      return resourceLoaderManager.getResource(name);
-   }
-   
-   @Produces @Resource("")
-   Collection<URL> loadResources(InjectionPoint injectionPoint)
-   {
-      String name = getName(injectionPoint);
-      return resourceLoaderManager.getResources(name);
-   }
-   
-   @Produces @Resource("")
-   Properties loadPropertiesBundle(InjectionPoint injectionPoint)
-   {
-      String name = getName(injectionPoint);
-      return resourceLoaderManager.getPropertiesBundle(name);
-   }
-   
-   @Produces @Resource("")
-   Collection<Properties> loadPropertiesBundles(InjectionPoint injectionPoint)
-   {
-      String name = getName(injectionPoint);
-      return resourceLoaderManager.getPropertiesBundles(name);
-   }
-   
-   private String getName(InjectionPoint ip)
-   {
-      Set<Annotation> qualifiers = ip.getQualifiers();
-      for (Annotation qualifier : qualifiers)
-      {
-         if (qualifier.annotationType().equals(Resource.class))
-         {
-            return ((Resource) qualifier).value();
-         }
-      }
-      throw new IllegalArgumentException("Injection point " + ip + " does not have @Resource qualifier");
-   }
+class ResourceProducer {
+    @Inject
+    private ResourceLoaderManager resourceLoaderManager;
+
+    @Produces
+    @Resource("")
+    InputStream loadResourceStream(InjectionPoint injectionPoint) throws IOException {
+        String name = getName(injectionPoint);
+        return resourceLoaderManager.getResourceAsStream(name);
+    }
+
+    void closeResourceStream(@Disposes @Resource("") InputStream inputStream) throws IOException {
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            // Nothing we can do about this
+        }
+    }
+
+    @Produces
+    @Resource("")
+    Collection<InputStream> loadResourcesStream(InjectionPoint injectionPoint) throws IOException {
+        String name = getName(injectionPoint);
+        return resourceLoaderManager.getResourcesAsStream(name);
+    }
+
+    void closeResourcesStream(@Disposes @Resource("") Collection<InputStream> inputStreams) throws IOException {
+        try {
+            for (InputStream is : inputStreams) {
+                is.close();
+            }
+        } catch (IOException e) {
+            // Nothing we can do about this
+        }
+    }
+
+    @Produces
+    @Resource("")
+    URL loadResource(InjectionPoint injectionPoint) {
+        String name = getName(injectionPoint);
+        return resourceLoaderManager.getResource(name);
+    }
+
+    @Produces
+    @Resource("")
+    Collection<URL> loadResources(InjectionPoint injectionPoint) {
+        String name = getName(injectionPoint);
+        return resourceLoaderManager.getResources(name);
+    }
+
+    @Produces
+    @Resource("")
+    Properties loadPropertiesBundle(InjectionPoint injectionPoint) {
+        String name = getName(injectionPoint);
+        return resourceLoaderManager.getPropertiesBundle(name);
+    }
+
+    @Produces
+    @Resource("")
+    Collection<Properties> loadPropertiesBundles(InjectionPoint injectionPoint) {
+        String name = getName(injectionPoint);
+        return resourceLoaderManager.getPropertiesBundles(name);
+    }
+
+    private String getName(InjectionPoint ip) {
+        Set<Annotation> qualifiers = ip.getQualifiers();
+        for (Annotation qualifier : qualifiers) {
+            if (qualifier.annotationType().equals(Resource.class)) {
+                return ((Resource) qualifier).value();
+            }
+        }
+        throw new IllegalArgumentException("Injection point " + ip + " does not have @Resource qualifier");
+    }
 
 }

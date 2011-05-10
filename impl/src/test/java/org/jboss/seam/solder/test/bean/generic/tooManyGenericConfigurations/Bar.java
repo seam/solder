@@ -20,13 +20,11 @@ import org.jboss.seam.solder.bean.generic.GenericConfiguration;
 
 /**
  * A generic bean for the config annotation Message
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
 
 @GenericConfiguration(Message.class)
-public class Bar
-{
+public class Bar {
 
 }

@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-public class DVDDrive implements OpticalDrive
-{
+public class DVDDrive implements OpticalDrive {
 
 }

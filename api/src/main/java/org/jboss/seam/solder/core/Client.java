@@ -27,15 +27,13 @@ import javax.inject.Qualifier;
 /**
  * Qualifier annotation provided for the purposes of identifing beans associated
  * with the currently logged in user.
- * 
+ *
  * @author Stuart Douglas
- * 
  */
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE, ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD })
+@Target({ElementType.TYPE, ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
 @Documented
-public @interface Client
-{
+public @interface Client {
 
 }

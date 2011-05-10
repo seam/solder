@@ -19,17 +19,14 @@ package org.jboss.seam.solder.test.unwraps;
 import org.jboss.seam.solder.core.Veto;
 
 @Veto
-public class ProducedBean implements ProducedInterface
-{
-   String value = "wrong";
+public class ProducedBean implements ProducedInterface {
+    String value = "wrong";
 
-   public String getValue()
-   {
-      return value;
-   }
+    public String getValue() {
+        return value;
+    }
 
-   public void setValue(String value)
-   {
-      this.value = value;
-   }
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

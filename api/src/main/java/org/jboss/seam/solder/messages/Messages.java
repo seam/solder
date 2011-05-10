@@ -47,7 +47,7 @@ public final class Messages {
      * Get a message bundle of the given type.  Equivalent to <code>{@link #getBundle(Class, java.util.Locale) getBundle}(type, Locale.getDefault())</code>.
      *
      * @param type the bundle type class
-     * @param <T> the bundle type
+     * @param <T>  the bundle type
      * @return the bundle
      */
     public static <T> T getBundle(Class<T> type) {
@@ -57,9 +57,9 @@ public final class Messages {
     /**
      * Get a message bundle of the given type.
      *
-     * @param type the bundle type class
+     * @param type   the bundle type class
      * @param locale the message locale to use
-     * @param <T> the bundle type
+     * @param <T>    the bundle type
      * @return the bundle
      */
     public static <T> T getBundle(Class<T> type, Locale locale) {
@@ -87,7 +87,7 @@ public final class Messages {
             bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader()).asSubclass(type);
         } catch (ClassNotFoundException e) {
             if (GENERATE_PROXIES) {
-                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, new MessageBundleInvocationHandler(type)));
+                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[]{type}, new MessageBundleInvocationHandler(type)));
             }
             throw new IllegalArgumentException("Invalid bundle " + type + " (implementation not found)");
         }

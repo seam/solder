@@ -25,8 +25,7 @@ import javax.inject.Qualifier;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.FIELD, ElementType.TYPE })
-public @interface LaptopHardDrive
-{
+@Target({ElementType.FIELD, ElementType.TYPE})
+public @interface LaptopHardDrive {
 
 }

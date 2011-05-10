@@ -27,32 +27,29 @@ import java.lang.annotation.Target;
  * Veto the processing of the type if the required classes are not available.
  * Any beans defined by this class will not be installed.
  * </p>
- * 
+ * <p/>
  * <p>
- * When placed on package, all beans in the package are installed if only if 
+ * When placed on package, all beans in the package are installed if only if
  * all of required classes are available.
  * </p>
- * 
+ * <p/>
  * <p>
  * If annotation is defined both on the package and the bean, union of
  * required classes defined by these annotations is considered.
  * </p>
- * 
+ * <p/>
  * <p>
  * Seam Solder will try both the Thread Context ClassLoader, as well as the
  * classloader of the declaring class.
  * </p>
- * 
+ *
  * @author Stuart Douglas
  * @author Jozef Hartinger
- * 
  * @see Veto
- * 
  */
-@Target({ ElementType.TYPE, ElementType.PACKAGE })
+@Target({ElementType.TYPE, ElementType.PACKAGE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Requires
-{
-   String[] value();
+public @interface Requires {
+    String[] value();
 }

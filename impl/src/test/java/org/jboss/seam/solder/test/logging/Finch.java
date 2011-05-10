@@ -21,18 +21,16 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Category;
 
-public class Finch
-{
-   @Inject @Category("Finch")
-   private Logger log;
-   
-   public void generateLogMessage()
-   {
-      log.info("Finch");
-   }
-   
-   public Logger getLogger()
-   {
-      return log;
-   }
+public class Finch {
+    @Inject
+    @Category("Finch")
+    private Logger log;
+
+    public void generateLogMessage() {
+        log.info("Finch");
+    }
+
+    public Logger getLogger() {
+        return log;
+    }
 }

@@ -24,40 +24,32 @@ import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
 /**
  * test that producer methods are read from the installed default bean and not
  * the synthetic delegate
- * 
+ *
  * @author stuart
- * 
  */
 @ApplicationScoped
 @DefaultBean(HardDriveFactory.class)
-public class HardDriveFactory
-{
-   private String size = "small";
+public class HardDriveFactory {
+    private String size = "small";
 
-   @DefaultBean(HardDrive.class)
-   @Produces
-   public HardDrive getHardDrive()
-   {
-      return new HardDrive()
-      {
-         public String size()
-         {
-            return size;
-         }
-      };
-   }
+    @DefaultBean(HardDrive.class)
+    @Produces
+    public HardDrive getHardDrive() {
+        return new HardDrive() {
+            public String size() {
+                return size;
+            }
+        };
+    }
 
 
-   public String getSize()
-   {
-      return size;
-   }
+    public String getSize() {
+        return size;
+    }
 
-   public void setSize(String size)
-   {
-      this.size = size;
-   }
-
+    public void setSize(String size) {
+        this.size = size;
+    }
 
 
 }

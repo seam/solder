@@ -19,9 +19,8 @@ package org.jboss.seam.solder.test.core.requires;
 /**
  * This class is never deployed to a standalone container. To prevent the class from being picked up in an embedded test run,
  * its static initializer throws an exception.
- * 
+ *
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
- * 
  */
 public class Jaguar {
 

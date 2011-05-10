@@ -30,65 +30,55 @@ import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 /**
  * Manages the handler class for the service handler extension. This class is
  * responsible for managing the lifecycle of the handler class instances
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-class ServiceHandlerManager<T>
-{
-   private final Class<T> handlerClass;
-   private final Method handlerMethod;
-   private final InjectionTarget<T> injectionTarget;
+class ServiceHandlerManager<T> {
+    private final Class<T> handlerClass;
+    private final Method handlerMethod;
+    private final InjectionTarget<T> injectionTarget;
 
-   /**
-    * Creates a wrapper around an AutoProxy handler class
-    * 
-    * @param handlerClass The handler class
-    * @throws IllegalArgumentException if the handler class is does not have a
-    *            suitable @AroundInvoke method
-    */
-   ServiceHandlerManager(Class<T> handlerClass, BeanManager beanManager) throws IllegalArgumentException
-   {
-      this.handlerClass = handlerClass;
-      handlerMethod = getHandlerMethod(handlerClass);
-      //now create the InjectionTarget
-      AnnotatedTypeBuilder<T> typeBuilder = new AnnotatedTypeBuilder<T>().readFromType(handlerClass);
-      injectionTarget = beanManager.createInjectionTarget(typeBuilder.create());
-   }
+    /**
+     * Creates a wrapper around an AutoProxy handler class
+     *
+     * @param handlerClass The handler class
+     * @throws IllegalArgumentException if the handler class is does not have a
+     *                                  suitable @AroundInvoke method
+     */
+    ServiceHandlerManager(Class<T> handlerClass, BeanManager beanManager) throws IllegalArgumentException {
+        this.handlerClass = handlerClass;
+        handlerMethod = getHandlerMethod(handlerClass);
+        //now create the InjectionTarget
+        AnnotatedTypeBuilder<T> typeBuilder = new AnnotatedTypeBuilder<T>().readFromType(handlerClass);
+        injectionTarget = beanManager.createInjectionTarget(typeBuilder.create());
+    }
 
-   T create(CreationalContext<T> ctx)
-   {
-      T instance = injectionTarget.produce(ctx);
-      injectionTarget.inject(instance, ctx);
-      injectionTarget.postConstruct(instance);
-      return instance;
-   }
+    T create(CreationalContext<T> ctx) {
+        T instance = injectionTarget.produce(ctx);
+        injectionTarget.inject(instance, ctx);
+        injectionTarget.postConstruct(instance);
+        return instance;
+    }
 
-   Object invoke(Object instance, InvocationContext ctx) throws Exception
-   {
-      return handlerMethod.invoke(instance, ctx);
-   }
+    Object invoke(Object instance, InvocationContext ctx) throws Exception {
+        return handlerMethod.invoke(instance, ctx);
+    }
 
-   Class<?> getHandlerClass()
-   {
-      return handlerClass;
-   }
+    Class<?> getHandlerClass() {
+        return handlerClass;
+    }
 
-   private static Method getHandlerMethod(Class<?> handlerClass)
-   {
-      //search for the handler method
-      for (Method m : Reflections.getAllDeclaredMethods(handlerClass))
-      {
-         if (m.isAnnotationPresent(AroundInvoke.class))
-         {
-            if (m.getParameterTypes().length != 1 || m.getParameterTypes()[0] != InvocationContext.class)
-            {
-               throw new IllegalArgumentException("Could not find suitable AroundInvoke method on class " + handlerClass + " methods denoted @AroundInvoke must have a single InvokationContext parameter");
+    private static Method getHandlerMethod(Class<?> handlerClass) {
+        //search for the handler method
+        for (Method m : Reflections.getAllDeclaredMethods(handlerClass)) {
+            if (m.isAnnotationPresent(AroundInvoke.class)) {
+                if (m.getParameterTypes().length != 1 || m.getParameterTypes()[0] != InvocationContext.class) {
+                    throw new IllegalArgumentException("Could not find suitable AroundInvoke method on class " + handlerClass + " methods denoted @AroundInvoke must have a single InvokationContext parameter");
+                }
+                return m;
             }
-            return m;
-         }
-      }
-      throw new IllegalArgumentException("Could not find suitable AroundInvoke method on class " + handlerClass);
-   }
+        }
+        throw new IllegalArgumentException("Could not find suitable AroundInvoke method on class " + handlerClass);
+    }
 
 }

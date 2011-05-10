@@ -16,10 +16,6 @@
  */
 package org.jboss.seam.solder.test.bean.generic.field;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
@@ -29,38 +25,39 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 @RunWith(Arquillian.class)
-public class ObserversOnGenericBeanTest
-{
-   
-   @Deployment
-   public static Archive<?> deployment()
-   {
-      return baseDeployment().addPackage(ObserversOnGenericBeanTest.class.getPackage());
-   }
+public class ObserversOnGenericBeanTest {
 
-   @Inject
-   private Event<Plugh> plughEvent;
+    @Deployment
+    public static Archive<?> deployment() {
+        return baseDeployment().addPackage(ObserversOnGenericBeanTest.class.getPackage());
+    }
 
-   @Test
-   public void testGeneric()
-   {
-      
+    @Inject
+    private Event<Plugh> plughEvent;
 
-      // Check specific observers are invoked
-      Plugh plugh1 = new Plugh();
-      plughEvent.select(new FooLiteral(1)).fire(plugh1);
-      assertEquals("hello1", plugh1.getMessage().value());
-      
-      Plugh plugh2 = new Plugh();
-      plughEvent.select(new FooLiteral(2)).fire(plugh2);
-      assertEquals("hello2", plugh2.getMessage().value());
-      
-      // Check that the base observer is invoked
-      Plugh basePlugh = new Plugh();
-      plughEvent.fire(basePlugh);
-      assertNotNull(basePlugh.getMessage());
-      assertEquals("base", basePlugh.getMessage().value());
-      
-   }
+    @Test
+    public void testGeneric() {
+
+
+        // Check specific observers are invoked
+        Plugh plugh1 = new Plugh();
+        plughEvent.select(new FooLiteral(1)).fire(plugh1);
+        assertEquals("hello1", plugh1.getMessage().value());
+
+        Plugh plugh2 = new Plugh();
+        plughEvent.select(new FooLiteral(2)).fire(plugh2);
+        assertEquals("hello2", plugh2.getMessage().value());
+
+        // Check that the base observer is invoked
+        Plugh basePlugh = new Plugh();
+        plughEvent.fire(basePlugh);
+        assertNotNull(basePlugh.getMessage());
+        assertEquals("base", basePlugh.getMessage().value());
+
+    }
 }

@@ -18,16 +18,13 @@ package org.jboss.seam.solder.test.bean.generic.tooManyGenericConfigurations;
 
 /**
  * A normal bean
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
-public class Corge
-{
-   
-   public String getName()
-   {
-      return "fred";
-   }
+public class Corge {
+
+    public String getName() {
+        return "fred";
+    }
 
 }

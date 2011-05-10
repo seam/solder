@@ -16,18 +16,15 @@
  */
 package org.jboss.seam.solder.test.bean.generic.method;
 
-public class Kitchen
-{
-   private final String size;
+public class Kitchen {
+    private final String size;
 
-   public Kitchen(String size)
-   {
-      this.size = size;
-   }
+    public Kitchen(String size) {
+        this.size = size;
+    }
 
-   public String getSize()
-   {
-      return size;
-   }
+    public String getSize() {
+        return size;
+    }
 
 }

@@ -26,52 +26,45 @@ import javax.inject.Inject;
 
 /**
  * Responsible for creating and exposing the ELContext
- * 
+ *
  * @author Stuart Douglas
  * @author Pete Muir
  */
-class ELContextProducer
-{
+class ELContextProducer {
 
-   @Inject
-   @Mapper
-   private Instance<FunctionMapper> functionMapper;
+    @Inject
+    @Mapper
+    private Instance<FunctionMapper> functionMapper;
 
-   @Inject
-   @Mapper
-   private Instance<VariableMapper> variableMapper;
+    @Inject
+    @Mapper
+    private Instance<VariableMapper> variableMapper;
 
-   @Inject
-   @Composite
-   private ELResolver resolver;
+    @Inject
+    @Composite
+    private ELResolver resolver;
 
-   @Produces
-   ELContext createELContext()
-   {
-      return createELContext(resolver, functionMapper.get(), variableMapper.get());
-   }
+    @Produces
+    ELContext createELContext() {
+        return createELContext(resolver, functionMapper.get(), variableMapper.get());
+    }
 
-   private ELContext createELContext(final ELResolver resolver, final FunctionMapper functionMapper, final VariableMapper variableMapper)
-   {
-      return new ELContext()
-      {
-         @Override
-         public ELResolver getELResolver()
-         {
-            return resolver;
-         }
+    private ELContext createELContext(final ELResolver resolver, final FunctionMapper functionMapper, final VariableMapper variableMapper) {
+        return new ELContext() {
+            @Override
+            public ELResolver getELResolver() {
+                return resolver;
+            }
 
-         @Override
-         public FunctionMapper getFunctionMapper()
-         {
-            return functionMapper;
-         }
+            @Override
+            public FunctionMapper getFunctionMapper() {
+                return functionMapper;
+            }
 
-         @Override
-         public VariableMapper getVariableMapper()
-         {
-            return variableMapper;
-         }
-      };
-   }
+            @Override
+            public VariableMapper getVariableMapper() {
+                return variableMapper;
+            }
+        };
+    }
 }

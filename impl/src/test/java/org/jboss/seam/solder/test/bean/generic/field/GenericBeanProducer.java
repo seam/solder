@@ -21,47 +21,46 @@ import javax.enterprise.inject.Produces;
 
 /**
  * A producer of generic beans
- * @author pmuir
  *
+ * @author pmuir
  */
-public class GenericBeanProducer
-{
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Message("hello1")
-   private Burt burt1;
+public class GenericBeanProducer {
+    @SuppressWarnings("unused")
+    @Foo(1)
+    @Produces
+    @Message("hello1")
+    private Burt burt1;
 
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Message("hello2")
-   private Burt burt2;
-   
-   @SuppressWarnings("unused")
-   @Foo(3)
-   @Produces
-   @Message("hello3")
-   @SessionScoped
-   private Burt baz3;
-   
-   @SuppressWarnings("unused")
-   @Foo(4)
-   @Produces
-   @Message("hello4")
-   @SessionScoped
-   private Burt baz4;
-   
-   @SuppressWarnings("unused")
-   @Foo(1)
-   @Produces
-   @Service(1)
-   private Waldo waldo1 = new Waldo("Pete");
-   
-   @SuppressWarnings("unused")
-   @Foo(2)
-   @Produces
-   @Service(2)
-   private Waldo waldo2 = new Waldo("Stuart");
+    @SuppressWarnings("unused")
+    @Foo(2)
+    @Produces
+    @Message("hello2")
+    private Burt burt2;
+
+    @SuppressWarnings("unused")
+    @Foo(3)
+    @Produces
+    @Message("hello3")
+    @SessionScoped
+    private Burt baz3;
+
+    @SuppressWarnings("unused")
+    @Foo(4)
+    @Produces
+    @Message("hello4")
+    @SessionScoped
+    private Burt baz4;
+
+    @SuppressWarnings("unused")
+    @Foo(1)
+    @Produces
+    @Service(1)
+    private Waldo waldo1 = new Waldo("Pete");
+
+    @SuppressWarnings("unused")
+    @Foo(2)
+    @Produces
+    @Service(2)
+    private Waldo waldo2 = new Waldo("Stuart");
 
 }

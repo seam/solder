@@ -29,92 +29,76 @@ import org.jboss.seam.solder.literal.AnyLiteral;
 
 /**
  * A helper class for implementing generic bean functionality
- * 
- * @author Pete Muir
  *
+ * @author Pete Muir
  */
-abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements PassivationCapable
-{
+abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements PassivationCapable {
 
-   private final Bean<T> delegate;
-   private final Set<Annotation> qualifiers;
-   private final BeanManager beanManager;
-   private final String id;
-   private final boolean alternative;
-   private final Class<?> beanClass;
+    private final Bean<T> delegate;
+    private final Set<Annotation> qualifiers;
+    private final BeanManager beanManager;
+    private final String id;
+    private final boolean alternative;
+    private final Class<?> beanClass;
 
-   protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, GenericIdentifier identifier, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager)
-   {
-      this.delegate = delegate;
-      this.beanManager = beanManager;
-      this.qualifiers = new HashSet<Annotation>();
-      for (Annotation qualifier : qualifiers)
-      {
-         // Don't add the GenericMarker qualifier, this is a pseudo qualifier,
-         // used to remove declared qualifiers
-         if (!qualifier.annotationType().equals(GenericMarker.class))
-         {
-            this.qualifiers.add(qualifier);
-         }
-      }
-      this.qualifiers.add(AnyLiteral.INSTANCE);
-      this.id = getClass().getName() + "-" + identifier.toString() + "-" + id;
-      this.alternative = alternative;
-      this.beanClass = beanClass;
-   }
-   
-   protected BeanManager getBeanManager()
-   {
-      return beanManager;
-   }
+    protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, GenericIdentifier identifier, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager) {
+        this.delegate = delegate;
+        this.beanManager = beanManager;
+        this.qualifiers = new HashSet<Annotation>();
+        for (Annotation qualifier : qualifiers) {
+            // Don't add the GenericMarker qualifier, this is a pseudo qualifier,
+            // used to remove declared qualifiers
+            if (!qualifier.annotationType().equals(GenericMarker.class)) {
+                this.qualifiers.add(qualifier);
+            }
+        }
+        this.qualifiers.add(AnyLiteral.INSTANCE);
+        this.id = getClass().getName() + "-" + identifier.toString() + "-" + id;
+        this.alternative = alternative;
+        this.beanClass = beanClass;
+    }
 
-   @Override
-   protected Bean<T> delegate()
-   {
-      return delegate;
-   }
+    protected BeanManager getBeanManager() {
+        return beanManager;
+    }
 
-   @Override
-   public Set<Annotation> getQualifiers()
-   {
-      return qualifiers;
-   }
+    @Override
+    protected Bean<T> delegate() {
+        return delegate;
+    }
 
-   public String getId()
-   {
-      return id;
-   }
+    @Override
+    public Set<Annotation> getQualifiers() {
+        return qualifiers;
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (obj instanceof GenericManagedBean<?>)
-      {
-         GenericManagedBean<?> that = (GenericManagedBean<?>) obj;
-         return this.getId().equals(that.getId());
-      }
-      else
-      {
-         return false;
-      }
-   }
+    public String getId() {
+        return id;
+    }
 
-   @Override
-   public int hashCode()
-   {
-      return id.hashCode();
-   }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof GenericManagedBean<?>) {
+            GenericManagedBean<?> that = (GenericManagedBean<?>) obj;
+            return this.getId().equals(that.getId());
+        } else {
+            return false;
+        }
+    }
 
-   @Override
-   public Class<?> getBeanClass()
-   {
-      return beanClass;
-   }
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 
-   @Override
-   public boolean isAlternative()
-   {
-      return alternative;
-   }
+    @Override
+    public Class<?> getBeanClass() {
+        return beanClass;
+    }
+
+    @Override
+    public boolean isAlternative() {
+        return alternative;
+    }
 
 }

@@ -21,21 +21,18 @@ import javax.enterprise.util.AnnotationLiteral;
 import org.jboss.seam.solder.messages.MessageBundle;
 
 
-public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle
-{
-   private static final long serialVersionUID = -8137340248362361317L;
+public class MessageBundleLiteral extends AnnotationLiteral<MessageBundle> implements MessageBundle {
+    private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final MessageBundle INSTANCE = new MessageBundleLiteral();
+    public static final MessageBundle INSTANCE = new MessageBundleLiteral();
 
-   private final String projectCode;
+    private final String projectCode;
 
-   public MessageBundleLiteral()
-   {
-      projectCode = "";
-   }
+    public MessageBundleLiteral() {
+        projectCode = "";
+    }
 
-   public String projectCode()
-   {
-      return projectCode;
-   }
+    public String projectCode() {
+        return projectCode;
+    }
 }

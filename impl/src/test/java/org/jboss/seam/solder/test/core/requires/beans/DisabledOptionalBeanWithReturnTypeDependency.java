@@ -22,8 +22,8 @@ import org.jboss.seam.solder.core.Requires;
 import org.jboss.seam.solder.test.core.requires.CommonInterface;
 import org.jboss.seam.solder.test.core.requires.Jaguar;
 
-@Requires({ "org.jboss.seam.solder.test.core.requires.Tiger", "org.jboss.seam.solder.test.core.requires.Jaguar",
-        "java.lang.Integer" })
+@Requires({"org.jboss.seam.solder.test.core.requires.Tiger", "org.jboss.seam.solder.test.core.requires.Jaguar",
+        "java.lang.Integer"})
 @Named
 public class DisabledOptionalBeanWithReturnTypeDependency implements CommonInterface {
 

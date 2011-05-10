@@ -20,9 +20,8 @@ import javax.enterprise.inject.Disposes;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class DisposesLiteral extends AnnotationLiteral<Disposes> implements Disposes
-{
-   private static final long serialVersionUID = 1L;
+public class DisposesLiteral extends AnnotationLiteral<Disposes> implements Disposes {
+    private static final long serialVersionUID = 1L;
 
-   public static final Disposes INSTANCE = new DisposesLiteral();
+    public static final Disposes INSTANCE = new DisposesLiteral();
 }

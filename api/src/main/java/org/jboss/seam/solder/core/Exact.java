@@ -16,28 +16,26 @@
  */
 package org.jboss.seam.solder.core;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
 
 /**
  * An injection point qualifier that may be used to select the exact bean to be
  * injected, by specifying its implementation class.
- * 
+ *
  * @author Gavin King
- * 
  */
 @Retention(RUNTIME)
-@Target( { METHOD, TYPE, FIELD, PARAMETER })
+@Target({METHOD, TYPE, FIELD, PARAMETER})
 @Documented
-public @interface Exact
-{
-   Class<?> value();
+public @interface Exact {
+    Class<?> value();
 }

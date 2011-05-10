@@ -22,14 +22,13 @@ import javax.inject.Inject;
 import org.jboss.seam.solder.resourceLoader.ResourceProvider;
 
 @RequestScoped
-public class ResourceClient
-{
-   
-   @Inject ResourceProvider resourceProvider;
+public class ResourceClient {
 
-   public ResourceProvider getResourceProvider()
-   {
-      return resourceProvider;
-   }
-   
+    @Inject
+    ResourceProvider resourceProvider;
+
+    public ResourceProvider getResourceProvider() {
+        return resourceProvider;
+    }
+
 }

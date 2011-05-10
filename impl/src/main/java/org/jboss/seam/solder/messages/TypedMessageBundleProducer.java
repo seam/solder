@@ -17,37 +17,32 @@
 
 package org.jboss.seam.solder.messages;
 
-import static org.jboss.seam.solder.messages.Messages.getBundle;
-import static org.jboss.seam.solder.reflection.Reflections.getRawType;
-import static org.jboss.seam.solder.util.Locales.toLocale;
-
 import java.io.Serializable;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 
+import static org.jboss.seam.solder.messages.Messages.getBundle;
+import static org.jboss.seam.solder.reflection.Reflections.getRawType;
+import static org.jboss.seam.solder.util.Locales.toLocale;
+
 /**
  * The <code>TypedMessageBundleProducer</code> provides a producer method for injected
  * typed message bundles.
- * 
+ *
  * @author David Allen
  * @author Pete Muir
  */
-class TypedMessageBundleProducer implements Serializable
-{
-   @Produces
-   @TypedMessageBundle
-   Object produceTypedMessageBundle(InjectionPoint injectionPoint)
-   {
-      Annotated annotated = injectionPoint.getAnnotated();
-      if (annotated.isAnnotationPresent(Locale.class))
-      {         
-         return getBundle(getRawType(injectionPoint.getType()), toLocale(annotated.getAnnotation(Locale.class).value()));
-      }
-      else
-      {
-         return getBundle(getRawType(injectionPoint.getType()));
-      }
-   }
+class TypedMessageBundleProducer implements Serializable {
+    @Produces
+    @TypedMessageBundle
+    Object produceTypedMessageBundle(InjectionPoint injectionPoint) {
+        Annotated annotated = injectionPoint.getAnnotated();
+        if (annotated.isAnnotationPresent(Locale.class)) {
+            return getBundle(getRawType(injectionPoint.getType()), toLocale(annotated.getAnnotation(Locale.class).value()));
+        } else {
+            return getBundle(getRawType(injectionPoint.getType()));
+        }
+    }
 }

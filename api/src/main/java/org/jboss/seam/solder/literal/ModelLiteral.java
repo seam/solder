@@ -20,9 +20,8 @@ import javax.enterprise.inject.Model;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class ModelLiteral extends AnnotationLiteral<Model> implements Model
-{
-   private static final long serialVersionUID = -5353345766867563825L;
+public class ModelLiteral extends AnnotationLiteral<Model> implements Model {
+    private static final long serialVersionUID = -5353345766867563825L;
 
-   public static final Model INSTANCE = new ModelLiteral();
+    public static final Model INSTANCE = new ModelLiteral();
 }

@@ -23,13 +23,11 @@ import org.jboss.seam.solder.bean.generic.GenericType;
 
 /**
  * Generic config annotation
- * 
+ *
  * @author stuart
- * 
  */
 @GenericType(Bam.class)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Boom
-{
-   String value();
+public @interface Boom {
+    String value();
 }

@@ -21,15 +21,15 @@ import javax.inject.Inject;
 import org.jboss.seam.solder.messages.Locale;
 import org.jboss.seam.solder.messages.MessageBundle;
 
-public class FrenchJay
-{
-   
-   @Inject @MessageBundle @Locale("fr")
-   BirdMessages messages;
-   
-   String getMessage()
-   {
-      return messages.numberOfJaysSpotted(4);
-   }
+public class FrenchJay {
+
+    @Inject
+    @MessageBundle
+    @Locale("fr")
+    BirdMessages messages;
+
+    String getMessage() {
+        return messages.numberOfJaysSpotted(4);
+    }
 
 }

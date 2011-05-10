@@ -20,9 +20,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class ApplicationScopedLiteral extends AnnotationLiteral<ApplicationScoped> implements ApplicationScoped
-{
-   private static final long serialVersionUID = 771021755170432223L;
+public class ApplicationScopedLiteral extends AnnotationLiteral<ApplicationScoped> implements ApplicationScoped {
+    private static final long serialVersionUID = 771021755170432223L;
 
-   public static final ApplicationScoped INSTANCE = new ApplicationScopedLiteral();
+    public static final ApplicationScoped INSTANCE = new ApplicationScopedLiteral();
 }

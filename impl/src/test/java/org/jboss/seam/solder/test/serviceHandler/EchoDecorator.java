@@ -16,10 +16,8 @@
  */
 package org.jboss.seam.solder.test.serviceHandler;
 
-public class EchoDecorator
-{
-   public String decorate(String message)
-   {
-      return "-" + message + "-";
-   }
+public class EchoDecorator {
+    public String decorate(String message) {
+        return "-" + message + "-";
+    }
 }

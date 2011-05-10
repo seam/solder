@@ -20,9 +20,8 @@ import javax.decorator.Delegate;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class DelegateLiteral extends AnnotationLiteral<Delegate> implements Delegate
-{
-   private static final long serialVersionUID = -533933286126296678L;
+public class DelegateLiteral extends AnnotationLiteral<Delegate> implements Delegate {
+    private static final long serialVersionUID = -533933286126296678L;
 
-   public static final Delegate INSTANCE = new DelegateLiteral();
+    public static final Delegate INSTANCE = new DelegateLiteral();
 }

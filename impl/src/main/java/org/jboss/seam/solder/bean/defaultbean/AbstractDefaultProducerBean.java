@@ -9,7 +9,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -28,49 +28,42 @@ import org.jboss.seam.solder.bean.Beans;
 
 /**
  * A helper class for implementing producer methods and fields on default beans
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-abstract class AbstractDefaultProducerBean<T> extends AbstactDefaultBean<T>
-{
+abstract class AbstractDefaultProducerBean<T> extends AbstactDefaultBean<T> {
 
-   private static final Annotation[] NO_QUALIFIERS = {};
+    private static final Annotation[] NO_QUALIFIERS = {};
 
-   private final Type declaringBeanType;
-   private final Annotation[] declaringBeanQualifiers;
+    private final Type declaringBeanType;
+    private final Annotation[] declaringBeanQualifiers;
 
-   protected AbstractDefaultProducerBean(Bean<T> delegate, Type declaringBeanType, Set<Type> types, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, BeanManager beanManager)
-   {
-      super(delegate, declaringBeanType, types, qualifiers, beanManager);
-      this.declaringBeanType = delegate.getBeanClass();
-      this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(NO_QUALIFIERS);
-   }
-   
-   protected Annotation[] getDeclaringBeanQualifiers()
-   {
-      return declaringBeanQualifiers.clone();
-   }
-   
-   protected Type getDeclaringBeanType()
-   {
-      return declaringBeanType;
-   }
-   
-   protected abstract T getValue(Object receiver, CreationalContext<T> creationalContext);
+    protected AbstractDefaultProducerBean(Bean<T> delegate, Type declaringBeanType, Set<Type> types, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, BeanManager beanManager) {
+        super(delegate, declaringBeanType, types, qualifiers, beanManager);
+        this.declaringBeanType = delegate.getBeanClass();
+        this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(NO_QUALIFIERS);
+    }
 
-   @Override
-   public T create(CreationalContext<T> creationalContext)
-   {
-         Object receiver = getReceiver(creationalContext);
-         T instance = getValue(receiver, creationalContext);
-         Beans.checkReturnValue(instance, this, null, getBeanManager());
-         return instance;
-   }
+    protected Annotation[] getDeclaringBeanQualifiers() {
+        return declaringBeanQualifiers.clone();
+    }
 
-   protected Object getReceiver(CreationalContext<T> creationalContext)
-   {
-      Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(getDeclaringBeanType(), declaringBeanQualifiers));
-      return getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
-   }
+    protected Type getDeclaringBeanType() {
+        return declaringBeanType;
+    }
+
+    protected abstract T getValue(Object receiver, CreationalContext<T> creationalContext);
+
+    @Override
+    public T create(CreationalContext<T> creationalContext) {
+        Object receiver = getReceiver(creationalContext);
+        T instance = getValue(receiver, creationalContext);
+        Beans.checkReturnValue(instance, this, null, getBeanManager());
+        return instance;
+    }
+
+    protected Object getReceiver(CreationalContext<T> creationalContext) {
+        Bean<?> declaringBean = getBeanManager().resolve(getBeanManager().getBeans(getDeclaringBeanType(), declaringBeanQualifiers));
+        return getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
+    }
 }

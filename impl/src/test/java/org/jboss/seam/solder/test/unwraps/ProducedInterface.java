@@ -16,9 +16,8 @@
  */
 package org.jboss.seam.solder.test.unwraps;
 
-public interface ProducedInterface
-{
+public interface ProducedInterface {
 
-   public abstract String getValue();
+    public abstract String getValue();
 
 }

@@ -16,8 +16,6 @@
  */
 package org.jboss.seam.solder.bean.generic;
 
-import static org.jboss.seam.solder.reflection.Reflections.getFieldValue;
-
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
@@ -29,29 +27,27 @@ import javax.enterprise.inject.spi.BeanManager;
 import org.jboss.seam.solder.reflection.Reflections;
 import org.jboss.seam.solder.reflection.annotated.Annotateds;
 
-class GenericProducerField<T, X> extends AbstractGenericProducerBean<T>
-{
+import static org.jboss.seam.solder.reflection.Reflections.getFieldValue;
 
-   private final AnnotatedField<X> field;
+class GenericProducerField<T, X> extends AbstractGenericProducerBean<T> {
 
-   GenericProducerField(Bean<T> originalBean, GenericIdentifier identifier, AnnotatedField<X> field, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> declaringBeanClass, BeanManager beanManager)
-   {
-      super(originalBean, identifier, qualifiers, declaringBeanQualifiers, scopeOverride, Annotateds.createFieldId(field), alternative, declaringBeanClass, beanManager);
-      this.field = field;
-   }
+    private final AnnotatedField<X> field;
 
-   @Override
-   protected T getValue(Object receiver, CreationalContext<T> creationalContext)
-   {
-      field.getJavaMember().setAccessible(true);
-      return getFieldValue(field.getJavaMember(), receiver, Reflections.<T>getRawType(field.getBaseType()));
-   }
+    GenericProducerField(Bean<T> originalBean, GenericIdentifier identifier, AnnotatedField<X> field, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> declaringBeanClass, BeanManager beanManager) {
+        super(originalBean, identifier, qualifiers, declaringBeanQualifiers, scopeOverride, Annotateds.createFieldId(field), alternative, declaringBeanClass, beanManager);
+        this.field = field;
+    }
 
-   @Override
-   public void destroy(T instance, CreationalContext<T> creationalContext)
-   {
-      // Generic managed beans must be dependent
-      creationalContext.release();
-   }
+    @Override
+    protected T getValue(Object receiver, CreationalContext<T> creationalContext) {
+        field.getJavaMember().setAccessible(true);
+        return getFieldValue(field.getJavaMember(), receiver, Reflections.<T>getRawType(field.getBaseType()));
+    }
+
+    @Override
+    public void destroy(T instance, CreationalContext<T> creationalContext) {
+        // Generic managed beans must be dependent
+        creationalContext.release();
+    }
 
 }

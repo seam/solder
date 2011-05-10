@@ -16,38 +16,37 @@
  */
 package org.jboss.seam.solder.el;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * <p>
  * Qualifier used to identify a javax.el.ELResolver to register with the
  * application wide javax.el.ELResolver provided by Seam Solder
  * </p>
- * 
+ * <p/>
  * <p>
  * Seam Solder will inject a javax.el.ELResolver for each instantiation of an
  * javax.el.ELContext (and hence for each instantiation of {@link Expressions});
  * any overrides of this bean should ensure that obtaining the bean instance is
  * a lightweight operation.
  * </p>
- * 
+ *
  * @author Stuart Douglas
  * @author Pete Muir
  */
 @Qualifier
 @Retention(RUNTIME)
-@Target({ TYPE, FIELD, METHOD, PARAMETER })
+@Target({TYPE, FIELD, METHOD, PARAMETER})
 @Documented
-public @interface Resolver
-{
+public @interface Resolver {
 }

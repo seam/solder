@@ -22,10 +22,8 @@ import javax.enterprise.inject.Default;
 import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
 
 @DefaultBean(MagneticDrive.class)
-public class FloppyDrive implements MagneticDrive
-{
-   public void write(@Observes @Default WriteEvent event)
-   {
-      event.increment();
-   }
+public class FloppyDrive implements MagneticDrive {
+    public void write(@Observes @Default WriteEvent event) {
+        event.increment();
+    }
 }

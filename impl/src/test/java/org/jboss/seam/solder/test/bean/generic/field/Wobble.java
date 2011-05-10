@@ -18,16 +18,13 @@ package org.jboss.seam.solder.test.bean.generic.field;
 
 /**
  * A normal bean
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
-public class Wobble
-{
-   
-   public String getName()
-   {
-      return "bill";
-   }
+public class Wobble {
+
+    public String getName() {
+        return "bill";
+    }
 
 }

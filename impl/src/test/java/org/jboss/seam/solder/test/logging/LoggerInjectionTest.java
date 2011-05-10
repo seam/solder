@@ -22,7 +22,6 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
 
 import junit.framework.Assert;
-
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.test.util.Deployments;
@@ -32,7 +31,7 @@ import org.junit.runner.RunWith;
 
 /**
  * Tests injection of native JBoss Logging API
- *
+ * <p/>
  * <p>
  * NOTE: Some of these tests must be verified manually as we have no way to plug
  * in a mock logger.
@@ -42,58 +41,48 @@ import org.junit.runner.RunWith;
  * @author Dan Allen
  */
 @RunWith(Arquillian.class)
-public class LoggerInjectionTest
-{
-   @Deployment
-   public static Archive<?> createDeployment()
-   {
-       return Deployments.baseDeployment()
-          .addClasses(Sparrow.class, Finch.class, Wren.class, Raven.class, NonBean.class);
-   }
+public class LoggerInjectionTest {
+    @Deployment
+    public static Archive<?> createDeployment() {
+        return Deployments.baseDeployment()
+                .addClasses(Sparrow.class, Finch.class, Wren.class, Raven.class, NonBean.class);
+    }
 
-   @Test
-   public void testLoggerInjection(Sparrow sparrow)
-   {
-      sparrow.generateLogMessage();
-      Assert.assertEquals(Sparrow.class.getName(), sparrow.getLogger().getName());
-   }
+    @Test
+    public void testLoggerInjection(Sparrow sparrow) {
+        sparrow.generateLogMessage();
+        Assert.assertEquals(Sparrow.class.getName(), sparrow.getLogger().getName());
+    }
 
-   @Test
-   public void testLoggerInjectionWithCategory(Finch finch)
-   {
-      finch.generateLogMessage();
-      Assert.assertEquals("Finch", finch.getLogger().getName());
-   }
+    @Test
+    public void testLoggerInjectionWithCategory(Finch finch) {
+        finch.generateLogMessage();
+        Assert.assertEquals("Finch", finch.getLogger().getName());
+    }
 
-   @Test
-   public void testLoggerInjectionWithTypedCategory(Wren wren)
-   {
-      wren.generateLogMessage();
-      Assert.assertEquals(LoggerInjectionTest.class.getName(), wren.getLogger().getName());
-   }
+    @Test
+    public void testLoggerInjectionWithTypedCategory(Wren wren) {
+        wren.generateLogMessage();
+        Assert.assertEquals(LoggerInjectionTest.class.getName(), wren.getLogger().getName());
+    }
 
-   @Test
-   public void testLoggerInjectionWithSuffix(Raven raven)
-   {
-      raven.generateLogMessage();
-      Assert.assertEquals(Raven.class.getName() + ".log", raven.getLogger().getName());
-   }
+    @Test
+    public void testLoggerInjectionWithSuffix(Raven raven) {
+        raven.generateLogMessage();
+        Assert.assertEquals(Raven.class.getName() + ".log", raven.getLogger().getName());
+    }
 
-   @Test
-   public void testLoggerInjectionIntoNonBean(BeanManager bm)
-   {
-      NonBean nonBean = new NonBean();
-      InjectionTarget<NonBean> target = bm.createInjectionTarget(bm.createAnnotatedType(NonBean.class));
-      CreationalContext<NonBean> cc = bm.createCreationalContext(null);
-      try
-      {
-         target.inject(nonBean, cc);
-         // this will cause a NullPointerException if the injection does not occur
-         nonBean.logMessage();
-      }
-      finally
-      {
-         cc.release();
-      }
-   }
+    @Test
+    public void testLoggerInjectionIntoNonBean(BeanManager bm) {
+        NonBean nonBean = new NonBean();
+        InjectionTarget<NonBean> target = bm.createInjectionTarget(bm.createAnnotatedType(NonBean.class));
+        CreationalContext<NonBean> cc = bm.createCreationalContext(null);
+        try {
+            target.inject(nonBean, cc);
+            // this will cause a NullPointerException if the injection does not occur
+            nonBean.logMessage();
+        } finally {
+            cc.release();
+        }
+    }
 }

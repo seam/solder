@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.test.interceptor;
 
-public class Foo
-{
+public class Foo {
 
 }

@@ -19,23 +19,19 @@ package org.jboss.seam.solder.test.el;
 import javax.inject.Named;
 
 @Named
-public class Ute
-{
-   public static String GO_STRING = "Vroom Vroom";
-   public String speed = "fast";
+public class Ute {
+    public static String GO_STRING = "Vroom Vroom";
+    public String speed = "fast";
 
-   public String go()
-   {
-      return GO_STRING;
-   }
+    public String go() {
+        return GO_STRING;
+    }
 
-   public String getSpeed()
-   {
-      return speed;
-   }
+    public String getSpeed() {
+        return speed;
+    }
 
-   public void setSpeed(String speed)
-   {
-      this.speed = speed;
-   }
+    public void setSpeed(String speed) {
+        this.speed = speed;
+    }
 }

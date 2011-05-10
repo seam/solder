@@ -20,9 +20,8 @@ import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 
-public class InjectLiteral extends AnnotationLiteral<Inject> implements Inject
-{
-   private static final long serialVersionUID = -5547537708250537848L;
+public class InjectLiteral extends AnnotationLiteral<Inject> implements Inject {
+    private static final long serialVersionUID = -5547537708250537848L;
 
-   public static final Inject INSTANCE = new InjectLiteral();
+    public static final Inject INSTANCE = new InjectLiteral();
 }

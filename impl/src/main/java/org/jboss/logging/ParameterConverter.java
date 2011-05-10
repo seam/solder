@@ -22,8 +22,8 @@ import java.util.Locale;
 /**
  * A converter for a specific parameter type.
  *
- * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  * @param <I> the input type
+ * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 public interface ParameterConverter<I> {
 
@@ -32,7 +32,7 @@ public interface ParameterConverter<I> {
      * as a parameter to either a {@link java.text.MessageFormat} or {@link java.util.Formatter} instance, depending
      * on the setting of {@link Message#format()}.
      *
-     * @param locale the locale
+     * @param locale    the locale
      * @param parameter the parameter
      * @return the converted value
      */

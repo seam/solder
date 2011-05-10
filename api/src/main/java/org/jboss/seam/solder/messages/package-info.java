@@ -9,7 +9,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -18,7 +18,7 @@
 /**
  * Seam Solder provides injectable typed message bundles (suitable for
  * internationalization and localization)
- * 
+ *
  * <p>
  * Often times you need to access a localized message. For example, you need to
  * localize an exception message.  Seam Solder let's you retrieve this message
@@ -31,33 +31,33 @@
  * configured as message accessors. You can configured the messages to use
  * printf-style interpolations of parameters (%s).
  * </p>
- * 
+ *
  * <pre>
  * &#64;MessageBundle
  * public interface TrainMessages {
  *
- *    &#64;Message("No trains spotted due to %s") 
+ *    &#64;Message("No trains spotted due to %s")
  *    String noTrainsSpotted(String cause);
  *
  * }
  * </pre>
- * 
+ *
  * <p>
  * Now inject the interface:
  * </p>
- * 
+ *
  * <pre>
  *    &#64;Inject &#64;MessageBundle TrainMessages messages;
  * </pre>
- * 
+ *
  * <p>
  * And use it:
  * </p>
- * 
+ *
  * <pre>
  *   throw new BadDayException(messages.noTrainsSpotted("leaves on the line"));
  * </pre>
- * 
+ *
  * @see org.jboss.seam.solder.messages.Message
  * @see org.jboss.seam.solder.messages.MessageBundle
  * @see org.jboss.seam.solder.messages.Locale

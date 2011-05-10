@@ -16,12 +16,6 @@
  */
 package org.jboss.seam.solder.messages;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -29,30 +23,34 @@ import java.lang.annotation.Target;
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.MessageLogger;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * <p>
  * Specifies a Locale for a typed logger.
  * </p>
- * 
+ * <p/>
  * <p>
  * If no locale is specified, the default locale will be used.
  * </p>
- * 
+ *
  * @author Pete Muir
- * 
  * @see MessageLogger
  * @see java.util.Locale#getDefault()
  * @see Logger#getMessageLogger(Class, String, java.util.Locale)
  */
-@Target({ METHOD, FIELD, PARAMETER, TYPE })
+@Target({METHOD, FIELD, PARAMETER, TYPE})
 @Retention(RUNTIME)
 @Documented
-public @interface Locale
-{
+public @interface Locale {
 
-   /**
-    * The locale, using _ to separate the language code, country code and
-    * variant. Specifying the country code and variant is optional.
-    */
-   String value();
+    /**
+     * The locale, using _ to separate the language code, country code and
+     * variant. Specifying the country code and variant is optional.
+     */
+    String value();
 }

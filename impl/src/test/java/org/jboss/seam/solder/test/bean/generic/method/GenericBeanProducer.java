@@ -20,41 +20,36 @@ import javax.enterprise.inject.Produces;
 
 /**
  * A producer of generic beans
- * @author pmuir
  *
+ * @author pmuir
  */
-public class GenericBeanProducer
-{
-   @Foo(1)
-   @Produces
-   @Message("hello1")
-   public Burt getBurt1()
-   {
-      return null;
-   }
+public class GenericBeanProducer {
+    @Foo(1)
+    @Produces
+    @Message("hello1")
+    public Burt getBurt1() {
+        return null;
+    }
 
-   @Foo(2)
-   @Produces
-   @Message("hello2")
-   public Burt getBurt2()
-   {
-      return null;
-   }
-   
-   @Foo(1)
-   @Produces
-   @Service(1)
-   public Waldo getWaldo1()
-   {
-      return new Waldo("Pete");
-   }
-   
-   @Foo(2)
-   @Produces
-   @Service(2)
-   public Waldo getWaldo2()
-   {
-      return new Waldo("Stuart");
-   }
+    @Foo(2)
+    @Produces
+    @Message("hello2")
+    public Burt getBurt2() {
+        return null;
+    }
+
+    @Foo(1)
+    @Produces
+    @Service(1)
+    public Waldo getWaldo1() {
+        return new Waldo("Pete");
+    }
+
+    @Foo(2)
+    @Produces
+    @Service(2)
+    public Waldo getWaldo2() {
+        return new Waldo("Stuart");
+    }
 
 }

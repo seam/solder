@@ -22,10 +22,8 @@ import javax.enterprise.inject.Default;
 import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
 
 @DefaultBean(OpticalDrive.class)
-public class CDDrive implements OpticalDrive
-{
-   public void write(@Observes @Default WriteEvent event)
-   {
-      event.increment();
-   }
+public class CDDrive implements OpticalDrive {
+    public void write(@Observes @Default WriteEvent event) {
+        event.increment();
+    }
 }

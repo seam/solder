@@ -26,160 +26,124 @@ import java.util.Set;
 
 import org.jboss.logging.Logger;
 
-class ClasspathResourceLoader implements ResourceLoader
-{
+class ClasspathResourceLoader implements ResourceLoader {
 
-   private static final Logger log = Logger.getLogger("org.jboss.seam.solder.resources");
-   
-   ClasspathResourceLoader()
-   {
-   }
+    private static final Logger log = Logger.getLogger("org.jboss.seam.solder.resources");
 
-   public InputStream getResourceAsStream(String name)
-   {
-      // Always use the strippedName, classloader always assumes no starting /
-      String strippedName = getStrippedName(name);
-      // Try to load from the TCCL
-      if (Thread.currentThread().getContextClassLoader() != null)
-      {
-         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(strippedName);
-         if (stream != null)
-         {
-            log.trace("Loaded resource from context classloader: " + strippedName);
-            return stream;
-         }
-      }
-      // Try to load from the extension's classloader
-      else
-      {
-         InputStream stream = ResourceProducer.class.getResourceAsStream(strippedName);
-         if (stream != null)
-         {
-            log.trace("Loaded resource from Seam classloader: " + strippedName);
-            return stream;
-         }
-      }
-      return null;
-   }
+    ClasspathResourceLoader() {
+    }
 
-   public URL getResource(String name)
-   {
-      // Always use the strippedName, classloader always assumes no starting /
-      String strippedName = getStrippedName(name);
-      // Try to load from the TCCL
-      if (Thread.currentThread().getContextClassLoader() != null)
-      {
-         URL url = Thread.currentThread().getContextClassLoader().getResource(strippedName);
-         if (url != null)
-         {
-            log.trace("Loaded resource from context classloader: " + strippedName);
-            return url;
-         }
-      }
-      // Try to load from the extension's classloader
-      else
-      {
-         URL url = ResourceProducer.class.getResource(strippedName);
-         if (url != null)
-         {
-            log.trace("Loaded resource from Seam classloader: " + strippedName);
-            return url;
-         }
-      }
-      return null;
-   }
-   
-
-   public Set<URL> getResources(String name)
-   {
-      Set<URL> urls = new HashSet<URL>();
-      // Always use the strippedName, classloader always assumes no starting /
-      String strippedName = getStrippedName(name);
-      // Try to load from the TCCL
-      if (Thread.currentThread().getContextClassLoader() != null)
-      {
-         try
-         {
-            Enumeration<URL> urlEnum = Thread.currentThread().getContextClassLoader().getResources(strippedName);
-            while (urlEnum.hasMoreElements())
-            {
-               urls.add(urlEnum.nextElement());
+    public InputStream getResourceAsStream(String name) {
+        // Always use the strippedName, classloader always assumes no starting /
+        String strippedName = getStrippedName(name);
+        // Try to load from the TCCL
+        if (Thread.currentThread().getContextClassLoader() != null) {
+            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(strippedName);
+            if (stream != null) {
+                log.trace("Loaded resource from context classloader: " + strippedName);
+                return stream;
             }
-         }
-         catch (IOException e)
-         {
-            // we are probably not going to recover from an IOException
-            throw new RuntimeException(e);
-         }
-      }
-      // Try to load from the extension's classloader
-      else
-      {
-         try
-         {
-            Enumeration<URL> urlEnum = ResourceProducer.class.getClassLoader().getResources(strippedName);
-            while (urlEnum.hasMoreElements())
-            {
-               urls.add(urlEnum.nextElement());
+        }
+        // Try to load from the extension's classloader
+        else {
+            InputStream stream = ResourceProducer.class.getResourceAsStream(strippedName);
+            if (stream != null) {
+                log.trace("Loaded resource from Seam classloader: " + strippedName);
+                return stream;
             }
-         }
-         catch (IOException e)
-         {
-            throw new RuntimeException(e);
-         }
-      }
-      return urls;
-   }
-   
-   public Collection<InputStream> getResourcesAsStream(String name)
-   {
-      Set<InputStream> resources = new HashSet<InputStream>();
-      // Always use the strippedName, classloader always assumes no starting /
-      String strippedName = getStrippedName(name);
-      // Try to load from the TCCL
-      if (Thread.currentThread().getContextClassLoader() != null)
-      {
-         try
-         {
-            Enumeration<URL> urlEnum = Thread.currentThread().getContextClassLoader().getResources(strippedName);
-            while (urlEnum.hasMoreElements())
-            {
-               resources.add(urlEnum.nextElement().openStream());
-            }
-         }
-         catch (IOException e)
-         {
-            // we are probably not going to recover from an IOException
-            throw new RuntimeException(e);
-         }
-      }
-      // Try to load from the extension's classloader
-      else
-      {
-         try
-         {
-            Enumeration<URL> urlEnum = ResourceProducer.class.getClassLoader().getResources(strippedName);
-            while (urlEnum.hasMoreElements())
-            {
-               resources.add(urlEnum.nextElement().openStream());
-            }
-         }
-         catch (IOException e)
-         {
-            throw new RuntimeException(e);
-         }
-      }
-      return resources;
-   }
-   
-   public int getPrecedence()
-   {
-      return 10;
-   }
+        }
+        return null;
+    }
 
-   private static String getStrippedName(String name)
-   {
-      return name.startsWith("/") ? name.substring(1) : name;
-   }
+    public URL getResource(String name) {
+        // Always use the strippedName, classloader always assumes no starting /
+        String strippedName = getStrippedName(name);
+        // Try to load from the TCCL
+        if (Thread.currentThread().getContextClassLoader() != null) {
+            URL url = Thread.currentThread().getContextClassLoader().getResource(strippedName);
+            if (url != null) {
+                log.trace("Loaded resource from context classloader: " + strippedName);
+                return url;
+            }
+        }
+        // Try to load from the extension's classloader
+        else {
+            URL url = ResourceProducer.class.getResource(strippedName);
+            if (url != null) {
+                log.trace("Loaded resource from Seam classloader: " + strippedName);
+                return url;
+            }
+        }
+        return null;
+    }
+
+
+    public Set<URL> getResources(String name) {
+        Set<URL> urls = new HashSet<URL>();
+        // Always use the strippedName, classloader always assumes no starting /
+        String strippedName = getStrippedName(name);
+        // Try to load from the TCCL
+        if (Thread.currentThread().getContextClassLoader() != null) {
+            try {
+                Enumeration<URL> urlEnum = Thread.currentThread().getContextClassLoader().getResources(strippedName);
+                while (urlEnum.hasMoreElements()) {
+                    urls.add(urlEnum.nextElement());
+                }
+            } catch (IOException e) {
+                // we are probably not going to recover from an IOException
+                throw new RuntimeException(e);
+            }
+        }
+        // Try to load from the extension's classloader
+        else {
+            try {
+                Enumeration<URL> urlEnum = ResourceProducer.class.getClassLoader().getResources(strippedName);
+                while (urlEnum.hasMoreElements()) {
+                    urls.add(urlEnum.nextElement());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return urls;
+    }
+
+    public Collection<InputStream> getResourcesAsStream(String name) {
+        Set<InputStream> resources = new HashSet<InputStream>();
+        // Always use the strippedName, classloader always assumes no starting /
+        String strippedName = getStrippedName(name);
+        // Try to load from the TCCL
+        if (Thread.currentThread().getContextClassLoader() != null) {
+            try {
+                Enumeration<URL> urlEnum = Thread.currentThread().getContextClassLoader().getResources(strippedName);
+                while (urlEnum.hasMoreElements()) {
+                    resources.add(urlEnum.nextElement().openStream());
+                }
+            } catch (IOException e) {
+                // we are probably not going to recover from an IOException
+                throw new RuntimeException(e);
+            }
+        }
+        // Try to load from the extension's classloader
+        else {
+            try {
+                Enumeration<URL> urlEnum = ResourceProducer.class.getClassLoader().getResources(strippedName);
+                while (urlEnum.hasMoreElements()) {
+                    resources.add(urlEnum.nextElement().openStream());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return resources;
+    }
+
+    public int getPrecedence() {
+        return 10;
+    }
+
+    private static String getStrippedName(String name) {
+        return name.startsWith("/") ? name.substring(1) : name;
+    }
 
 }

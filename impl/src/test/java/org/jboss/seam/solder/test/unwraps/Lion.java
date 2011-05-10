@@ -19,22 +19,18 @@ package org.jboss.seam.solder.test.unwraps;
 import org.jboss.seam.solder.core.Veto;
 
 @Veto
-public class Lion
-{
-   private final String name;
+public class Lion {
+    private final String name;
 
-   public Lion()
-   {
-      name = "default lion";
-   }
+    public Lion() {
+        name = "default lion";
+    }
 
-   public Lion(String name)
-   {
-      this.name = name;
-   }
+    public Lion(String name) {
+        this.name = name;
+    }
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 }

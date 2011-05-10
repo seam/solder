@@ -19,25 +19,22 @@ package org.jboss.seam.solder.test.bean.generic.field;
 
 /**
  * The configuration class for the config annotation Message
- * 
+ *
  * @author pmuir
- * 
  */
-public class Waldo
-{
-   
-   private String name;
-   
-   public Waldo() {}
-   
-   public Waldo(String name)
-   {
-      this.name = name;
-   }
-   
-   public String getName()
-   {
-      return name;
-   }
-   
+public class Waldo {
+
+    private String name;
+
+    public Waldo() {
+    }
+
+    public Waldo(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
 }

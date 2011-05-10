@@ -16,9 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@Requires({ "org.jboss.seam.solder.test.core.requires.Lion", "java.lang.RuntimeException",
-        "org.jboss.seam.solder.test.core.requires.Jaguar" })
-package org.jboss.seam.solder.test.core.requires.beans.pkg;
+@Requires({"org.jboss.seam.solder.test.core.requires.Lion", "java.lang.RuntimeException",
+        "org.jboss.seam.solder.test.core.requires.Jaguar"}) package org.jboss.seam.solder.test.core.requires.beans.pkg;
 
 import org.jboss.seam.solder.core.Requires;
 

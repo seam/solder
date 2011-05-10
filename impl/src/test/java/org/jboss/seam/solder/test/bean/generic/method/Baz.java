@@ -23,37 +23,33 @@ import org.jboss.seam.solder.bean.generic.GenericConfiguration;
 
 /**
  * A generic bean for the config annotation Message
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
 
 @GenericConfiguration(Message.class)
-public class Baz
-{
+public class Baz {
 
-   @Inject @Generic
-   private Bar bar;
+    @Inject
+    @Generic
+    private Bar bar;
 
-   @Inject
-   private Corge corge;
-   
-   @Inject 
-   @Generic
-   private Message message;
+    @Inject
+    private Corge corge;
 
-   public Bar getBar()
-   {
-      return bar;
-   }
-   
-   public Corge getCorge()
-   {
-      return corge;
-   }
+    @Inject
+    @Generic
+    private Message message;
 
-   public Message getMessage()
-   {
-      return message;
-   }
+    public Bar getBar() {
+        return bar;
+    }
+
+    public Corge getCorge() {
+        return corge;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
 }

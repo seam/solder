@@ -16,19 +16,16 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-public class HardDriveImpl implements HardDrive
-{
+public class HardDriveImpl implements HardDrive {
 
-   public HardDriveImpl(String size)
-   {
-      this.size = size;
-   }
+    public HardDriveImpl(String size) {
+        this.size = size;
+    }
 
-   private final String size;
+    private final String size;
 
-   public String size()
-   {
-      return size;
-   }
+    public String size() {
+        return size;
+    }
 
 }

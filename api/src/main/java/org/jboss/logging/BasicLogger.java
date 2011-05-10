@@ -51,7 +51,7 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of TRACE.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     void trace(Object message, Throwable t);
 
@@ -59,8 +59,8 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of TRACE and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     void trace(String loggerFqcn, Object message, Throwable t);
 
@@ -68,7 +68,7 @@ public interface BasicLogger {
      * Issue a log message with parameters with a level of TRACE.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #tracev(String, Object...)} is recommended.
      */
     void trace(Object message, Object[] params);
@@ -77,8 +77,8 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of TRACE.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #tracev(Throwable, String, Object...)} is recommended.
      */
     void trace(Object message, Object[] params, Throwable t);
@@ -87,9 +87,9 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of TRACE.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     void trace(String loggerFqcn, Object message, Object[] params, Throwable t);
 
@@ -131,7 +131,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -140,7 +140,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -149,7 +149,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -159,7 +159,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -205,7 +205,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of TRACE.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -214,7 +214,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of TRACE.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -223,7 +223,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of TRACE.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -233,7 +233,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of TRACE.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -259,7 +259,7 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of DEBUG.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     void debug(Object message, Throwable t);
 
@@ -267,8 +267,8 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of DEBUG and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     void debug(String loggerFqcn, Object message, Throwable t);
 
@@ -276,7 +276,7 @@ public interface BasicLogger {
      * Issue a log message with parameters with a level of DEBUG.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #debugv(String, Object...)} is recommended.
      */
     void debug(Object message, Object[] params);
@@ -285,8 +285,8 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of DEBUG.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #debugv(Throwable, String, Object...)} is recommended.
      */
     void debug(Object message, Object[] params, Throwable t);
@@ -295,9 +295,9 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of DEBUG.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     void debug(String loggerFqcn, Object message, Object[] params, Throwable t);
 
@@ -339,7 +339,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -348,7 +348,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -357,7 +357,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -367,7 +367,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -413,7 +413,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of DEBUG.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -422,7 +422,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of DEBUG.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -431,7 +431,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of DEBUG.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -441,7 +441,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of DEBUG.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -467,7 +467,7 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of INFO.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     void info(Object message, Throwable t);
 
@@ -475,8 +475,8 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of INFO and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     void info(String loggerFqcn, Object message, Throwable t);
 
@@ -484,7 +484,7 @@ public interface BasicLogger {
      * Issue a log message with parameters with a level of INFO.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #infov(String, Object...)} is recommended.
      */
     void info(Object message, Object[] params);
@@ -493,8 +493,8 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of INFO.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #infov(Throwable, String, Object...)} is recommended.
      */
     void info(Object message, Object[] params, Throwable t);
@@ -503,9 +503,9 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of INFO.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     void info(String loggerFqcn, Object message, Object[] params, Throwable t);
 
@@ -547,7 +547,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -556,7 +556,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -565,7 +565,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -575,7 +575,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -621,7 +621,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of INFO.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -630,7 +630,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of INFO.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -639,7 +639,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of INFO.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -649,7 +649,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of INFO.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -668,7 +668,7 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of WARN.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     void warn(Object message, Throwable t);
 
@@ -676,8 +676,8 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of WARN and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     void warn(String loggerFqcn, Object message, Throwable t);
 
@@ -685,7 +685,7 @@ public interface BasicLogger {
      * Issue a log message with parameters with a level of WARN.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #warnv(String, Object...)} is recommended.
      */
     void warn(Object message, Object[] params);
@@ -694,8 +694,8 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of WARN.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #warnv(Throwable, String, Object...)} is recommended.
      */
     void warn(Object message, Object[] params, Throwable t);
@@ -704,9 +704,9 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of WARN.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     void warn(String loggerFqcn, Object message, Object[] params, Throwable t);
 
@@ -748,7 +748,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -757,7 +757,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -766,7 +766,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -776,7 +776,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -822,7 +822,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of WARN.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -831,7 +831,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of WARN.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -840,7 +840,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of WARN.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -850,7 +850,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of WARN.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -869,7 +869,7 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of ERROR.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     void error(Object message, Throwable t);
 
@@ -877,8 +877,8 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of ERROR and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     void error(String loggerFqcn, Object message, Throwable t);
 
@@ -886,7 +886,7 @@ public interface BasicLogger {
      * Issue a log message with parameters with a level of ERROR.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #errorv(String, Object...)} is recommended.
      */
     void error(Object message, Object[] params);
@@ -895,8 +895,8 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of ERROR.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #errorv(Throwable, String, Object...)} is recommended.
      */
     void error(Object message, Object[] params, Throwable t);
@@ -905,9 +905,9 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of ERROR.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     void error(String loggerFqcn, Object message, Object[] params, Throwable t);
 
@@ -949,7 +949,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -958,7 +958,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -967,7 +967,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -977,7 +977,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1023,7 +1023,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of ERROR.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -1032,7 +1032,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of ERROR.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -1041,7 +1041,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of ERROR.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1051,7 +1051,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of ERROR.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1070,7 +1070,7 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of FATAL.
      *
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     void fatal(Object message, Throwable t);
 
@@ -1078,8 +1078,8 @@ public interface BasicLogger {
      * Issue a log message and throwable with a level of FATAL and a specific logger class name.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     void fatal(String loggerFqcn, Object message, Throwable t);
 
@@ -1087,7 +1087,7 @@ public interface BasicLogger {
      * Issue a log message with parameters with a level of FATAL.
      *
      * @param message the message
-     * @param params the message parameters
+     * @param params  the message parameters
      * @deprecated To log a message with parameters, using {@link #fatalv(String, Object...)} is recommended.
      */
     void fatal(Object message, Object[] params);
@@ -1096,8 +1096,8 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of FATAL.
      *
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param params  the message parameters
+     * @param t       the throwable
      * @deprecated To log a message with parameters, using {@link #fatalv(Throwable, String, Object...)} is recommended.
      */
     void fatal(Object message, Object[] params, Throwable t);
@@ -1106,9 +1106,9 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable with a level of FATAL.
      *
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     void fatal(String loggerFqcn, Object message, Object[] params, Throwable t);
 
@@ -1150,7 +1150,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -1159,7 +1159,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1168,7 +1168,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1178,7 +1178,7 @@ public interface BasicLogger {
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1224,7 +1224,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of FATAL.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -1233,7 +1233,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of FATAL.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -1242,7 +1242,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of FATAL.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1252,7 +1252,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message with a level of FATAL.
      *
-     * @param t the throwable
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1263,7 +1263,7 @@ public interface BasicLogger {
     /**
      * Log a message at the given level.
      *
-     * @param level the level
+     * @param level   the level
      * @param message the message
      */
     void log(Logger.Level level, Object message);
@@ -1271,40 +1271,40 @@ public interface BasicLogger {
     /**
      * Issue a log message and throwable at the given log level.
      *
-     * @param level the level
+     * @param level   the level
      * @param message the message
-     * @param t the throwable
+     * @param t       the throwable
      */
     void log(Logger.Level level, Object message, Throwable t);
 
     /**
      * Issue a log message and throwable at the given log level and a specific logger class name.
      *
-     * @param level the level
+     * @param level      the level
      * @param loggerFqcn the logger class name
-     * @param message the message
-     * @param t the throwable
+     * @param message    the message
+     * @param t          the throwable
      */
     void log(Logger.Level level, String loggerFqcn, Object message, Throwable t);
 
     /**
      * Issue a log message with parameters at the given log level.
      *
-     * @param level the level
+     * @param level   the level
      * @param message the message
-     * @param params the message parameters
-     * @deprecated To log a message with parameters, using {@link #logv(org.jboss.logging.Logger.Level , String, Object...)} is recommended.
+     * @param params  the message parameters
+     * @deprecated To log a message with parameters, using {@link #logv(org.jboss.logging.Logger.Level, String, Object...)} is recommended.
      */
     void log(Logger.Level level, Object message, Object[] params);
 
     /**
      * Issue a log message with parameters and a throwable at the given log level.
      *
-     * @param level the level
+     * @param level   the level
      * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
-     * @deprecated To log a message with parameters, using {@link #logv(org.jboss.logging.Logger.Level , Throwable, String, Object...)} is recommended.
+     * @param params  the message parameters
+     * @param t       the throwable
+     * @deprecated To log a message with parameters, using {@link #logv(org.jboss.logging.Logger.Level, Throwable, String, Object...)} is recommended.
      */
     void log(Logger.Level level, Object message, Object[] params, Throwable t);
 
@@ -1312,17 +1312,17 @@ public interface BasicLogger {
      * Issue a log message with parameters and a throwable at the given log level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param message the message
-     * @param params the message parameters
-     * @param t the throwable
+     * @param level      the level
+     * @param message    the message
+     * @param params     the message parameters
+     * @param t          the throwable
      */
     void log(String loggerFqcn, Logger.Level level, Object message, Object[] params, Throwable t);
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the message format string
      * @param params the parameters
      */
@@ -1331,7 +1331,7 @@ public interface BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1340,7 +1340,7 @@ public interface BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1350,7 +1350,7 @@ public interface BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1361,8 +1361,8 @@ public interface BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the message format string
      * @param params the parameters
      */
@@ -1371,8 +1371,8 @@ public interface BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1381,8 +1381,8 @@ public interface BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1392,8 +1392,8 @@ public interface BasicLogger {
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1405,10 +1405,10 @@ public interface BasicLogger {
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable
-     * @param format the message format string
-     * @param params the parameters
+     * @param level      the level
+     * @param t          the throwable
+     * @param format     the message format string
+     * @param params     the parameters
      */
     void logv(String loggerFqcn, Logger.Level level, Throwable t, String format, Object... params);
 
@@ -1416,10 +1416,10 @@ public interface BasicLogger {
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable
-     * @param format the message format string
-     * @param param1 the sole parameter
+     * @param level      the level
+     * @param t          the throwable
+     * @param format     the message format string
+     * @param param1     the sole parameter
      */
     void logv(String loggerFqcn, Logger.Level level, Throwable t, String format, Object param1);
 
@@ -1427,11 +1427,11 @@ public interface BasicLogger {
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable
-     * @param format the message format string
-     * @param param1 the first parameter
-     * @param param2 the second parameter
+     * @param level      the level
+     * @param t          the throwable
+     * @param format     the message format string
+     * @param param1     the first parameter
+     * @param param2     the second parameter
      */
     void logv(String loggerFqcn, Logger.Level level, Throwable t, String format, Object param1, Object param2);
 
@@ -1439,19 +1439,19 @@ public interface BasicLogger {
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable
-     * @param format the message format string
-     * @param param1 the first parameter
-     * @param param2 the second parameter
-     * @param param3 the third parameter
+     * @param level      the level
+     * @param t          the throwable
+     * @param format     the message format string
+     * @param param1     the first parameter
+     * @param param2     the second parameter
+     * @param param3     the third parameter
      */
     void logv(String loggerFqcn, Logger.Level level, Throwable t, String format, Object param1, Object param2, Object param3);
 
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
      */
@@ -1460,7 +1460,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
      */
@@ -1469,7 +1469,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1479,7 +1479,7 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
+     * @param level  the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1490,8 +1490,8 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
@@ -1500,8 +1500,8 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
@@ -1510,8 +1510,8 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1521,8 +1521,8 @@ public interface BasicLogger {
     /**
      * Issue a formatted log message at the given log level.
      *
-     * @param level the level
-     * @param t the throwable
+     * @param level  the level
+     * @param t      the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1534,10 +1534,10 @@ public interface BasicLogger {
      * Log a message at the given level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param param1 the sole parameter
+     * @param level      the level
+     * @param t          the throwable cause
+     * @param format     the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param param1     the sole parameter
      */
     void logf(String loggerFqcn, Logger.Level level, Throwable t, String format, Object param1);
 
@@ -1545,11 +1545,11 @@ public interface BasicLogger {
      * Log a message at the given level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param param1 the first parameter
-     * @param param2 the second parameter
+     * @param level      the level
+     * @param t          the throwable cause
+     * @param format     the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param param1     the first parameter
+     * @param param2     the second parameter
      */
     void logf(String loggerFqcn, Logger.Level level, Throwable t, String format, Object param1, Object param2);
 
@@ -1557,12 +1557,12 @@ public interface BasicLogger {
      * Log a message at the given level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param param1 the first parameter
-     * @param param2 the second parameter
-     * @param param3 the third parameter
+     * @param level      the level
+     * @param t          the throwable cause
+     * @param format     the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param param1     the first parameter
+     * @param param2     the second parameter
+     * @param param3     the third parameter
      */
     void logf(String loggerFqcn, Logger.Level level, Throwable t, String format, Object param1, Object param2, Object param3);
 
@@ -1570,10 +1570,10 @@ public interface BasicLogger {
      * Log a message at the given level.
      *
      * @param loggerFqcn the logger class name
-     * @param level the level
-     * @param t the throwable cause
-     * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
-     * @param params the message parameters
+     * @param level      the level
+     * @param t          the throwable cause
+     * @param format     the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
+     * @param params     the message parameters
      */
     void logf(String loggerFqcn, Logger.Level level, Throwable t, String format, Object... params);
 }

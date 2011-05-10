@@ -22,7 +22,7 @@ import org.jboss.seam.solder.core.Requires;
 import org.jboss.seam.solder.test.core.requires.CommonInterface;
 import org.jboss.seam.solder.test.core.requires.Tiger;
 
-@Requires({ "org.jboss.seam.solder.test.core.requires.Tiger", "java.lang.Integer" })
+@Requires({"org.jboss.seam.solder.test.core.requires.Tiger", "java.lang.Integer"})
 @Named
 public class EnabledOptionalBeanWithReturnTypeDependency implements CommonInterface {
 

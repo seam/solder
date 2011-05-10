@@ -22,13 +22,11 @@ import javax.interceptor.InvocationContext;
 
 @Interceptor
 @PrimaryInterceptionBinding
-public class BarInterceptor
-{
+public class BarInterceptor {
 
-   @AroundInvoke
-   public void aroundInvoke(InvocationContext ctx) throws Exception 
-   {
-      
-   }
-   
+    @AroundInvoke
+    public void aroundInvoke(InvocationContext ctx) throws Exception {
+
+    }
+
 }

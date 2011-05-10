@@ -20,26 +20,22 @@ import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Named;
 
 
-public class NamedLiteral extends AnnotationLiteral<Named> implements Named
-{
+public class NamedLiteral extends AnnotationLiteral<Named> implements Named {
 
-   private static final long serialVersionUID = 6678418208030413302L;
+    private static final long serialVersionUID = 6678418208030413302L;
 
-   private final String value;
+    private final String value;
 
-   public NamedLiteral()
-   {
-      this("");
-   }
-   
-   public NamedLiteral(String value)
-   {
-      this.value = value;
-   }
+    public NamedLiteral() {
+        this("");
+    }
 
-   public String value()
-   {
-      return value;
-   }
+    public NamedLiteral(String value) {
+        this.value = value;
+    }
+
+    public String value() {
+        return value;
+    }
 
 }

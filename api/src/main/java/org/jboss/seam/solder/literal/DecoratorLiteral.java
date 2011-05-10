@@ -20,9 +20,8 @@ import javax.decorator.Decorator;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class DecoratorLiteral extends AnnotationLiteral<Decorator> implements Decorator
-{
-   private static final long serialVersionUID = -1928591929455611481L;
+public class DecoratorLiteral extends AnnotationLiteral<Decorator> implements Decorator {
+    private static final long serialVersionUID = -1928591929455611481L;
 
-   public static final Decorator INSTANCE = new DecoratorLiteral();
+    public static final Decorator INSTANCE = new DecoratorLiteral();
 }

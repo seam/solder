@@ -23,17 +23,16 @@ import org.junit.Test;
 public class InterceptorTest // extends AbstractWeldTest
 {
 
-   // Disabled, needs a snapshot of Weld to work
-   // @Test(enabled=false)
-   @Test
-   public void testInterceptorResolvable()
-   {
-      // assert
-      // getReference(Interceptors.class).isInterceptorEnabled(FooInterceptor.class);
-      // Waiting on WELD-503
-      // assert
-      // !getReference(Interceptors.class).isInterceptorEnabled(BarInterceptor.class);
-      //
-   }
+    // Disabled, needs a snapshot of Weld to work
+    // @Test(enabled=false)
+    @Test
+    public void testInterceptorResolvable() {
+        // assert
+        // getReference(Interceptors.class).isInterceptorEnabled(FooInterceptor.class);
+        // Waiting on WELD-503
+        // assert
+        // !getReference(Interceptors.class).isInterceptorEnabled(BarInterceptor.class);
+        //
+    }
 
 }

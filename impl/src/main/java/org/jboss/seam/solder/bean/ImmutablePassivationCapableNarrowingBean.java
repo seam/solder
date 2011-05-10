@@ -31,7 +31,7 @@ import javax.enterprise.inject.spi.PassivationCapable;
  * method which uses an a String ID to located an object (the object can have
  * any class):
  * </p>
- * 
+ * <p/>
  * <pre>
  * &#064;Produces
  * // Use some synthetic scope to prevent this from interfering with other
@@ -43,51 +43,48 @@ import javax.enterprise.inject.spi.PassivationCapable;
  *    // Lookup and return the object for the id
  * }
  * </pre>
- * 
+ * <p/>
  * <p>
  * The delegate bean <em>must</em> return an object which can be cast to the
  * type <code>T</code>, otherwise a {@link ClassCastException} will be thrown at
  * runtime when the bean is created.
  * </p>
- * 
+ * <p/>
  * <p>
  * You can then register a narrowing bean for each type you need:
  * </p>
- * 
+ * <p/>
  * <pre>
  * event.addBean(new NarrowingBeanBuilder&lt;T&gt;(delegateBean).readFromType(type).create());
  * </pre>
- * 
+ * <p/>
  * <p>
  * {@link ImmutablePassivationCapableNarrowingBean} will use the annotations on
  * <code>defininingType</code> to discover the qualifiers, types, scope,
  * stereotypes of the bean, as well as determine it's name (if any) and whether
  * it is an alternative.
  * </p>
- * 
+ * <p/>
  * <p>
  * The attributes are immutable, and collections are defensively copied on
  * instantiation. It uses the defaults from the specification for properties if
  * not specified.
  * </p>
- * 
+ *
  * @author Pete Muir
  * @see NarrowingBeanBuilder
  * @see ImmutableNarrowingBean
  */
-public class ImmutablePassivationCapableNarrowingBean<T> extends ImmutableNarrowingBean<T> implements PassivationCapable
-{
-   private final String id;
+public class ImmutablePassivationCapableNarrowingBean<T> extends ImmutableNarrowingBean<T> implements PassivationCapable {
+    private final String id;
 
-   public ImmutablePassivationCapableNarrowingBean(Bean<Object> delegate, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, String toString, String id)
-   {
-      super(delegate, name, qualifiers, scope, stereotypes, types, alternative, nullable, toString);
-      this.id = id;
-   }
+    public ImmutablePassivationCapableNarrowingBean(Bean<Object> delegate, String name, Set<Annotation> qualifiers, Class<? extends Annotation> scope, Set<Class<? extends Annotation>> stereotypes, Set<Type> types, boolean alternative, boolean nullable, String toString, String id) {
+        super(delegate, name, qualifiers, scope, stereotypes, types, alternative, nullable, toString);
+        this.id = id;
+    }
 
-   public String getId()
-   {
-      return id;
-   }
+    public String getId() {
+        return id;
+    }
 
 }

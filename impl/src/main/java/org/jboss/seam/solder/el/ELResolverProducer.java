@@ -42,71 +42,58 @@ import org.jboss.seam.solder.literal.ResolverLiteral;
  * Creates the composite EL Resolver which contains the default EL resolvers,
  * the CDI EL resolver and any user registered resolvers.
  * </p>
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class ELResolverProducer
-{
+public class ELResolverProducer {
 
-   @Produces
-   @Composite
-   public ELResolver getELResolver(@Resolver Instance<ELResolver> resolvers, BeanManager beanManager)
-   {
-      boolean isGlassFish = System.getProperty("glassfish.version") != null;
-      // FIXME temporary workaround to deal with visibility problem in GlassFish
-      if (isGlassFish)
-      {
-         beanManager = new BeanManagerLocator().getBeanManager();
-      }
-      
-      // Create the default el resolvers
-      CompositeELResolver compositeResolver = new CompositeELResolver();
-      compositeResolver.add(beanManager.getELResolver());
-      compositeResolver.add(new MapELResolver());
-      compositeResolver.add(new ListELResolver());
-      compositeResolver.add(new ArrayELResolver());
-      compositeResolver.add(new ResourceBundleELResolver());
-      compositeResolver.add(new BeanELResolver());
+    @Produces
+    @Composite
+    public ELResolver getELResolver(@Resolver Instance<ELResolver> resolvers, BeanManager beanManager) {
+        boolean isGlassFish = System.getProperty("glassfish.version") != null;
+        // FIXME temporary workaround to deal with visibility problem in GlassFish
+        if (isGlassFish) {
+            beanManager = new BeanManagerLocator().getBeanManager();
+        }
 
-      // Add plugin resolvers
-      if (isGlassFish)
-      {
-         for (ELResolver resolver : getReferences(beanManager, ELResolver.class, new ResolverLiteral()))
-         {
-            compositeResolver.add(resolver);
-         }
-      }
-      else
-      {
-         for (ELResolver resolver : resolvers)
-         {
-            compositeResolver.add(resolver);
-         }
-      }
+        // Create the default el resolvers
+        CompositeELResolver compositeResolver = new CompositeELResolver();
+        compositeResolver.add(beanManager.getELResolver());
+        compositeResolver.add(new MapELResolver());
+        compositeResolver.add(new ListELResolver());
+        compositeResolver.add(new ArrayELResolver());
+        compositeResolver.add(new ResourceBundleELResolver());
+        compositeResolver.add(new BeanELResolver());
 
-      return compositeResolver;
-   }
-   
-   @SuppressWarnings("unchecked")
-   private <T> Set<T> getReferences(final BeanManager manager, final Class<T> type, Annotation... qualifiers)
-   {
-      Set<Bean<?>> resolverBeans = manager.getBeans(type, qualifiers);
-      if (resolverBeans.size() == 0)
-      {
-         return Collections.emptySet();
-      }
-      Set<T> refs = new LinkedHashSet<T>();
-      for (Bean<?> bean : resolverBeans)
-      {
-         // FIXME when should the dependent context be cleaned up?
-         CreationalContext<T> context = (CreationalContext<T>) manager.createCreationalContext(bean);
-         if (context != null)
-         {
-            refs.add((T) manager.getReference(bean, type, context));
-         }
-      }
-      return refs;
-   }
+        // Add plugin resolvers
+        if (isGlassFish) {
+            for (ELResolver resolver : getReferences(beanManager, ELResolver.class, new ResolverLiteral())) {
+                compositeResolver.add(resolver);
+            }
+        } else {
+            for (ELResolver resolver : resolvers) {
+                compositeResolver.add(resolver);
+            }
+        }
+
+        return compositeResolver;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Set<T> getReferences(final BeanManager manager, final Class<T> type, Annotation... qualifiers) {
+        Set<Bean<?>> resolverBeans = manager.getBeans(type, qualifiers);
+        if (resolverBeans.size() == 0) {
+            return Collections.emptySet();
+        }
+        Set<T> refs = new LinkedHashSet<T>();
+        for (Bean<?> bean : resolverBeans) {
+            // FIXME when should the dependent context be cleaned up?
+            CreationalContext<T> context = (CreationalContext<T>) manager.createCreationalContext(bean);
+            if (context != null) {
+                refs.add((T) manager.getReference(bean, type, context));
+            }
+        }
+        return refs;
+    }
 
 }

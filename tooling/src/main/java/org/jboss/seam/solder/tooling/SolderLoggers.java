@@ -26,7 +26,6 @@ import org.jboss.logging.Logger;
 import org.jboss.logging.Loggers;
 
 /**
- *
  * @author James R. Perkins (jrp) - 20.Feb.2011
  * @author <a href="http://community.jboss.org/people/kenfinni">Ken Finnigan</a>
  */

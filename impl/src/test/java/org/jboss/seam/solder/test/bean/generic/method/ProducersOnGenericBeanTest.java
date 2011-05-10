@@ -16,11 +16,6 @@
  */
 package org.jboss.seam.solder.test.bean.generic.method;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,59 +27,60 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(Arquillian.class)
-public class ProducersOnGenericBeanTest
-{
-   
-   @Deployment
-   public static Archive<?> deployment()
-   {
-      return baseDeployment().addPackage(ProducersOnGenericBeanTest.class.getPackage());
-   }
+public class ProducersOnGenericBeanTest {
 
-   @Inject
-   @Qux
-   @Foo(1)
-   private String bar1Message;
+    @Deployment
+    public static Archive<?> deployment() {
+        return baseDeployment().addPackage(ProducersOnGenericBeanTest.class.getPackage());
+    }
 
-   @Inject
-   @Qux
-   @Foo(2)
-   private String bar2Message;
+    @Inject
+    @Qux
+    @Foo(1)
+    private String bar1Message;
 
-   @Inject
-   @Foo(1)
-   private Message baz1Message;
+    @Inject
+    @Qux
+    @Foo(2)
+    private String bar2Message;
 
-   @Inject
-   @Foo(2)
-   private Message baz2Message;
-   
-   @Inject
-   @Foo(1)
-   private Map<String, String> map;
+    @Inject
+    @Foo(1)
+    private Message baz1Message;
 
-   @Test
-   public void testGeneric()
-   {
-      
-      // Check that producer methods on generic beans are working
-      assertNotNull(bar1Message);
-      assertEquals("barhello1", bar1Message);
-      assertNotNull(bar2Message);
-      assertEquals( "barhello2", bar2Message);
-      
-      assertNotNull(baz1Message);
-      assertEquals("hello1", baz1Message.value());
-      assertNotNull(baz2Message);
-      assertEquals( "hello2", baz2Message.value());
-   }
+    @Inject
+    @Foo(2)
+    private Message baz2Message;
 
-   @Test
-   // WELDX-133
-   public void testProducerSuperclass()
-   {
-      assertTrue(map instanceof HashMap<?, ?>);
-   }
+    @Inject
+    @Foo(1)
+    private Map<String, String> map;
+
+    @Test
+    public void testGeneric() {
+
+        // Check that producer methods on generic beans are working
+        assertNotNull(bar1Message);
+        assertEquals("barhello1", bar1Message);
+        assertNotNull(bar2Message);
+        assertEquals("barhello2", bar2Message);
+
+        assertNotNull(baz1Message);
+        assertEquals("hello1", baz1Message.value());
+        assertNotNull(baz2Message);
+        assertEquals("hello2", baz2Message.value());
+    }
+
+    @Test
+    // WELDX-133
+    public void testProducerSuperclass() {
+        assertTrue(map instanceof HashMap<?, ?>);
+    }
 
 }

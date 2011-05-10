@@ -21,9 +21,8 @@ import javax.enterprise.util.AnnotationLiteral;
 import org.jboss.seam.solder.core.Veto;
 
 
-public class VetoLiteral extends AnnotationLiteral<Veto> implements Veto
-{
-   private static final long serialVersionUID = -8137340248362361317L;
+public class VetoLiteral extends AnnotationLiteral<Veto> implements Veto {
+    private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final Veto INSTANCE = new VetoLiteral();
+    public static final Veto INSTANCE = new VetoLiteral();
 }

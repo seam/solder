@@ -23,6 +23,5 @@ import org.jboss.seam.solder.core.FullyQualified;
 
 @FullyQualified(CoreExtension.class)
 @Named
-public class FullyQualifiedToTargetNamedBean
-{
+public class FullyQualifiedToTargetNamedBean {
 }

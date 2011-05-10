@@ -20,27 +20,23 @@ import javax.enterprise.inject.Produces;
 
 /**
  * configures the {@link Room} generic beans
- * 
+ *
  * @author stuart
- * 
  */
-public class KitchenProducer
-{
+public class KitchenProducer {
 
-   @Foo(1)
-   @Produces
-   @Room
-   public Kitchen getBigKitchen()
-   {
-      return new Kitchen("big");
-   }
+    @Foo(1)
+    @Produces
+    @Room
+    public Kitchen getBigKitchen() {
+        return new Kitchen("big");
+    }
 
-   @Foo(2)
-   @Produces
-   @Room
-   public Kitchen getSmallKitchen()
-   {
-      return new Kitchen("small");
-   }
+    @Foo(2)
+    @Produces
+    @Room
+    public Kitchen getSmallKitchen() {
+        return new Kitchen("small");
+    }
 
 }

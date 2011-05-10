@@ -20,9 +20,8 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class DependentLiteral extends AnnotationLiteral<Dependent> implements Dependent
-{
-   private static final long serialVersionUID = 5192230580203842740L;
+public class DependentLiteral extends AnnotationLiteral<Dependent> implements Dependent {
+    private static final long serialVersionUID = 5192230580203842740L;
 
-   public static final Dependent INSTANCE = new DependentLiteral();
+    public static final Dependent INSTANCE = new DependentLiteral();
 }

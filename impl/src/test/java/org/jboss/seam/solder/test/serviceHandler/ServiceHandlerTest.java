@@ -16,58 +16,51 @@
  */
 package org.jboss.seam.solder.test.serviceHandler;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+
 /**
  * @author Stuart Douglas
- * 
  */
 @RunWith(Arquillian.class)
-public class ServiceHandlerTest
-{
-   
-   @Deployment
-   public static Archive<?> deployment()
-   {
-      return baseDeployment().addPackage(ServiceHandlerTest.class.getPackage());
-   }
+public class ServiceHandlerTest {
 
-   @Inject
-   private HelloWorld helloWorld;
+    @Deployment
+    public static Archive<?> deployment() {
+        return baseDeployment().addPackage(ServiceHandlerTest.class.getPackage());
+    }
 
-   @Inject
-   private GoodbyeWorld goodbyeWorld;
+    @Inject
+    private HelloWorld helloWorld;
 
-   @Inject
-   private DecoratedHelloWorld decoratedHelloWorld;
+    @Inject
+    private GoodbyeWorld goodbyeWorld;
 
-   @Test
-   public void testProxiedInterface()
-   {
-      Assert.assertTrue(helloWorld.helloWorld().equals("helloWorld"));
-   }
+    @Inject
+    private DecoratedHelloWorld decoratedHelloWorld;
 
-   @Test
-   public void testProxiedAbstractClass()
-   {
-      Assert.assertTrue(goodbyeWorld.goodbyeWorld().equals("goodbyeWorld"));
-      Assert.assertFalse(goodbyeWorld.otherMethod().equals("otherMethod"));
-   }
+    @Test
+    public void testProxiedInterface() {
+        Assert.assertTrue(helloWorld.helloWorld().equals("helloWorld"));
+    }
 
-   @Test
-   public void testInjectionIntoHandler()
-   {
-      Assert.assertTrue(decoratedHelloWorld.decoratedHelloWorld().equals("-decoratedHelloWorld-"));
-   }
+    @Test
+    public void testProxiedAbstractClass() {
+        Assert.assertTrue(goodbyeWorld.goodbyeWorld().equals("goodbyeWorld"));
+        Assert.assertFalse(goodbyeWorld.otherMethod().equals("otherMethod"));
+    }
+
+    @Test
+    public void testInjectionIntoHandler() {
+        Assert.assertTrue(decoratedHelloWorld.decoratedHelloWorld().equals("-decoratedHelloWorld-"));
+    }
 
 }

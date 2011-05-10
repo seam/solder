@@ -17,72 +17,52 @@
 
 package org.jboss.seam.solder.logging;
 
-import static org.jboss.logging.Logger.getLogger;
-import static org.jboss.seam.solder.reflection.Reflections.getRawType;
-
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.logging.Logger;
 
+import static org.jboss.logging.Logger.getLogger;
+import static org.jboss.seam.solder.reflection.Reflections.getRawType;
+
 /**
  * The <code>LoggerProducer</code> provides a producer method for all injected loggers
  * that use the JBoss Logging API {@link Logger}.
- * 
+ *
  * @author David Allen
  * @author Pete Muir
  */
-class LoggerProducer
-{
-   @Produces
-   Logger produceLog(InjectionPoint injectionPoint)
-   {
-      Annotated annotated = injectionPoint.getAnnotated();
-      if (annotated.isAnnotationPresent(Category.class))
-      {
-         if (annotated.isAnnotationPresent(Suffix.class))
-         {
-            return getLogger(annotated.getAnnotation(Category.class).value(), annotated.getAnnotation(Suffix.class).value());
-         }
-         else
-         {
-            return getLogger(annotated.getAnnotation(Category.class).value());
-         }
-      }
-      else if (annotated.isAnnotationPresent(TypedCategory.class))
-      {
-         if (annotated.isAnnotationPresent(Suffix.class))
-         {
-            return getLogger(annotated.getAnnotation(TypedCategory.class).value(), annotated.getAnnotation(Suffix.class).value());
-         }
-         else
-         {
-            return getLogger(annotated.getAnnotation(TypedCategory.class).value());
-         }
-      }
-      else
-      {
-         if (annotated.isAnnotationPresent(Suffix.class))
-         {
-            return getLogger(getDeclaringRawType(injectionPoint), annotated.getAnnotation(Suffix.class).value());
-         }
-         else
-         {
-            return getLogger(getDeclaringRawType(injectionPoint));
-         }
-      }
-   }
-   
-   static Class<?> getDeclaringRawType(InjectionPoint injectionPoint)
-   {
-      if (injectionPoint.getBean() != null)
-      {
-         return getRawType(injectionPoint.getBean().getBeanClass());
-      }
-      else
-      {
-         return getRawType(injectionPoint.getMember().getDeclaringClass());
-      }
-   }
+class LoggerProducer {
+    @Produces
+    Logger produceLog(InjectionPoint injectionPoint) {
+        Annotated annotated = injectionPoint.getAnnotated();
+        if (annotated.isAnnotationPresent(Category.class)) {
+            if (annotated.isAnnotationPresent(Suffix.class)) {
+                return getLogger(annotated.getAnnotation(Category.class).value(), annotated.getAnnotation(Suffix.class).value());
+            } else {
+                return getLogger(annotated.getAnnotation(Category.class).value());
+            }
+        } else if (annotated.isAnnotationPresent(TypedCategory.class)) {
+            if (annotated.isAnnotationPresent(Suffix.class)) {
+                return getLogger(annotated.getAnnotation(TypedCategory.class).value(), annotated.getAnnotation(Suffix.class).value());
+            } else {
+                return getLogger(annotated.getAnnotation(TypedCategory.class).value());
+            }
+        } else {
+            if (annotated.isAnnotationPresent(Suffix.class)) {
+                return getLogger(getDeclaringRawType(injectionPoint), annotated.getAnnotation(Suffix.class).value());
+            } else {
+                return getLogger(getDeclaringRawType(injectionPoint));
+            }
+        }
+    }
+
+    static Class<?> getDeclaringRawType(InjectionPoint injectionPoint) {
+        if (injectionPoint.getBean() != null) {
+            return getRawType(injectionPoint.getBean().getBeanClass());
+        } else {
+            return getRawType(injectionPoint.getMember().getDeclaringClass());
+        }
+    }
 }

@@ -32,12 +32,18 @@ final class Slf4jLogger extends Logger {
 
     public boolean isEnabled(final Level level) {
         if (level != null) switch (level) {
-            case FATAL: return logger.isErrorEnabled();
-            case ERROR: return logger.isErrorEnabled();
-            case WARN:  return logger.isWarnEnabled();
-            case INFO:  return logger.isInfoEnabled();
-            case DEBUG: return logger.isDebugEnabled();
-            case TRACE: return logger.isTraceEnabled();
+            case FATAL:
+                return logger.isErrorEnabled();
+            case ERROR:
+                return logger.isErrorEnabled();
+            case WARN:
+                return logger.isWarnEnabled();
+            case INFO:
+                return logger.isInfoEnabled();
+            case DEBUG:
+                return logger.isDebugEnabled();
+            case TRACE:
+                return logger.isTraceEnabled();
         }
         return true;
     }

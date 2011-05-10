@@ -20,9 +20,8 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class ProducesLiteral extends AnnotationLiteral<Produces> implements Produces
-{
-   private static final long serialVersionUID = -469820656132063897L;
+public class ProducesLiteral extends AnnotationLiteral<Produces> implements Produces {
+    private static final long serialVersionUID = -469820656132063897L;
 
-   public static final Produces INSTANCE = new ProducesLiteral();
+    public static final Produces INSTANCE = new ProducesLiteral();
 }

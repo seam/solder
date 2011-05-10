@@ -19,12 +19,10 @@ package org.jboss.seam.solder.test.bean.generic.tooManyGenericConfigurations;
 
 /**
  * The config type for the config annotation Message
- * 
+ *
  * @author pmuir
- * 
  */
 
-public class Baz
-{
+public class Baz {
 
 }

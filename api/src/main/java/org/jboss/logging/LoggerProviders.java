@@ -26,11 +26,11 @@ final class LoggerProviders {
         final LogManager jdkLogManager = LogManager.getLogManager();
         final ClassLoader cl = getClassLoader();
         try {
-           if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
-              return (LoggerProvider) Class.forName("org.jboss.logging.JBossLogManagerProvider", true, cl).newInstance();
-           }
+            if (jdkLogManager.getClass().getName().equals("org.jboss.logmanager.LogManager")) {
+                return (LoggerProvider) Class.forName("org.jboss.logging.JBossLogManagerProvider", true, cl).newInstance();
+            }
         } catch (Throwable t) {
-           // nope...
+            // nope...
         }
         try {
             Class.forName("org.apache.log4j.LogManager", true, cl);

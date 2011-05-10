@@ -18,23 +18,19 @@ package org.jboss.seam.solder.test.bean.generic.alternative;
 
 /**
  * class that is created by a generic producer method
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class Bop
-{
-   private final String name;
+public class Bop {
+    private final String name;
 
-   public Bop(String name)
-   {
-      super();
-      this.name = name;
-   }
+    public Bop(String name) {
+        super();
+        this.name = name;
+    }
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
 }

@@ -16,30 +16,28 @@
  */
 package org.jboss.seam.solder.test.bean.generic.field;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import org.jboss.seam.solder.bean.generic.GenericType;
+
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import org.jboss.seam.solder.bean.generic.GenericType;
-
 /**
  * An annotation used to configure a generic bean
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
 
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, TYPE})
 @GenericType(Waldo.class)
-public @interface Service
-{
-   
-   int value();
-   
+public @interface Service {
+
+    int value();
+
 }

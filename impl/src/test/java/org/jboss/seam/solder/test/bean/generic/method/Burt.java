@@ -18,11 +18,9 @@ package org.jboss.seam.solder.test.bean.generic.method;
 
 /**
  * The config type for the @Service annotation
- * 
+ *
  * @author stuart
- * 
  */
-public class Burt
-{
+public class Burt {
 
 }

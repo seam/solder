@@ -20,20 +20,17 @@ import javax.enterprise.inject.New;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class NewLiteral extends AnnotationLiteral<New> implements New
-{
-   private static final long serialVersionUID = 1415328933091019248L;
+public class NewLiteral extends AnnotationLiteral<New> implements New {
+    private static final long serialVersionUID = 1415328933091019248L;
 
-   private final Class<?> value;
+    private final Class<?> value;
 
-   public NewLiteral(Class<?> value)
-   {
-      this.value = value;
-   }
+    public NewLiteral(Class<?> value) {
+        this.value = value;
+    }
 
-   public Class<?> value()
-   {
-      return value;
-   }
+    public Class<?> value() {
+        return value;
+    }
 
 }

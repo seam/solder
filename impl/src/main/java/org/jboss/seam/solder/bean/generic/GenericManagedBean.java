@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.AnnotatedField;
@@ -39,69 +39,55 @@ import org.jboss.seam.solder.reflection.Reflections;
 import org.jboss.seam.solder.reflection.Synthetic;
 import org.jboss.seam.solder.reflection.annotated.Annotateds;
 
-class GenericManagedBean<T> extends AbstactGenericBean<T>
-{
+class GenericManagedBean<T> extends AbstactGenericBean<T> {
 
-   private final InjectionTarget<T> injectionTarget;
-   private final Map<AnnotatedField<? super T>, InjectionPoint> injectedFields;
-   private final Class<? extends Annotation> scopeOverride;
+    private final InjectionTarget<T> injectionTarget;
+    private final Map<AnnotatedField<? super T>, InjectionPoint> injectedFields;
+    private final Class<? extends Annotation> scopeOverride;
 
-   GenericManagedBean(Bean<T> originalBean, GenericIdentifier identifier, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Set<Annotation> qualifiers, Class<? extends Annotation> scopeOverride, Synthetic.Provider annotatedMemberSyntheticProvider, boolean alternative, Class<?> beanClass, BeanManager beanManager)
-   {
-      super(originalBean, qualifiers, identifier, Annotateds.createTypeId(type), alternative, beanClass, beanManager);
-      this.injectionTarget = injectionTarget;
-      this.injectedFields = new HashMap<AnnotatedField<? super T>, InjectionPoint>();
-      this.scopeOverride = scopeOverride;
-      Set<Annotation> filteredQualifiers = new HashSet<Annotation>(getQualifiers());
-      filteredQualifiers.remove(AnyLiteral.INSTANCE);
-      for (AnnotatedField<? super T> field : type.getFields())
-      {
-         if (field.isAnnotationPresent(InjectGeneric.class))
-         {
-            if (AnnotatedMember.class.isAssignableFrom(field.getJavaMember().getType()))
-            {
-               injectedFields.put(field, new ImmutableInjectionPoint(field, Collections.<Annotation> singleton(annotatedMemberSyntheticProvider.get(identifier)), this, false, false));
+    GenericManagedBean(Bean<T> originalBean, GenericIdentifier identifier, InjectionTarget<T> injectionTarget, AnnotatedType<T> type, Set<Annotation> qualifiers, Class<? extends Annotation> scopeOverride, Synthetic.Provider annotatedMemberSyntheticProvider, boolean alternative, Class<?> beanClass, BeanManager beanManager) {
+        super(originalBean, qualifiers, identifier, Annotateds.createTypeId(type), alternative, beanClass, beanManager);
+        this.injectionTarget = injectionTarget;
+        this.injectedFields = new HashMap<AnnotatedField<? super T>, InjectionPoint>();
+        this.scopeOverride = scopeOverride;
+        Set<Annotation> filteredQualifiers = new HashSet<Annotation>(getQualifiers());
+        filteredQualifiers.remove(AnyLiteral.INSTANCE);
+        for (AnnotatedField<? super T> field : type.getFields()) {
+            if (field.isAnnotationPresent(InjectGeneric.class)) {
+                if (AnnotatedMember.class.isAssignableFrom(field.getJavaMember().getType())) {
+                    injectedFields.put(field, new ImmutableInjectionPoint(field, Collections.<Annotation>singleton(annotatedMemberSyntheticProvider.get(identifier)), this, false, false));
+                } else {
+                    injectedFields.put(field, new ImmutableInjectionPoint(field, filteredQualifiers, this, false, false));
+                }
+                if (!field.getJavaMember().isAccessible()) {
+                    field.getJavaMember().setAccessible(true);
+                }
             }
-            else
-            {
-               injectedFields.put(field, new ImmutableInjectionPoint(field, filteredQualifiers, this, false, false));
-            }
-            if (!field.getJavaMember().isAccessible())
-            {
-               field.getJavaMember().setAccessible(true);
-            }
-         }
-      }
-   }
+        }
+    }
 
-   @Override
-   public T create(CreationalContext<T> creationalContext)
-   {
-      T instance = injectionTarget.produce(creationalContext);
-      injectionTarget.inject(instance, creationalContext);
-      for (Entry<AnnotatedField<? super T>, InjectionPoint> field : injectedFields.entrySet())
-      {
-         Object value = getBeanManager().getInjectableReference(field.getValue(), creationalContext);
-         field.getKey().getJavaMember().setAccessible(true);
-         Reflections.setFieldValue(field.getKey().getJavaMember(), instance, value);
-      }
-      injectionTarget.postConstruct(instance);
-      return instance;
-   }
-   
-   // No need to implement destroy(), default will do
+    @Override
+    public T create(CreationalContext<T> creationalContext) {
+        T instance = injectionTarget.produce(creationalContext);
+        injectionTarget.inject(instance, creationalContext);
+        for (Entry<AnnotatedField<? super T>, InjectionPoint> field : injectedFields.entrySet()) {
+            Object value = getBeanManager().getInjectableReference(field.getValue(), creationalContext);
+            field.getKey().getJavaMember().setAccessible(true);
+            Reflections.setFieldValue(field.getKey().getJavaMember(), instance, value);
+        }
+        injectionTarget.postConstruct(instance);
+        return instance;
+    }
 
-   @Override
-   public Class<? extends Annotation> getScope()
-   {
-      if (scopeOverride != null)
-      {
-         return scopeOverride;
-      }
-      else
-      {
-         return super.getScope();
-      }
-   }
+    // No need to implement destroy(), default will do
+
+    @Override
+    public Class<? extends Annotation> getScope() {
+        if (scopeOverride != null) {
+            return scopeOverride;
+        } else {
+            return super.getScope();
+        }
+    }
 
 }

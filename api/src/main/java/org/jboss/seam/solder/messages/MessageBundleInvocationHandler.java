@@ -64,7 +64,8 @@ public class MessageBundleInvocationHandler implements InvocationHandler {
                 result = MessageFormat.format(getFormatString(message), newArgs.toArray());
                 break;
             }
-            default: throw new IllegalStateException();
+            default:
+                throw new IllegalStateException();
         }
         final Class<?> returnType = method.getReturnType();
         if (Throwable.class.isAssignableFrom(returnType)) {
@@ -124,7 +125,7 @@ public class MessageBundleInvocationHandler implements InvocationHandler {
                     found = true;
                 }
             }
-            if (! found) {
+            if (!found) {
                 newArgs.add(args[i]);
             }
         }

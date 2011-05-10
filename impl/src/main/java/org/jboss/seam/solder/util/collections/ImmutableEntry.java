@@ -22,21 +22,24 @@ import java.io.Serializable;
  * @see com.google.common.collect.Maps#immutableEntry(Object, Object)
  */
 class ImmutableEntry<K, V> extends AbstractMapEntry<K, V>
-    implements Serializable {
-  private final K key;
-  private final V value;
+        implements Serializable {
+    private final K key;
+    private final V value;
 
-  ImmutableEntry(K key, V value) {
-    this.key = key;
-    this.value = value;
-  }
+    ImmutableEntry(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
 
-  @Override public K getKey() {
-    return key;
-  }
+    @Override
+    public K getKey() {
+        return key;
+    }
 
-  @Override public V getValue() {
-    return value;
-  }
-  private static final long serialVersionUID = 0;
+    @Override
+    public V getValue() {
+        return value;
+    }
+
+    private static final long serialVersionUID = 0;
 }

@@ -20,15 +20,13 @@ import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 
-public class DecoratedEchoServiceHandler
-{
-   // test injection into the handler
-   @Inject
-   private EchoDecorator decorator;
+public class DecoratedEchoServiceHandler {
+    // test injection into the handler
+    @Inject
+    private EchoDecorator decorator;
 
-   @AroundInvoke
-   public Object invoke(InvocationContext ctx)
-   {
-      return decorator.decorate(ctx.getMethod().getName().toString());
-   }
+    @AroundInvoke
+    public Object invoke(InvocationContext ctx) {
+        return decorator.decorate(ctx.getMethod().getName().toString());
+    }
 }

@@ -26,36 +26,34 @@ import org.jboss.seam.solder.util.Sortable;
  * allows third parties to register a way of obtaining the {@link BeanManager}
  * outside of CDI managed objects.
  * </p>
- * 
+ * <p/>
  * <p>
  * Seam Solder provides a number of built in providers, including:
  * </p>
- * 
+ * <p/>
  * <ul>
  * <li>{@link DefaultJndiBeanManagerProvider}</li>
  * <li>{@link JBossJndiBeanManagerProvider}</li>
  * <li>{@link ServletContainerJndiBeanManagerProvider}</li>
  * </ul>
- * 
+ * <p/>
  * <p>
  * Providers can specify a precedence, allowing a provider to be a "last resort"
  * provider only.
  * </p>
- * 
+ * <p/>
  * <p>
  * Precedence about 100 is suggested for providers that should always be used.
  * Precedence below 10 is suggested for providers of last resort.
  * </p>
- * 
+ *
  * @author Nicklas Karlsson
- * 
  */
-public interface BeanManagerProvider extends Sortable
-{
-   /**
-    * Try to obtain a BeanManager
-    * 
-    * @return The BeanManager (or null if non found at this location)
-    */
-   public abstract BeanManager getBeanManager();
+public interface BeanManagerProvider extends Sortable {
+    /**
+     * Try to obtain a BeanManager
+     *
+     * @return The BeanManager (or null if non found at this location)
+     */
+    public abstract BeanManager getBeanManager();
 }

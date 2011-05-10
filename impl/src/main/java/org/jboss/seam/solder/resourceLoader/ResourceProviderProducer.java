@@ -28,14 +28,12 @@ import javax.enterprise.inject.Produces;
 /**
  * FIXME This producer serves as a temporary workaround for the GlassFish BDA visiblity problem.
  * Once resolved, remove this class and reenable the @Inject on the ResourceProvider.
- * 
+ *
  * @author Dan Allen
  */
-public class ResourceProviderProducer
-{
-   @Produces
-   public ResourceProvider getResourceProvider(@Any Instance<InputStream> inputStreamProvider, @Any Instance<URL> urlProvider, @Any Instance<Collection<InputStream>> inputStreamsProvider, @Any Instance<Collection<URL>> urlsProvider, @Any Instance<Properties> propertiesBundleProvider, @Any Instance<Collection<Properties>> propertiesBundlesProvider)
-   {
-      return new ResourceProvider(inputStreamProvider, urlProvider, inputStreamsProvider, urlsProvider, propertiesBundleProvider, propertiesBundlesProvider);
-   }
+public class ResourceProviderProducer {
+    @Produces
+    public ResourceProvider getResourceProvider(@Any Instance<InputStream> inputStreamProvider, @Any Instance<URL> urlProvider, @Any Instance<Collection<InputStream>> inputStreamsProvider, @Any Instance<Collection<URL>> urlsProvider, @Any Instance<Properties> propertiesBundleProvider, @Any Instance<Collection<Properties>> propertiesBundlesProvider) {
+        return new ResourceProvider(inputStreamProvider, urlProvider, inputStreamsProvider, urlsProvider, propertiesBundleProvider, propertiesBundlesProvider);
+    }
 }

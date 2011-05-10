@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.test.core.veto;
 
-public class Tiger
-{
+public class Tiger {
 
 }

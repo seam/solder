@@ -17,14 +17,14 @@
 
 package org.jboss.seam.solder.test.messages;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.junit.Assert.assertEquals;
-
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests injection of typed message bundle injections.
@@ -33,24 +33,20 @@ import org.junit.runner.RunWith;
  * @author Dan Allen
  */
 @RunWith(Arquillian.class)
-public class TypedMessageBundleInjectionTest
-{
-   @Deployment
-   public static Archive<?> createDeployment()
-   {
-      return baseDeployment()
-         .addPackage(TypedMessageBundleInjectionTest.class.getPackage());
-   }
+public class TypedMessageBundleInjectionTest {
+    @Deployment
+    public static Archive<?> createDeployment() {
+        return baseDeployment()
+                .addPackage(TypedMessageBundleInjectionTest.class.getPackage());
+    }
 
-   @Test
-   public void testMessageBundleInjection(Jay jay)
-   {
-      assertEquals("Spotted 8 jays", jay.getMessage());
-   }
+    @Test
+    public void testMessageBundleInjection(Jay jay) {
+        assertEquals("Spotted 8 jays", jay.getMessage());
+    }
 
-   @Test
-   public void testMessageBundleLocaleInjection(FrenchJay jay)
-   {
-      assertEquals("Spotted 4 geais", jay.getMessage());
-   }
+    @Test
+    public void testMessageBundleLocaleInjection(FrenchJay jay) {
+        assertEquals("Spotted 4 geais", jay.getMessage());
+    }
 }

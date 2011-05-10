@@ -30,78 +30,62 @@ import org.jboss.seam.solder.reflection.Reflections;
 
 /**
  * A helper class for implementing producer methods and fields on generic beans
- * 
- * @author Pete Muir
  *
+ * @author Pete Muir
  */
-abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T>
-{
+abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T> {
 
-   private final Type declaringBeanType;
-   private final Annotation[] declaringBeanQualifiers;
-   private final Class<? extends Annotation> scopeOverride;
+    private final Type declaringBeanType;
+    private final Annotation[] declaringBeanQualifiers;
+    private final Class<? extends Annotation> scopeOverride;
 
-   protected AbstractGenericProducerBean(Bean<T> delegate, GenericIdentifier identifier, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager)
-   {
-      super(delegate, qualifiers, identifier, id, alternative, beanClass, beanManager);
-      this.declaringBeanType = delegate.getBeanClass();
-      this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(Reflections.EMPTY_ANNOTATION_ARRAY);
-      this.scopeOverride = scopeOverride;
-   }
-   
-   protected Annotation[] getDeclaringBeanQualifiers()
-   {
-      return declaringBeanQualifiers;
-   }
-   
-   protected Type getDeclaringBeanType()
-   {
-      return declaringBeanType;
-   }
-   
-   protected abstract T getValue(Object receiver, CreationalContext<T> creationalContext);
+    protected AbstractGenericProducerBean(Bean<T> delegate, GenericIdentifier identifier, Set<Annotation> qualifiers, Set<Annotation> declaringBeanQualifiers, Class<? extends Annotation> scopeOverride, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager) {
+        super(delegate, qualifiers, identifier, id, alternative, beanClass, beanManager);
+        this.declaringBeanType = delegate.getBeanClass();
+        this.declaringBeanQualifiers = declaringBeanQualifiers.toArray(Reflections.EMPTY_ANNOTATION_ARRAY);
+        this.scopeOverride = scopeOverride;
+    }
 
-   @Override
-   public T create(CreationalContext<T> creationalContext)
-   {
-      try
-      {
-         Object receiver = getReceiver(creationalContext);
-         T instance = getValue(receiver, creationalContext);
-         Beans.checkReturnValue(instance, this, null, getBeanManager());
-         return instance;
-      }
-      finally
-      {
-         if (getDeclaringBean().getScope().equals(Dependent.class))
-         {
-            creationalContext.release();
-         }
-      }
-   }
-   
-   protected Object getReceiver(CreationalContext<T> creationalContext)
-   {
-      Bean<?> declaringBean = getDeclaringBean();
-      return getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
-   }
-   
-   protected Bean<?> getDeclaringBean()
-   {
-      return getBeanManager().resolve(getBeanManager().getBeans(getDeclaringBeanType(), getDeclaringBeanQualifiers()));
-   }
+    protected Annotation[] getDeclaringBeanQualifiers() {
+        return declaringBeanQualifiers;
+    }
 
-   @Override
-   public Class<? extends Annotation> getScope()
-   {
-      if (scopeOverride == null)
-      {
-         return super.getScope();
-      }
-      else
-      {
-         return scopeOverride;
-      }
-   }
+    protected Type getDeclaringBeanType() {
+        return declaringBeanType;
+    }
+
+    protected abstract T getValue(Object receiver, CreationalContext<T> creationalContext);
+
+    @Override
+    public T create(CreationalContext<T> creationalContext) {
+        try {
+            Object receiver = getReceiver(creationalContext);
+            T instance = getValue(receiver, creationalContext);
+            Beans.checkReturnValue(instance, this, null, getBeanManager());
+            return instance;
+        } finally {
+            if (getDeclaringBean().getScope().equals(Dependent.class)) {
+                creationalContext.release();
+            }
+        }
+    }
+
+    protected Object getReceiver(CreationalContext<T> creationalContext) {
+        Bean<?> declaringBean = getDeclaringBean();
+        return getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
+    }
+
+    protected Bean<?> getDeclaringBean() {
+        return getBeanManager().resolve(getBeanManager().getBeans(getDeclaringBeanType(), getDeclaringBeanQualifiers()));
+    }
+
+    @Override
+    public Class<? extends Annotation> getScope() {
+        if (scopeOverride == null) {
+            return super.getScope();
+        } else {
+            return scopeOverride;
+        }
+    }
 
 }

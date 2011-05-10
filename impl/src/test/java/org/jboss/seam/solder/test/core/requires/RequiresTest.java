@@ -16,9 +16,6 @@
  */
 package org.jboss.seam.solder.test.core.requires;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.junit.Assert.assertEquals;
-
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
@@ -29,6 +26,9 @@ import org.jboss.seam.solder.test.core.requires.beans.pkg.OptionalBeanWithPackag
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(Arquillian.class)
 public class RequiresTest {

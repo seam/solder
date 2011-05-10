@@ -28,63 +28,70 @@ import java.util.Set;
  * @author Jared Levy
  */
 abstract class AbstractSetMultimap<K, V>
-    extends AbstractMultimap<K, V> implements SetMultimap<K, V> {
-  /**
-   * Creates a new multimap that uses the provided map.
-   *
-   * @param map place to store the mapping from each key to its corresponding
-   *     values
-   */
-  protected AbstractSetMultimap(Map<K, Collection<V>> map) {
-    super(map);
-  }
+        extends AbstractMultimap<K, V> implements SetMultimap<K, V> {
+    /**
+     * Creates a new multimap that uses the provided map.
+     *
+     * @param map place to store the mapping from each key to its corresponding
+     *            values
+     */
+    protected AbstractSetMultimap(Map<K, Collection<V>> map) {
+        super(map);
+    }
 
-  @Override abstract Set<V> createCollection();
+    @Override
+    abstract Set<V> createCollection();
 
-  @Override public Set<V> get(K key) {
-    return (Set<V>) super.get(key);
-  }
+    @Override
+    public Set<V> get(K key) {
+        return (Set<V>) super.get(key);
+    }
 
-  @Override public Set<Map.Entry<K, V>> entries() {
-    return (Set<Map.Entry<K, V>>) super.entries();
-  }
+    @Override
+    public Set<Map.Entry<K, V>> entries() {
+        return (Set<Map.Entry<K, V>>) super.entries();
+    }
 
-  @Override public Set<V> removeAll(Object key) {
-    return (Set<V>) super.removeAll(key);
-  }
+    @Override
+    public Set<V> removeAll(Object key) {
+        return (Set<V>) super.removeAll(key);
+    }
 
-  /**
-   * {@inheritDoc}
-   *
-   * <p>Any duplicates in {@code values} will be stored in the multimap once.
-   */
-  @Override public Set<V> replaceValues(
-      K key, Iterable<? extends V> values) {
-    return (Set<V>) super.replaceValues(key, values);
-  }
+    /**
+     * {@inheritDoc}
+     * <p/>
+     * <p>Any duplicates in {@code values} will be stored in the multimap once.
+     */
+    @Override
+    public Set<V> replaceValues(
+            K key, Iterable<? extends V> values) {
+        return (Set<V>) super.replaceValues(key, values);
+    }
 
-  /**
-   * Stores a key-value pair in the multimap.
-   *
-   * @param key key to store in the multimap
-   * @param value value to store in the multimap
-   * @return {@code true} if the method increased the size of the multimap, or
-   *     {@code false} if the multimap already contained the key-value pair
-   */
-  @Override public boolean put(K key, V value) {
-    return super.put(key, value);
-  }
+    /**
+     * Stores a key-value pair in the multimap.
+     *
+     * @param key   key to store in the multimap
+     * @param value value to store in the multimap
+     * @return {@code true} if the method increased the size of the multimap, or
+     *         {@code false} if the multimap already contained the key-value pair
+     */
+    @Override
+    public boolean put(K key, V value) {
+        return super.put(key, value);
+    }
 
-  /**
-   * Compares the specified object to this multimap for equality.
-   *
-   * <p>Two {@code SetMultimap} instances are equal if, for each key, they
-   * contain the same values. Equality does not depend on the ordering of keys
-   * or values.
-   */
-  @Override public boolean equals(Object object) {
-    return super.equals(object);
-  }
-  
-  private static final long serialVersionUID = 7431625294878419160L;  
+    /**
+     * Compares the specified object to this multimap for equality.
+     * <p/>
+     * <p>Two {@code SetMultimap} instances are equal if, for each key, they
+     * contain the same values. Equality does not depend on the ordering of keys
+     * or values.
+     */
+    @Override
+    public boolean equals(Object object) {
+        return super.equals(object);
+    }
+
+    private static final long serialVersionUID = 7431625294878419160L;
 }

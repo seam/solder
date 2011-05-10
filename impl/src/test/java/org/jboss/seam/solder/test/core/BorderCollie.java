@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.test.core;
 
-public class BorderCollie extends Dog
-{
+public class BorderCollie extends Dog {
 
 }

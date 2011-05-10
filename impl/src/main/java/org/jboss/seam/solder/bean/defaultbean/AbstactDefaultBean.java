@@ -29,97 +29,81 @@ import org.jboss.seam.solder.bean.ForwardingBean;
 
 /**
  * A helper class for implementing default bean functionality
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-abstract class AbstactDefaultBean<T> extends ForwardingBean<T> implements PassivationCapable
-{
+abstract class AbstactDefaultBean<T> extends ForwardingBean<T> implements PassivationCapable {
 
-   private final Bean<T> delegate;
-   private final Set<Annotation> qualifiers;
-   private final Set<Type> types;
-   private final BeanManager beanManager;
-   private final Type declaringBeanType;
+    private final Bean<T> delegate;
+    private final Set<Annotation> qualifiers;
+    private final Set<Type> types;
+    private final BeanManager beanManager;
+    private final Type declaringBeanType;
 
-   protected AbstactDefaultBean(Bean<T> delegate, Type declaringBeanType, Set<Type> types, Set<Annotation> qualifiers, BeanManager beanManager)
-   {
-      this.delegate = delegate;
-      this.beanManager = beanManager;
-      this.qualifiers = new HashSet<Annotation>(qualifiers);
-      this.types = new HashSet<Type>(types);
-      this.declaringBeanType = declaringBeanType;
-   }
-   
-   protected BeanManager getBeanManager()
-   {
-      return beanManager;
-   }
+    protected AbstactDefaultBean(Bean<T> delegate, Type declaringBeanType, Set<Type> types, Set<Annotation> qualifiers, BeanManager beanManager) {
+        this.delegate = delegate;
+        this.beanManager = beanManager;
+        this.qualifiers = new HashSet<Annotation>(qualifiers);
+        this.types = new HashSet<Type>(types);
+        this.declaringBeanType = declaringBeanType;
+    }
 
-   @Override
-   protected Bean<T> delegate()
-   {
-      return delegate;
-   }
+    protected BeanManager getBeanManager() {
+        return beanManager;
+    }
 
-   protected Type getDeclaringBeanType()
-   {
-      return declaringBeanType;
-   }
+    @Override
+    protected Bean<T> delegate() {
+        return delegate;
+    }
 
-   @Override
-   public Set<Annotation> getQualifiers()
-   {
-      return qualifiers;
-   }
+    protected Type getDeclaringBeanType() {
+        return declaringBeanType;
+    }
 
-   public String getId()
-   {
-      if (delegate instanceof PassivationCapable)
-      {
-         return DefaultBean.class.getName() + "-" + ((PassivationCapable) delegate).getId();
-      }
-      return DefaultBean.class.getName() + "-" + types.toString() + "-QUALIFIERS-" + delegate.getQualifiers().toString();
-   }
+    @Override
+    public Set<Annotation> getQualifiers() {
+        return qualifiers;
+    }
 
-   @Override
-   public String toString()
-   {
-      return "Default Bean with types " + types + " and qualifiers " + qualifiers;
-   }
+    public String getId() {
+        if (delegate instanceof PassivationCapable) {
+            return DefaultBean.class.getName() + "-" + ((PassivationCapable) delegate).getId();
+        }
+        return DefaultBean.class.getName() + "-" + types.toString() + "-QUALIFIERS-" + delegate.getQualifiers().toString();
+    }
 
-   @Override
-   public int hashCode()
-   {
-      final int prime = 31;
-      int result = super.hashCode();
-      result = prime * result + ((qualifiers == null) ? 0 : qualifiers.hashCode());
-      result = prime * result + ((types == null) ? 0 : types.hashCode());
-      return result;
-   }
+    @Override
+    public String toString() {
+        return "Default Bean with types " + types + " and qualifiers " + qualifiers;
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-         return true;
-      if (getClass() != obj.getClass())
-         return false;
-      AbstactDefaultBean<?> other = (AbstactDefaultBean<?>) obj;
-      if (qualifiers == null)
-      {
-         if (other.qualifiers != null)
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((qualifiers == null) ? 0 : qualifiers.hashCode());
+        result = prime * result + ((types == null) ? 0 : types.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (getClass() != obj.getClass())
             return false;
-      }
-      else if (!qualifiers.equals(other.qualifiers))
-         return false;
-      if (types == null)
-      {
-         if (other.types != null)
+        AbstactDefaultBean<?> other = (AbstactDefaultBean<?>) obj;
+        if (qualifiers == null) {
+            if (other.qualifiers != null)
+                return false;
+        } else if (!qualifiers.equals(other.qualifiers))
             return false;
-      }
-      else if (!types.equals(other.types))
-         return false;
-      return delegate.equals(other.delegate);
-   }
+        if (types == null) {
+            if (other.types != null)
+                return false;
+        } else if (!types.equals(other.types))
+            return false;
+        return delegate.equals(other.delegate);
+    }
 }

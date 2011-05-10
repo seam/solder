@@ -16,8 +16,6 @@
  */
 package org.jboss.seam.solder.bean.generic;
 
-import static org.jboss.seam.solder.bean.Beans.createInjectionPoints;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,83 +37,68 @@ import org.jboss.seam.solder.reflection.Synthetic;
 import org.jboss.seam.solder.reflection.annotated.Annotateds;
 import org.jboss.seam.solder.reflection.annotated.InjectableMethod;
 
-public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T>
-{
+import static org.jboss.seam.solder.bean.Beans.createInjectionPoints;
 
-   private final InjectableMethod<X> producerMethod;
-   private final InjectableMethod<X> disposerMethod;
+public class GenericProducerMethod<T, X> extends AbstractGenericProducerBean<T> {
 
-   GenericProducerMethod(Bean<T> originalBean, GenericIdentifier identifier, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> declaringBeanClass, BeanManager beanManager)
-   {
-      super(originalBean, identifier, qualifiers, genericBeanQualifiers, scopeOverride, Annotateds.createCallableId(method), alternative, declaringBeanClass, beanManager);
-      List<InjectionPoint> injectionPoints = createInjectionPoints(method, this, beanManager);
-      List<InjectionPoint> wrappedInjectionPoints = new ArrayList<InjectionPoint>();
-      for (InjectionPoint injectionPoint : injectionPoints)
-      {
-         wrappedInjectionPoints.add(wrapInjectionPoint(injectionPoint, genericBeanQualifiers));
-      }
-      this.producerMethod = new InjectableMethod<X>(method, wrappedInjectionPoints, beanManager);
-      if (disposerMethod != null)
-      {
-         injectionPoints = createInjectionPoints(disposerMethod, this, beanManager);
-         wrappedInjectionPoints = new ArrayList<InjectionPoint>();
-         for (InjectionPoint injectionPoint : injectionPoints)
-         {
+    private final InjectableMethod<X> producerMethod;
+    private final InjectableMethod<X> disposerMethod;
+
+    GenericProducerMethod(Bean<T> originalBean, GenericIdentifier identifier, AnnotatedMethod<X> method, AnnotatedMethod<X> disposerMethod, final Set<Annotation> qualifiers, final Set<Annotation> genericBeanQualifiers, Class<? extends Annotation> scopeOverride, boolean alternative, Class<?> declaringBeanClass, BeanManager beanManager) {
+        super(originalBean, identifier, qualifiers, genericBeanQualifiers, scopeOverride, Annotateds.createCallableId(method), alternative, declaringBeanClass, beanManager);
+        List<InjectionPoint> injectionPoints = createInjectionPoints(method, this, beanManager);
+        List<InjectionPoint> wrappedInjectionPoints = new ArrayList<InjectionPoint>();
+        for (InjectionPoint injectionPoint : injectionPoints) {
             wrappedInjectionPoints.add(wrapInjectionPoint(injectionPoint, genericBeanQualifiers));
-         }
-         this.disposerMethod = new InjectableMethod<X>(disposerMethod, wrappedInjectionPoints, beanManager);
-      }
-      else
-      {
-         this.disposerMethod = null;
-      }
-   }
-
-   @Override
-   protected T getValue(Object receiver, CreationalContext<T> creationalContext)
-   {
-      return producerMethod.invoke(receiver, creationalContext);
-   }
-
-   @Override
-   public void destroy(T instance, CreationalContext<T> creationalContext)
-   {
-      if (disposerMethod != null)
-      {
-         disposerMethod.invoke(getReceiver(creationalContext), creationalContext);
-      }
-   }
-
-   private static InjectionPoint wrapInjectionPoint(InjectionPoint injectionPoint, Set<Annotation> quals)
-   {
-      Annotated anotated = injectionPoint.getAnnotated();
-      boolean genericInjectionPoint = false;
-      if (injectionPoint.getType() instanceof Class<?>)
-      {
-         Class<?> c = (Class<?>) injectionPoint.getType();
-         genericInjectionPoint = c.isAnnotationPresent(GenericConfiguration.class);
-      }
-      if (anotated.isAnnotationPresent(Disposes.class) || anotated.isAnnotationPresent(InjectGeneric.class) || genericInjectionPoint)
-      {
-         Set<Annotation> newQualifiers = new HashSet<Annotation>();
-         newQualifiers.addAll(quals);
-         newQualifiers.addAll(injectionPoint.getQualifiers());
-         Iterator<Annotation> it = newQualifiers.iterator();
-         while (it.hasNext())
-         {
-            Annotation annotation = it.next();
-            if (annotation.annotationType().equals(Synthetic.class))
-            {
-               it.remove();
+        }
+        this.producerMethod = new InjectableMethod<X>(method, wrappedInjectionPoints, beanManager);
+        if (disposerMethod != null) {
+            injectionPoints = createInjectionPoints(disposerMethod, this, beanManager);
+            wrappedInjectionPoints = new ArrayList<InjectionPoint>();
+            for (InjectionPoint injectionPoint : injectionPoints) {
+                wrappedInjectionPoints.add(wrapInjectionPoint(injectionPoint, genericBeanQualifiers));
             }
-            else if (annotation.annotationType().equals(GenericMarker.class))
-            {
-               it.remove();
+            this.disposerMethod = new InjectableMethod<X>(disposerMethod, wrappedInjectionPoints, beanManager);
+        } else {
+            this.disposerMethod = null;
+        }
+    }
+
+    @Override
+    protected T getValue(Object receiver, CreationalContext<T> creationalContext) {
+        return producerMethod.invoke(receiver, creationalContext);
+    }
+
+    @Override
+    public void destroy(T instance, CreationalContext<T> creationalContext) {
+        if (disposerMethod != null) {
+            disposerMethod.invoke(getReceiver(creationalContext), creationalContext);
+        }
+    }
+
+    private static InjectionPoint wrapInjectionPoint(InjectionPoint injectionPoint, Set<Annotation> quals) {
+        Annotated anotated = injectionPoint.getAnnotated();
+        boolean genericInjectionPoint = false;
+        if (injectionPoint.getType() instanceof Class<?>) {
+            Class<?> c = (Class<?>) injectionPoint.getType();
+            genericInjectionPoint = c.isAnnotationPresent(GenericConfiguration.class);
+        }
+        if (anotated.isAnnotationPresent(Disposes.class) || anotated.isAnnotationPresent(InjectGeneric.class) || genericInjectionPoint) {
+            Set<Annotation> newQualifiers = new HashSet<Annotation>();
+            newQualifiers.addAll(quals);
+            newQualifiers.addAll(injectionPoint.getQualifiers());
+            Iterator<Annotation> it = newQualifiers.iterator();
+            while (it.hasNext()) {
+                Annotation annotation = it.next();
+                if (annotation.annotationType().equals(Synthetic.class)) {
+                    it.remove();
+                } else if (annotation.annotationType().equals(GenericMarker.class)) {
+                    it.remove();
+                }
             }
-         }
-         return new ImmutableInjectionPoint((AnnotatedParameter<?>) anotated, newQualifiers, injectionPoint.getBean(), injectionPoint.isTransient(), injectionPoint.isDelegate());
-      }
-      return injectionPoint;
-   }
+            return new ImmutableInjectionPoint((AnnotatedParameter<?>) anotated, newQualifiers, injectionPoint.getBean(), injectionPoint.isTransient(), injectionPoint.isDelegate());
+        }
+        return injectionPoint;
+    }
 
 }

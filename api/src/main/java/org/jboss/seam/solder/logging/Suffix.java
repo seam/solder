@@ -16,17 +16,17 @@
  */
 package org.jboss.seam.solder.logging;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.jboss.logging.Logger;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * <p>
@@ -34,22 +34,20 @@ import org.jboss.logging.Logger;
  * injection point type if no category is specified). The category and suffix
  * will be separated by a logger separator.
  * </p>
- * 
+ * <p/>
  * <p>
  * Suffixes are not supported by typed loggers.
  * </p>
- * 
+ *
  * @author Pete Muir
- * 
  * @see Logger#getLogger(String, String)
  */
-@Target({ METHOD, FIELD, PARAMETER, TYPE })
+@Target({METHOD, FIELD, PARAMETER, TYPE})
 @Retention(RUNTIME)
 @Documented
-public @interface Suffix
-{
-   /**
-    * The suffix to use
-    */
-   String value();
+public @interface Suffix {
+    /**
+     * The suffix to use
+     */
+    String value();
 }

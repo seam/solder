@@ -30,73 +30,64 @@ import org.jboss.seam.solder.unwraps.Unwraps;
 
 /**
  * A generic bean for the config annotation Message
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
 
 @GenericConfiguration(Message.class)
 @ApplyScope
-public class Baz implements Serializable
-{
+public class Baz implements Serializable {
 
-   private static final long serialVersionUID = 6807449196645110050L;
+    private static final long serialVersionUID = 6807449196645110050L;
 
-   private Fred fred = new Fred("Hello Fred");
+    private Fred fred = new Fred("Hello Fred");
 
-   @Inject @Generic
-   private Bar bar;
+    @Inject
+    @Generic
+    private Bar bar;
 
-   @Inject
-   private Corge corge;
-   
-   @Inject 
-   @Generic
-   private Message message;
+    @Inject
+    private Corge corge;
 
-   public Bar getBar()
-   {
-      return bar;
-   }
-   
-   public Corge getCorge()
-   {
-      return corge;
-   }
-   
-   public Message getMessage()
-   {
-      return message;
-   }
+    @Inject
+    @Generic
+    private Message message;
 
-   @Produces @Wibble
-   public String getCorge(Wobble wobble)
-   {
-      return wobble.getName() + message.value();
-   }
-   
-   @Unwraps
-   public Fred getFred()
-   {
-      return fred;
-   }
+    public Bar getBar() {
+        return bar;
+    }
 
-   public void observe(@Observes @Any Plugh event)
-   {
-      // Set the message if we are in a generic bean
-      if (message != null)
-      {
-         event.setMessage(message);
-      }
-      // Set the message if not previously
-      else if (event.getMessage() == null)
-      {
-         event.setMessage(new MessageLiteral("base"));
-      }
-   }
+    public Corge getCorge() {
+        return corge;
+    }
 
-   public void setFred(Fred fred)
-   {
-      this.fred = fred;
-   }
+    public Message getMessage() {
+        return message;
+    }
+
+    @Produces
+    @Wibble
+    public String getCorge(Wobble wobble) {
+        return wobble.getName() + message.value();
+    }
+
+    @Unwraps
+    public Fred getFred() {
+        return fred;
+    }
+
+    public void observe(@Observes @Any Plugh event) {
+        // Set the message if we are in a generic bean
+        if (message != null) {
+            event.setMessage(message);
+        }
+        // Set the message if not previously
+        else if (event.getMessage() == null) {
+            event.setMessage(new MessageLiteral("base"));
+        }
+    }
+
+    public void setFred(Fred fred) {
+        this.fred = fred;
+    }
 }

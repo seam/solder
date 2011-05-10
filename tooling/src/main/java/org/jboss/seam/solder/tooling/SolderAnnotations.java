@@ -17,6 +17,7 @@
 package org.jboss.seam.solder.tooling;
 
 import java.lang.annotation.Annotation;
+
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
@@ -30,7 +31,6 @@ import org.jboss.seam.solder.messages.Message;
 import org.jboss.seam.solder.messages.MessageBundle;
 
 /**
- *
  * @author James R. Perkins (jrp) - 19.Feb.2011
  * @author <a href="http://community.jboss.org/people/kenfinni">Ken Finnigan</a>
  */

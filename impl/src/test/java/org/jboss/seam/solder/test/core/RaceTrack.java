@@ -20,15 +20,13 @@ import javax.inject.Inject;
 
 import org.jboss.seam.solder.core.Exact;
 
-public class RaceTrack
-{
-   @Inject
-   @Exact(Greyhound.class)
-   private Dog dog;
+public class RaceTrack {
+    @Inject
+    @Exact(Greyhound.class)
+    private Dog dog;
 
-   public Dog getDog()
-   {
-      return dog;
-   }
+    public Dog getDog() {
+        return dog;
+    }
 
 }

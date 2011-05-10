@@ -21,9 +21,8 @@ import javax.enterprise.util.AnnotationLiteral;
 import org.jboss.seam.solder.unwraps.Unwraps;
 
 
-public class UnwrapsLiteral extends AnnotationLiteral<Unwraps> implements Unwraps
-{
-   private static final long serialVersionUID = -8137340248362361317L;
+public class UnwrapsLiteral extends AnnotationLiteral<Unwraps> implements Unwraps {
+    private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final Unwraps INSTANCE = new UnwrapsLiteral();
+    public static final Unwraps INSTANCE = new UnwrapsLiteral();
 }

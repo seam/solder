@@ -16,142 +16,131 @@
  */
 package org.jboss.seam.solder.beanManager;
 
-import org.jboss.seam.solder.util.Sortable;
-import org.jboss.seam.solder.util.service.ServiceLoader;
-
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.Extension;
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.Extension;
+import javax.inject.Inject;
+
+import org.jboss.seam.solder.util.Sortable;
+import org.jboss.seam.solder.util.service.ServiceLoader;
 
 /**
  * <p>
  * A utility for use in non-managed classes, which are not able to obtain a
  * reference to the {@link BeanManager} using injection.
  * </p>
- *
+ * <p/>
  * <p>
  * {@link BeanManagerProvider} is an SPI that may be implemented to allow third
  * parties to register custom methods of looking up the BeanManager in an
  * external context. This class will consult implementations according to
  * precedence.
  * </p>
- *
+ * <p/>
  * <p>
  * <b>**WARNING**</b> This class is <b>NOT</b> a clever way to get the
  * BeanManager, and should be <b>avoided at all costs</b>. If you need a handle
  * to the {@link BeanManager} you should probably register an {@link Extension}
  * instead of using this class; have you tried using @{@link Inject}?
  * </p>
- *
+ * <p/>
  * <p>
  * If you think you need to use this class, chat to the community and make sure
  * you aren't missing a trick!
  * </p>
  *
- * @see BeanManagerProvider
- * @see BeanManagerAware
- *
  * @author Pete Muir
  * @author Nicklas Karlsson
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  * @author Stuart Douglas
+ * @see BeanManagerProvider
+ * @see BeanManagerAware
  */
-public class BeanManagerLocator
-{
-   private volatile BeanManager beanManager;
+public class BeanManagerLocator {
+    private volatile BeanManager beanManager;
 
-   private volatile boolean lookupPerformed = false;
+    private volatile boolean lookupPerformed = false;
 
-   private volatile BeanManagerProvider locatingProvider;
+    private volatile BeanManagerProvider locatingProvider;
 
-   private volatile List<BeanManagerProvider> providers;
+    private volatile List<BeanManagerProvider> providers;
 
-   /**
-    * If a lookup has not yet been performed, consult registered
-    * {@link BeanManagerProvider} implementations to locate the
-    * {@link BeanManager} and return the result. If the {@link BeanManager}
-    * cannot be resolved, throw a {@link BeanManagerUnavailableException}.
-    *
-    * @throws BeanManagerUnavailableException if the BeanManager cannot be resolved
-    * @return the BeanManager for the current bean archive
-    */
-   public BeanManager getBeanManager()
-   {
-      if (!lookupPerformed)
-      {
-         lookupBeanManager();
-      }
+    /**
+     * If a lookup has not yet been performed, consult registered
+     * {@link BeanManagerProvider} implementations to locate the
+     * {@link BeanManager} and return the result. If the {@link BeanManager}
+     * cannot be resolved, throw a {@link BeanManagerUnavailableException}.
+     *
+     * @return the BeanManager for the current bean archive
+     * @throws BeanManagerUnavailableException
+     *          if the BeanManager cannot be resolved
+     */
+    public BeanManager getBeanManager() {
+        if (!lookupPerformed) {
+            lookupBeanManager();
+        }
 
-      if (beanManager == null)
-      {
-         throw new BeanManagerUnavailableException(providers);
-      }
+        if (beanManager == null) {
+            throw new BeanManagerUnavailableException(providers);
+        }
 
-      return beanManager;
-   }
+        return beanManager;
+    }
 
-   /**
-    * If a lookup has not yet been performed, consult registered
-    * {@link BeanManagerProvider} implementations to locate the
-    * {@link BeanManager} and return whether it was found, caching
-    * the result.
-    *
-    * @return <code>true</code> if the bean manager has been found, otherwise
-    *         <code>false</code>
-    */
-   public boolean isBeanManagerAvailable()
-   {
-      if (!lookupPerformed)
-      {
-         lookupBeanManager();
-      }
+    /**
+     * If a lookup has not yet been performed, consult registered
+     * {@link BeanManagerProvider} implementations to locate the
+     * {@link BeanManager} and return whether it was found, caching
+     * the result.
+     *
+     * @return <code>true</code> if the bean manager has been found, otherwise
+     *         <code>false</code>
+     */
+    public boolean isBeanManagerAvailable() {
+        if (!lookupPerformed) {
+            lookupBeanManager();
+        }
 
-      return beanManager != null;
-   }
+        return beanManager != null;
+    }
 
-   /**
-    * Return the {@link BeanManagerProvider} that was used to
-    * locate the BeanManager. This method will not attempt
-    * a lookup.
-    *
-    * @return the BeanManagerProvider implementation
-    */
-   public BeanManagerProvider getLocatingProvider()
-   {
-      return locatingProvider;
-   }
+    /**
+     * Return the {@link BeanManagerProvider} that was used to
+     * locate the BeanManager. This method will not attempt
+     * a lookup.
+     *
+     * @return the BeanManagerProvider implementation
+     */
+    public BeanManagerProvider getLocatingProvider() {
+        return locatingProvider;
+    }
 
-   private synchronized void lookupBeanManager()
-   {
-      if(!lookupPerformed) {
-         final List<BeanManagerProvider> providers = loadServices();
-         Collections.sort(providers, new Sortable.Comparator());
-         for (BeanManagerProvider provider : providers)
-         {
-            beanManager = provider.getBeanManager();
-            if (beanManager != null)
-            {
-               locatingProvider = provider;
-               break;
+    private synchronized void lookupBeanManager() {
+        if (!lookupPerformed) {
+            final List<BeanManagerProvider> providers = loadServices();
+            Collections.sort(providers, new Sortable.Comparator());
+            for (BeanManagerProvider provider : providers) {
+                beanManager = provider.getBeanManager();
+                if (beanManager != null) {
+                    locatingProvider = provider;
+                    break;
+                }
             }
-         }
-         this.providers = providers;
-         lookupPerformed = true;
-      }
-   }
+            this.providers = providers;
+            lookupPerformed = true;
+        }
+    }
 
-   private List<BeanManagerProvider> loadServices()
-   {
-      List<BeanManagerProvider> providers = new ArrayList<BeanManagerProvider>();
+    private List<BeanManagerProvider> loadServices() {
+        List<BeanManagerProvider> providers = new ArrayList<BeanManagerProvider>();
 
-      for (Iterator<BeanManagerProvider> it = ServiceLoader.load(BeanManagerProvider.class).iterator(); it.hasNext();)
-      {
-         providers.add(it.next());
-      }
-      return providers;
-   }
+        for (Iterator<BeanManagerProvider> it = ServiceLoader.load(BeanManagerProvider.class).iterator(); it.hasNext();) {
+            providers.add(it.next());
+        }
+        return providers;
+    }
 }

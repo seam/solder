@@ -20,9 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IntMemberAnnotation
-{
-   int value() default 1;
+public @interface IntMemberAnnotation {
+    int value() default 1;
 
-   int someMember();
+    int someMember();
 }

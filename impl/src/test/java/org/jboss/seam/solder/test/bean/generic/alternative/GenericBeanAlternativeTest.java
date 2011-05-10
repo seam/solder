@@ -19,7 +19,6 @@ package org.jboss.seam.solder.test.bean.generic.alternative;
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.test.util.MavenArtifactResolver;
@@ -29,47 +28,43 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class GenericBeanAlternativeTest
-{
-   @Deployment
-   public static WebArchive deployment()
-   {
-      WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war").addAsLibraries(
-         MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"),
-         MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-impl"));
-      archive.addPackage(GenericBeanAlternativeTest.class.getPackage());
-      archive.addAsWebInfResource("org/jboss/seam/solder/test/bean/generic/alternative/beans.xml", "beans.xml");
-      return archive;
-   }
+public class GenericBeanAlternativeTest {
+    @Deployment
+    public static WebArchive deployment() {
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war").addAsLibraries(
+                MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"),
+                MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-impl"));
+        archive.addPackage(GenericBeanAlternativeTest.class.getPackage());
+        archive.addAsWebInfResource("org/jboss/seam/solder/test/bean/generic/alternative/beans.xml", "beans.xml");
+        return archive;
+    }
 
-   @Inject
-   @Big
-   Pow bigPow;
+    @Inject
+    @Big
+    Pow bigPow;
 
-   @Inject
-   @Small
-   Pow smallPow;
+    @Inject
+    @Small
+    Pow smallPow;
 
-   @Inject
-   @Big
-   Bop bigBop;
+    @Inject
+    @Big
+    Bop bigBop;
 
-   @Inject
-   @Small
-   Bop smallBop;
+    @Inject
+    @Small
+    Bop smallBop;
 
-   @Test
-   public void testGenericAlternatives()
-   {
-      Assert.assertEquals("Alternative Big Bam", bigPow.getName());
-      Assert.assertEquals("Small Bam", smallPow.getName());
-   }
+    @Test
+    public void testGenericAlternatives() {
+        Assert.assertEquals("Alternative Big Bam", bigPow.getName());
+        Assert.assertEquals("Small Bam", smallPow.getName());
+    }
 
-   @Test
-   public void testGenericProducerMethodAlternatives()
-   {
-      Assert.assertEquals("Alternative Big Bam", bigBop.getName());
-      Assert.assertEquals("Small Bam", smallBop.getName());
-   }
+    @Test
+    public void testGenericProducerMethodAlternatives() {
+        Assert.assertEquals("Alternative Big Bam", bigBop.getName());
+        Assert.assertEquals("Small Bam", smallBop.getName());
+    }
 
 }

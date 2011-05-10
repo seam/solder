@@ -20,23 +20,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MultipleMembers
-{
-   int intMember();
+public @interface MultipleMembers {
+    int intMember();
 
-   long longMember();
+    long longMember();
 
-   short shortMember();
+    short shortMember();
 
-   float floatMember();
+    float floatMember();
 
-   double doubleMember();
+    double doubleMember();
 
-   byte byteMember();
+    byte byteMember();
 
-   char charMember();
+    char charMember();
 
-   boolean booleanMember();
+    boolean booleanMember();
 
-   int[] intArrayMember();
+    int[] intArrayMember();
 }

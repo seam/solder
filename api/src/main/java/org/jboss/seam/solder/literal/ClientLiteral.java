@@ -21,9 +21,8 @@ import javax.enterprise.util.AnnotationLiteral;
 import org.jboss.seam.solder.core.Client;
 
 
-public class ClientLiteral extends AnnotationLiteral<Client> implements Client
-{
-   private static final long serialVersionUID = -8137340248362361317L;
+public class ClientLiteral extends AnnotationLiteral<Client> implements Client {
+    private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final Client INSTANCE = new ClientLiteral();
+    public static final Client INSTANCE = new ClientLiteral();
 }

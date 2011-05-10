@@ -45,12 +45,18 @@ final class Log4jLogger extends Logger {
 
     private static org.apache.log4j.Level translate(final Level level) {
         if (level != null) switch (level) {
-            case FATAL: return org.apache.log4j.Level.FATAL;
-            case ERROR: return org.apache.log4j.Level.ERROR;
-            case WARN:  return org.apache.log4j.Level.WARN;
-            case INFO:  return org.apache.log4j.Level.INFO;
-            case DEBUG: return org.apache.log4j.Level.DEBUG;
-            case TRACE: return org.apache.log4j.Level.TRACE;
+            case FATAL:
+                return org.apache.log4j.Level.FATAL;
+            case ERROR:
+                return org.apache.log4j.Level.ERROR;
+            case WARN:
+                return org.apache.log4j.Level.WARN;
+            case INFO:
+                return org.apache.log4j.Level.INFO;
+            case DEBUG:
+                return org.apache.log4j.Level.DEBUG;
+            case TRACE:
+                return org.apache.log4j.Level.TRACE;
         }
         return org.apache.log4j.Level.ALL;
     }

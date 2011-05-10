@@ -19,7 +19,6 @@ package org.jboss.seam.solder.test.bean.generic.field;
 
 @Foo(5)
 @Message("hello5")
-public class BurtSubclass extends Burt
-{
+public class BurtSubclass extends Burt {
 
 }

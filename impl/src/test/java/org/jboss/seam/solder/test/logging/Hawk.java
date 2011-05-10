@@ -20,13 +20,12 @@ import javax.inject.Inject;
 
 import org.jboss.seam.solder.logging.Category;
 
-public class Hawk
-{
-   @Inject @Category("Birds")
-   private BirdLogger logger;
-   
-   public void generateLogMessage()
-   {
-      logger.logHawksSpotted(3);
-   }
+public class Hawk {
+    @Inject
+    @Category("Birds")
+    private BirdLogger logger;
+
+    public void generateLogMessage() {
+        logger.logHawksSpotted(3);
+    }
 }

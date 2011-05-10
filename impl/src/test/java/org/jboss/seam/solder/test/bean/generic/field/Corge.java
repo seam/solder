@@ -20,18 +20,15 @@ import java.io.Serializable;
 
 /**
  * A normal bean
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
-public class Corge implements Serializable
-{
-   
-   private static final long serialVersionUID = 8211199638181988551L;
+public class Corge implements Serializable {
 
-   public String getName()
-   {
-      return "fred";
-   }
+    private static final long serialVersionUID = 8211199638181988551L;
+
+    public String getName() {
+        return "fred";
+    }
 
 }

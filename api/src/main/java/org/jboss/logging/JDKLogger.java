@@ -24,7 +24,7 @@ final class JDKLogger extends Logger {
 
     private static final long serialVersionUID = 2563174097983721393L;
 
-    @SuppressWarnings({ "NonConstantLogger" })
+    @SuppressWarnings({"NonConstantLogger"})
     private transient final java.util.logging.Logger logger;
 
     public JDKLogger(final String name) {
@@ -66,12 +66,18 @@ final class JDKLogger extends Logger {
 
     private static java.util.logging.Level translate(final Level level) {
         if (level != null) switch (level) {
-            case FATAL: return JDKLevel.FATAL;
-            case ERROR: return JDKLevel.ERROR;
-            case WARN:  return JDKLevel.WARN;
-            case INFO:  return JDKLevel.INFO;
-            case DEBUG: return JDKLevel.DEBUG;
-            case TRACE: return JDKLevel.TRACE;
+            case FATAL:
+                return JDKLevel.FATAL;
+            case ERROR:
+                return JDKLevel.ERROR;
+            case WARN:
+                return JDKLevel.WARN;
+            case INFO:
+                return JDKLevel.INFO;
+            case DEBUG:
+                return JDKLevel.DEBUG;
+            case TRACE:
+                return JDKLevel.TRACE;
         }
         return JDKLevel.ALL;
     }

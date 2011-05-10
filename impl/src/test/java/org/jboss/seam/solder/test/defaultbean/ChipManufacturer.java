@@ -20,34 +20,28 @@ import javax.enterprise.inject.Produces;
 
 import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
 
-public class ChipManufacturer
-{
-   public ChipManufacturer() {}
-   
-   @DefaultBean(CPU.class)
-   @Produces
-   public CPU createChip()
-   {
-      return new CPU()
-      {
-         public String getSpeed()
-         {
-            return "slow";
-         }
-      };
-   }
+public class ChipManufacturer {
+    public ChipManufacturer() {
+    }
 
-   @DefaultBean(GPU.class)
-   @Produces
-   public GPU createGPU()
-   {
-      return new GPU()
-      {
+    @DefaultBean(CPU.class)
+    @Produces
+    public CPU createChip() {
+        return new CPU() {
+            public String getSpeed() {
+                return "slow";
+            }
+        };
+    }
 
-         public String getSpeed()
-         {
-            return "slow";
-         }
-      };
-   }
+    @DefaultBean(GPU.class)
+    @Produces
+    public GPU createGPU() {
+        return new GPU() {
+
+            public String getSpeed() {
+                return "slow";
+            }
+        };
+    }
 }

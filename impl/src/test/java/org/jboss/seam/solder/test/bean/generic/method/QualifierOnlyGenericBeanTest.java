@@ -16,10 +16,6 @@
  */
 package org.jboss.seam.solder.test.bean.generic.method;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
@@ -28,48 +24,49 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 @RunWith(Arquillian.class)
-public class QualifierOnlyGenericBeanTest
-{
-   
-   @Deployment
-   public static Archive<?> deployment()
-   {
-      return baseDeployment().addPackage(QualifierOnlyGenericBeanTest.class.getPackage());
-   }
+public class QualifierOnlyGenericBeanTest {
 
-   @Inject
-   @Foo(1)
-   private Kitchen kitchen1;
+    @Deployment
+    public static Archive<?> deployment() {
+        return baseDeployment().addPackage(QualifierOnlyGenericBeanTest.class.getPackage());
+    }
 
-   @Inject
-   @Foo(2)
-   private Kitchen kitchen2;
+    @Inject
+    @Foo(1)
+    private Kitchen kitchen1;
 
-   @Inject
-   @Foo(1)
-   private Sink sink1;
+    @Inject
+    @Foo(2)
+    private Kitchen kitchen2;
 
-   @Inject
-   @Foo(2)
-   private Sink sink2;
-   
+    @Inject
+    @Foo(1)
+    private Sink sink1;
 
-   @Test
-   public void testGeneric()
-   {
-      
-      // Check that producer methods on generic beans are working
-      assertNotNull(kitchen1);
-      assertEquals("big", kitchen1.getSize());
-      assertNotNull(kitchen2);
-      assertEquals("small", kitchen2.getSize());
-      
-      assertNotNull(sink1);
-      assertEquals("big", sink1.getKitchen().getSize());
-      assertNotNull(sink2);
-      assertEquals("small", sink2.getKitchen().getSize());
-   }
+    @Inject
+    @Foo(2)
+    private Sink sink2;
+
+
+    @Test
+    public void testGeneric() {
+
+        // Check that producer methods on generic beans are working
+        assertNotNull(kitchen1);
+        assertEquals("big", kitchen1.getSize());
+        assertNotNull(kitchen2);
+        assertEquals("small", kitchen2.getSize());
+
+        assertNotNull(sink1);
+        assertEquals("big", sink1.getKitchen().getSize());
+        assertNotNull(sink2);
+        assertEquals("small", sink2.getKitchen().getSize());
+    }
 
 
 }

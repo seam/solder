@@ -20,25 +20,21 @@ import javax.enterprise.inject.Produces;
 
 /**
  * Produces the default non-alternative generic beans
- * 
+ *
  * @author stuart
- * 
  */
-public class OnomatopoeiaProducer
-{
-   @Boom("Big")
-   @Big
-   @Produces
-   public Bam getBigBam()
-   {
-      return new Bam("Big Bam");
-   }
+public class OnomatopoeiaProducer {
+    @Boom("Big")
+    @Big
+    @Produces
+    public Bam getBigBam() {
+        return new Bam("Big Bam");
+    }
 
-   @Boom("Small")
-   @Small
-   @Produces
-   public Bam getSmallBam()
-   {
-      return new Bam("Small Bam");
-   }
+    @Boom("Small")
+    @Small
+    @Produces
+    public Bam getSmallBam() {
+        return new Bam("Small Bam");
+    }
 }

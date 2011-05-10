@@ -25,14 +25,12 @@ import javax.inject.Qualifier;
 
 /**
  * a qualifier
- * 
+ *
  * @author stuart
- * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
-@Target( { ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD, ElementType.TYPE })
-public @interface Big
-{
+@Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
+public @interface Big {
 
 }

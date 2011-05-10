@@ -20,6 +20,7 @@ package org.jboss.logging;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Map;
+
 import org.jboss.logmanager.LogContext;
 import org.jboss.logmanager.MDC;
 import org.jboss.logmanager.NDC;
@@ -70,10 +71,10 @@ final class JBossLogManagerProvider implements LoggerProvider {
         MDC.remove(key);
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public Map<String, Object> getMdcMap() {
         // we can re-define the erasure of this map because MDC does not make further use of the copy
-        return (Map)MDC.copy();
+        return (Map) MDC.copy();
     }
 
     public void clearNdc() {

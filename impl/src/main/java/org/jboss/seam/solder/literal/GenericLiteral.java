@@ -21,9 +21,8 @@ import javax.enterprise.util.AnnotationLiteral;
 import org.jboss.seam.solder.bean.generic.Generic;
 
 
-public class GenericLiteral extends AnnotationLiteral<Generic> implements Generic
-{
-   private static final long serialVersionUID = -8137340248362361317L;
+public class GenericLiteral extends AnnotationLiteral<Generic> implements Generic {
+    private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final Generic INSTANCE = new GenericLiteral();
+    public static final Generic INSTANCE = new GenericLiteral();
 }

@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-public interface HardDrive
-{
-   public String size();
+public interface HardDrive {
+    public String size();
 }

@@ -20,24 +20,21 @@ import javax.enterprise.context.NormalScope;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class NormalScopeLiteral extends AnnotationLiteral<NormalScope> implements NormalScope
-{
+public class NormalScopeLiteral extends AnnotationLiteral<NormalScope> implements NormalScope {
 
-   private static final long serialVersionUID = -7952939796914825978L;
+    private static final long serialVersionUID = -7952939796914825978L;
 
-   private final boolean passivating;
+    private final boolean passivating;
 
-   private NormalScopeLiteral(boolean passivating)
-   {
-      this.passivating = passivating;
-   }
+    private NormalScopeLiteral(boolean passivating) {
+        this.passivating = passivating;
+    }
 
-   public boolean passivating()
-   {
-      return passivating;
-   }
+    public boolean passivating() {
+        return passivating;
+    }
 
-   public final static NormalScope PASSIVATING_INSTANCE = new NormalScopeLiteral(true);
+    public final static NormalScope PASSIVATING_INSTANCE = new NormalScopeLiteral(true);
 
-   public final static NormalScope NON_PASSIVATING_INSTANCE = new NormalScopeLiteral(false);
+    public final static NormalScope NON_PASSIVATING_INSTANCE = new NormalScopeLiteral(false);
 }

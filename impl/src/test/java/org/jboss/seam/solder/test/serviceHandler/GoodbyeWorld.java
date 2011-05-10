@@ -17,13 +17,11 @@
 package org.jboss.seam.solder.test.serviceHandler;
 
 @EchoService
-public abstract class GoodbyeWorld
-{
-   public String otherMethod()
-   {
-      return "not saying goodbye";
-   }
+public abstract class GoodbyeWorld {
+    public String otherMethod() {
+        return "not saying goodbye";
+    }
 
-   public abstract String goodbyeWorld();
+    public abstract String goodbyeWorld();
 
 }

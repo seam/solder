@@ -20,87 +20,73 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
 
-import javassist.util.proxy.MethodHandler;
-
 import javax.interceptor.InvocationContext;
+
+import javassist.util.proxy.MethodHandler;
 
 /**
  * MethodHandler that forwards calls to abstract methods to the service handler
  * instance
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class ServiceHandlerMethodHandler<T, H> implements MethodHandler
-{
+public class ServiceHandlerMethodHandler<T, H> implements MethodHandler {
 
-   private final ServiceHandlerManager<H> handler;
-   private final H handlerInstance;
+    private final ServiceHandlerManager<H> handler;
+    private final H handlerInstance;
 
-   public ServiceHandlerMethodHandler(ServiceHandlerManager<H> handler, H handlerInstance)
-   {
-      this.handler = handler;
-      this.handlerInstance = handlerInstance;
-   }
+    public ServiceHandlerMethodHandler(ServiceHandlerManager<H> handler, H handlerInstance) {
+        this.handler = handler;
+        this.handlerInstance = handlerInstance;
+    }
 
-   public Object invoke(Object self, Method thisMethod, Method proceed, Object[] args) throws Throwable
-   {
-      if (proceed == null)
-      {
-         return handler.invoke(handlerInstance, new InvocationContextImpl(self, thisMethod, args));
-      }
-      return proceed.invoke(self, args);
-   }
+    public Object invoke(Object self, Method thisMethod, Method proceed, Object[] args) throws Throwable {
+        if (proceed == null) {
+            return handler.invoke(handlerInstance, new InvocationContextImpl(self, thisMethod, args));
+        }
+        return proceed.invoke(self, args);
+    }
 
-   private final class InvocationContextImpl implements InvocationContext
-   {
+    private final class InvocationContextImpl implements InvocationContext {
 
-      public InvocationContextImpl(Object target, Method method, Object[] params)
-      {
-         this.target = target;
-         this.method = method;
-         this.params = params;
-      }
+        public InvocationContextImpl(Object target, Method method, Object[] params) {
+            this.target = target;
+            this.method = method;
+            this.params = params;
+        }
 
-      private final Object target;
-      private final Method method;
-      private final Object[] params;
+        private final Object target;
+        private final Method method;
+        private final Object[] params;
 
-      public Map<String, Object> getContextData()
-      {
-         return Collections.emptyMap();
-      }
+        public Map<String, Object> getContextData() {
+            return Collections.emptyMap();
+        }
 
-      public Method getMethod()
-      {
-         return method;
-      }
+        public Method getMethod() {
+            return method;
+        }
 
-      public Object[] getParameters()
-      {
-         return params;
-      }
+        public Object[] getParameters() {
+            return params;
+        }
 
-      public Object getTarget()
-      {
-         return target;
-      }
+        public Object getTarget() {
+            return target;
+        }
 
-      public Object getTimer()
-      {
-         return null;
-      }
+        public Object getTimer() {
+            return null;
+        }
 
-      public Object proceed() throws Exception
-      {
-         throw new UnsupportedOperationException("Cannot call proceed() in AutoProxy invocation handler");
-      }
+        public Object proceed() throws Exception {
+            throw new UnsupportedOperationException("Cannot call proceed() in AutoProxy invocation handler");
+        }
 
-      public void setParameters(Object[] params)
-      {
-         throw new UnsupportedOperationException("Cannot call setParameters() in AutoProxy invocation handler");
-      }
+        public void setParameters(Object[] params) {
+            throw new UnsupportedOperationException("Cannot call setParameters() in AutoProxy invocation handler");
+        }
 
-   }
+    }
 
 }

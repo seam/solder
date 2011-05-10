@@ -23,20 +23,17 @@ import org.jboss.seam.solder.bean.generic.Generic;
 import org.jboss.seam.solder.bean.generic.GenericConfiguration;
 
 @GenericConfiguration(Boom.class)
-public class Pow
-{
-   @Inject
-   @Generic
-   Bam bam;
+public class Pow {
+    @Inject
+    @Generic
+    Bam bam;
 
-   public String getName()
-   {
-      return bam.getName();
-   }
+    public String getName() {
+        return bam.getName();
+    }
 
-   @Produces
-   public Bop createBop()
-   {
-      return new Bop(bam.getName());
-   }
+    @Produces
+    public Bop createBop() {
+        return new Bop(bam.getName());
+    }
 }

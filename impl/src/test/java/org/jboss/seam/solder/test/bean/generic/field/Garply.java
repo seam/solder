@@ -26,41 +26,36 @@ import org.jboss.seam.solder.bean.generic.GenericConfiguration;
 
 /**
  * A generic bean for the config annotation Message
- * 
- * @author pmuir
  *
+ * @author pmuir
  */
 
 @GenericConfiguration(Service.class)
-public class Garply
-{
-   
-   @Inject
-   @Generic
-   private Waldo waldo;
-   
-   @Inject
-   @Generic
-   private AnnotatedMember<?> annotatedMember;
-   
+public class Garply {
 
-   @Produces
-   @WaldoName
-   public String getWaldoName()
-   {
-      return waldo.getName();
-   }
-   
+    @Inject
+    @Generic
+    private Waldo waldo;
 
-   public Waldo getWaldo()
-   {
-      return waldo;
-   }
-   
-   public AnnotatedMember<?> getAnnotatedMember()
-   {
-      return annotatedMember;
-   }
+    @Inject
+    @Generic
+    private AnnotatedMember<?> annotatedMember;
 
-   
+
+    @Produces
+    @WaldoName
+    public String getWaldoName() {
+        return waldo.getName();
+    }
+
+
+    public Waldo getWaldo() {
+        return waldo;
+    }
+
+    public AnnotatedMember<?> getAnnotatedMember() {
+        return annotatedMember;
+    }
+
+
 }

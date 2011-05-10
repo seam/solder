@@ -18,6 +18,7 @@
 package org.jboss.logging;
 
 import java.util.Map;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.spi.LocationAwareLogger;
@@ -53,7 +54,7 @@ final class Slf4jLoggerProvider extends AbstractLoggerProvider implements Logger
         MDC.remove(key);
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public Map<String, Object> getMdcMap() {
         return MDC.getCopyOfContextMap();
     }

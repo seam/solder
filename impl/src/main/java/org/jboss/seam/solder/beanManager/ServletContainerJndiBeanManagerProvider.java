@@ -19,21 +19,18 @@ package org.jboss.seam.solder.beanManager;
 /**
  * A {@link BeanManagerProvider} that looks it up from the standard JNDI
  * location used in servlet containers.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-class ServletContainerJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider
-{
+class ServletContainerJndiBeanManagerProvider extends AbstractJndiBeanManagerProvider {
 
-   @Override
-   protected String getLocation()
-   {
-      return "java:comp/env/BeanManager";
-   }
+    @Override
+    protected String getLocation() {
+        return "java:comp/env/BeanManager";
+    }
 
-   public int getPrecedence()
-   {
-      return 10;
-   }
+    public int getPrecedence() {
+        return 10;
+    }
 
 }

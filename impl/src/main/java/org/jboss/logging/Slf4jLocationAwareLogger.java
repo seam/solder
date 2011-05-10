@@ -18,6 +18,7 @@
 package org.jboss.logging;
 
 import java.text.MessageFormat;
+
 import org.slf4j.spi.LocationAwareLogger;
 
 final class Slf4jLocationAwareLogger extends Logger {
@@ -33,12 +34,18 @@ final class Slf4jLocationAwareLogger extends Logger {
 
     public boolean isEnabled(final Level level) {
         if (level != null) switch (level) {
-            case FATAL: return logger.isErrorEnabled();
-            case ERROR: return logger.isErrorEnabled();
-            case WARN:  return logger.isWarnEnabled();
-            case INFO:  return logger.isInfoEnabled();
-            case DEBUG: return logger.isDebugEnabled();
-            case TRACE: return logger.isTraceEnabled();
+            case FATAL:
+                return logger.isErrorEnabled();
+            case ERROR:
+                return logger.isErrorEnabled();
+            case WARN:
+                return logger.isWarnEnabled();
+            case INFO:
+                return logger.isInfoEnabled();
+            case DEBUG:
+                return logger.isDebugEnabled();
+            case TRACE:
+                return logger.isTraceEnabled();
         }
         return true;
     }
@@ -60,11 +67,16 @@ final class Slf4jLocationAwareLogger extends Logger {
     private static int translate(Level level) {
         if (level != null) switch (level) {
             case FATAL:
-            case ERROR: return LocationAwareLogger.ERROR_INT;
-            case WARN:  return LocationAwareLogger.WARN_INT;
-            case INFO:  return LocationAwareLogger.INFO_INT;
-            case DEBUG: return LocationAwareLogger.DEBUG_INT;
-            case TRACE: return LocationAwareLogger.TRACE_INT;
+            case ERROR:
+                return LocationAwareLogger.ERROR_INT;
+            case WARN:
+                return LocationAwareLogger.WARN_INT;
+            case INFO:
+                return LocationAwareLogger.INFO_INT;
+            case DEBUG:
+                return LocationAwareLogger.DEBUG_INT;
+            case TRACE:
+                return LocationAwareLogger.TRACE_INT;
         }
         return LocationAwareLogger.TRACE_INT;
     }

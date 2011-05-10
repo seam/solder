@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-public interface CPU
-{
-   public String getSpeed();
+public interface CPU {
+    public String getSpeed();
 }

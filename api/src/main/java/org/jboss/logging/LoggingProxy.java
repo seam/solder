@@ -19,16 +19,15 @@ package org.jboss.logging;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
-public final class LoggingProxy
-{
+public final class LoggingProxy {
 
-   static final boolean GENERATE_PROXIES;
+    static final boolean GENERATE_PROXIES;
 
-   static {
-       GENERATE_PROXIES = AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-           public Boolean run() {
-               return Boolean.valueOf(System.getProperty("jboss.i18n.generate-proxies"));
-           }
-       }).booleanValue();
-   }
+    static {
+        GENERATE_PROXIES = AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+            public Boolean run() {
+                return Boolean.valueOf(System.getProperty("jboss.i18n.generate-proxies"));
+            }
+        }).booleanValue();
+    }
 }

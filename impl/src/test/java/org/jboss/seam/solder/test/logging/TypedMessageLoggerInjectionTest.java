@@ -17,8 +17,6 @@
 
 package org.jboss.seam.solder.test.logging;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-
 import javax.enterprise.inject.Instance;
 
 import org.jboss.arquillian.api.Deployment;
@@ -26,6 +24,8 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
 
 /**
  * Tests injection of typed message logger injections.
@@ -41,34 +41,29 @@ import org.junit.runner.RunWith;
  * @author Dan Allen
  */
 @RunWith(Arquillian.class)
-public class TypedMessageLoggerInjectionTest
-{
-   @Deployment
-   public static Archive<?> createDeployment()
-   {
-      return baseDeployment()
-         .addPackage(TypedMessageLoggerInjectionTest.class.getPackage());
-   }
+public class TypedMessageLoggerInjectionTest {
+    @Deployment
+    public static Archive<?> createDeployment() {
+        return baseDeployment()
+                .addPackage(TypedMessageLoggerInjectionTest.class.getPackage());
+    }
 
-   @Test
-   public void testMessageLoggerInjectionWithCategoryDefaulted(Instance<Owl> owlResolver)
-   {
-      owlResolver.get().generateLogMessage();
-   }
+    @Test
+    public void testMessageLoggerInjectionWithCategoryDefaulted(Instance<Owl> owlResolver) {
+        owlResolver.get().generateLogMessage();
+    }
 
-   @Test
-   public void testMessageLoggerInjectionWithExplicitCategory(Hawk hawk)
-   {
-      hawk.generateLogMessage();
-   }
-   
+    @Test
+    public void testMessageLoggerInjectionWithExplicitCategory(Hawk hawk) {
+        hawk.generateLogMessage();
+    }
+
     /**
      * BaldEagle declares a passivating scope and therefore must not have any non-serializable dependencies. This test will fail
      * deployment if the type-safe logger producer is not serializable. (see SOLDER-81)
      */
-   @Test
-   public void testMessageLoggerInjectionOnPassivatingBean(BaldEagle baldEagle)
-   {
-       baldEagle.generateLogMessage();
-   }
+    @Test
+    public void testMessageLoggerInjectionOnPassivatingBean(BaldEagle baldEagle) {
+        baldEagle.generateLogMessage();
+    }
 }

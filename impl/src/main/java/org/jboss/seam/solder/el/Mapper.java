@@ -16,12 +16,6 @@
  */
 package org.jboss.seam.solder.el;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -30,12 +24,18 @@ import javax.el.FunctionMapper;
 import javax.el.VariableMapper;
 import javax.inject.Qualifier;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * <p>
  * Qualifies the {@link FunctionMapper} and {@link VariableMapper} beans used to
  * create an {@link ELContext} for use in {@link Expressions}.
  * </p>
- * 
+ * <p/>
  * <p>
  * Seam Solder will inject a {@link FunctionMapper} and
  * {@link VariableMapper} for each instantiation of an {@link ELContext} (and
@@ -43,14 +43,13 @@ import javax.inject.Qualifier;
  * beans should ensure that obtaining the bean instance is a lightweight
  * operation.
  * </p>
- * 
+ *
  * @author Stuart Douglas
  * @author Pete Muir
  */
 @Qualifier
 @Retention(RUNTIME)
-@Target({ TYPE, FIELD, METHOD, PARAMETER })
-public @interface Mapper
-{
+@Target({TYPE, FIELD, METHOD, PARAMETER})
+public @interface Mapper {
 
 }

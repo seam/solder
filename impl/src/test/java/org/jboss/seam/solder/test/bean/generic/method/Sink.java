@@ -22,14 +22,12 @@ import org.jboss.seam.solder.bean.generic.Generic;
 import org.jboss.seam.solder.bean.generic.GenericConfiguration;
 
 @GenericConfiguration(Room.class)
-public class Sink
-{
-   @Inject
-   @Generic
-   private Kitchen kitchen;
+public class Sink {
+    @Inject
+    @Generic
+    private Kitchen kitchen;
 
-   public Kitchen getKitchen()
-   {
-      return kitchen;
-   }
+    public Kitchen getKitchen() {
+        return kitchen;
+    }
 }

@@ -21,9 +21,8 @@ import javax.enterprise.util.AnnotationLiteral;
 import org.jboss.seam.solder.el.Mapper;
 
 
-public class MapperLiteral extends AnnotationLiteral<Mapper> implements Mapper
-{
-   private static final long serialVersionUID = -8137340248362361317L;
+public class MapperLiteral extends AnnotationLiteral<Mapper> implements Mapper {
+    private static final long serialVersionUID = -8137340248362361317L;
 
-   public static final Mapper INSTANCE = new MapperLiteral();
+    public static final Mapper INSTANCE = new MapperLiteral();
 }

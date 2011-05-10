@@ -20,13 +20,11 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.seam.solder.unwraps.Unwraps;
 
-public class BeanProducer
-{
-   @Unwraps
-   public ProducedInterface produce(InjectionPoint injectionPoint)
-   {
-      ProducedBean b = new ProducedBean();
-      b.setValue(injectionPoint.getAnnotated().getAnnotation(MPType.class).value());
-      return b;
-   }
+public class BeanProducer {
+    @Unwraps
+    public ProducedInterface produce(InjectionPoint injectionPoint) {
+        ProducedBean b = new ProducedBean();
+        b.setValue(injectionPoint.getAnnotated().getAnnotation(MPType.class).value());
+        return b;
+    }
 }

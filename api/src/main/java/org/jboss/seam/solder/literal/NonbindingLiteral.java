@@ -20,9 +20,8 @@ import javax.enterprise.util.AnnotationLiteral;
 import javax.enterprise.util.Nonbinding;
 
 
-public class NonbindingLiteral extends AnnotationLiteral<Nonbinding> implements Nonbinding
-{
-   private static final long serialVersionUID = -7557062245283879531L;
+public class NonbindingLiteral extends AnnotationLiteral<Nonbinding> implements Nonbinding {
+    private static final long serialVersionUID = -7557062245283879531L;
 
-   public static final Nonbinding INSTANCE = new NonbindingLiteral();
+    public static final Nonbinding INSTANCE = new NonbindingLiteral();
 }

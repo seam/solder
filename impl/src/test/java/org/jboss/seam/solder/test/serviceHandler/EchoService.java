@@ -23,7 +23,6 @@ import org.jboss.seam.solder.serviceHandler.ServiceHandlerType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @ServiceHandlerType(EchoServiceHandler.class)
-public @interface EchoService
-{
+public @interface EchoService {
 
 }

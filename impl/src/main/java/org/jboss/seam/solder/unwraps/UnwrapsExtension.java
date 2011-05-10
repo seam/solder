@@ -16,8 +16,9 @@
  */
 package org.jboss.seam.solder.unwraps;
 
-import org.jboss.logging.Logger;
-import org.jboss.seam.solder.reflection.Reflections;
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
@@ -26,87 +27,68 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.jboss.logging.Logger;
+import org.jboss.seam.solder.reflection.Reflections;
 
 /**
  * An extension that allows the use of {@link Unwraps} methods
  *
- *
  * @author Stuart Douglas
- *
  */
-public class UnwrapsExtension implements Extension
-{
+public class UnwrapsExtension implements Extension {
 
-   private final Set<Bean<?>> beans;
+    private final Set<Bean<?>> beans;
 
-   private final static Logger log = Logger.getLogger(UnwrapsExtension.class);
+    private final static Logger log = Logger.getLogger(UnwrapsExtension.class);
 
-   private final boolean enabled;
+    private final boolean enabled;
 
-   private final Set<Throwable> problems = new HashSet<Throwable>();
+    private final Set<Throwable> problems = new HashSet<Throwable>();
 
-   public UnwrapsExtension()
-   {
-      this.beans = new HashSet<Bean<?>>();
-      boolean en = true;
-      try
-      {
-         Reflections.classForName("javassist.util.proxy.MethodHandler", UnwrapsExtension.class.getClassLoader());
-      }
-      catch (ClassNotFoundException e)
-      {
-         en = false;
-         log.debug("Javassist not preset, @Unwraps is disabled");
-      }
-      enabled = en;
-   }
+    public UnwrapsExtension() {
+        this.beans = new HashSet<Bean<?>>();
+        boolean en = true;
+        try {
+            Reflections.classForName("javassist.util.proxy.MethodHandler", UnwrapsExtension.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            en = false;
+            log.debug("Javassist not preset, @Unwraps is disabled");
+        }
+        enabled = en;
+    }
 
-   void processAnnotatedType(@Observes ProcessAnnotatedType<?> type, BeanManager beanManager)
-   {
-      for (AnnotatedMethod<?> method : type.getAnnotatedType().getMethods())
-      {
-         if (method.isAnnotationPresent(Unwraps.class))
-         {
-            if (!enabled)
-            {
-               problems.add(new RuntimeException("Javassist not found on the class path, @Unwraps requires javassist to work. @Unwraps found on " + type.getAnnotatedType().getJavaClass().getName() + "." + method.getJavaMember().getName()));
+    void processAnnotatedType(@Observes ProcessAnnotatedType<?> type, BeanManager beanManager) {
+        for (AnnotatedMethod<?> method : type.getAnnotatedType().getMethods()) {
+            if (method.isAnnotationPresent(Unwraps.class)) {
+                if (!enabled) {
+                    problems.add(new RuntimeException("Javassist not found on the class path, @Unwraps requires javassist to work. @Unwraps found on " + type.getAnnotatedType().getJavaClass().getName() + "." + method.getJavaMember().getName()));
+                } else {
+                    for (Annotation annotation : method.getAnnotations()) {
+                        if (beanManager.isScope(annotation.annotationType())) {
+                            problems.add(new RuntimeException("@Unwraps producer method declared a scope: " + method));
+                        }
+                    }
+
+                    // we have a managed producer
+                    // lets make a note of it and register it later
+                    beans.add(createBean(method, beanManager));
+                }
             }
-            else
-            {
-               for(Annotation annotation : method.getAnnotations())
-               {
-                   if(beanManager.isScope(annotation.annotationType()))
-                   {
-                       problems.add(new RuntimeException("@Unwraps producer method declared a scope: " + method));
-                   }
-               }
+        }
+    }
 
-               // we have a managed producer
-               // lets make a note of it and register it later
-               beans.add(createBean(method, beanManager));
-            }
-         }
-      }
-   }
+    private static <X> Bean<X> createBean(AnnotatedMethod<X> method, BeanManager beanManager) {
+        return new UnwrapsProducerBean<X>(method, beanManager);
+    }
 
-   private static <X> Bean<X> createBean(AnnotatedMethod<X> method, BeanManager beanManager)
-   {
-      return new UnwrapsProducerBean<X>(method, beanManager);
-   }
-
-   void afterBeanDiscovery(@Observes AfterBeanDiscovery afterBean)
-   {
-      for (Bean<?> b : beans)
-      {
-         afterBean.addBean(b);
-      }
-      for (Throwable e : problems)
-      {
-         afterBean.addDefinitionError(e);
-      }
-   }
+    void afterBeanDiscovery(@Observes AfterBeanDiscovery afterBean) {
+        for (Bean<?> b : beans) {
+            afterBean.addBean(b);
+        }
+        for (Throwable e : problems) {
+            afterBean.addDefinitionError(e);
+        }
+    }
 
 }

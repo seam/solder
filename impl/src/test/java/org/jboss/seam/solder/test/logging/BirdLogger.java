@@ -21,14 +21,16 @@ import org.jboss.seam.solder.logging.MessageLogger;
 import org.jboss.seam.solder.messages.Message;
 
 @MessageLogger
-public interface BirdLogger extends BirdMessages
-{
-   @Log @Message("Spotted %s Hawks") 
-   void logHawksSpotted(int number);
-   
-   @Log @Message("Spotted %s Owls") 
-   void logOwlsSpotted(int number);
-   
-   @Log @Message("Spotted %s Bald Eagles")
-   void logBaldEaglesSpotted(int number);
+public interface BirdLogger extends BirdMessages {
+    @Log
+    @Message("Spotted %s Hawks")
+    void logHawksSpotted(int number);
+
+    @Log
+    @Message("Spotted %s Owls")
+    void logOwlsSpotted(int number);
+
+    @Log
+    @Message("Spotted %s Bald Eagles")
+    void logBaldEaglesSpotted(int number);
 }

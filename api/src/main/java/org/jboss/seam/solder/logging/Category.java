@@ -16,46 +16,44 @@
  */
 package org.jboss.seam.solder.logging;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.jboss.logging.Logger;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * <p>
  * Specifies a string category for the injected logger.
  * </p>
- * 
+ * <p/>
  * <p>
  * A category must be specified for a typed logger.
  * </p>
- * 
+ * <p/>
  * <p>
  * For a non-typed logger, if no category annotation is specified at a
  * {@link Logger} injection point, the fully qualified name of the bean
  * implementation class is used as the category.
  * </p>
- * 
+ *
  * @author Pete Muir
- * 
  * @see MessageLogger
  * @see Logger#getLogger(String)
  */
-@Target({ METHOD, FIELD, PARAMETER, TYPE })
+@Target({METHOD, FIELD, PARAMETER, TYPE})
 @Retention(RUNTIME)
 @Documented
-public @interface Category
-{
+public @interface Category {
 
-   /**
-    * The category of the logger.
-    */
-   String value();
+    /**
+     * The category of the logger.
+     */
+    String value();
 }

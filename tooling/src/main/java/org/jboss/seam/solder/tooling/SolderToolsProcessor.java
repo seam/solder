@@ -16,9 +16,6 @@
  */
 package org.jboss.seam.solder.tooling;
 
-import static javax.lang.model.util.ElementFilter.typesIn;
-import static org.jboss.logging.util.ElementHelper.getInterfaceMethods;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,6 +46,9 @@ import org.jboss.logging.generator.TranslationFileGenerator;
 import org.jboss.logging.validation.ValidationErrorMessage;
 import org.jboss.logging.validation.Validator;
 
+import static javax.lang.model.util.ElementFilter.typesIn;
+import static org.jboss.logging.util.ElementHelper.getInterfaceMethods;
+
 /**
  * The main annotation processor for Solder.
  *
@@ -56,7 +56,7 @@ import org.jboss.logging.validation.Validator;
  */
 @SupportedAnnotationTypes("*")
 @SupportedOptions({
-    SolderToolsProcessor.DEBUG_OPTION
+        SolderToolsProcessor.DEBUG_OPTION
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class SolderToolsProcessor extends AbstractProcessor {

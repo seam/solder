@@ -16,8 +16,6 @@
  */
 package org.jboss.seam.solder.test.unwraps;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -27,39 +25,37 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+
 @RunWith(Arquillian.class)
-public class UnwrapsTest
-{
+public class UnwrapsTest {
 
-   @Deployment
-   public static Archive<?> deployment()
-   {
-      return baseDeployment().addPackage(UnwrapsTest.class.getPackage());
-   }
+    @Deployment
+    public static Archive<?> deployment() {
+        return baseDeployment().addPackage(UnwrapsTest.class.getPackage());
+    }
 
-   @Inject
-   ManagedReceiver bean;
+    @Inject
+    ManagedReceiver bean;
 
-   @Inject
-   @Named("lion")
-   Lion lion;
+    @Inject
+    @Named("lion")
+    Lion lion;
 
-   @Inject
-   LionTamer lionTamer;
+    @Inject
+    LionTamer lionTamer;
 
-   @Test
-   public void testUnwrapsInjectionPoint()
-   {
-      assert bean.getBean1().getValue().equals("bean1") : " value: " + bean.getBean1().getValue();
-      assert bean.getBean2().getValue().equals("bean2") : " value: " + bean.getBean2().getValue();
-   }
+    @Test
+    public void testUnwrapsInjectionPoint() {
+        assert bean.getBean1().getValue().equals("bean1") : " value: " + bean.getBean1().getValue();
+        assert bean.getBean2().getValue().equals("bean2") : " value: " + bean.getBean2().getValue();
+    }
 
-   @Test
-   public void testUnwraps()
-   {
-      assert lion.getName().equals("lion one");
-      lionTamer.changeLion();
-      assert lion.getName().equals("lion two");
-   }
+    @Test
+    public void testUnwraps() {
+        assert lion.getName().equals("lion one");
+        lionTamer.changeLion();
+        assert lion.getName().equals("lion two");
+    }
 
 }

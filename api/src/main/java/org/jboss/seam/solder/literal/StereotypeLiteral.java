@@ -20,9 +20,8 @@ import javax.enterprise.inject.Stereotype;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class StereotypeLiteral extends AnnotationLiteral<Stereotype> implements Stereotype
-{
-   private static final long serialVersionUID = 6496685599507738216L;
+public class StereotypeLiteral extends AnnotationLiteral<Stereotype> implements Stereotype {
+    private static final long serialVersionUID = 6496685599507738216L;
 
-   public static final Stereotype INSTANCE = new StereotypeLiteral();
+    public static final Stereotype INSTANCE = new StereotypeLiteral();
 }

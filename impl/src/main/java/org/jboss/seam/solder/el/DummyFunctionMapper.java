@@ -27,25 +27,22 @@ import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
  * A dummy function mapper that is installed by default. It is not capable of
  * mapping any functions.
  * </p>
- * 
+ * <p/>
  * <p>
  * Other Seam modules (such as the Faces Module) may install a bean that
  * overrides this and provides function mapping.
  * </p>
- * 
+ *
  * @author Pete Muir
  * @author Stuart Douglas
- * 
  */
 @DefaultBean(FunctionMapper.class)
 @Mapper
-public class DummyFunctionMapper extends FunctionMapper
-{
+public class DummyFunctionMapper extends FunctionMapper {
 
-   @Override
-   public Method resolveFunction(String prefix, String localName)
-   {
-      return null;
-   }
+    @Override
+    public Method resolveFunction(String prefix, String localName) {
+        return null;
+    }
 
 }

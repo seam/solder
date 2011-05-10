@@ -16,50 +16,43 @@
  */
 package org.jboss.seam.solder.bean;
 
-import javax.enterprise.inject.spi.Annotated;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.InjectionPoint;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 import java.util.Set;
 
-public abstract class ForwardingInjectionPoint implements InjectionPoint
-{
-   protected abstract InjectionPoint delegate();
+import javax.enterprise.inject.spi.Annotated;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.InjectionPoint;
 
-   public Annotated getAnnotated()
-   {
-      return delegate().getAnnotated();
-   }
+public abstract class ForwardingInjectionPoint implements InjectionPoint {
+    protected abstract InjectionPoint delegate();
 
-   public Type getType()
-   {
-      return delegate().getType();
-   }
+    public Annotated getAnnotated() {
+        return delegate().getAnnotated();
+    }
 
-   public Set<Annotation> getQualifiers()
-   {
-      return delegate().getQualifiers();
-   }
+    public Type getType() {
+        return delegate().getType();
+    }
 
-   public Bean<?> getBean()
-   {
-      return delegate().getBean();
-   }
+    public Set<Annotation> getQualifiers() {
+        return delegate().getQualifiers();
+    }
 
-   public Member getMember()
-   {
-      return delegate().getMember();
-   }
+    public Bean<?> getBean() {
+        return delegate().getBean();
+    }
 
-   public boolean isDelegate()
-   {
-      return delegate().isDelegate();
-   }
+    public Member getMember() {
+        return delegate().getMember();
+    }
 
-   public boolean isTransient()
-   {
-      return delegate().isTransient();
-   }
+    public boolean isDelegate() {
+        return delegate().isDelegate();
+    }
+
+    public boolean isTransient() {
+        return delegate().isTransient();
+    }
 }

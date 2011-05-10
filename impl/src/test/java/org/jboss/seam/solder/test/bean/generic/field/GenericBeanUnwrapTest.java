@@ -16,41 +16,37 @@
  */
 package org.jboss.seam.solder.test.bean.generic.field;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+
 @RunWith(Arquillian.class)
-public class GenericBeanUnwrapTest
-{
-   @Deployment
-   public static Archive<?> deployment()
-   {
-      return baseDeployment().addPackage(GenericBeanUnwrapTest.class.getPackage());
-   }
+public class GenericBeanUnwrapTest {
+    @Deployment
+    public static Archive<?> deployment() {
+        return baseDeployment().addPackage(GenericBeanUnwrapTest.class.getPackage());
+    }
 
-   @Inject
-   @Foo(3)
-   private Baz baz3;
+    @Inject
+    @Foo(3)
+    private Baz baz3;
 
-   @Inject
-   @Foo(3)
-   private Fred fred;
+    @Inject
+    @Foo(3)
+    private Fred fred;
 
-  
-   @Test
-   public void testGenericUnwrap()
-   {
-      Assert.assertEquals("Hello Fred", fred.getValue());
-      baz3.setFred(new Fred("Goodbye Fred"));
-      Assert.assertEquals("Goodbye Fred", fred.getValue());
-   }
+
+    @Test
+    public void testGenericUnwrap() {
+        Assert.assertEquals("Hello Fred", fred.getValue());
+        baz3.setFred(new Fred("Goodbye Fred"));
+        Assert.assertEquals("Goodbye Fred", fred.getValue());
+    }
 }

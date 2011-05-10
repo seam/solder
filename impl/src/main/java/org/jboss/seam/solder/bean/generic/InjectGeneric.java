@@ -16,30 +16,27 @@
  */
 package org.jboss.seam.solder.bean.generic;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
 /**
  * Annotation used to define generic injection points. @Inject is swapped out
  * for @InjectConfiguration on generic beans for any injection points that are controlled by
  * the {@link GenericBeanExtension}.
- * 
+ * <p/>
  * This is an implementation detail, and should not be referenced outside this
  * extension.
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * @author Pete Muir
- * 
  * @see GenericConfiguration
- * 
  */
 @Retention(RUNTIME)
-@Target( { METHOD, FIELD, CONSTRUCTOR })
-@interface InjectGeneric
-{  
+@Target({METHOD, FIELD, CONSTRUCTOR})
+        @interface InjectGeneric {
 }

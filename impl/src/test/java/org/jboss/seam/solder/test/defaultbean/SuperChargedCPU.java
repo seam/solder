@@ -16,12 +16,10 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-public class SuperChargedCPU implements CPU
-{
+public class SuperChargedCPU implements CPU {
 
-   public String getSpeed()
-   {
-      return "fast";
-   }
+    public String getSpeed() {
+        return "fast";
+    }
 
 }

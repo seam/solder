@@ -18,24 +18,21 @@ package org.jboss.seam.solder.test.unwraps;
 
 import javax.inject.Inject;
 
-public class ManagedReceiver
-{
-   @MPType("bean1")
-   @Inject
-   private ProducedInterface bean1;
+public class ManagedReceiver {
+    @MPType("bean1")
+    @Inject
+    private ProducedInterface bean1;
 
-   @MPType("bean2")
-   @Inject
-   private ProducedInterface bean2;
+    @MPType("bean2")
+    @Inject
+    private ProducedInterface bean2;
 
-   public ProducedInterface getBean1()
-   {
-      return bean1;
-   }
+    public ProducedInterface getBean1() {
+        return bean1;
+    }
 
-   public ProducedInterface getBean2()
-   {
-      return bean2;
-   }
+    public ProducedInterface getBean2() {
+        return bean2;
+    }
 
 }

@@ -20,19 +20,16 @@ import javax.enterprise.inject.Typed;
 import javax.enterprise.util.AnnotationLiteral;
 
 
-public class TypedLiteral extends AnnotationLiteral<Typed> implements Typed
-{
-   private static final long serialVersionUID = -5651065504705966480L;
+public class TypedLiteral extends AnnotationLiteral<Typed> implements Typed {
+    private static final long serialVersionUID = -5651065504705966480L;
 
-   private final Class<?>[] value;
+    private final Class<?>[] value;
 
-   public TypedLiteral(Class<?>[] value)
-   {
-      this.value = value;
-   }
+    public TypedLiteral(Class<?>[] value) {
+        this.value = value;
+    }
 
-   public Class<?>[] value()
-   {
-      return value;
-   }
+    public Class<?>[] value() {
+        return value;
+    }
 }

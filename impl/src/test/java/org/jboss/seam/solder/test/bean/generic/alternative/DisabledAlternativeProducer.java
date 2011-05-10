@@ -21,20 +21,17 @@ import javax.enterprise.inject.Produces;
 
 /**
  * Produces the disabled alternative generic beans
- * 
+ *
  * @author stuart
- * 
  */
 @Alternative
-public class DisabledAlternativeProducer
-{
+public class DisabledAlternativeProducer {
 
-   @Boom("Alternative Small")
-   @Small
-   @Alternative
-   @Produces
-   public Bam getSmallBam()
-   {
-      return new Bam("Alternative Small Bam");
-   }
+    @Boom("Alternative Small")
+    @Small
+    @Alternative
+    @Produces
+    public Bam getSmallBam() {
+        return new Bam("Alternative Small Bam");
+    }
 }

@@ -17,11 +17,15 @@
 package org.jboss.seam.solder.core;
 
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Denotes a resource that is managed by a CDI extension (as opposed to container-managed).
- *
+ * <p/>
  * <p>
  * The meaning of this annotation is dependent on the resource that is managed.
  * For actual usage refer to the documentation of the extension that provides
@@ -36,7 +40,7 @@ import java.lang.annotation.*;
  * @author Stuart Douglas
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Documented
 public @interface ExtensionManaged {
 }

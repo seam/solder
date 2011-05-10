@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * or producer field, indicates that the standard bean name that would be
  * assigned should first be prepended with the package in which the bean
  * resides, thus resulting in a fully-qualified bean name (FQBN).
- * 
+ * <p/>
  * <p>
  * <strong>FQBN syntax</strong>
  * </p>
@@ -37,9 +37,9 @@ import java.lang.annotation.Target;
  * Period:
  *    A period character (i.e., '.')
  * BeanName:
- *    The standard bean name for the element 
+ *    The standard bean name for the element
  * </pre>
- * 
+ * <p/>
  * <p>
  * <strong>Processing rules</strong> - &#064;FullyQualified is permitted on a
  * bean type, producer method, producer field or a Java package. This annotation
@@ -48,7 +48,7 @@ import java.lang.annotation.Target;
  * that does not exclude it from being used as a common annotation for other
  * purposes.
  * </p>
- * 
+ * <p/>
  * <p>
  * <strong>Motivation</strong> - The default behavior of &#064;Named (as
  * documented in {@link javax.inject.Named}) is the most common use case for
@@ -58,20 +58,18 @@ import java.lang.annotation.Target;
  * The &#064;FullyQualified provides this facility without sacrificing
  * type-safety.
  * </p>
- * 
- * 
+ *
  * @author Dan Allen
  * @see {@link javax.inject.Named}
  */
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface FullyQualified
-{
-   /**
-    * A class from the package that should be used as the namespace
-    * that is prepended to the bean name. The special value
-    * {@link Class}.class specifies that the current package should be used.
-    */
-   Class<?> value() default Class.class;
+public @interface FullyQualified {
+    /**
+     * A class from the package that should be used as the namespace
+     * that is prepended to the bean name. The special value
+     * {@link Class}.class specifies that the current package should be used.
+     */
+    Class<?> value() default Class.class;
 }
