@@ -27,13 +27,12 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
-
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.solder.reflection.Reflections;
 
 /**
  * An extension that allows the use of {@link Unwraps} methods
- *
+ * 
  * @author Stuart Douglas
  */
 public class UnwrapsExtension implements Extension {
@@ -62,7 +61,9 @@ public class UnwrapsExtension implements Extension {
         for (AnnotatedMethod<?> method : type.getAnnotatedType().getMethods()) {
             if (method.isAnnotationPresent(Unwraps.class)) {
                 if (!enabled) {
-                    problems.add(new RuntimeException("Javassist not found on the class path, @Unwraps requires javassist to work. @Unwraps found on " + type.getAnnotatedType().getJavaClass().getName() + "." + method.getJavaMember().getName()));
+                    problems.add(new RuntimeException(
+                            "Javassist not found on the class path, @Unwraps requires javassist to work. @Unwraps found on "
+                                    + type.getAnnotatedType().getJavaClass().getName() + "." + method.getJavaMember().getName()));
                 } else {
                     for (Annotation annotation : method.getAnnotations()) {
                         if (beanManager.isScope(annotation.annotationType())) {

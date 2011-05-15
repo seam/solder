@@ -16,12 +16,14 @@
  */
 package org.jboss.seam.solder.test.bean.defaultbean;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.logging.ParameterConverter;
+import org.jboss.seam.solder.logging.internal.Logger;
 import org.jboss.seam.solder.bean.Beans;
 import org.jboss.seam.solder.bean.defaultbean.DefaultBeanExtension;
 import org.jboss.seam.solder.bean.generic.GenericBeanExtension;
@@ -47,11 +49,9 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * This test verifies that {@link @GenericBean} works as expected.
- *
+ * 
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  */
 @RunWith(Arquillian.class)
@@ -71,8 +71,7 @@ public class DefaultBeanTest {
     }
 
     /**
-     * Seam Solder
-     * TODO: there must be a better way to get Solder jar
+     * Seam Solder TODO: there must be a better way to get Solder jar
      */
     public static JavaArchive createSeamSolder() {
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "solder.jar");
@@ -91,9 +90,10 @@ public class DefaultBeanTest {
         jar.addPackages(true, ServiceHandlerExtension.class.getPackage()); // .serviceHandler
         jar.addPackages(true, UnwrapsExtension.class.getPackage()); // .unwraps
         jar.addPackages(true, Sortable.class.getPackage()); // .util
-        jar.addPackages(false, ParameterConverter.class.getPackage()); // org.jboss.logging
+        jar.addPackages(false, Logger.class.getPackage()); // org.jboss.seam.solder.logging.internal
 
-        jar.addAsServiceProvider(Extension.class, GenericBeanExtension.class, DefaultBeanExtension.class, CoreExtension.class, UnwrapsExtension.class, TypedMessageLoggerExtension.class, ServiceHandlerExtension.class);
+        jar.addAsServiceProvider(Extension.class, GenericBeanExtension.class, DefaultBeanExtension.class, CoreExtension.class,
+                UnwrapsExtension.class, TypedMessageLoggerExtension.class, ServiceHandlerExtension.class);
         jar.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         return jar;
     }

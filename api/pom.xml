@@ -40,6 +40,11 @@
          <scope>provided</scope>
       </dependency>
       
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-logging</artifactId>
+      </dependency>
+
       <!-- NOT NEEDED UNTIL EL SUPPORT IS RESTORED TO API -->
       <!--
       <dependency>

@@ -24,7 +24,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 
 class ClasspathResourceLoader implements ResourceLoader {
 

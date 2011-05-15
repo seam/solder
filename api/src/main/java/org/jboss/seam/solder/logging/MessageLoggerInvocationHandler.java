@@ -21,8 +21,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import org.jboss.logging.BasicLogger;
-import org.jboss.logging.Logger;
 import org.jboss.seam.solder.messages.Message;
 import org.jboss.seam.solder.messages.MessageBundleInvocationHandler;
 
@@ -54,7 +52,7 @@ public class MessageLoggerInvocationHandler extends MessageBundleInvocationHandl
 
             try {
                 // See if it's a basic logger method
-                if (method.getDeclaringClass().equals(BasicLogger.class)) {
+                if (method.getDeclaringClass().equals(org.jboss.seam.solder.logging.internal.BasicLogger.class)) {
                     // doesn't cover overrides though!
                     return method.invoke(logger, args);
                 }

@@ -19,35 +19,26 @@ package org.jboss.seam.solder.messages;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Locale;
+
+import org.jboss.seam.solder.logging.Logger;
 
 /**
  * A factory class to produce message bundle implementations.
- *
+ * 
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 public final class Messages {
-
-    static final boolean GENERATE_PROXIES;
-
-    static {
-        GENERATE_PROXIES = AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
-            public Boolean run() {
-                return Boolean.valueOf(System.getProperty("jboss.i18n.generate-proxies"));
-            }
-        }).booleanValue();
-    }
 
     private Messages() {
     }
 
     /**
-     * Get a message bundle of the given type.  Equivalent to <code>{@link #getBundle(Class, java.util.Locale) getBundle}(type, Locale.getDefault())</code>.
-     *
+     * Get a message bundle of the given type. Equivalent to
+     * <code>{@link #getBundle(Class, java.util.Locale) getBundle}(type, Locale.getDefault())</code>.
+     * 
      * @param type the bundle type class
-     * @param <T>  the bundle type
+     * @param <T> the bundle type
      * @return the bundle
      */
     public static <T> T getBundle(Class<T> type) {
@@ -56,10 +47,10 @@ public final class Messages {
 
     /**
      * Get a message bundle of the given type.
-     *
-     * @param type   the bundle type class
+     * 
+     * @param type the bundle type class
      * @param locale the message locale to use
-     * @param <T>    the bundle type
+     * @param <T> the bundle type
      * @return the bundle
      */
     public static <T> T getBundle(Class<T> type, Locale locale) {
@@ -68,29 +59,40 @@ public final class Messages {
         String variant = locale.getVariant();
 
         Class<? extends T> bundleClass = null;
-        if (variant != null && variant.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, country, variant), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null && country != null && country.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, country, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null && language != null && language.length() > 0) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", language, null, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-        if (bundleClass == null) try {
-            bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader()).asSubclass(type);
-        } catch (ClassNotFoundException e) {
-            if (GENERATE_PROXIES) {
-                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[]{type}, new MessageBundleInvocationHandler(type)));
+        if (variant != null && variant.length() > 0)
+            try {
+                bundleClass = Class.forName(join(type.getName(), "$bundle", language, country, variant), true,
+                        type.getClassLoader()).asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
             }
-            throw new IllegalArgumentException("Invalid bundle " + type + " (implementation not found)");
-        }
+        if (bundleClass == null && country != null && country.length() > 0)
+            try {
+                bundleClass = Class.forName(join(type.getName(), "$bundle", language, country, null), true,
+                        type.getClassLoader()).asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        if (bundleClass == null && language != null && language.length() > 0)
+            try {
+                bundleClass = Class.forName(join(type.getName(), "$bundle", language, null, null), true, type.getClassLoader())
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        if (bundleClass == null)
+            try {
+                bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader())
+                        .asSubclass(type);
+            } catch (ClassNotFoundException e) {
+                Logger thisLogger = Logger.getLogger(Logger.class);
+                thisLogger
+                        .warn("Generating proxy for type-safe message "
+                                + type
+                                + ". You should generate a concrete implementation using the jboss-logging-tools annotation processor before deploying to production!!");
+                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type },
+                        new MessageBundleInvocationHandler(type)));
+            }
         final Field field;
         try {
             field = bundleClass.getField("INSTANCE");

@@ -48,9 +48,9 @@ import javax.enterprise.inject.spi.ProcessObserverMethod;
 import javax.enterprise.inject.spi.ProcessProducerField;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
-import org.jboss.logging.Logger;
 import org.jboss.seam.solder.bean.Beans;
 import org.jboss.seam.solder.literal.DefaultLiteral;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.solder.reflection.Synthetic;
 import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 import org.jboss.seam.solder.util.collections.SetMultimap;
