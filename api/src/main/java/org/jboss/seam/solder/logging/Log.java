@@ -17,12 +17,13 @@
 
 package org.jboss.seam.solder.logging;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.solder.messages.Message;
 
 /**
@@ -33,6 +34,7 @@ import org.jboss.seam.solder.messages.Message;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@Documented
 public @interface Log {
 
     /**

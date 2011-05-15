@@ -17,6 +17,7 @@
 
 package org.jboss.seam.solder.messages;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -30,6 +31,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Message {
 
     /**
@@ -75,6 +77,9 @@ public @interface Message {
          * A {@link java.text.MessageFormat}-type format string.
          */
         MESSAGE_FORMAT,
+        /**
+         * An expression language type format string.
+         */
         EXP_LANG
     }
 

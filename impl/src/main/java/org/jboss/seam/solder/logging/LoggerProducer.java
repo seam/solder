@@ -17,19 +17,19 @@
 
 package org.jboss.seam.solder.logging;
 
+import static org.jboss.seam.solder.logging.Logger.getLogger;
+import static org.jboss.seam.solder.reflection.Reflections.getRawType;
+
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.logging.Logger;
-
-import static org.jboss.logging.Logger.getLogger;
-import static org.jboss.seam.solder.reflection.Reflections.getRawType;
+import org.jboss.seam.solder.logging.Logger;
 
 /**
- * The <code>LoggerProducer</code> provides a producer method for all injected loggers
- * that use the JBoss Logging API {@link Logger}.
- *
+ * The <code>LoggerProducer</code> provides a producer method for all injected loggers that use the JBoss Logging API
+ * {@link Logger}.
+ * 
  * @author David Allen
  * @author Pete Muir
  */
@@ -45,7 +45,8 @@ class LoggerProducer {
             }
         } else if (annotated.isAnnotationPresent(TypedCategory.class)) {
             if (annotated.isAnnotationPresent(Suffix.class)) {
-                return getLogger(annotated.getAnnotation(TypedCategory.class).value(), annotated.getAnnotation(Suffix.class).value());
+                return getLogger(annotated.getAnnotation(TypedCategory.class).value(), annotated.getAnnotation(Suffix.class)
+                        .value());
             } else {
                 return getLogger(annotated.getAnnotation(TypedCategory.class).value());
             }

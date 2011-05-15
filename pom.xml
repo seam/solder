@@ -43,6 +43,7 @@
    </licenses>
 
    <modules>
+      <module>logging</module>
       <module>api</module>
       <module>tooling</module>
       <module>impl</module>
@@ -67,6 +68,12 @@
          </dependency>
 
          <!-- Override submodule versions from org.jboss.seam:seam-bom -->
+         <dependency>
+            <groupId>org.jboss.seam.solder</groupId>
+            <artifactId>seam-solder-logging</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+
          <dependency>
             <groupId>org.jboss.seam.solder</groupId>
             <artifactId>seam-solder-api</artifactId>

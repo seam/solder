@@ -16,7 +16,7 @@
  */
 package org.jboss.seam.solder.core;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 
 /**
  * Utility class for logging the version number of class based on package.

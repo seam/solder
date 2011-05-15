@@ -17,6 +17,11 @@
 
 package org.jboss.seam.solder.logging;
 
+import static org.jboss.seam.solder.logging.Logger.getMessageLogger;
+import static org.jboss.seam.solder.reflection.Reflections.getRawType;
+import static org.jboss.seam.solder.logging.LoggerProducer.getDeclaringRawType;
+import static org.jboss.seam.solder.util.Locales.toLocale;
+
 import java.io.Serializable;
 
 import javax.enterprise.inject.Produces;
@@ -25,15 +30,9 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.seam.solder.messages.Locale;
 
-import static org.jboss.logging.Logger.getMessageLogger;
-import static org.jboss.seam.solder.logging.LoggerProducer.getDeclaringRawType;
-import static org.jboss.seam.solder.reflection.Reflections.getRawType;
-import static org.jboss.seam.solder.util.Locales.toLocale;
-
 /**
- * The <code>TypedMessageLoggerProducer</code> provides a producer method for all
- * injected typed message loggers.
- *
+ * The <code>TypedMessageLoggerProducer</code> provides a producer method for all injected typed message loggers.
+ * 
  * @author David Allen
  * @author Pete Muir
  */
@@ -44,19 +43,24 @@ class TypedMessageLoggerProducer implements Serializable {
         Annotated annotated = injectionPoint.getAnnotated();
         if (annotated.isAnnotationPresent(Category.class)) {
             if (annotated.isAnnotationPresent(Locale.class)) {
-                return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(Category.class).value(), toLocale(annotated.getAnnotation(Locale.class).value()));
+                return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(Category.class)
+                        .value(), toLocale(annotated.getAnnotation(Locale.class).value()));
             } else {
-                return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(Category.class).value());
+                return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(Category.class)
+                        .value());
             }
         } else if (annotated.isAnnotationPresent(TypedCategory.class)) {
             if (annotated.isAnnotationPresent(Locale.class)) {
-                return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(TypedCategory.class).value().getName(), toLocale(annotated.getAnnotation(Locale.class).value()));
+                return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(TypedCategory.class)
+                        .value().getName(), toLocale(annotated.getAnnotation(Locale.class).value()));
             } else {
-                return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(TypedCategory.class).value().getName());
+                return getMessageLogger(getInjectionPointRawType(injectionPoint), annotated.getAnnotation(TypedCategory.class)
+                        .value().getName());
             }
         } else {
             if (annotated.isAnnotationPresent(Locale.class)) {
-                return getMessageLogger(getInjectionPointRawType(injectionPoint), getDeclaringRawType(injectionPoint).getName(), toLocale(annotated.getAnnotation(Locale.class).value()));
+                return getMessageLogger(getInjectionPointRawType(injectionPoint),
+                        getDeclaringRawType(injectionPoint).getName(), toLocale(annotated.getAnnotation(Locale.class).value()));
             } else {
                 return getMessageLogger(getInjectionPointRawType(injectionPoint), getDeclaringRawType(injectionPoint).getName());
             }

@@ -22,8 +22,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import org.jboss.logging.Annotations;
-import org.jboss.logging.Logger;
 import org.jboss.seam.solder.logging.Log;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.solder.logging.MessageLogger;
 import org.jboss.seam.solder.messages.Cause;
 import org.jboss.seam.solder.messages.Formatter;
