@@ -50,7 +50,8 @@ public class RedefinitionContext<A extends Annotation> {
      * Access to the {@link AnnotatedElement} on which this annotation is
      * defined. If the annotation is defined on a Field, this may be cast to
      * {@link Field}, if defined on a method, this may be cast to {@link Method},
-     * if defined on a constructor, this may be cast to {@link Constructor} or if
+     * if defined on a constructor, this may be cast to {@link Constructor}, if
+     * defined on a class, this may be cast to {@link Class}, or if
      * defined on a parameter, this may be cast to {@link Parameter}
      */
     public AnnotatedElement getAnnotatedElement() {
@@ -84,7 +85,7 @@ public class RedefinitionContext<A extends Annotation> {
 
     /**
      * Access to the name of the element, or null if this represents a
-     * constructor or parameter.
+     * constructor, parameter or class.
      */
     public String getElementName() {
         return elementName;
