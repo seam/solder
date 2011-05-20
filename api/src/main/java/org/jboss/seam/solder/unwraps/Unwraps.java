@@ -55,7 +55,7 @@ import javax.enterprise.inject.Produces;
  *       // set up Foo
  *    }
  *
- *    void getFoo() {
+ *    Foo getFoo() {
  *       return foo;
  *    }
  *
