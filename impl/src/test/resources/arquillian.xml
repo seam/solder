@@ -15,25 +15,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<arquillian xmlns="http://jboss.com/arquillian"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xmlns:jboss="urn:arq:org.jboss.arquillian.container.jbossas.managed_6">
+<arquillian xmlns="http://jboss.com/arquillian" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
-    <engine>
-        <maxDeploymentsBeforeRestart>20</maxDeploymentsBeforeRestart>
-        <!-- Uncomment to have test archives exported to the file system for inspection -->
-
-        <!--
-        <deploymentExportPath>target/</deploymentExportPath>
-        -->
-
-    </engine>
-
-    <jboss:container>
-        <!--     <jboss:jbossHome>/home/aslak/dev/servers/jboss-6.0.0.M3/</jboss:jbossHome> --> <!-- default %JBOSS_HOME% -->
-        <!--     <jboss:javaHome>/usr/lib/jvm/java-6-openjdk</jboss:javaHome> -->  <!-- default %JAVA_HOME% -->
-        <!-- Increase the permgen space by default, heap space is default -->
-        <jboss:javaVmArguments>-Xmx512m -XX:MaxPermSize=256m</jboss:javaVmArguments>
-    </jboss:container>
-
+    <container qualifier="jbossas" default="true">
+        <configuration>
+            <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=256m</property>
+        </configuration>
+    </container>
 </arquillian>

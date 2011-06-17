@@ -16,13 +16,14 @@
  */
 package org.jboss.seam.solder.test.bean.generic.alternative;
 
+import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+
 import javax.inject.Inject;
 
 import junit.framework.Assert;
+
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.seam.solder.test.util.MavenArtifactResolver;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,12 +32,8 @@ import org.junit.runner.RunWith;
 public class GenericBeanAlternativeTest {
     @Deployment
     public static WebArchive deployment() {
-        WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war").addAsLibraries(
-                MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"),
-                MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-impl"));
-        archive.addPackage(GenericBeanAlternativeTest.class.getPackage());
-        archive.addAsWebInfResource("org/jboss/seam/solder/test/bean/generic/alternative/beans.xml", "beans.xml");
-        return archive;
+        return baseDeployment().addPackage(GenericBeanAlternativeTest.class.getPackage()).addAsWebInfResource(
+                "org/jboss/seam/solder/test/bean/generic/alternative/beans.xml", "beans.xml");
     }
 
     @Inject
