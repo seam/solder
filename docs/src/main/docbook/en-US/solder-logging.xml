@@ -16,7 +16,7 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
+-->
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="solder-logging">
@@ -105,11 +105,11 @@ import org.jboss.logging.MessageLogger;
 @MessageLogger
 public interface CelebritySightingLog {
 
-    @LogMessage @Message("Spotted celebrity %s!") 
+    @LogMessage @Message("Spotted celebrity %s!")
     void spottedCelebrity(String name);
 
 }</programlisting>
-      
+
       <para>
          JBoss Logging has is parallel support for typed message bundles, whose methods return a formatted message
          rather than log it. Combined, these features form the centerpiece of Solder's logging and message bundle
@@ -122,7 +122,7 @@ public interface CelebritySightingLog {
          There you have it! JBoss Logging is a low-level API that provides logging abstraction, message formatting and
          internationalization, and typed loggers. <emphasis>But it doesn't tie you to JBoss AS!</emphasis>
       </para>
-      
+
       <para>
          With that understanding, we'll now move on to what Solder does to turn this foundation into a programming model
          and how to use it in your CDI-based application.
@@ -136,7 +136,7 @@ public interface CelebritySightingLog {
       <para>
          Solder builds on JBoss Logging 3 to provide the following feature set:
       </para>
-      
+
       <itemizedlist>
          <listitem>
             An abstraction over common logging backends and frameworks (such as JDK Logging, log4j and slf4j)
@@ -148,7 +148,7 @@ public interface CelebritySightingLog {
             Innovative, typed message loggers and message bundles defined using interfaces
          </listitem>
          <listitem>
-            Build time tooling to generate typed loggers for production<!--, and runtime generation of typed loggers for 
+            Build time tooling to generate typed loggers for production<!--, and runtime generation of typed loggers for
             development-->
          </listitem>
          <listitem>
@@ -176,7 +176,7 @@ public interface CelebritySightingLog {
             localized message strings.
          </para>
       </note>
-      
+
       <para>
          Without further discussion, let's get into it.
       </para>
@@ -192,11 +192,11 @@ public interface CelebritySightingLog {
       <programlisting role="JAVA">import org.jboss.seam.solder.messages.Message;
 import org.jboss.seam.solder.logging.Log;
 import org.jboss.seam.solder.logging.MessageLogger;
-      
+
 @MessageLogger
 public interface TrainSpotterLog {
 
-    @Log @Message("Spotted %s diesel trains") 
+    @Log @Message("Spotted %s diesel trains")
     void dieselTrainsSpotted(int number);
 
 }</programlisting>
@@ -246,7 +246,7 @@ import org.jboss.seam.solder.logging.MessageLogger;
 @MessageLogger
 public interface TrainSpotterLog {
 
-    @Log @Message("Failed to spot train %s") 
+    @Log @Message("Failed to spot train %s")
     void missedTrain(String trainNumber, @Cause Exception exception);
 
 }</programlisting>
@@ -266,7 +266,7 @@ public interface TrainSpotterLog {
       </para>
 
       <para>
-         Typed loggers also provide internationalization support. Simply add the <literal>@MessageBundle</literal> annotation to the logger 
+         Typed loggers also provide internationalization support. Simply add the <literal>@MessageBundle</literal> annotation to the logger
          interface.
       </para>
 
@@ -335,11 +335,11 @@ public class LogService {
 
       <programlisting role="JAVA">import org.jboss.seam.solder.messages.Message;
 import org.jboss.seam.solder.messages.MessageBundle;
-   
+
 @MessageBundle
 public interface TrainMessages {
 
-    @Message("No trains spotted due to %s") 
+    @Message("No trains spotted due to %s")
     String noTrainsSpotted(String cause);
 
 }</programlisting>
@@ -356,7 +356,7 @@ public interface TrainMessages {
       </para>
 
       <programlisting role="JAVA">   throw new BadDayException(messages.noTrainsSpotted("leaves on the line"));</programlisting>
-   </section> 
+   </section>
 
    <section id="implementation-classes">
       <title>Implementation classes</title>
@@ -379,7 +379,7 @@ public interface TrainMessages {
       <!--
       <section id="generating-proxies">
          <title>Enabling generated proxies</title>
-         
+
          <para>
             Out of the box, the implementations are generated at runtime using dynamic proxies. Well, almost out of the
             box. This feature is not enabled by default. To activate it, you need to set the following system property
@@ -399,7 +399,7 @@ public interface TrainMessages {
                The proxy is only generated if a concrete implementation class is not found.
             </para>
          </note>
-         
+
          <para>
             If this system property is not set, you will likely get a deployment error telling you that your logger
             injection point cannot be satisified. That's because without the proxies, all you are left with is an
@@ -482,14 +482,14 @@ public interface TrainMessages {
 TrainSpotterLog_$logger_en_GB.java
 TrainMessages_$bundle.java</programlisting>
          <para>
-            Classes are generated for each language referenced by an annotation or if there is a .properties language
+            Classes are generated for each language referenced by an annotation or if there is a .i18n.properties language
             file in the same package as the interface and has the same root name. For instance, if we wanted to generate
             a French version of <literal>TrainMessages</literal>, we would have to create the following properties file
             in the same package as the interface:
          </para>
-         <programlisting>TrainMessages_fr.properties</programlisting>
+         <programlisting>TrainMessages_fr.i18n.properties</programlisting>
          <para>
-            Then populate it with the translations:
+            Then populate it with the translations (Note the property key is the method name):
          </para>
          <programlisting>noTrainsSpotted=pas de trains repéré en raison de %s</programlisting>
          <para>
