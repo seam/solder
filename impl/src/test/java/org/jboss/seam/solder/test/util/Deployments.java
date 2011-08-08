@@ -27,7 +27,7 @@ public class Deployments {
         return ShrinkWrap.create(WebArchive.class, "test.war")
                 .addAsLibraries(
                         MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"),
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-impl"),
+                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder"),
                         MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-logging"))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
