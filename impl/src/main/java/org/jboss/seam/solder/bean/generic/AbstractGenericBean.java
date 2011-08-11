@@ -32,7 +32,7 @@ import org.jboss.seam.solder.literal.AnyLiteral;
  *
  * @author Pete Muir
  */
-abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements PassivationCapable {
+abstract class AbstractGenericBean<T> extends ForwardingBean<T> implements PassivationCapable {
 
     private final Bean<T> delegate;
     private final Set<Annotation> qualifiers;
@@ -41,7 +41,7 @@ abstract class AbstactGenericBean<T> extends ForwardingBean<T> implements Passiv
     private final boolean alternative;
     private final Class<?> beanClass;
 
-    protected AbstactGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, GenericIdentifier identifier, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager) {
+    protected AbstractGenericBean(Bean<T> delegate, Set<Annotation> qualifiers, GenericIdentifier identifier, String id, boolean alternative, Class<?> beanClass, BeanManager beanManager) {
         this.delegate = delegate;
         this.beanManager = beanManager;
         this.qualifiers = new HashSet<Annotation>();

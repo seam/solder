@@ -39,7 +39,7 @@ import org.jboss.seam.solder.reflection.Reflections;
 import org.jboss.seam.solder.reflection.Synthetic;
 import org.jboss.seam.solder.reflection.annotated.Annotateds;
 
-class GenericManagedBean<T> extends AbstactGenericBean<T> {
+class GenericManagedBean<T> extends AbstractGenericBean<T> {
 
     private final InjectionTarget<T> injectionTarget;
     private final Map<AnnotatedField<? super T>, InjectionPoint> injectedFields;

@@ -33,7 +33,7 @@ import org.jboss.seam.solder.reflection.Reflections;
  *
  * @author Pete Muir
  */
-abstract class AbstractGenericProducerBean<T> extends AbstactGenericBean<T> {
+abstract class AbstractGenericProducerBean<T> extends AbstractGenericBean<T> {
 
     private final Type declaringBeanType;
     private final Annotation[] declaringBeanQualifiers;
