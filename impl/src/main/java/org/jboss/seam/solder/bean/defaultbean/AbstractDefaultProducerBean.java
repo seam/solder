@@ -31,7 +31,7 @@ import org.jboss.seam.solder.bean.Beans;
  *
  * @author Stuart Douglas
  */
-abstract class AbstractDefaultProducerBean<T> extends AbstactDefaultBean<T> {
+abstract class AbstractDefaultProducerBean<T> extends AbstractDefaultBean<T> {
 
     private static final Annotation[] NO_QUALIFIERS = {};
 

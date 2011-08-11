@@ -26,13 +26,14 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.PassivationCapable;
 
 import org.jboss.seam.solder.bean.ForwardingBean;
+import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
 
 /**
  * A helper class for implementing default bean functionality
  *
  * @author Stuart Douglas
  */
-abstract class AbstactDefaultBean<T> extends ForwardingBean<T> implements PassivationCapable {
+abstract class AbstractDefaultBean<T> extends ForwardingBean<T> implements PassivationCapable {
 
     private final Bean<T> delegate;
     private final Set<Annotation> qualifiers;
@@ -40,7 +41,7 @@ abstract class AbstactDefaultBean<T> extends ForwardingBean<T> implements Passiv
     private final BeanManager beanManager;
     private final Type declaringBeanType;
 
-    protected AbstactDefaultBean(Bean<T> delegate, Type declaringBeanType, Set<Type> types, Set<Annotation> qualifiers, BeanManager beanManager) {
+    protected AbstractDefaultBean(Bean<T> delegate, Type declaringBeanType, Set<Type> types, Set<Annotation> qualifiers, BeanManager beanManager) {
         this.delegate = delegate;
         this.beanManager = beanManager;
         this.qualifiers = new HashSet<Annotation>(qualifiers);
@@ -93,7 +94,7 @@ abstract class AbstactDefaultBean<T> extends ForwardingBean<T> implements Passiv
             return true;
         if (getClass() != obj.getClass())
             return false;
-        AbstactDefaultBean<?> other = (AbstactDefaultBean<?>) obj;
+        AbstractDefaultBean<?> other = (AbstractDefaultBean<?>) obj;
         if (qualifiers == null) {
             if (other.qualifiers != null)
                 return false;

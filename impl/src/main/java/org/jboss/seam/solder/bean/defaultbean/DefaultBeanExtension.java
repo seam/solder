@@ -194,7 +194,7 @@ public class DefaultBeanExtension implements Extension {
         }
         // now look for producer methods
         // if this bean is a default bean then all producers are default beans
-        // otherwise the annotaion needs to be present
+        // otherwise the annotation needs to be present
         for (AnnotatedMethod<? super X> m : tp.getMethods()) {
             if (m.isAnnotationPresent(Produces.class) && (defaultBean || m.isAnnotationPresent(DefaultBean.class))) {
                 if (declaringBeanQualifiers == null) {
