@@ -5,7 +5,7 @@
    <parent>
       <groupId>org.jboss.seam.solder</groupId>
       <artifactId>seam-solder-parent</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
+      <version>3.1.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
@@ -33,12 +33,6 @@
 
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-impl</artifactId>
-         <optional>true</optional>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder</artifactId>
          <optional>true</optional>
       </dependency>
@@ -53,7 +47,7 @@
 
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-impl</artifactId>
+         <artifactId>seam-solder</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
          <optional>true</optional>

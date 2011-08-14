@@ -103,7 +103,7 @@
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
             <include>org.jboss.seam.solder:seam-solder-api:*:sources</include>
-            <include>org.jboss.seam.solder:seam-solder-impl:*:sources</include>            
+            <include>org.jboss.seam.solder:seam-solder:*:sources</include>            
          </includes>
          <unpackOptions>
             <excludes>
