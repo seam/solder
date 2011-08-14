@@ -127,6 +127,7 @@
          <groupId>org.jboss.arquillian</groupId>
          <artifactId>arquillian-junit</artifactId>
          <version>${version.arquillian}</version>
+         <scope>test</scope>
       </dependency>
 
       <dependency>
