@@ -27,6 +27,12 @@
 
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-tooling</artifactId>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder-api</artifactId>
          <optional>true</optional>
       </dependency>
@@ -48,6 +54,22 @@
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder</artifactId>
+         <version>${project.version}</version>
+         <classifier>sources</classifier>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-logging</artifactId>
+         <version>${project.version}</version>
+         <classifier>sources</classifier>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-tooling</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
          <optional>true</optional>

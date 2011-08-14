@@ -46,7 +46,10 @@
          <outputDirectory>artifacts</outputDirectory>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
+            <include>org.jboss.seam.solder:seam-solder-api</include>
             <include>org.jboss.seam.solder:seam-solder</include>
+            <include>org.jboss.seam.solder:seam-solder-tooling</include>
+            <include>org.jboss.seam.solder:seam-solder-logging</include>
          </includes>
          <excludes>
             <exclude>org.jboss.seam.solder:*:jar:javadoc</exclude>
@@ -73,6 +76,8 @@
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
             <include>org.jboss.seam.solder:seam-solder-api:jar:javadoc</include>
+            <include>org.jboss.seam.solder:seam-solder-tooling:jar:javadoc</include>
+            <include>org.jboss.seam.solder:seam-solder-logging:jar:javadoc</include>
          </includes>
          <unpackOptions>
             <excludes>
@@ -103,7 +108,9 @@
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
             <include>org.jboss.seam.solder:seam-solder-api:*:sources</include>
-            <include>org.jboss.seam.solder:seam-solder:*:sources</include>            
+            <include>org.jboss.seam.solder:seam-solder:*:sources</include>
+            <include>org.jboss.seam.solder:seam-solder-logging:*:sources</include>
+            <include>org.jboss.seam.solder:seam-solder-tooling:*:sources</include>
          </includes>
          <unpackOptions>
             <excludes>
