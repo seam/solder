@@ -33,7 +33,7 @@
    <url>${project.parent.url}</url>
 
 	<properties>
-		<version.arquillian>1.0.0.Alpha5</version.arquillian>
+	    <version.jbossas7>7.0.0.Final</version.jbossas7>
 	</properties>
 
    <dependencies>
@@ -124,9 +124,8 @@
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.arquillian</groupId>
-         <artifactId>arquillian-junit</artifactId>
-         <version>${version.arquillian}</version>
+         <groupId>org.jboss.arquillian.junit</groupId>
+         <artifactId>arquillian-junit-container</artifactId>
          <scope>test</scope>
       </dependency>
 
@@ -184,7 +183,6 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-               <version>${version.arquillian}</version>
             </dependency>
             <dependency>
                <groupId>org.jboss.spec.javax.transaction</groupId>
@@ -237,7 +235,6 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-openwebbeans-embedded-1</artifactId>
-               <version>${version.arquillian}</version>
             </dependency>
 	        <dependency>
 	            <groupId>org.apache.openwebbeans</groupId>
@@ -306,18 +303,17 @@
          </build>
       </profile>
       <profile>
-         <id>incontainer</id>
+         <id>incontainer-jbossas6-managed</id>
          <activation>
             <activeByDefault>false</activeByDefault>
             <property>
-               <name>incontainer</name>
+               <name>incontainer-jbossas6-managed</name>
             </property>
          </activation>
          <dependencies>
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-jbossas-managed-6</artifactId>
-               <version>${version.arquillian}</version>
             </dependency>
             <dependency>
                <groupId>org.jboss.jbossas</groupId>
@@ -336,18 +332,17 @@
          </dependencies>
       </profile>
       <profile>
-         <id>incontainer-remote</id>
+         <id>incontainer-jbossas6-remote</id>
          <activation>
             <activeByDefault>false</activeByDefault>
             <property>
-               <name>incontainer-remote</name>
+               <name>incontainer-jbossas6-remote</name>
             </property>
          </activation>
          <dependencies>
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-jbossas-remote-6</artifactId>
-               <version>${version.arquillian}</version>
             </dependency>
             <dependency>
                <groupId>org.jboss.jbossas</groupId>
@@ -357,6 +352,42 @@
             <dependency>
                <groupId>org.jboss.weld</groupId>
                <artifactId>weld-core</artifactId>
+               <scope>test</scope>
+            </dependency>
+         </dependencies>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-surefire-plugin</artifactId>
+                  <configuration>
+                     <parallel>none</parallel>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+ 
+      <profile>
+         <id>incontainer-jbossas7-remote</id>
+         <activation>
+            <activeByDefault>false</activeByDefault>
+            <property>
+               <name>incontainer-jbossas7-remote</name>
+            </property>
+         </activation>
+         <dependencies>
+            <dependency>
+               <groupId>org.jboss.as</groupId>
+               <artifactId>jboss-as-arquillian-container-remote</artifactId>
+               <version>${version.jbossas7}</version>
+               <scope>test</scope>
+            </dependency>
+
+            <dependency>
+               <groupId>org.jboss.naming</groupId>
+               <artifactId>jnp-client</artifactId>
+               <version>5.0.4.GA</version>
                <scope>test</scope>
             </dependency>
          </dependencies>
@@ -385,7 +416,6 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-glassfish-remote-3.1</artifactId>
-               <version>${version.arquillian}</version>
                <scope>test</scope>
             </dependency>
             <dependency>

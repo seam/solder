@@ -20,7 +20,7 @@ import javax.el.ExpressionFactory;
 import javax.inject.Inject;
 
 import com.sun.el.ExpressionFactoryImpl;
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.el.ELResolverProducer;
 import org.jboss.seam.solder.el.Expressions;
@@ -32,7 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
+// import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
 
 @RunWith(Arquillian.class)
 public class ElTest {
@@ -41,8 +41,10 @@ public class ElTest {
 
     @Deployment
     public static Archive<?> deployment() {
+        // TODO: fix the hack
         // hack to work around container differences atm
-        boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+        //boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+        boolean isEmbedded = false;
 
         WebArchive war = baseDeployment().addPackage(ElTest.class.getPackage());
         if (isEmbedded) {

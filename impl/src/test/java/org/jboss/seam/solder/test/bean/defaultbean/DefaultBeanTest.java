@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.logging.internal.Logger;
 import org.jboss.seam.solder.bean.Beans;

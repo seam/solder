@@ -28,7 +28,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.resourceLoader.Resource;
 import org.jboss.seam.solder.resourceLoader.ResourceLoader;
@@ -39,7 +39,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
+// import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -47,9 +47,10 @@ import static org.junit.Assert.assertNotNull;
 public class ResourceLoaderTest {
     @Deployment
     public static Archive<?> deployment() {
+        // TODO: fix the hack
         // hack to work around container differences atm
-        boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
-
+        //boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+        boolean isEmbedded = false;
         WebArchive war = baseDeployment().addPackage(ResourceLoaderTest.class.getPackage())
                 .addAsResource("com/acme/foo1")
                 .addAsResource("com/acme/foo2.properties");

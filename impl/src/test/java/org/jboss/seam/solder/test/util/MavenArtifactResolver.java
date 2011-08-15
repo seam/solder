@@ -53,6 +53,7 @@ public class MavenArtifactResolver {
     }
 
     private final String classPathSeparatorRegex;
+    private final String versionSeparatorRegex;
     private final char fileSeparator;
     private final String groupId;
     private final String artifactId;
@@ -63,6 +64,7 @@ public class MavenArtifactResolver {
         this.artifactId = artifactId;
         this.classPath = classPath;
         this.classPathSeparatorRegex = "[^" + pathSeparator + "]*";
+        this.versionSeparatorRegex = "-[0-9]";
         this.fileSeparator = fileSeparator;
     }
 
@@ -133,7 +135,7 @@ public class MavenArtifactResolver {
      * classpath from the reactor.
      */
     private Matcher createUnqualifiedMatcher() {
-        Pattern p = Pattern.compile(classPathSeparatorRegex + Pattern.quote("target" + fileSeparator + artifactId) + classPathSeparatorRegex, Pattern.CASE_INSENSITIVE);
+        Pattern p = Pattern.compile(classPathSeparatorRegex + Pattern.quote("target" + fileSeparator + artifactId) + versionSeparatorRegex + classPathSeparatorRegex, Pattern.CASE_INSENSITIVE);
         return p.matcher(classPath);
     }
 
