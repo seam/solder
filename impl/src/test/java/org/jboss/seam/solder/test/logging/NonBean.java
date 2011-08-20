@@ -19,7 +19,7 @@ package org.jboss.seam.solder.test.logging;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Logger;
+import org.jboss.seam.logging.Logger;
 
 @Alternative
 public class NonBean {

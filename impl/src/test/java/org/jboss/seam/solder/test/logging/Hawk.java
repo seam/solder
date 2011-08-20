@@ -18,7 +18,7 @@ package org.jboss.seam.solder.test.logging;
 
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Category;
+import org.jboss.seam.logging.Category;
 
 public class Hawk {
     @Inject

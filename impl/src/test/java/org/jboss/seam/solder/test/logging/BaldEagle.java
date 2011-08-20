@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Category;
+import org.jboss.seam.logging.Category;
 
 @SessionScoped
 public class BaldEagle implements Serializable {

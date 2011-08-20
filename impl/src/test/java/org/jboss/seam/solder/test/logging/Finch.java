@@ -18,8 +18,8 @@ package org.jboss.seam.solder.test.logging;
 
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Category;
-import org.jboss.seam.solder.logging.Logger;
+import org.jboss.seam.logging.Category;
+import org.jboss.seam.logging.Logger;
 
 public class Finch {
     @Inject

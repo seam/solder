@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.seam.logging.Category;
 import org.jboss.seam.solder.logging.internal.Logger;
 import org.jboss.seam.solder.bean.Beans;
 import org.jboss.seam.solder.bean.defaultbean.DefaultBeanExtension;
@@ -32,7 +33,6 @@ import org.jboss.seam.solder.core.Client;
 import org.jboss.seam.solder.core.CoreExtension;
 import org.jboss.seam.solder.el.Resolver;
 import org.jboss.seam.solder.literal.DefaultLiteral;
-import org.jboss.seam.solder.logging.Category;
 import org.jboss.seam.solder.logging.TypedMessageLoggerExtension;
 import org.jboss.seam.solder.messages.Messages;
 import org.jboss.seam.solder.reflection.Synthetic;

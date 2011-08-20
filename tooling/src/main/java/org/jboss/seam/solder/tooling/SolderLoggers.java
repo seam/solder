@@ -22,8 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.logging.Loggers;
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.solder.logging.internal.BasicLogger;
-import org.jboss.seam.solder.logging.Logger;
 
 /**
  * @author James R. Perkins (jrp) - 20.Feb.2011

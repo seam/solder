@@ -16,6 +16,8 @@
  */
 package org.jboss.seam.solder.serviceHandler;
 
+import static org.jboss.seam.solder.reflection.AnnotationInspector.getMetaAnnotation;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,11 +29,9 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.solder.bean.BeanBuilder;
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.solder.reflection.Reflections;
-
-import static org.jboss.seam.solder.reflection.AnnotationInspector.getMetaAnnotation;
 
 /**
  * This extension automatically implements interfaces and abstract classes.

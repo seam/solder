@@ -28,8 +28,8 @@ import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.solder.literal.DefaultLiteral;
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.solder.util.collections.Arrays2;
 
 /**

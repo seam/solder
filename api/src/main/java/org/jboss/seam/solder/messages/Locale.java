@@ -20,8 +20,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.jboss.seam.solder.logging.Logger;
-import org.jboss.seam.solder.logging.MessageLogger;
+import org.jboss.seam.logging.MessageLogger;
+import org.jboss.seam.logging.Logger;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

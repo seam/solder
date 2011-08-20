@@ -18,8 +18,8 @@ package org.jboss.seam.solder.test.logging;
 
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Logger;
-import org.jboss.seam.solder.logging.Suffix;
+import org.jboss.seam.logging.Suffix;
+import org.jboss.seam.logging.Logger;
 
 class Raven {
     @Inject

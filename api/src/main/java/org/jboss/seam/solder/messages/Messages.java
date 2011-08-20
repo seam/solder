@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 import java.util.Locale;
 
-import org.jboss.seam.solder.logging.Logger;
+import org.jboss.seam.logging.Logger;
 
 /**
  * A factory class to produce message bundle implementations.
