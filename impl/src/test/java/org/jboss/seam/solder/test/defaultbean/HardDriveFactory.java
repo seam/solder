@@ -16,10 +16,11 @@
  */
 package org.jboss.seam.solder.test.defaultbean;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-
 import org.jboss.seam.solder.bean.defaultbean.DefaultBean;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Disposes;
+import javax.enterprise.inject.Produces;
 
 /**
  * test that producer methods are read from the installed default bean and not
@@ -40,6 +41,11 @@ public class HardDriveFactory {
                 return size;
             }
         };
+    }
+
+
+    public void disposeHardDrive(final @Disposes HardDrive hardDrive) {
+
     }
 
 
