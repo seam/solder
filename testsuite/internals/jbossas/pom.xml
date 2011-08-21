@@ -15,7 +15,7 @@
    <packaging>jar</packaging>
 
    <dependencies>
-   
+     
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder</artifactId>
@@ -45,24 +45,54 @@
          <scope>test</scope>
       </dependency>
       
+      <!-- EL impl needed for ElTest -->
+      <dependency>
+         <groupId>org.glassfish.web</groupId>
+         <artifactId>el-impl</artifactId>
+         <scope>compile</scope>
+      </dependency>      
+      
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <scope>test</scope>
+         <scope>compile</scope>
       </dependency>
+
    </dependencies>
 
-   <build>
+   <build>    
+   
       <plugins>
+      
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <phase>generate-sources</phase>
+                  <goals>
+                    <goal>add-test-source</goal>
+                  </goals>
+                  <configuration>
+                     <sources>
+                        <source>../base/src/main/java</source>
+                     </sources>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      
          <!-- skip unit test run, tests to be executed during integration-test -->
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
                <skip>true</skip>
+               
             </configuration>
          </plugin>
-         <plugin>
+         
+         <!--plugin>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
                <execution>
@@ -84,7 +114,7 @@
                   </configuration>
                </execution>
             </executions>
-         </plugin>
+         </plugin-->
       </plugins>
    </build>
 
@@ -138,12 +168,14 @@
                      </execution>
                   </executions>
                </plugin>
+               
                <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-surefire-plugin</artifactId>
                   <configuration>
                      <skip>true</skip>
                   </configuration>
+                  
                   <executions>
                      <execution>
                         <id>surefire-it</id>

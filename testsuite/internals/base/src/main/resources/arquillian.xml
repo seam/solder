@@ -23,4 +23,5 @@
             <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=256m</property>
         </configuration>
     </container>
+ 
 </arquillian>
