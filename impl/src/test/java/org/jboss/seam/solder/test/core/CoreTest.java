@@ -25,7 +25,8 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-import org.jboss.arquillian.api.Deployment;
+
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.core.CoreExtension;
 import org.jboss.seam.solder.core.VersionLoggerUtil;

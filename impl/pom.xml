@@ -74,14 +74,6 @@
          <optional>true</optional>
       </dependency>
 
-      <!--dependency>
-         <groupId>org.jboss.logmanager</groupId>
-         <artifactId>jboss-logmanager</artifactId>
-         <version>1.2.0.CR9</version>
-         <scope>provided</scope>
-         <optional>true</optional>
-      </dependency-->
-
       <dependency>
          <groupId>log4j</groupId>
          <artifactId>log4j</artifactId>
@@ -115,16 +107,23 @@
          <artifactId>junit-dep</artifactId>
       </dependency>
 
-      <!--dependency>
-         <groupId>org.jboss.arquillian</groupId>
-         <artifactId>arquillian-junit</artifactId>
-      </dependency-->
-
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-simple</artifactId>
          <scope>test</scope>
       </dependency>
+      
+            <!-- Test Compile ClassPath -->
+            <dependency>
+                <groupId>org.jboss.arquillian.junit</groupId>
+                <artifactId>arquillian-junit-container</artifactId>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <scope>test</scope>
+            </dependency>         
 
       <dependency>
          <groupId>org.hamcrest</groupId>
@@ -182,7 +181,7 @@
                <name>default</name>
             </property>
          </activation>
-         <dependencies>
+         <dependencies>     
 
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
