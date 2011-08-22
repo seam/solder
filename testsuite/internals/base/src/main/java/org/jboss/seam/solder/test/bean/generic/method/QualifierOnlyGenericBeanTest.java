@@ -18,7 +18,7 @@ package org.jboss.seam.solder.test.bean.generic.method;
 
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
@@ -31,7 +31,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(Arquillian.class)
 public class QualifierOnlyGenericBeanTest {
 
-    @Deployment
+    @Deployment(name = "QualifierOnlyGenericBean")
     public static Archive<?> deployment() {
         return baseDeployment().addPackage(QualifierOnlyGenericBeanTest.class.getPackage());
     }

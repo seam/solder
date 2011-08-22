@@ -28,7 +28,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.resourceLoader.Resource;
 import org.jboss.seam.solder.resourceLoader.ResourceLoader;
@@ -45,7 +45,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(Arquillian.class)
 public class ResourceLoaderTest {
-    @Deployment
+    @Deployment(name = "ResourceLoader")
     public static Archive<?> deployment() {
         // hack to work around container differences atm
         boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
