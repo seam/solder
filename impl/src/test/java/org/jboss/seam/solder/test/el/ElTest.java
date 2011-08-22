@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
+//import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
 
 @RunWith(Arquillian.class)
 public class ElTest {
@@ -43,15 +43,15 @@ public class ElTest {
     @Deployment
     public static Archive<?> deployment() {
         // hack to work around container differences atm
-        boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+        //boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
 
         WebArchive war = baseDeployment().addPackage(ElTest.class.getPackage());
-        if (isEmbedded) {
+        //if (isEmbedded) {
             war.addPackage(ELResolverProducer.class.getPackage())
                     // set proper EL implementation using META-INF/services/javax.el.ExpressionFactory for Weld embedded
                     .addAsServiceProvider(ExpressionFactory.class, ExpressionFactoryImpl.class)
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        }
+        //}
 
         return war;
     }
