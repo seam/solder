@@ -42,7 +42,8 @@ public class ElTest {
     @Deployment(name = "EL")
     public static Archive<?> deployment() {
         // hack to work around container differences atm
-        boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+        // boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+        boolean isEmbedded = false;
 
         WebArchive war = baseDeployment().addPackage(ElTest.class.getPackage());
         if (isEmbedded) {

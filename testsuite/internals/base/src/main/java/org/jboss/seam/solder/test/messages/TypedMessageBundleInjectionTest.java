@@ -37,7 +37,8 @@ public class TypedMessageBundleInjectionTest {
     @Deployment(name = "TypedMessageBundleInjection")
     public static Archive<?> createDeployment() {
         return baseDeployment()
-                .addPackage(TypedMessageBundleInjectionTest.class.getPackage());
+                .addPackage(TypedMessageBundleInjectionTest.class.getPackage())
+                .addAsResource("org/jboss/seam/solder/test/messages/BirdMessages.i18n_fr.properties");
     }
 
     @Test

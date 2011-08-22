@@ -48,7 +48,8 @@ public class ResourceLoaderTest {
     @Deployment(name = "ResourceLoader")
     public static Archive<?> deployment() {
         // hack to work around container differences atm
-        boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+        // boolean isEmbedded = targetContainerAdapterClass().getName().contains(".embedded");
+        boolean isEmbedded = false;
 
         WebArchive war = baseDeployment().addPackage(ResourceLoaderTest.class.getPackage())
                 .addAsResource("com/acme/foo1")

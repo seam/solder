@@ -47,6 +47,7 @@
       <module>api</module>
       <module>tooling</module>
       <module>impl</module>
+      <module>testsuite</module>
    </modules>
 
    <properties>
