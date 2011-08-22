@@ -21,7 +21,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Arquillian.class)
 public class ProducersOnGenericBeanTest {
 
-    @Deployment
+    @Deployment(name = "ProducersOnGenericBean")
     public static Archive<?> deployment() {
         return baseDeployment().addPackage(ProducersOnGenericBeanTest.class.getPackage());
     }
