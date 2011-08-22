@@ -24,7 +24,7 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.reflection.AnnotationInspector;
 import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
@@ -39,7 +39,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class AnnotationInspectorTest {
-    @Deployment
+    @Deployment(name = "AnnotationInspector")
     public static Archive<?> deployment() {
         return baseDeployment().addPackage(AnnotationInspectorTest.class.getPackage());
     }

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.logging.Category;
 import org.jboss.seam.solder.logging.internal.Logger;
@@ -61,7 +61,7 @@ public class DefaultBeanTest {
     @Inject
     private Vehicle vehicle;
 
-    @Deployment
+    @Deployment(name = "DefaultBean")
     public static WebArchive createDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war");
         war.addPackage(DefaultBeanTest.class.getPackage());

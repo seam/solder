@@ -19,7 +19,7 @@ package org.jboss.seam.solder.test.core.requires;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.solder.test.core.requires.beans.EnabledOptionalBean;
 import org.jboss.seam.solder.test.core.requires.beans.pkg.OptionalBeanWithPackageLevelDependencies;
@@ -36,7 +36,7 @@ public class RequiresTest {
     @Inject
     private BeanManager manager;
 
-    @Deployment
+    @Deployment(name = "Requires")
     public static WebArchive getDeployment() {
         return baseDeployment().addClasses(CommonInterface.class, Tiger.class, Lion.class)
                 .addPackage(EnabledOptionalBean.class.getPackage())

@@ -22,7 +22,7 @@ import javax.inject.Inject;
 
 import junit.framework.Assert;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 public class GenericBeanAlternativeTest {
-    @Deployment
+    @Deployment(name = "GenericBeanAlternative")
     public static WebArchive deployment() {
         return baseDeployment().addPackage(GenericBeanAlternativeTest.class.getPackage()).addAsWebInfResource(
                 "org/jboss/seam/solder/test/bean/generic/alternative/beans.xml", "beans.xml");
