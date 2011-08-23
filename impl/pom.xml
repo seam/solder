@@ -244,7 +244,6 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-openwebbeans-embedded-1</artifactId>
-               <version>${version.arquillian}</version>
             </dependency>
 
 	    <dependency>
@@ -337,7 +336,6 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-jbossas-managed-6</artifactId>
-               <version>${version.arquillian}</version>
             </dependency>
             <dependency>
                <groupId>org.jboss.jbossas</groupId>
@@ -367,7 +365,6 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-jbossas-remote-6</artifactId>
-               <version>${version.arquillian}</version>
             </dependency>
             <dependency>
                <groupId>org.jboss.jbossas</groupId>
@@ -405,7 +402,6 @@
             <dependency>
                <groupId>org.jboss.arquillian.container</groupId>
                <artifactId>arquillian-glassfish-remote-3.1</artifactId>
-               <version>${version.arquillian}</version>
                <scope>test</scope>
             </dependency>
             <dependency>
