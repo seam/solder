@@ -286,7 +286,7 @@
 
    <scm>
       <connection>scm:git:git://github.com/seam/solder.git</connection>
-      <developerConnection>scm:git:git://github.com/seam/solder.git</developerConnection>
+      <developerConnection>scm:git:git@github.com:seam/solder.git</developerConnection>
       <url>http://github.com/seam/solder</url>
    </scm>
 
