@@ -19,6 +19,15 @@
   </dependencies>
   <build>
     <plugins>
+
+      <plugin>
+         <artifactId>maven-source-plugin</artifactId>
+         <configuration>
+            <!-- We have to do this to force the source artifact to be created, otherwise we can't deploy to Nexus -->
+            <includePom>true</includePom>
+         </configuration>
+      </plugin>
+
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
