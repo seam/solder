@@ -16,6 +16,9 @@
  */
 package org.jboss.seam.solder.bean.defaultbean;
 
+
+import static org.jboss.seam.solder.util.collections.Multimaps.newSetMultimap;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -31,6 +34,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
@@ -48,15 +52,15 @@ import javax.enterprise.inject.spi.ProcessObserverMethod;
 import javax.enterprise.inject.spi.ProcessProducerField;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.solder.bean.Beans;
 import org.jboss.seam.solder.literal.DefaultLiteral;
-import org.jboss.seam.solder.logging.Logger;
+import org.jboss.seam.solder.reflection.HierarchyDiscovery;
+import org.jboss.seam.solder.reflection.Reflections;
 import org.jboss.seam.solder.reflection.Synthetic;
 import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 import org.jboss.seam.solder.util.collections.SetMultimap;
 import org.jboss.seam.solder.util.collections.Supplier;
-
-import static org.jboss.seam.solder.util.collections.Multimaps.newSetMultimap;
 
 /**
  * Registers beans annotated @DefaultBean
@@ -192,6 +196,7 @@ public class DefaultBeanExtension implements Extension {
                 }
             }
         }
+        final Set<Synthetic> producers = new HashSet<Synthetic>();
         // now look for producer methods
         // if this bean is a default bean then all producers are default beans
         // otherwise the annotation needs to be present
@@ -229,6 +234,43 @@ public class DefaultBeanExtension implements Extension {
                 beanTypeInformation.put(syntheticQualifier, new DefaultBeanType(qualifiers, type));
                 builder.addToMethod(m, syntheticQualifier);
                 producerToDeclaringDefaultBean.put(syntheticQualifier, new DefaultBeanQualifiers(declaringBeanSyntheticQualifier, declaringBeanQualifiers));
+                producers.add(syntheticQualifier);
+            }
+        }
+
+        //now look for disposer methods
+        if (!producers.isEmpty()) {
+
+            for (AnnotatedMethod<? super X> m : tp.getMethods()) {
+                for (AnnotatedParameter<? super X> p : m.getParameters()) {
+                    if (p.isAnnotationPresent(Disposes.class)) {
+                        Set<Type> type = p.getTypeClosure();
+                        Set<Annotation> qualifiers = new HashSet<Annotation>();
+                        for (final Annotation annotation : p.getAnnotations()) {
+                            if (beanManager.isQualifier(annotation.annotationType())) {
+                                qualifiers.add(annotation);
+                            }
+                        }
+                        if(qualifiers.isEmpty()) {
+                            qualifiers.add(DefaultLiteral.INSTANCE);
+                        }
+
+                        for (final Synthetic producer : producers) {
+                            final DefaultBeanType beanType = beanTypeInformation.get(producer);
+                            Set<Type> types = new HierarchyDiscovery(beanType.getType()).getTypeClosure();
+                            if (Reflections.matches(type, types)) {
+                                if (beanType.getQualifiers().equals(qualifiers)) {
+                                    for (final Annotation annotation : p.getAnnotations()) {
+                                        if (beanManager.isQualifier(annotation.annotationType())) {
+                                            builder.removeFromMethodParameter(m.getJavaMember(), p.getPosition(), annotation.annotationType());
+                                        }
+                                    }
+                                    builder.addToMethodParameter(m.getJavaMember(), p.getPosition(), producer);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 

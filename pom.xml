@@ -21,7 +21,7 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>12</version>
+      <version>14</version>
    </parent>
 
    <groupId>org.jboss.seam.solder</groupId>
@@ -50,7 +50,7 @@
    </modules>
 
    <properties>
-      <seam.version>3.1.0.Beta1</seam.version>
+      <seam.version>3.1.0.Beta2</seam.version>
       <emma.version>2.0.5312</emma.version>
    </properties>
 
@@ -286,7 +286,7 @@
 
    <scm>
       <connection>scm:git:git://github.com/seam/solder.git</connection>
-      <developerConnection>scm:git:git://github.com/seam/solder.git</developerConnection>
+      <developerConnection>scm:git:git@github.com:seam/solder.git</developerConnection>
       <url>http://github.com/seam/solder</url>
    </scm>
 

@@ -16,8 +16,9 @@
  */
 package org.jboss.seam.solder.test.util;
 
-import org.jboss.arquillian.spi.client.container.DeployableContainer;
-import org.jboss.arquillian.spi.util.ServiceLoader;
+import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
+import org.jboss.arquillian.container.test.spi.util.ServiceLoader;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -30,6 +31,14 @@ public class Deployments {
                         MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder"),
                         MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-logging"))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+    
+        public static WebArchive baseDeploymentNoBeans() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .addAsLibraries(
+                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"),
+                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder"),
+                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-logging"));
     }
 
     public static Class<? extends DeployableContainer> targetContainerAdapterClass() {

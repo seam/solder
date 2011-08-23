@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <groupId>org.jboss.seam.solder</groupId>
+      <artifactId>seam-solder-parent</artifactId>
+      <version>3.1.0-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
+   </parent>
+
+   <artifactId>seam-solder-testsuite</artifactId>
+
+   <packaging>pom</packaging>
+   <name>Seam Solder Test Suite: Aggregator</name>
+
+   <modules>
+      <module>common</module>
+      <!-- <module>api</module> -->
+      <module>internals</module>
+      <!-- <module>smoke</module> -->
+   </modules>
+
+   <dependencyManagement>
+      <dependencies>
+      
+         <dependency>
+            <groupId>org.jboss.seam.solder</groupId>
+            <artifactId>seam-solder-testsuite-common</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+         </dependency>
+         
+         <dependency>
+            <groupId>org.jboss.seam.solder</groupId>
+            <artifactId>seam-solder-testsuite-integration-internals-base</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+ 
+      </dependencies>
+   </dependencyManagement>
+
+   <profiles>
+      <profile>
+         <id>allTests</id>
+         <activation>
+          <property>
+            <name>allTests</name>
+          </property>
+         </activation>
+<!-- Re-enable when we have tests for these modules
+         <modules>
+             <module>stress</module>
+             <module>benchmark</module>
+             <module>clustering</module>
+         </modules>
+-->
+      </profile>
+      <profile>
+         <id>code-coverage</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>emma-maven-plugin</artifactId>
+               </plugin>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-surefire-plugin</artifactId>
+               </plugin>
+               <plugin>
+                  <groupId>org.sonatype.maven.plugin</groupId>
+                  <artifactId>emma4it-maven-plugin</artifactId>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+
+</project>

@@ -17,14 +17,17 @@
 
 package org.jboss.seam.solder.logging;
 
-import static org.jboss.seam.solder.logging.Logger.getLogger;
+import static org.jboss.seam.logging.Logger.getLogger;
 import static org.jboss.seam.solder.reflection.Reflections.getRawType;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.seam.solder.logging.Logger;
+import org.jboss.seam.logging.Category;
+import org.jboss.seam.logging.Logger;
+import org.jboss.seam.logging.Suffix;
+import org.jboss.seam.logging.TypedCategory;
 
 /**
  * The <code>LoggerProducer</code> provides a producer method for all injected loggers that use the JBoss Logging API
