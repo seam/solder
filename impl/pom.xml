@@ -159,7 +159,7 @@
               both JBoss Logging and the JBoss Log manager will be available -->
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
+            <artifactId>maven-jar-plugin</artifactId>
             <configuration>
                <archive>
                   <manifestEntries>
