@@ -10,8 +10,8 @@
       <relativePath>../pom.xml</relativePath>
    </parent>
 
-   <artifactId>seam-solder-testsuite-integration-internals-jbossas</artifactId>
-   <name>Seam Solder Test Suite: Internals Integration Tests for JBoss AS</name>
+   <artifactId>seam-solder-testsuite-integration-internals-glassfish</artifactId>
+   <name>Seam Solder Test Suite: Internals Integration Tests for GlassFish</name>
    <packaging>jar</packaging>
 
    <dependencies>
@@ -95,51 +95,26 @@
                </execution>
             </executions>
          </plugin>
-
+      
          <!-- skip unit test run, tests to be executed during integration-test -->
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
                <skip>true</skip>
-               
             </configuration>
          </plugin>
-         
-         <!--plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>unpack-base-tests</id>
-                  <phase>process-test-classes</phase>
-                  <goals>
-                     <goal>unpack</goal>
-                  </goals>
-                  <configuration>
-                     <artifactItems>
-                        <artifactItem>
-                           <groupId>org.jboss.seam.solder</groupId>
-                           <artifactId>seam-solder-testsuite-integration-internals-base</artifactId>
-                           <version>${project.version}</version>
-                           <type>jar</type>
-                           <outputDirectory>${project.build.directory}/test-classes/</outputDirectory>
-                        </artifactItem>
-                     </artifactItems>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin-->
       </plugins>
    </build>
 
    <profiles>
       <profile>
-         <id>jbossas-managed-7</id>
+         <id>glassfish-embedded-3.1</id>
          <activation>
             <activeByDefault>true</activeByDefault>
             <property>
                <name>arquillian</name>
-               <value>jbossas-managed-7</value>
+               <value>glassfish-embedded-3.1</value>
             </property>
          </activation>
          
@@ -147,7 +122,7 @@
          
             <dependency>
                <groupId>org.jboss.seam.test</groupId>
-               <artifactId>jbossas-managed-7</artifactId>
+               <artifactId>glassfish-embedded-3.1</artifactId>
                <type>pom</type>
                <scope>test</scope>
             </dependency>
@@ -156,33 +131,6 @@
          
          <build>
             <plugins>
-               <!-- Get AS and put into "target" -->
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-dependency-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <id>unpack-as7</id>
-                        <phase>process-test-classes</phase> <!-- So run before testing -->
-                        <goals>
-                           <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                           <artifactItems>
-                              <artifactItem>
-                                 <groupId>org.jboss.as</groupId>
-                                 <artifactId>jboss-as-dist</artifactId>
-                                 <version>${jbossas.7.version}</version>
-                                 <type>zip</type>
-                                 <overWrite>false</overWrite>
-                                 <outputDirectory>${project.build.directory}</outputDirectory>
-                              </artifactItem>
-                           </artifactItems>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-               
                <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-surefire-plugin</artifactId>
@@ -202,7 +150,7 @@
                            <redirectTestOutputToFile>true</redirectTestOutputToFile>
                            <trimStackTrace>false</trimStackTrace>
                            <printSummary>true</printSummary>
-                           <!-- forkMode>always</forkMode -->
+                           <!--forkMode>always</forkMode-->
                         </configuration>
                      </execution>
                   </executions>

@@ -17,6 +17,7 @@
    <modules>
       <module>base</module>
       <module>jbossas</module>
-      <!--module>weld-ee-embedded</module-->
+      <module>glassfish</module>
+      <module>weld-ee-embedded</module>
    </modules>
 </project>
