@@ -16,7 +16,20 @@
 
    <modules>
       <module>base</module>
-      <module>jbossas</module>
-      <!--module>weld-ee-embedded</module-->
+      <module>weld-ee-embedded</module>
    </modules>
+   <profiles>
+      <profile>
+         <id>allTests</id>
+         <activation>
+          <property>
+            <name>allTests</name>
+          </property>
+         </activation>
+         <modules>
+             <module>jbossas</module>
+             <module>glassfish</module>
+         </modules>
+      </profile>
+   </profiles>
 </project>

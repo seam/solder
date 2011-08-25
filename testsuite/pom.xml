@@ -30,12 +30,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
          </dependency>
-         
-         <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder-testsuite-integration-internals-base</artifactId>
-            <version>${project.version}</version>
-         </dependency>
  
       </dependencies>
    </dependencyManagement>
