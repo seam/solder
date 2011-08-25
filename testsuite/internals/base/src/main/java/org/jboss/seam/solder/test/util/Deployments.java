@@ -20,15 +20,17 @@ import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
 import org.jboss.arquillian.container.test.spi.util.ServiceLoader;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 public class Deployments {
     public static WebArchive baseDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addAsLibraries(
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"),
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder"),
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-logging"))
+                .addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class).artifact("org.jboss.seam.solder:seam-solder-api:3.1.0-SNAPSHOT").resolveAs(JavaArchive.class))
+                .addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class).artifact("org.jboss.seam.solder:seam-solder:3.1.0-SNAPSHOT").resolveAs(JavaArchive.class))
+                .addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class).artifact("org.jboss.seam.solder:seam-solder-logging:3.1.0-SNAPSHOT").resolveAs(JavaArchive.class))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
