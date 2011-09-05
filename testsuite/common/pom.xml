@@ -3,20 +3,61 @@
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
+   <!-- Note the parent is not the testsuite, only the container specific modules have that as a parent -->
    <parent>
       <groupId>org.jboss.seam.solder</groupId>
-      <artifactId>seam-solder-testsuite</artifactId>
+      <artifactId>seam-solder-parent</artifactId>
       <version>3.1.0-SNAPSHOT</version>
-      <relativePath>../pom.xml</relativePath>      
+      <relativePath>../../pom.xml</relativePath>
    </parent>
 
    <artifactId>seam-solder-testsuite-common</artifactId>
-   <name>Seam Solder Test Suite Common</name>
+   <name>Seam Solder Test Suite: Common</name>
    <packaging>jar</packaging>
+
+   <dependencies>
+   
+      <dependency>
+         <groupId>org.jboss.arquillian.junit</groupId>
+         <artifactId>arquillian-junit-container</artifactId>
+         <scope>compile</scope>
+      </dependency>
+      
+      <!-- EL impl needed for ElTest -->
+      <dependency>
+         <groupId>org.glassfish.web</groupId>
+         <artifactId>el-impl</artifactId>
+         <scope>compile</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-api</artifactId>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder</artifactId>
+      </dependency>     
+      
+      <dependency>
+        <groupId>org.jboss.spec</groupId>
+        <artifactId>jboss-javaee-6.0</artifactId>
+        <type>pom</type>
+        <scope>provided</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <scope>compile</scope>
+      </dependency>
+      
+   </dependencies>
 
    <build>
       <plugins>
-         <!-- Don't run tests here -->
+         <!-- Don't run tests here-->
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -26,12 +67,4 @@
          </plugin>
       </plugins>
    </build>
-
-   <dependencies>
-      <dependency>
-         <groupId>org.jboss.shrinkwrap.resolver</groupId>
-         <artifactId>shrinkwrap-resolver-api-maven</artifactId>
-         <scope>provided</scope>
-      </dependency>
-   </dependencies>
 </project>
