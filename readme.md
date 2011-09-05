@@ -12,14 +12,5 @@ For more information, see the [Seam Solder project page](http://seamframework.or
 
    mvn clean install
 
-## Running tests in-container (managed JBoss AS 6)
+See the testsuite/readme.md file for information about running the testsuite in various containers.
 
-   mvn clean install -Dincontainer
-
-## Running tests in-container (remote JBoss AS 6)
-
-   mvn clean install -Dincontainer-remote
-
-## Running tests in-container (remote GlassFish 3.1)
-
-   mvn clean install -Dincontainer-glassfish-remote

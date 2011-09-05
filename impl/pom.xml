@@ -141,7 +141,7 @@
             <configuration>
                <skip>true</skip>
             </configuration>
-            <executions>
+            <!-- executions>
                <execution>
                   <id>surefire-it</id>
                   <phase>integration-test</phase>
@@ -152,7 +152,7 @@
                      <skip>false</skip>
                   </configuration>
                </execution>
-            </executions>
+            </executions -->
          </plugin>
 
          <!-- This plugin config is used to set the Dependencies entry in META-INF/MANIFEST.MF so that in AS7
