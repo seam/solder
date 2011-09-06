@@ -67,7 +67,7 @@ class FieldPropertyImpl<V> implements FieldProperty<V> {
     }
 
     public void setValue(Object instance, V value) {
-        setFieldValue(field, instance, value);
+        setFieldValue(true, field, instance, value);
     }
 
     public Class<?> getDeclaringClass() {
