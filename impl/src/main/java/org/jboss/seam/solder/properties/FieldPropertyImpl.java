@@ -63,10 +63,12 @@ class FieldPropertyImpl<V> implements FieldProperty<V> {
     }
 
     public V getValue(Object instance) {
+        setAccessible();
         return getFieldValue(field, instance, getJavaClass());
     }
 
     public void setValue(Object instance, V value) {
+        setAccessible();
         setFieldValue(true, field, instance, value);
     }
 
