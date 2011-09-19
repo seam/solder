@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.bean.generic.method;
+package org.jboss.solder.test.bean.generic.method;
 
 import java.util.HashMap;
 
@@ -23,8 +23,9 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-import org.jboss.seam.solder.bean.generic.Generic;
-import org.jboss.seam.solder.bean.generic.GenericConfiguration;
+
+import org.jboss.solder.bean.generic.Generic;
+import org.jboss.solder.bean.generic.GenericConfiguration;
 
 /**
  * A generic bean for the config annotation Message

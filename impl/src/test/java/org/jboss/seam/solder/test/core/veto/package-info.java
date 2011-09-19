@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@Veto package org.jboss.seam.solder.test.core.veto;
+@Veto package org.jboss.solder.test.core.veto;
 
-import org.jboss.seam.solder.core.Veto;
+import org.jboss.solder.core.Veto;
+

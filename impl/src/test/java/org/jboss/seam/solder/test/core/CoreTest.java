@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.core;
+package org.jboss.solder.test.core;
 
 import java.beans.Introspector;
 import java.util.Set;
@@ -28,17 +28,17 @@ import junit.framework.Assert;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.seam.solder.core.CoreExtension;
-import org.jboss.seam.solder.core.VersionLoggerUtil;
-import org.jboss.seam.solder.literal.DefaultLiteral;
-import org.jboss.seam.solder.test.core.fullyqualified.FullyQualifiedFromPackageNamedBean;
-import org.jboss.seam.solder.test.core.requires.Lion;
-import org.jboss.seam.solder.test.core.veto.Tiger;
+import org.jboss.solder.test.core.fullyqualified.FullyQualifiedFromPackageNamedBean;
+import org.jboss.solder.test.core.requires.Lion;
+import org.jboss.solder.test.core.veto.Tiger;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.solder.core.CoreExtension;
+import org.jboss.solder.core.VersionLoggerUtil;
+import org.jboss.solder.literal.DefaultLiteral;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 
 /**

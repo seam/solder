@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.bean.generic.field;
+package org.jboss.solder.test.bean.generic.field;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

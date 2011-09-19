@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.util;
+package org.jboss.solder.test.util;
 
 import java.lang.reflect.Method;
 
@@ -26,13 +26,13 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.seam.solder.reflection.AnnotationInspector;
-import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.solder.reflection.AnnotationInspector;
+import org.jboss.solder.reflection.annotated.AnnotatedTypeBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

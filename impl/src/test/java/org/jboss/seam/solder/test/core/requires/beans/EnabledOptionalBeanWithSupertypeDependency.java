@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.core.requires.beans;
+package org.jboss.solder.test.core.requires.beans;
 
 import javax.enterprise.inject.Typed;
 import javax.inject.Named;
 
-import org.jboss.seam.solder.core.Requires;
-import org.jboss.seam.solder.test.core.requires.CommonInterface;
-import org.jboss.seam.solder.test.core.requires.Tiger;
+import org.jboss.solder.test.core.requires.CommonInterface;
+import org.jboss.solder.test.core.requires.Tiger;
+import org.jboss.solder.core.Requires;
 
-@Requires({"org.jboss.seam.solder.test.core.requires.Tiger", "java.lang.Integer"})
+@Requires({"org.jboss.solder.test.core.requires.Tiger", "java.lang.Integer"})
 @Typed({CommonInterface.class, EnabledOptionalBeanWithSupertypeDependency.class})
 @Named
 public class EnabledOptionalBeanWithSupertypeDependency extends Tiger implements CommonInterface {

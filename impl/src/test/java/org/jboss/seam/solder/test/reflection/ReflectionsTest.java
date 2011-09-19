@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.reflection;
+package org.jboss.solder.test.reflection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import junit.framework.Assert;
-import org.jboss.seam.solder.reflection.Reflections;
-import org.jboss.seam.solder.test.reflection.model.Cat;
+import org.jboss.solder.test.reflection.model.Cat;
+import org.jboss.solder.reflection.Reflections;
 import org.junit.Before;
 import org.junit.Test;
 

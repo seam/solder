@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.seam.solder.test.logging;
+package org.jboss.solder.test.logging;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -25,7 +25,7 @@ import junit.framework.Assert;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.seam.solder.test.util.Deployments;
+import org.jboss.solder.test.util.Deployments;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;

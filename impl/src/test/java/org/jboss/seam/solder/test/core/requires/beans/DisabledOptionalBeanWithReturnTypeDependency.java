@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.core.requires.beans;
+package org.jboss.solder.test.core.requires.beans;
 
 import javax.inject.Named;
 
-import org.jboss.seam.solder.core.Requires;
-import org.jboss.seam.solder.test.core.requires.CommonInterface;
-import org.jboss.seam.solder.test.core.requires.Jaguar;
+import org.jboss.solder.test.core.requires.CommonInterface;
+import org.jboss.solder.test.core.requires.Jaguar;
+import org.jboss.solder.core.Requires;
 
-@Requires({"org.jboss.seam.solder.test.core.requires.Tiger", "org.jboss.seam.solder.test.core.requires.Jaguar",
+@Requires({"org.jboss.solder.test.core.requires.Tiger", "org.jboss.solder.test.core.requires.Jaguar",
         "java.lang.Integer"})
 @Named
 public class DisabledOptionalBeanWithReturnTypeDependency implements CommonInterface {

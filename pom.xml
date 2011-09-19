@@ -24,12 +24,12 @@
       <version>15-SNAPSHOT</version>
    </parent>
 
-   <groupId>org.jboss.seam.solder</groupId>
-   <artifactId>seam-solder-parent</artifactId>
+   <groupId>org.jboss.solder</groupId>
+   <artifactId>solder-parent</artifactId>
    <packaging>pom</packaging>
    <version>3.1.0-SNAPSHOT</version>
 
-   <name>Seam Solder Project</name>
+   <name>Solder</name>
    <description>A portable CDI extensions library for developing CDI applications, frameworks or other extensions</description>
    <url>http://seamframework.org/Seam3/Solder</url>
    <inceptionYear>2008</inceptionYear>
@@ -67,28 +67,27 @@
             <type>pom</type>
          </dependency>
 
-         <!-- Override submodule versions from org.jboss.seam:seam-bom -->
          <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder-logging</artifactId>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-logging</artifactId>
             <version>${project.version}</version>
          </dependency>
 
          <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder-api</artifactId>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-api</artifactId>
             <version>${project.version}</version>
          </dependency>
 
          <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder</artifactId>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-impl</artifactId>
             <version>${project.version}</version>
          </dependency>
 
          <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder-tooling</artifactId>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-tooling</artifactId>
             <version>${project.version}</version>
          </dependency>
 

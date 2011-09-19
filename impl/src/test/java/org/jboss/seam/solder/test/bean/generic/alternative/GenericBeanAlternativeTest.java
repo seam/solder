@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.bean.generic.alternative;
+package org.jboss.solder.test.bean.generic.alternative;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeploymentNoBeans;
+import static org.jboss.solder.test.util.Deployments.baseDeploymentNoBeans;
 
 import javax.inject.Inject;
 

@@ -19,30 +19,30 @@
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
-      <groupId>org.jboss.seam.solder</groupId>
-      <artifactId>seam-solder-parent</artifactId>
+      <groupId>org.jboss.solder</groupId>
+      <artifactId>solder-parent</artifactId>
       <version>3.1.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
-   <artifactId>seam-solder</artifactId>
+   <artifactId>solder-impl</artifactId>
    <packaging>jar</packaging>
 
-   <name>Seam Solder Implementation</name>
+   <name>Solder Implementation</name>
    <!-- url required for JAR Manifest -->
    <url>${project.parent.url}</url>
 
    <dependencies>
    
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-api</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-api</artifactId>
       </dependency>
 
       <!-- Annotation processor for generating typed loggers -->
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-tooling</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-tooling</artifactId>
          <optional>true</optional>
       </dependency>
 
@@ -223,9 +223,9 @@
                      <excludes>
                         <!-- typed message logger & bundle support requires extension loading supported
                              added to the Weld EE Embedded adapter in Arquillian 1.0.0.Alpha5 (still need to verify) -->
-                        <exclude>org/jboss/seam/solder/test/messages/TypedMessageBundleInjectionTest.java</exclude>
-                        <exclude>org/jboss/seam/solder/test/logging/LoggerInjectionTest.java</exclude>
-                        <exclude>org/jboss/seam/solder/test/logging/TypedMessageLoggerInjectionTest.java</exclude>
+                        <exclude>org/jboss/solder/test/messages/TypedMessageBundleInjectionTest.java</exclude>
+                        <exclude>org/jboss/solder/test/logging/LoggerInjectionTest.java</exclude>
+                        <exclude>org/jboss/solder/test/logging/TypedMessageLoggerInjectionTest.java</exclude>
                      </excludes>
                   </configuration>
                </plugin>
@@ -316,9 +316,9 @@
                      <excludes>
                         <!-- typed message logger & bundle support requires extension loading supported
                              added to the Weld EE Embedded adapter in Arquillian 1.0.0.Alpha5 -->
-                        <exclude>org/jboss/seam/solder/test/messages/TypedMessageBundleInjectionTest.java</exclude>
-                        <exclude>org/jboss/seam/solder/test/logging/LoggerInjectionTest.java</exclude>
-                        <exclude>org/jboss/seam/solder/test/logging/TypedMessageLoggerInjectionTest.java</exclude>
+                        <exclude>org/jboss/solder/test/messages/TypedMessageBundleInjectionTest.java</exclude>
+                        <exclude>org/jboss/solder/test/logging/LoggerInjectionTest.java</exclude>
+                        <exclude>org/jboss/solder/test/logging/TypedMessageLoggerInjectionTest.java</exclude>
                      </excludes>
                   </configuration>
                </plugin>

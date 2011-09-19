@@ -14,20 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.core.requires;
+package org.jboss.solder.test.core.requires;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.seam.solder.test.core.requires.beans.EnabledOptionalBean;
-import org.jboss.seam.solder.test.core.requires.beans.pkg.OptionalBeanWithPackageLevelDependencies;
+import org.jboss.solder.test.core.requires.beans.EnabledOptionalBean;
+import org.jboss.solder.test.core.requires.beans.pkg.OptionalBeanWithPackageLevelDependencies;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Arquillian.class)

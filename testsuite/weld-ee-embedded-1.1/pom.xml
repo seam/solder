@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.seam.solder</groupId>
-        <artifactId>seam-solder-testsuite</artifactId>
+        <groupId>org.jboss.solder</groupId>
+        <artifactId>solder-testsuite</artifactId>
         <version>3.1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>seam-solder-testsuite-weld-ee-embedded-1.1</artifactId>
-    <name>Seam Solder Test Suite: Integration Tests for Weld EE Embedded</name>
+    <artifactId>solder-testsuite-weld-ee-embedded-1.1</artifactId>
+    <name>Solder Test Suite: Integration Tests for Weld EE Embedded</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -51,11 +51,11 @@
                             <trimStackTrace>false</trimStackTrace>
                             <printSummary>true</printSummary>
                             <excludes>
-                                <exclude>org/jboss/seam/solder/test/el/ElTest.java</exclude>
-                                <exclude>org/jboss/seam/solder/test/resourceLoader/ResourceLoaderTest.java</exclude>
-                                <exclude>org/jboss/seam/solder/test/logging/LoggerInjectionTest.java</exclude>
-                                <exclude>org/jboss/seam/solder/test/messages/TypedMessageBundleInjectionTest.java</exclude>
-                                <exclude>org/jboss/seam/solder/test/logging/TypedMessageLoggerInjectionTest.java</exclude>
+                                <exclude>org/jboss/solder/test/el/ElTest.java</exclude>
+                                <exclude>org/jboss/solder/test/resourceLoader/ResourceLoaderTest.java</exclude>
+                                <exclude>org/jboss/solder/test/logging/LoggerInjectionTest.java</exclude>
+                                <exclude>org/jboss/solder/test/messages/TypedMessageBundleInjectionTest.java</exclude>
+                                <exclude>org/jboss/solder/test/logging/TypedMessageLoggerInjectionTest.java</exclude>
                             </excludes>
                         </configuration>
                     </execution>

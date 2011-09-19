@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.logging;
+package org.jboss.solder.test.logging;
 
 import javax.inject.Inject;
 
-import org.jboss.seam.logging.TypedCategory;
-import org.jboss.seam.logging.Logger;
+import org.jboss.logging.Logger;
+import org.jboss.logging.TypedCategory;
 
 public class Wren {
     @Inject

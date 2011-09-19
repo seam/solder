@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.seam.solder.test.resourceLoader;
+package org.jboss.solder.test.resourceLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,16 +30,16 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.seam.solder.resourceLoader.Resource;
-import org.jboss.seam.solder.resourceLoader.ResourceLoader;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.solder.resourceLoader.Resource;
+import org.jboss.solder.resourceLoader.ResourceLoader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-//import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
+//import static org.jboss.solder.test.util.Deployments.targetContainerAdapterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

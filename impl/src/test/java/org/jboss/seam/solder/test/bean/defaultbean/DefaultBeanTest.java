@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.bean.defaultbean;
+package org.jboss.solder.test.bean.defaultbean;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,29 +23,29 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.seam.logging.Category;
-import org.jboss.seam.solder.logging.internal.Logger;
-import org.jboss.seam.solder.bean.Beans;
-import org.jboss.seam.solder.bean.defaultbean.DefaultBeanExtension;
-import org.jboss.seam.solder.bean.generic.GenericBeanExtension;
-import org.jboss.seam.solder.beanManager.BeanManagerAware;
-import org.jboss.seam.solder.core.Client;
-import org.jboss.seam.solder.core.CoreExtension;
-import org.jboss.seam.solder.el.Resolver;
-import org.jboss.seam.solder.literal.DefaultLiteral;
-import org.jboss.seam.solder.logging.TypedMessageLoggerExtension;
-import org.jboss.seam.solder.messages.Messages;
-import org.jboss.seam.solder.reflection.Synthetic;
-import org.jboss.seam.solder.resourceLoader.ResourceLoader;
-import org.jboss.seam.solder.serviceHandler.ServiceHandlerExtension;
-import org.jboss.seam.solder.support.SolderMessages;
-import org.jboss.seam.solder.test.properties.ClassToIntrospect;
-import org.jboss.seam.solder.unwraps.UnwrapsExtension;
-import org.jboss.seam.solder.util.Sortable;
+import org.jboss.logging.Category;
+import org.jboss.solder.test.properties.ClassToIntrospect;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.solder.bean.Beans;
+import org.jboss.solder.bean.defaultbean.DefaultBeanExtension;
+import org.jboss.solder.bean.generic.GenericBeanExtension;
+import org.jboss.solder.beanManager.BeanManagerAware;
+import org.jboss.solder.core.Client;
+import org.jboss.solder.core.CoreExtension;
+import org.jboss.solder.el.Resolver;
+import org.jboss.solder.literal.DefaultLiteral;
+import org.jboss.solder.logging.TypedMessageLoggerExtension;
+import org.jboss.solder.logging.internal.Logger;
+import org.jboss.solder.messages.Messages;
+import org.jboss.solder.reflection.Synthetic;
+import org.jboss.solder.resourceLoader.ResourceLoader;
+import org.jboss.solder.serviceHandler.ServiceHandlerExtension;
+import org.jboss.solder.support.SolderMessages;
+import org.jboss.solder.unwraps.UnwrapsExtension;
+import org.jboss.solder.util.Sortable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -90,7 +90,7 @@ public class DefaultBeanTest {
         jar.addPackages(true, ServiceHandlerExtension.class.getPackage()); // .serviceHandler
         jar.addPackages(true, UnwrapsExtension.class.getPackage()); // .unwraps
         jar.addPackages(true, Sortable.class.getPackage()); // .util
-        jar.addPackages(false, Logger.class.getPackage()); // org.jboss.seam.solder.logging.internal
+        jar.addPackages(false, Logger.class.getPackage()); // org.jboss.solder.logging.internal
 
         jar.addAsServiceProvider(Extension.class, GenericBeanExtension.class, DefaultBeanExtension.class, CoreExtension.class,
                 UnwrapsExtension.class, TypedMessageLoggerExtension.class, ServiceHandlerExtension.class);

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.unwraps;
+package org.jboss.solder.test.unwraps;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,7 +25,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
 
 @RunWith(Arquillian.class)
 public class UnwrapsTest {

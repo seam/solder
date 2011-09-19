@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.logging;
+package org.jboss.solder.test.logging;
 
 import javax.inject.Inject;
 
-import org.jboss.seam.logging.Suffix;
-import org.jboss.seam.logging.Logger;
+import org.jboss.logging.Logger;
+import org.jboss.logging.Suffix;
 
 class Raven {
     @Inject

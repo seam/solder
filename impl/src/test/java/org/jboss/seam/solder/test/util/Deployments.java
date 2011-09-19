@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.util;
+package org.jboss.solder.test.util;
 
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
 import org.jboss.arquillian.container.test.spi.util.ServiceLoader;
@@ -27,18 +27,18 @@ public class Deployments {
     public static WebArchive baseDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
                 .addAsLibraries(
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"),
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder"),
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-logging"))
+                        MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder-api"),
+                        MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder"),
+                        MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder-logging"))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
     
         public static WebArchive baseDeploymentNoBeans() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
                 .addAsLibraries(
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-api"),
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder"),
-                        MavenArtifactResolver.resolve("org.jboss.seam.solder", "seam-solder-logging"));
+                        MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder-api"),
+                        MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder"),
+                        MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder-logging"));
     }
 
     public static Class<? extends DeployableContainer> targetContainerAdapterClass() {

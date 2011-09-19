@@ -3,16 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.seam.solder</groupId>
-        <artifactId>seam-solder-parent</artifactId>
+        <groupId>org.jboss.solder</groupId>
+        <artifactId>solder-parent</artifactId>
         <version>3.1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>seam-solder-testsuite</artifactId>
+    <artifactId>solder-testsuite</artifactId>
 
     <packaging>pom</packaging>
-    <name>Seam Solder Test Suite: Aggregator &amp; Parent</name>
+    <name>Solder Test Suite: Aggregator &amp; Parent</name>
 
     <modules>
         <module>common</module>
@@ -84,8 +84,8 @@
     <!-- This module is a parent for the container-specific modules, the following configuration handles dependencies and copying of the "common" module. -->
     <dependencies>
          <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder-testsuite-common</artifactId>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-testsuite-common</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
          </dependency>
@@ -114,8 +114,8 @@
                                 <trimStackTrace>false</trimStackTrace>
                                 <printSummary>true</printSummary>
                                 <excludes>
-                                    <exclusion>org/jboss/seam/solder/test/bean/generic/alternative/GenericBeanAlternativeTest.java</exclusion>
-                                    <exclusion>org/jboss/seam/solder/test/messages/TypedMessageBundleInjectionTest.java</exclusion>
+                                    <exclusion>org/jboss/solder/test/bean/generic/alternative/GenericBeanAlternativeTest.java</exclusion>
+                                    <exclusion>org/jboss/solder/test/messages/TypedMessageBundleInjectionTest.java</exclusion>
                                 </excludes>
                             </configuration>
                         </execution>
@@ -134,7 +134,7 @@
                             </goals>
                             <configuration>
                                 <includeArtifactIds>
-                                    seam-solder-testsuite-common
+                                    solder-testsuite-common
                                 </includeArtifactIds>
                                 <outputDirectory>${project.build.directory}/test-classes/</outputDirectory>
                             </configuration>
@@ -187,8 +187,8 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.jboss.seam.solder</groupId>
-                                    <artifactId>seam-solder-testsuite-common</artifactId>
+                                    <groupId>org.jboss.solder</groupId>
+                                    <artifactId>solder-testsuite-common</artifactId>
                                     <version>${project.version}</version>
                                     <type>jar</type>
                                     <outputDirectory>${project.build.directory}/test-classes/</outputDirectory>

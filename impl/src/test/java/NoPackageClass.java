@@ -1,4 +1,4 @@
-import org.jboss.seam.solder.test.core.CoreTest;
+import org.jboss.solder.test.core.CoreTest;
 
 /**
  * Used by {@link CoreTest} to verify that Seam Solder does not fail with NPE when

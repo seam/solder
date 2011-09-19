@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.seam.solder.test.logging;
+package org.jboss.solder.test.logging;
 
 import javax.enterprise.inject.Instance;
 
@@ -25,7 +25,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
 
 /**
  * Tests injection of typed message logger injections.

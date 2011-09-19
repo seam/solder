@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.seam.solder.test.messages;
+package org.jboss.solder.test.messages;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -23,7 +23,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
 import static org.junit.Assert.assertEquals;
 
 /**

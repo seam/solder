@@ -14,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.reflection;
+package org.jboss.solder.test.reflection;
 
 import java.sql.Date;
 
 import junit.framework.Assert;
-import org.jboss.seam.solder.reflection.PrimitiveTypes;
+
+import org.jboss.solder.reflection.PrimitiveTypes;
 import org.junit.Test;
 
 /**
