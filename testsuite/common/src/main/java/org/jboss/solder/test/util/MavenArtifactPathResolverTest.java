@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 public class MavenArtifactPathResolverTest {
     public static final String groupId = "org.jboss.solder";
-    public static final String artifactId = "seam-solder-api";
+    public static final String artifactId = "solder-api";
 
     public static final char linuxFileSeparator = '/';
     public static final char linuxPathSeparator = ':';
@@ -35,39 +35,55 @@ public class MavenArtifactPathResolverTest {
 
     @Test
     public void testWindowsInLocalModule() {
-        List<String> targetContents = Arrays.asList("V:\\workspace\\extensions\\impl\\target\\surefire-report", "V:\\workspace\\extensions\\impl\\target\\classes", "V:\\workspace\\extensions\\impl\\target\\test-classes", "V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1-SNAPSHOT-sources.jar", "V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1-SNAPSHOT.jar");
+        List<String> targetContents = Arrays.asList("V:\\workspace\\extensions\\impl\\target\\surefire-report", 
+                "V:\\workspace\\extensions\\impl\\target\\classes", 
+                "V:\\workspace\\extensions\\impl\\target\\test-classes", 
+                "V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1-SNAPSHOT-sources.jar", 
+                "V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1-SNAPSHOT.jar");
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, null, windowsPathSeparator, windowsFileSeparator);
         String path = resolver.scanForArtifact(targetContents);
-        assertEquals("V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1-SNAPSHOT.jar", path);
+        assertEquals("V:\\workspace\\extensions\\impl\\target\\solder-api-3.1.0-SNAPSHOT.jar", path);
     }
 
     @Test
     public void testWindowsInLocalModuleWithDotQualifier() {
-        List<String> targetContents = Arrays.asList("V:\\workspace\\extensions\\impl\\target\\surefire-report", "V:\\workspace\\extensions\\impl\\target\\classes", "V:\\workspace\\extensions\\impl\\target\\test-classes", "V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1.Final-sources.jar", "V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1.Final.jar");
+        List<String> targetContents = Arrays.asList("V:\\workspace\\extensions\\impl\\target\\surefire-report", 
+                "V:\\workspace\\extensions\\impl\\target\\classes", 
+                "V:\\workspace\\extensions\\impl\\target\\test-classes", 
+                "V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1.Final-sources.jar", 
+                "V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1.Final.jar");
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, null, windowsPathSeparator, windowsFileSeparator);
         String path = resolver.scanForArtifact(targetContents);
-        assertEquals("V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1.Final.jar", path);
+        assertEquals("V:\\workspace\\extensions\\impl\\target\\solder-api-3.1.0.Final.jar", path);
     }
 
 
     @Test
     public void testLinuxInLocalModule() {
-        List<String> targetContents = Arrays.asList("/workspace/extensions/impl/target/surefire-report", "/workspace/extensions/impl/target/classes", "/workspace/extensions/impl/target/test-classes", "/workspace/extensions/impl/target/seam-solder-api-3.0.1-SNAPSHOT-sources.jar", "/workspace/extensions/impl/target/seam-solder-api-3.0.1-SNAPSHOT.jar");
+        List<String> targetContents = Arrays.asList("/workspace/extensions/impl/target/surefire-report", 
+                "/workspace/extensions/impl/target/classes", 
+                "/workspace/extensions/impl/target/test-classes", 
+                "/workspace/extensions/impl/target/seam-solder-api-3.0.1-SNAPSHOT-sources.jar", 
+                "/workspace/extensions/impl/target/seam-solder-api-3.0.1-SNAPSHOT.jar");
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, null, windowsPathSeparator, windowsFileSeparator);
         String path = resolver.scanForArtifact(targetContents);
-        assertEquals("/workspace/extensions/impl/target/seam-solder-api-3.0.1-SNAPSHOT.jar", path);
+        assertEquals("/workspace/extensions/impl/target/solder-api-3.1.0-SNAPSHOT.jar", path);
     }
 
     @Test
     public void testLinuxInLocalModuleWithDotQualifier() {
-        List<String> targetContents = Arrays.asList("/workspace/extensions/impl/target/surefire-report", "/workspace/extensions/impl/target/classes", "/workspace/extensions/impl/target/test-classes", "/workspace/extensions/impl/target/seam-solder-api-3.0.1.Final-sources.jar", "/workspace/extensions/impl/target/seam-solder-api-3.0.1.Final.jar");
+        List<String> targetContents = Arrays.asList("/workspace/extensions/impl/target/surefire-report", 
+                "/workspace/extensions/impl/target/classes", 
+                "/workspace/extensions/impl/target/test-classes", 
+                "/workspace/extensions/impl/target/seam-solder-api-3.0.1.Final-sources.jar", 
+                "/workspace/extensions/impl/target/seam-solder-api-3.0.1.Final.jar");
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, null, windowsPathSeparator, windowsFileSeparator);
         String path = resolver.scanForArtifact(targetContents);
-        assertEquals("/workspace/extensions/impl/target/seam-solder-api-3.0.1.Final.jar", path);
+        assertEquals("/workspace/extensions/impl/target/solder-api-3.1.0.Final.jar", path);
     }
 
     @Test
@@ -76,7 +92,7 @@ public class MavenArtifactPathResolverTest {
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, classPath, windowsPathSeparator, windowsFileSeparator);
         String path = resolver.resolve();
-        assertEquals("C:\\Users\\john.doe\\.m2\\repository\\org\\jboss\\seam\\solder\\seam-solder-api\\3.0.1-SNAPSHOT\\seam-solder-api-3.0.1-SNAPSHOT.jar", path);
+        assertEquals("C:\\Users\\john.doe\\.m2\\repository\\org\\jboss\\seam\\solder\\solder-api\\3.1.0-SNAPSHOT\\solder-api-3.1.0-SNAPSHOT.jar", path);
     }
 
     @Test
@@ -103,7 +119,7 @@ public class MavenArtifactPathResolverTest {
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, classPath, windowsPathSeparator, windowsFileSeparator);
         String path = resolver.resolve();
-        assertEquals("V:\\workspace\\extensions\\impl\\target\\seam-solder-api-3.0.1-SNAPSHOT.jar", path);
+        assertEquals("V:\\workspace\\extensions\\impl\\target\\solder-api-3.1.0-SNAPSHOT.jar", path);
     }
 
     @Test
@@ -112,7 +128,7 @@ public class MavenArtifactPathResolverTest {
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, classPath, linuxPathSeparator, linuxFileSeparator);
         String path = resolver.resolve();
-        assertEquals("/home/jdoe/.m2/repository/org/jboss/seam/solder/seam-solder-api/3.0.1-SNAPSHOT/seam-solder-api-3.0.1-SNAPSHOT.jar", path);
+        assertEquals("/home/jdoe/.m2/repository/org/jboss/seam/solder/solder-api/3.1.0-SNAPSHOT/solder-api-3.1.0-SNAPSHOT.jar", path);
     }
 
     @Test
@@ -121,7 +137,7 @@ public class MavenArtifactPathResolverTest {
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, classPath, linuxPathSeparator, linuxFileSeparator);
         String path = resolver.resolve();
-        assertEquals("/home/jdoe/.m2/repository/org/jboss/seam/solder/seam-solder-api/3.0.1.Final/seam-solder-api-3.0.1.Final.jar", path);
+        assertEquals("/home/jdoe/.m2/repository/org/jboss/seam/solder/solder-api/3.0.1.Final/solder-api-3.0.1.Final.jar", path);
     }
 
     @Test
@@ -130,7 +146,7 @@ public class MavenArtifactPathResolverTest {
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, classPath, linuxPathSeparator, linuxFileSeparator);
         String path = resolver.resolve();
-        assertEquals("/home/jdoe/workspace/extensions/impl/target/seam-solder-api-3.0.1-SNAPSHOT.jar", path);
+        assertEquals("/home/jdoe/workspace/extensions/impl/target/solder-api-3.1.0-SNAPSHOT.jar", path);
     }
 
     @Test
@@ -139,7 +155,7 @@ public class MavenArtifactPathResolverTest {
 
         MavenArtifactResolver resolver = new MavenArtifactResolver(groupId, artifactId, classPath, linuxPathSeparator, linuxFileSeparator);
         String path = resolver.resolve();
-        assertEquals("/home/jdoe/workspace/extensions/impl/target/seam-solder-api-3.0.1.Final.jar", path);
+        assertEquals("/home/jdoe/workspace/extensions/impl/target/solder-api-3.0.1.Final.jar", path);
     }
 
 }

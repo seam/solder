@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.solder.test.el;
+package org.jboss.solder.test.el;
 
 
 import javax.el.ExpressionFactory;
@@ -25,6 +25,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.solder.el.ELResolverProducer;
 import org.jboss.solder.el.Expressions;
+import org.jboss.solder.test.el.Ute;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -32,8 +33,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.jboss.seam.solder.test.util.Deployments.baseDeployment;
-import static org.jboss.seam.solder.test.util.Deployments.targetContainerAdapterClass;
+import static org.jboss.solder.test.util.Deployments.baseDeployment;
+import static org.jboss.solder.test.util.Deployments.targetContainerAdapterClass;
 
 @RunWith(Arquillian.class)
 public class ElEmbeddedTest {

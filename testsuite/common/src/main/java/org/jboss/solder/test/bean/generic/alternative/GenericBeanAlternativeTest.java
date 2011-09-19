@@ -34,11 +34,11 @@ public class GenericBeanAlternativeTest {
     public static WebArchive deployment() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
             .addAsLibraries(
-                    MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder-api"),
-                    MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder"),
-                    MavenArtifactResolver.resolve("org.jboss.solder", "seam-solder-logging"))        
+                    MavenArtifactResolver.resolve("org.jboss.solder", "solder-api"),
+                    MavenArtifactResolver.resolve("org.jboss.solder", "solder-impl"),
+                    MavenArtifactResolver.resolve("org.jboss.solder", "solder-logging"))        
                 .addPackage(GenericBeanAlternativeTest.class.getPackage())
-                .addAsWebInfResource("org/jboss/seam/solder/test/bean/generic/alternative/beans.xml", "beans.xml");
+                .addAsWebInfResource("org/jboss/solder/test/bean/generic/alternative/beans.xml", "beans.xml");
     }
 
     @Inject
