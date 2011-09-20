@@ -1,2 +1,2 @@
-org.jboss.seam.solder.beanManager.DefaultJndiBeanManagerProvider
-org.jboss.seam.solder.beanManager.ServletContainerJndiBeanManagerProvider
+org.jboss.solder.beanManager.DefaultJndiBeanManagerProvider
+org.jboss.solder.beanManager.ServletContainerJndiBeanManagerProvider
