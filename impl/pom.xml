@@ -133,6 +133,7 @@
    </dependencies>
 
    <build>
+      <finalName>solder-impl</finalName>
       <plugins>
          <!-- Perform all tests in integration-test phase -->
          <plugin>
