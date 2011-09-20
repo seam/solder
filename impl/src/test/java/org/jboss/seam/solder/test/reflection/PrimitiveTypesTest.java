@@ -19,6 +19,7 @@ package org.jboss.solder.test.reflection;
 import java.sql.Date;
 
 import junit.framework.Assert;
+
 import org.jboss.solder.reflection.PrimitiveTypes;
 import org.junit.Test;
 

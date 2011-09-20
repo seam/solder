@@ -20,8 +20,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import junit.framework.Assert;
-import org.jboss.solder.reflection.Reflections;
 import org.jboss.solder.test.reflection.model.Cat;
+import org.jboss.solder.reflection.Reflections;
 import org.junit.Before;
 import org.junit.Test;
 
