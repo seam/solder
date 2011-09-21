@@ -20,13 +20,6 @@
             <artifactId>arquillian-junit-container</artifactId>
         </dependency>
 
-        <!-- EL impl needed for ElTest -->
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>el-impl</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.jboss.solder</groupId>
             <artifactId>solder-api</artifactId>
@@ -40,13 +33,6 @@
         <dependency>
             <groupId>org.jboss.solder</groupId>
             <artifactId>solder-tooling</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.spec</groupId>
-            <artifactId>jboss-javaee-6.0</artifactId>
-            <type>pom</type>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -105,6 +91,14 @@
                     <type>pom</type>
                     <scope>test</scope>
                 </dependency>
+ 
+                <!-- EL impl needed for ElTest -->
+                <dependency>
+                    <groupId>org.glassfish.web</groupId>
+                    <artifactId>el-impl</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
             </dependencies>
 
             <build>
@@ -140,7 +134,44 @@
                     <scope>test</scope>
                 </dependency>
             </dependencies>
+        </profile> 
 
+        <profile>
+            <id>glassfish-embedded-3.1</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>glassfish-embedded-3.1</value>
+                </property>
+            </activation>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.seam.test</groupId>
+                    <artifactId>glassfish-embedded-3.1</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile> 
+
+        <profile>
+            <id>glassfish-remote-3.1</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>glassfish-remote-3.1</value>
+                </property>
+            </activation>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.seam.test</groupId>
+                    <artifactId>glassfish-remote-3.1</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile> 
     </profiles>
 

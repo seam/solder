@@ -34,4 +34,12 @@
             <property name="javaVmArguments">-client -noverify -XX:+UseFastAccessorMethods -Xms64m -Xmx1024m -XX:MaxPermSize=512m</property>
        </configuration>
     </container>
+
+    <container qualifier="glassfish-embedded-3.1">
+        <property name="bindHttpPort">7171</property>
+    </container>
+
+    <container qualifier="glassfish-remote-3.1">
+    </container>
+
 </arquillian>
