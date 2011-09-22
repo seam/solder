@@ -48,6 +48,7 @@
    </dependencies>
 
    <build>
+      <finalName>solder-api</finalName>
       <plugins>
          <!-- Skip test phase in API module, tests are in impl -->
          <plugin>
