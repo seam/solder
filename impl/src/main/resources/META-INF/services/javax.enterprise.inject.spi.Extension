@@ -1,3 +1,4 @@
+org.jboss.solder.exception.control.extension.CatchExtension
 org.jboss.solder.bean.generic.GenericBeanExtension
 org.jboss.solder.bean.defaultbean.DefaultBeanExtension
 org.jboss.solder.core.CoreExtension
