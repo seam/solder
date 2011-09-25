@@ -25,5 +25,54 @@
     <listener>
         <listener-class>org.jboss.solder.resourceLoader.servlet.ResourceListener</listener-class>
     </listener>
+    
+    <ordering>
+        <!--
+            It would be nice to guarantee that we come after the web-fragment.xml for any known CDI implementation, but this causes
+            deployment errors on GlassFish 3.1 and Tomcat 7 if one of the web fragments referenced here does not exist.
+            @see GLASSFISH-16201 (resolved)
+            Re-enable once issues are resolved and Weld Servlet actually uses a web fragment (WELD-718)
+        <after>
+            <name>WeldServlet</name>
+        </after>
+        -->
+        <before>
+            <others/>
+        </before>
+    </ordering>
+
+    <listener>
+        <display-name>Servlet Event Bridge Listener</display-name>
+        <listener-class>org.jboss.solder.servlet.event.ServletEventBridgeListener</listener-class>
+    </listener>
+
+    <servlet>
+        <display-name>Servlet Event Bridge Servlet</display-name>
+        <servlet-name>Servlet Event Bridge Servlet</servlet-name>
+        <servlet-class>org.jboss.solder.servlet.event.ServletEventBridgeServlet</servlet-class>
+        <!-- Make load-on-startup a large enough value to be last initialized, first destroyed -->
+        <load-on-startup>99999</load-on-startup>
+    </servlet>
+
+    <filter>
+        <display-name>Servlet Event Bridge Filter</display-name>
+        <filter-name>Servlet Event Bridge Filter</filter-name>
+        <filter-class>org.jboss.solder.servlet.event.ServletEventBridgeFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Servlet Event Bridge Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>Catch Exception Filter</filter-name>
+        <filter-class>org.jboss.solder.servlet.exception.CatchExceptionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Catch Exception Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>    
 
 </web-fragment>
