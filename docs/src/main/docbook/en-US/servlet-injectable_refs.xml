@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  JBoss, Home of Professional Open Source
+  Copyright 2010, Red Hat Middleware LLC, and individual contributors
+  by the @authors tag. See the copyright.txt in the distribution for a
+  full listing of individual contributors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--> 
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="injectablerefs">
+    <title>Injectable Servlet objects and request state</title>
+    <para>
+        Seam Servlet provides producers that expose a wide-range of information available in a Servlet environment (e.g.,
+        implicit objects such as ServletContext and HttpSession and state such as HTTP request parameters) as beans. You
+        access this information by injecting the beans produced. This chapter documents the Servlet objects and request
+        state that Seam Servlet exposes and how to inject them.
+    </para>
+
+    <section id="injectablerefs.request_param">
+        <title>@Inject @RequestParam</title>
+        <para>
+            The <literal>@RequestParam</literal> qualifier allows you to inject an HTTP request parameter (i.e., URI query
+            string or URL form encoded parameter).
+        </para>
+        <para>
+            Assume a request URL of /book.jsp?id=1.
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @RequestParam("id")
+private String bookId;]]></programlisting>
+        <para>
+            The value of the specified request parameter is retrieved using the method
+            <literal>ServletRequest.getParameter(String)</literal>. It is then produced as a dependent-scoped bean of
+            type String qualified <literal>@RequestParam</literal>.
+        </para>
+        <para>
+            The name of the request parameter to lookup is either the value of the <literal>@RequestParam</literal> annotation or, if the
+            annotation value is empty, the name of the injection point (e.g., the field name).
+        </para>
+        <para>
+            Here's the example from above modified so that the request parameter name is implied from the field name:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @RequestParam
+private String id;]]></programlisting>
+        <para>
+            If the request parameter is not present, and the injection point is annotated with
+            <literal>@DefaultValue</literal>, the value of the <literal>@DefaultValue</literal> annotation is returned
+            instead.
+        </para>
+        <para>
+            Here's an example that provides a fall-back value:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @RequestParam @DefaultValue("25")
+private String pageSize;]]></programlisting>
+        <para>
+            If the request parameter is not present, and the <literal>@DefaultValue</literal> annotation is not present, a
+            null value is injected.
+        </para>
+        <warning>
+            <para>
+                Since the bean produced is dependent-scoped, use of the <literal>@RequestParam</literal> annotation on class
+                fields and bean properties is only safe for request-scoped beans. Beans with wider scopes should wrap this
+                bean in an <literal>Instance</literal> bean and retrieve the value within context of the thread in which
+                it's needed.
+            </para>
+            <programlisting role="JAVA"><![CDATA[@Inject @RequestParam("id")
+private Instance<String> bookIdResolver;
+...
+String bookId = bookIdResolver.get();]]></programlisting>
+        </warning>
+    </section>
+    <section id="injectablerefs.header_param">
+        <title>@Inject @HeaderParam</title>
+        <para>
+            Similar to the <literal>@RequestParam</literal>, you can use the <literal>@HeaderParam</literal> qualifier to
+            inject an HTTP header parameter. Here's an example of how you inject the user agent string of the client that
+            issued the request:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @HeaderParam("User-Agent")
+private String userAgent;]]></programlisting>
+        <para>
+            The <literal>@HeaderParam</literal> also supports a default value using the <literal>@DefaultValue</literal>
+            annotation.
+        </para>
+        <warning>
+            <para>
+                Since the bean produced is dependent-scoped, use of the <literal>@HeaderParam</literal> annotation on class
+                fields and bean properties is only safe for request-scoped beans. Beans with wider scopes should wrap this
+                bean in an <literal>Instance</literal> bean and retrieve the value within context of the thread in which
+                it's needed.
+            </para>
+            <programlisting role="JAVA"><![CDATA[@Inject @HeaderParam("User-Agent")
+private Instance<String> userAgentResolver;
+...
+String userAgent = userAgentResolver.get();]]></programlisting>
+        </warning>
+    </section>
+    <section id="injectablerefs.servlet_context">
+        <title>@Inject ServletContext</title>
+        <para>
+            The <literal>ServletContext</literal> is made available as an application-scoped bean. It can be injected
+            safetly into any CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private ServletContext context;]]></programlisting>
+        <para>
+            The producer obtains a reference to the <literal>ServletContext</literal> by observing the
+            <literal>@Initialized ServletContext</literal> event raised by this module's Servlet-to-CDI event bridge.
+        </para> 
+    </section>
+    <section id="injectablerefs.http_servlet_request">
+        <title>@Inject ServletRequest / HttpServletRequest</title>
+        <para>
+            The <literal>ServletRequest</literal> is made available as a request-scoped bean. If the current request is an
+            HTTP request, the produced bean is an <literal>HttpServletRequest</literal>. It can be injected safetly into
+            any CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private ServletRequest request;]]></programlisting>
+        <para>
+            or, for HTTP requests
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private HttpServletRequest httpRequest;]]></programlisting>
+        <para>
+            The producer obtains a reference to the <literal>ServletRequest</literal> by observing the
+            <literal>@Initialized ServletRequest</literal> event raised by this module's Servlet-to-CDI event bridge.
+        </para> 
+    </section>
+    <section id="injectablerefs.http_servlet_reponse">
+        <title>@Inject ServletResponse / HttpServletResponse</title>
+        <para>
+            The <literal>ServletResponse</literal> is made available as a request-scoped bean. If the current request is an
+            HTTP request, the produced bean is an <literal>HttpServletResponse</literal>. It can be injected safetly into
+            any CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private ServletResponse reponse;]]></programlisting>
+        <para>
+            or, for HTTP requests
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private HttpServletResponse httpResponse;]]></programlisting>
+        <para>
+            The producer obtains a reference to the <literal>ServletResponse</literal> by observing the
+            <literal>@Initialized ServletResponse</literal> event raised by this module's Servlet-to-CDI event bridge.
+        </para> 
+    </section>
+    <section id="injectablerefs.http_session">
+        <title>@Inject HttpSession</title>
+        <para>
+            The <literal>HttpSession</literal> is made available as a request-scoped bean. It can be injected
+            safetly into any CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private HttpSession session;]]></programlisting>
+        <para>
+            Injecting the <literal>HttpSession</literal> will force the session to be created. The producer obtains a
+            reference to the <literal>HttpSession</literal> by calling the <literal>getSession()</literal> on the
+            <literal>HttpServletRequest</literal>. The reference to the <literal>HttpServletRequest</literal> is obtained
+            by observing the <literal>@Initialized HttpServletRequest</literal> event raised by this module's
+            Servlet-to-CDI event bridge.
+        </para>
+        <para>
+            If you merely want to know whether the <literal>HttpSession</literal> exists, you can instead inject
+            the <literal>HttpSessionStatus</literal> bean that Seam Servlet provides.
+        </para>
+    </section>
+    <section id="injectablerefs.http_session_status">
+        <title>@Inject HttpSessionStatus</title>
+        <para>
+            The <literal>HttpSessionStatus</literal> is a request-scoped bean that provides access to the status of the
+            <literal>HttpSession</literal>. It can be injected safetly into any CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private HttpSessionStatus sessionStatus;]]></programlisting>
+        <para>
+            You can invoke the <literal>isActive()</literal> method to check if the session has been created, and the
+            <literal>getSession()</literal> method to retrieve the <literal>HttpSession</literal>, which will be created if
+            necessary.
+        </para>
+        <programlisting role="JAVA"><![CDATA[if (!sessionStatus.isActive()) {
+    System.out.println("Session does not exist. Creating it now.");
+    HttpSession session = sessionStatus.get();
+    assert session.isNew();
+}]]></programlisting>
+    </section>
+    <section id="injectablerefs.request_context_path">
+        <title>@Inject @ContextPath</title>
+        <para>
+            The context path is made available as a dependent-scoped bean. It can be injected safetly
+            into any request-scoped CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @ContextPath
+private String contextPath;]]></programlisting>
+        <para>
+            You can safetly inject the context path into a bean with a wider scope using an instance provider:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @ContextPath
+private Instance<String> contextPathProvider;
+...
+String contextPath = contextPathProvider.get();]]></programlisting>
+        <para>
+            The context path is retrieved from the <literal>HttpServletRequest</literal>.
+        </para> 
+    </section>
+    <section id="injectablerefs.cookies">
+        <title>@Inject List&lt;Cookie&gt;</title>
+        <para>
+            The list of <literal>Cookie</literal> objects is made available as a request-scoped bean. It can be injected
+            safetly into any CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private List<Cookie> cookies;]]></programlisting>
+        <para>
+            The producer uses a reference to the request-scoped <literal>HttpServletRequest</literal> bean to retrieve the
+            <literal>Cookie</literal> intances by calling <literal>getCookie()</literal>.
+        </para> 
+    </section>
+    <section id="injectablerefs.cookie_param">
+        <title>@Inject @CookieParam</title>
+        <para>
+            Similar to the <literal>@RequestParam</literal>, you can use the <literal>@CookieParam</literal> qualifier to
+            inject an HTTP header parameter. Here's an example of how you inject the username of the last logged in user
+            (assuming you have previously stored it in a cookie):
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @CookieParam
+private String username;]]></programlisting>
+        <para>
+            If the type at the injection point is <literal>Cookie</literal>, the <literal>Cookie</literal> object will
+            be injected instead of the value.
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @CookieParam
+private Cookie username;]]></programlisting>
+        <para>
+            The <literal>@CookieParam</literal> also support a default value using the <literal>@DefaultValue</literal>
+            annotation.
+        </para>
+        <warning>
+            <para>
+                Since the bean produced is dependent-scoped, use of the <literal>@CookieParam</literal> annotation on class
+                fields and bean properties is only safe for request-scoped beans. Beans with wider scopes should wrap this
+                bean in an <literal>Instance</literal> bean and retrieve the value within context of the thread in which
+                it's needed.
+            </para>
+            <programlisting role="JAVA"><![CDATA[@Inject @CookieParam("username")
+private Instance<String> usernameResolver;
+...
+String username = usernameResolver.get();]]></programlisting>
+        </warning>
+    </section>
+    <section id="injectablerefs.server_info">
+        <title>@Inject @ServerInfo</title>
+        <para>
+            The server info string is made available as a dependent-scoped bean. It can be injected safetly
+            into any CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject @ServerInfo
+private String serverInfo;]]></programlisting>
+        <para>
+            The context path is retrieved from the <literal>ServletContext</literal>.
+        </para> 
+    </section>
+    <section id="injectablerefs.principal">
+        <title>@Inject @Principal</title>
+        <para>
+            The security <literal>Principal</literal> for the current user is made available by CDI as an injectable
+            resource (not provided by Seam Servlet). It can be injected safetly into any CDI bean as follows:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@Inject
+private Principal principal;]]></programlisting>
+    </section>
+<!--
+vim:et:ts=4:sw=4:tw=128
+-->
+</chapter>

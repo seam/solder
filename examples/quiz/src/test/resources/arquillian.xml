@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns="http://jboss.org/schema/arquillian"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <container qualifier="jbossas-remote-7" default="true">
+        <protocol type="jmx-as7">
+            <property name="executionType">REMOTE</property>
+        </protocol>
+    </container>
+
+    <extension qualifier="ajocado">
+        <property name="seleniumMaximize">false</property>
+  
+    </extension>
+
+    <extension qualifier="selenium-server">
+        <property name="enable">true</property>
+        <property name="output">target/selenium-server-output.log</property>
+    </extension>
+
+</arquillian>
+
