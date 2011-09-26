@@ -18,19 +18,19 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
       "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="catch-client_usage">
-   <title>Seam Catch - Usage</title>
+   <title>Exception Handling - Usage</title>
 
    <section id="catch-eventing-in">
-      <title>Eventing into Catch</title>
+      <title>Eventing into the exception handling framework</title>
 
       <para>
-         The entire Seam Catch process starts with an event. This helps keep your application minimally coupled to
-         Catch, but also allows for further extension! Catch is all about letting you take care of exceptions the way that
-         makes the most sense for your application. Events provide this delicate balance.
+         The entire exception handling process starts with an event. This helps keep your application minimally coupled to
+         Solder, but also allows for further extension.  Exception handling in Solder is all about letting you take care of 
+         exceptions the way that makes the most sense for your application. Events provide this delicate balance.
       </para>
 
       <para>
-         There are three means of firing the event to start the Catch process:
+         There are three means of firing the event to start the exception handling process:
       </para>
 
       <itemizedlist>
@@ -43,7 +43,7 @@
          <title>Manual firing of the event</title>
          
          <para>
-            Manually firing an event to use Catch is primarily used in your own try/catch blocks. It's very
+            Manually firing an event to use Solder's exception handling is primarily used in your own try/catch blocks. It's very
             painless and also easy. Let's examine an sample that might exist inside of a simple business logic lookup
             into an inventory database:
          </para>
@@ -90,16 +90,16 @@ public class InventoryActions {
          <title>Using the <literal>@ExceptionHandled</literal> Interceptor</title>
 
          <para>
-            A CDI Interceptor has been added to help with integration of Catch into your
-            application. It's used just like any interceptor, and must be enabled in the beans.xml file for your bean
-            archive. This interceptor can be used at the class or method level.
+            A CDI Interceptor has been added to help with integration of Solder exception handling into your
+            application. It's used just like any interceptor, and must be enabled in the <literal>beans.xml</literal> 
+            file for your bean archive. This interceptor can be used at the class or method level.
          </para>
 
          <para>
-            This interceptor is a typical AroundInvoke interceptor and is invoked before the method (which in this case
-            merely wraps the call to the intercepted method in a try / catch block). The intercepted method is called
+            This interceptor is a typical <literal>AroundInvoke</literal> interceptor and is invoked before the method 
+            (which in this case merely wraps the call to the intercepted method in a try / catch block). The intercepted method is called
             then, if an exception (actually a <literal>Throwable</literal>) occurs during execution of the intercepted 
-            method the exception is passed to Catch (without any qualifiers). Normal flow continues from there, however,
+            method the exception is passed to Solder (without any qualifiers). Normal flow continues from there, however,
             take not of the following warning:
          </para>
 
@@ -108,7 +108,7 @@ public class InventoryActions {
                Using the interceptor may cause unexpected behavior to methods that call intercepted methods in which an
                exception occurs, please see the 
             <ulink
-               url="http://docs.jboss.org/seam/3/catch/latest/api/org/jboss/seam/exception/control/ExceptionHandledInterceptor.html">
+               url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/solder/exception/control/ExceptionHandledInterceptor.html">
                API docs </ulink> for more information about returns if an exception occurs.
             </para>
          </warning>
@@ -119,7 +119,7 @@ public class InventoryActions {
       <title>Exception handlers</title>
 
       <para>
-         As an application developer (i.e., an end user of Catch), you'll be focused on writing exception handlers. An
+         As an application developer (i.e., an end user of Solder's exception handling), you'll be focused on writing exception handlers. An
          exception handler is a method on a CDI bean that is invoked to handle a specific type of exception. Within that
          method, you can implement any logic necessary to handle or respond to the exception.
       </para>
@@ -139,7 +139,7 @@ public class InventoryActions {
 
       <para>
          In this and subsequent chapters, you'll learn how to define an exception handler, explore how and when it gets invoked, modify
-         an exception and a stack trace, and even extend Catch further through events that are fired during the handling
+         an exception and a stack trace, and even extend exception handling further through events that are fired during the handling
          workflow.  We'll begin by covering the two annotations that are used to declare an exception handler,
          <literal>@HandlesExceptions</literal> and <literal>@Handles</literal>.
       </para>
@@ -159,10 +159,8 @@ public class InventoryActions {
          <title>@HandlesExceptions</title>
 
          <para>
-            The
-            <literal>@HandlesException</literal>
-            annotation is simply a marker annotation that instructs the Seam
-            Catch CDI extension to scan the bean for handler methods.
+            The <literal>@HandlesException</literal> annotation is simply a marker annotation that instructs the Solder
+            exception handling CDI extension to scan the bean for handler methods.
          </para>
 
          <para>
@@ -192,14 +190,13 @@ public class MyHandlers {}]]>
       <section id="client_usage.handles">
          <title>@Handles</title>
          <para>
-            <literal>@Handles</literal>
-            is a method parameter annotation that designates a method as an exception
+            <literal>@Handles</literal> is a method parameter annotation that designates a method as an exception
             handler. Exception handler methods are registered on beans annotated with
-            <literal>@HandlesExceptions</literal>. Catch will discover all such methods at deployment time.
+            <literal>@HandlesExceptions</literal>. Solder will discover all such methods at deployment time.
          </para>
 
          <para>
-            Let's look at an example. The following method is invoked for every exception that Catch processes and
+            Let's look at an example. The following method is invoked for every exception that Solder processes and
             prints the exception message to stout. (<literal>Throwable</literal> is the base exception type in Java and
             thus represents all exceptions).
          </para>
@@ -319,8 +316,7 @@ public class MyHandlers
                <callout arearefs="handles-exceptions-second-example">
                   <para>
                      The
-                     <literal>@HandlesExceptions</literal>
-                     annotation signals that this bean contains exception
+                     <literal>@HandlesExceptions</literal> annotation signals that this bean contains exception
                      handler methods.
                   </para>
                </callout>
@@ -334,20 +330,17 @@ public class MyHandlers
                </callout>
                <callout arearefs="qualifier">
                   <para>
-                     This handler is qualified with <literal>@WebRequest</literal>. When Catch calculates the handler
+                     This handler is qualified with <literal>@WebRequest</literal>. When Solder calculates the handler
                      chain, it filters handlers based on the exception type and qualifiers. This handler will only be
-                     invoked for exceptions passed to Catch that carry the
-                     <literal>@WebRequest</literal>
-                     qualifier.
+                     invoked for exceptions passed to Solder that carry the <literal>@WebRequest</literal> qualifier.
                      We'll assume this qualifier distinguishes a web page request from a REST request.
                   </para>
                </callout>
                <callout arearefs="injection">
                   <para>
                      Any additional parameters of a handler method are treated as injection points. These parameters are
-                     injected into the handler when it is invoked by Catch. In this case, we are injecting a
-                     <literal>Logger</literal>
-                     bean that must be defined within the application (or by an extension).
+                     injected into the handler when it is invoked by Solder. In this case, we are injecting a
+                     <literal>Logger</literal> bean that must be defined within the application (or by an extension).
                   </para>
                </callout>
             </calloutlist>
@@ -355,16 +348,12 @@ public class MyHandlers
 
          <para>
             A handler is guaranteed to only be invoked once per exception (automatically muted), unless it re-enables
-            itself by invoking the
-            <literal>unmute()</literal>
-            method on the
-            <literal>CaughtException</literal>
-            instance.
+            itself by invoking the <literal>unmute()</literal> method on the <literal>CaughtException</literal> instance.
          </para>
 
          <para>
             Handlers must not throw checked exceptions, and should avoid throwing unchecked exceptions. Should a handler
-            throw an unchecked exception it will propagate up the stack and all handling done via Catch will cease. Any
+            throw an unchecked exception it will propagate up the stack and all handling done via Solder will cease. Any
             exception that was being handled will be lost.
          </para>
       </section>
@@ -383,27 +372,25 @@ public class MyHandlers
 
       <para>
          The outermost exception of an exception chain (e.g., EJBException, ServletException, etc) is probably of
-         little use to exception handlers. That's why Catch doesn't simply pass the exception chain directly to
+         little use to exception handlers. That's why Solder doesn't simply pass the exception chain directly to
          the exception handlers. Instead, it intelligently unwraps the chain and treats the root exception cause
          as the primary exception.
       </para>
 
       <para>
-         The first exception handlers to be invoked by Catch are those that match the type of root cause. Thus, instead
+         The first exception handlers to be invoked by Solder are those that match the type of root cause. Thus, instead
          of seeing a vague <literal>EJBException</literal>, your handlers will instead see an meaningful exception such
          as <literal>ConstraintViolationException</literal>.
-         <emphasis>This feature, alone, makes Catch a worthwhile
-            tool.
-         </emphasis>
+         <emphasis>This feature, alone, makes Solder's exception handling a worthwhile tool.</emphasis>
       </para>
 
       <!-- TODO: a graphic of layers (like rings) would be good here -->
 
       <para>
-         Catch continues to work through the exception chain, notifying handlers of each exception in the stack,
-         until a handler flags the exception as handled. Once an exception is marked as handled, Catch stops processing
-         the exception. If a handler instructed Catch to rethrow the exception (by invoking
-         <literal>CaughtException#rethrow()</literal>, Catch will rethrow the exception outside the Catch
+         Solder continues to work through the exception chain, notifying handlers of each exception in the stack,
+         until a handler flags the exception as handled. Once an exception is marked as handled, Solder stops processing
+         the exception. If a handler instructed Solder to rethrow the exception (by invoking
+         <literal>CaughtException#rethrow()</literal>, Solder will rethrow the exception outside the Solder exception handling
          infrastructure. Otherwise, it simply returns flow control to the caller.
       </para>
 
@@ -418,7 +405,7 @@ public class MyHandlers
       </itemizedlist>
 
       <para>
-         Catch will unwrap this exception and notify handlers in the following order:
+         Solder will unwrap this exception and notify handlers in the following order:
       </para>
 
       <orderedlist>
@@ -429,8 +416,7 @@ public class MyHandlers
 
       <para>
          If there's a handler for <literal>PersistenceException</literal>, it will likely prevent the handlers for
-         <literal>EJBException</literal>
-         from being invoked, which is a good thing since what useful information can
+         <literal>EJBException</literal> from being invoked, which is a good thing since what useful information can
          really be obtained from <literal>EJBException</literal>?
       </para>
 
@@ -440,7 +426,7 @@ public class MyHandlers
       <title>Exception handler ordering</title>
 
       <para>
-         While processing one of the causes in the exception chain, Catch has a specific order it uses to invoke
+         While processing one of the causes in the exception chain, Solder has a specific order it uses to invoke
          the handlers, operating on two axes:
       </para>
 
@@ -457,11 +443,11 @@ public class MyHandlers
          <title>Traversal of exception type hierarchy</title>
 
          <para>
-            Catch doesn't simply invoke handlers that match the exact type of the exception. Instead, it walks up and
+            Solder doesn't simply invoke handlers that match the exact type of the exception. Instead, it walks up and
             down the type hierarchy of the exception. It first notifies least specific handler in breadth first
             traversal mode, then gradually works down the type hierarchy towards handlers for the actual exception type,
             still in breadth first traversal. Once all breadth first traversal handlers have been invoked, the process
-            is reversed for depth first traversal, meaning the most specific handlers are notified first and Catch
+            is reversed for depth first traversal, meaning the most specific handlers are notified first and Solder
             continues walking up the hierarchy tree.
          </para>
 
@@ -475,19 +461,19 @@ public class MyHandlers
          </itemizedlist>
 
          <para>
-            By default, handlers are registered into the DEPTH_FIRST traversal path. That means in most cases, Catch
+            By default, handlers are registered into the DEPTH_FIRST traversal path. That means in most cases, Solder
             starts with handlers of the actual exception type and works up towards the handler for the least specific
             type.
          </para>
 
          <para>
             However, when a handler is registered to be notified during the BREADTH_FIRST traversal, as in the example
-            above, Catch will notify that exception handler before the exception handler for the actual type is
+            above, Solder will notify that exception handler before the exception handler for the actual type is
             notified.
          </para>
 
          <para>
-            Let's consider an example. Assume that Catch is handling the <literal>SocketException</literal>. It will
+            Let's consider an example. Assume that Solder is handling the <literal>SocketException</literal>. It will
             notify handlers in the following order:
          </para>
 
@@ -507,10 +493,8 @@ public class MyHandlers
          </para>
 
          <para>
-            In order for a handler to be notified of the
-            <literal>IOException</literal>
-            before the
-            <literal>SocketException</literal>, it would have to specify the BREADTH_FIRST traversal path explicitly:
+            In order for a handler to be notified of the <literal>IOException</literal> before the <literal>SocketException</literal>, 
+            it would have to specify the <literal>BREADTH_FIRST</literal> traversal path explicitly:
          </para>
 
          <programlisting role="JAVA"><![CDATA[
@@ -522,7 +506,7 @@ void handleIOException(@Handles(during = TraversalMode.BREADTH_FIRST)
          </programlisting>
 
          <para>
-            BREADTH_FIRST handlers are typically used for logging exceptions because they are not likely to be
+            <literal>BREADTH_FIRST</literal> handlers are typically used for logging exceptions because they are not likely to be
             short-circuited (and thus always get invoked).
          </para>
 
@@ -532,8 +516,8 @@ void handleIOException(@Handles(during = TraversalMode.BREADTH_FIRST)
          <title>Handler precedence</title>
 
          <para>
-            When Catch finds more than one handler for the same exception type, it orders the handlers by precedence.
-            Handlers with higher precedence are executed before handlers with a lower precedence. If Catch detects two
+            When Solder finds more than one handler for the same exception type, it orders the handlers by precedence.
+            Handlers with higher precedence are executed before handlers with a lower precedence. If Solder detects two
             handlers for the same type with the same precedence, it detects it as an error and throws an exception at
             deployment time.
          </para>
@@ -560,10 +544,8 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
          </para>
 
          <para>
-            To make specifying precedence values more convenient, Catch provides several built-in constants, available
-            on the
-            <literal>Precedence</literal>
-            class:
+            To make specifying precedence values more convenient, Solder provides several built-in constants, available
+            on the <literal>Precedence</literal> class:
          </para>
 
          <itemizedlist>
@@ -575,7 +557,7 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
          </itemizedlist>
 
          <para>
-            To summarize, here's how Catch determines the order of handlers to invoke (until a handler marks exception as
+            To summarize, here's how Solder determines the order of handlers to invoke (until a handler marks exception as
             handled):
          </para>
 
@@ -597,7 +579,7 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
       <title>APIs for exception information and flow control</title>
 
       <para>
-         There are two APIs provided by Catch that should be familiar to application developers:
+         There are two APIs provided by Solder that should be familiar to application developers:
       </para>
 
       <itemizedlist>
@@ -610,15 +592,12 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
 
          <para>
             In addition to providing information about the exception being handled, the
-            <literal>CaughtException</literal>
-            object contains methods to control the exception handling process, such
+            <literal>CaughtException</literal> object contains methods to control the exception handling process, such
             as rethrowing the exception, aborting the handler chain or unmuting the current handler.
          </para>
 
          <para>
-            Five methods exist on the
-            <literal>CaughtException</literal>
-            object to give flow control to the handler
+            Five methods exist on the <literal>CaughtException</literal> object to give flow control to the handler
          </para>
 
          <itemizedlist>
@@ -633,7 +612,7 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
                <para>
                   <literal>rethrow()</literal>
                   - continues through all handlers, but once all handlers have been called
-                  (assuming another handler does not call abort() or handled()) the initial exception passed to Catch is
+                  (assuming another handler does not call abort() or handled()) the initial exception passed to Solder is
                   rethrown. Does not mark the exception as handled.
                </para>
             </listitem>
@@ -646,8 +625,7 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
             <listitem>
                <para>
                   <literal>markHandled()</literal>
-                  - default. Marks the exception as handled and proceeds with the rest of the
-                  handlers.
+                  - default. Marks the exception as handled and proceeds with the rest of the handlers.
                </para>
             </listitem>
             <listitem>
@@ -661,9 +639,7 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
 
          <para>
             Once a handler is invoked it is muted, meaning it will not be run again for that exception chain,
-            unless it's explicitly marked as unmuted via the
-            <literal>unmute()</literal>
-            method on
+            unless it's explicitly marked as unmuted via the <literal>unmute()</literal> method on
             <literal>CaughtException</literal>.
          </para>
 
@@ -673,18 +649,11 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
          <title>ExceptionStack</title>
 
          <para>
-            <literal>ExceptionStack</literal>
-            contains information about the exception causes relative to the current
+            <literal>ExceptionStack</literal> contains information about the exception causes relative to the current
             exception cause. It is also the source of the exception types the invoked handlers are matched against. It
-            is accessed in handlers by calling the method
-            <literal>getExceptionStack()</literal>
-            on the
-            <literal>CaughtException</literal>
-            object. Please see
-            <ulink url="http://docs.jboss.org/seam/3/catch/latest/api/org/jboss/seam/exception/control/ExceptionStack.html">
-               API
-               docs
-            </ulink>
+            is accessed in handlers by calling the method <literal>getExceptionStack()</literal> on the
+            <literal>CaughtException</literal> object. Please see
+            <ulink url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/solder/exception/control/ExceptionStack.html">API docs</ulink>
             for more information, all methods are fairly self-explanatory.
          </para>
 
@@ -697,7 +666,7 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
             </programlisting>
 
             <para>
-               Modifying the ExceptionStack may be useful to remove exception types that are effectively meaningless
+               Modifying the <literal>ExceptionStack</literal> may be useful to remove exception types that are effectively meaningless
                such as <literal>EJBException</literal>, changing the exception type to something more meaningful such
                as cases like <literal>SQLException</literal>, or wrapping exceptions as custom application exception
                types.
@@ -707,22 +676,6 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
       </section>
 
    </section>
-
-   <section id="catch-usage-troubleshooting">
-      <title>Troubleshooting</title>
-
-      <para>
-         The issues to date with Seam Catch have all be around eventing into Catch. The information at the top of this
-         chapter should give details how to correctly use into Seam Catch and allow your handlers to be notified of
-         exceptions.
-      </para>
-
-      <para>
-         For questions involving integrations such as JSF or REST for navigation cases, or exceptions not being passed
-         correctly to Seam Catch, please see documentation for that module as an exhaustive review of each integration
-         and hazards pertaining to those integrations is beyond the scope of this guide.
-      </para>
-   </section> 
 
    <!--
    vim:et:ts=3:sw=3:tw=120

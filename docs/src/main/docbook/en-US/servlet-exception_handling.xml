@@ -18,44 +18,47 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
     "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="exception-handling">
-    <title>Exception handling: Seam Catch integration</title>
+    <title>Servlet Exception Handling Integration</title>
     <para>
-        <ulink href="http://seamframework.org/Seam3/CatchModule">Seam Catch</ulink> provides a simple, yet robust
-        foundation for modules and/or applications to establish a customized exception handling process. Seam Servlet ties
-        into the exception handling model by forwarding all unhandled Servlet exceptions to Catch so that they can be
-        handled in a centralized, extensible and uniform manner.
+        Solder provides a simple, yet robust foundation for modules and/or applications to establish a customized exception 
+        handling process. Solder's Servlet integration ties into the exception handling model by forwarding all unhandled Servlet
+        exceptions to the exception handling framework so that they can be handled in a centralized, extensible and uniform manner.
     </para>
     <section id="background">
         <title>Background</title>
+        
         <para>
             The Servlet API is extremely weak when it comes to handling exceptions. You are limited to handling exceptions
-            using the built-in, declarative controls provided in web.xml. Those controls give you two options:
+            using the built-in, declarative controls provided in <literal>web.xml</literal>. Those controls give you two options:
         </para>
+        
         <itemizedlist>
             <listitem>send an HTTP status code</listitem>
             <listitem>forward to an error page (servlet path)</listitem>
         </itemizedlist>
+        
         <para>
-          To make matters more painful, you are required to configure these exception mappings in web.xml. It's really
+          To make matters more painful, you are required to configure these exception mappings in <literal>web.xml</literal>. It's really
           a dinosaur left over from the past. In general, the Servlet specification seems to be pretty non-chalant about
           exceptions, telling you to "handle them appropriately." But how?
         </para>
+        
         <para>
-            That's where the Catch integration in Seam Servlet comes in. The Catch integration traps all unhandled
-            exceptions (those that bubble outside of the Servlet and any filters) and forwards them on to Catch. 
+            That's where the exception handling integration in comes in. Solder's exception handling framework traps all unhandled
+            exceptions (those that bubble outside of the Servlet and any filters) and forwards them on to Solder. 
             Exception handlers are free to handle the exception anyway they like, either programmatically or via
             a declarative mechanism.
         </para>
         <para>
-            If a exception handler registered with Catch handles the exception, then the integration closes the response
-            without raising any additional exceptions. If the exception is still unhandled after Catch finishes processing
+            If a exception handler registered with Solder handles the exception, then the integration closes the response
+            without raising any additional exceptions. If the exception is still unhandled after Solder finishes processing
             it, then the integration allows it to pass through to the normal Servlet exception handler.
         </para>
     </section>
     <section id="defining">
         <title>Defining a exception handler for a web request</title> 
         <para>
-            You can define an exception handler for a web request using the normal syntax of a Catch exception handler.
+            You can define an exception handler for a web request using the normal syntax of a Solder exception handler.
             Let's catch any exception that bubbles to the top and respond with a 500 error.
         </para>
         <programlisting role="JAVA"><![CDATA[@HandlesExceptions
@@ -73,13 +76,13 @@ public class ExceptionHandlers {
 public class ExceptionHandlers {
     void handleAll(@Handles @WebRequest
             CaughtException<Throwable> caught, HttpServletResponse response) {
-        response.sendError(500, "You've been caught by Catch!"); 
+        response.sendError(500, "You've been caught by Solder!"); 
     }
 }]]></programlisting>
         <note>
             <para>
                 Currently, <literal>@WebRequest</literal> is required to catch exceptions initiated by the Servlet
-                integration because of a bug in Catch.
+                integration because of a bug in Solder.
             </para>
         </note>
         <para>
@@ -90,10 +93,7 @@ public class ExceptionHandlers {
         CaughtException<AccountNotFound> caught, HttpServletResponse response) {
     response.sendError(404, "Account not found: " + caught.getException().getAccountId()); 
 }]]></programlisting>
-        <para>
-            In a future release, Seam Servlet will include annotations that can be used to configure these responses
-            declaratively.
-        </para>
+
     </section>
 <!--
 vim:et:ts=4:sw=4:tw=128

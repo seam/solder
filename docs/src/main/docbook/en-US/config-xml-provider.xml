@@ -2,7 +2,7 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="xml-provider">
-  <title>Seam Config XML provider</title>
+  <title>Solder Config XML provider</title>
 
    <section id="xml-provider.namespaces">
       <title>XML Namespaces</title>
@@ -279,7 +279,7 @@
             Inline beans allow you to set field values to another bean that is declared inline inside the field declaration.
             This allows for the configuration of complex types with nestled classes. Inline beans can be declared inside both
             <literal>&lt;s:value&gt;</literal> and <literal>&lt;s:key&gt;</literal> elements, and may be used in both collections 
-            and simple field values. Inline beans must not have any qualifier annotations declared on the bean; instead Seam Config
+            and simple field values. Inline beans must not have any qualifier annotations declared on the bean; instead Solder Config
             assigns them an artificial qualifier. Inline beans may have any scope, however the default <code>Dependent</code> scope
             is recommended.
          </para>
@@ -335,7 +335,7 @@
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:s="urn:java:ee" 
-       xmlns:my="urn:java:org.jboss.seam.config.xml.test.method">
+       xmlns:my="urn:java:org.jboss.solder.config.xml.test.method">
     <my:MethodBean>
     
         <my:doStuff>
@@ -480,7 +480,7 @@
 
       <para>
          In the example above, only beans that are assignable to InjectedBean will be eligable for injection into the field.
-   	   This also works for parameter injection points. This functionallity is part of Seam Solder, and the
+   	     This also works for parameter injection points. This functionallity is part of Solder, and the
          <code>@Exact</code> annotation can be used directly in java. 
       </para>
         
@@ -524,14 +524,13 @@
    <section>
       <title>Virtual Producer Fields</title>
       <para>
-         Seam XML supports configuration of virtual producer fields. These allow for configuration 
-         of resource producer fields, Weld Extensions generic bean and constant values directly via 
-         XML. For example:
+         Solder XML Config supports configuration of virtual producer fields. These allow for configuration 
+         of resource producer fields, Solder generic bean and constant values directly via XML. For example:
       </para>
       
 <programlisting role="XML" ><![CDATA[<s:EntityManager>
   <s:Produces/>
-  <sPersistenceContext unitName="customerPu" />
+  <s:PersistenceContext unitName="customerPu" />
 </s:EntityManager>
 
 <s:String>
@@ -565,26 +564,14 @@
       </para>
     
     </section>
-
- <!--    <section>
-       <title>Notes on Configuring Interceptors</title>
-         <para>
-             Some versions of weld including <literal>1.1.0.Final</literal> do not support adding the 
-             <code>@AroundInvoke</code> annotation via the SPI, this will be fixed in future versions.
-          </para> RNEWTON REMOVED: FEB 18 2011. Try not to tell people what we don't have :)
-    </section>-->
-        
+       
     <section>
         <title>More Information</title>
         <para>
-          For further information, look at the units tests in the Seam Config
-          distribution. Also see the XML based metadata chapter in the <ulink
-          url="http://jcp.org/aboutJava/communityprocess/pr/jsr299/index.html">JSR-299
-          Public Review Draft</ulink>, which is where this feature was
-          originally proposed. 
+          For further information, look at the units tests in the Solder XML Config distribution. Also see the XML-based 
+          metadata chapter in the <ulink url="http://jcp.org/aboutJava/communityprocess/pr/jsr299/index.html">JSR-299
+          Public Review Draft</ulink>, which is where this feature was originally proposed. 
         </para>
     </section>
-    
-    
     
 </chapter>

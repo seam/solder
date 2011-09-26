@@ -18,10 +18,10 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="catch-integration">
-   <title>Seam Catch - Framework Integration</title>
+   <title>Exception Handling - Framework Integration</title>
 
    <para>
-      Integration of Seam Catch with other frameworks consists of one main step, and two other optional (but highly
+      Integration of Solder's exception handling with other frameworks consists of one main step, and two other optional (but highly
       encouraged) steps:
    </para>
 
@@ -44,8 +44,8 @@
       <para>
          To ease the burden on the application developers, the integration should tie into the exception handling
          mechanism of the integrating framework, if any exist. By tying into the framework's exception handling,
-         any uncaught exceptions should be routed through the Seam Catch system and allow handlers to be invoked.
-         This is the typical way of using the Seam Catch framework. Of course, it doesn't stop the application
+         any uncaught exceptions should be routed through Solder's exception handling system and allow handlers to be invoked.
+         This is the typical way of using Solder to handle exceptions. Of course, it doesn't stop the application
          developer from firing their own <literal>ExceptionToCatch</literal> within a catch block.
       </para>
    </section>
@@ -57,27 +57,20 @@
          <title>Default Handlers</title>
 
          <para>
-            An integration with Catch can define it's own handlers to always be used. It's recommended that any
+            An integration with Solder can define it's own handlers to always be used. It's recommended that any
             built-in handler from an integration have a very low precedence, be a handler for as generic an
             exception as is suitable (i.e. Seam Persistence could have a built-in handler for PersistenceExceptions to
             rollback a transaction, etc), and make use of qualifiers specific for the integration. This helps limit any
             collisions with handlers the application developer may create.
          </para>
 
-         <note>
-            <para>
-               Hopefully at some point there will be a way to conditionally enable handlers so the application developer
-               will be able to selectively enable any default handlers. Currently this does not exist, but is something
-               that will be explored.
-            </para>
-         </note>
       </section>
 
       <section id="integration.qualifiers">
          <title>Qualifiers</title>
 
          <para>
-            Catch supports qualifiers for the <literal>CaughtException</literal>. To add qualifiers to be used when
+            Solder supports qualifiers for the <literal>CaughtException</literal>. To add qualifiers to be used when
             notifying handlers, the qualifiers must be added to the <literal>ExceptionToCatch</literal> instance via the 
             constructor (please see API docs for more info). Qualifiers for integrations should be used to avoid 
             collisions in the application error handling both when defining handlers and when firing events from 
@@ -114,8 +107,8 @@ public interface DeclarativeRestExceptionHandlers
          <literal>@SendHttpResponse</literal> annotation. The only thing left is some boiler plate code to setup
          the <literal>Response</literal>. In a jax-rs application (or even in any web application) this approach helps
          developers cut down on the amount of boiler plate code they have to write in their own handlers and should
-         be implemented in any Catch integration, however, there may be situations where ServiceHandlers simply do not
-         make sense.
+         be implemented in any Solder integration, however, there may be situations where <literal>ServiceHandler</literal>s 
+         simply do not make sense.
       </para>
 
       <note>

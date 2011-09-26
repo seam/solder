@@ -17,7 +17,7 @@
   -->
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <glossary id="catch-glossary">
-   <title>Seam Catch - Glossary</title>
+   <title>Exception Handling - Glossary</title>
 
    <glossdiv>
       <title>E</title>
@@ -53,8 +53,8 @@
          <glossterm>Handler Method</glossterm>
          <glossdef>
            <para>
-               A method within a handler bean which is marked as a handler using the @Handlers on an argument,
-               which must be an instance of CaughtException. Handler methods typically are public with a void return.
+               A method within a handler bean which is marked as a handler using the <literal>@Handler</literal>s on an argument,
+               which must be an instance of <literal>CaughtException</literal>. Handler methods typically are public with a void return.
                Other parameters of the method will be treated as injection points and will be resolved
                via CDI and injected upon invocation.
             </para>

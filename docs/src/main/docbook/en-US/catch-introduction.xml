@@ -17,34 +17,35 @@
   -->
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="catch-introduction">
-   <title>Seam Catch - Introduction</title>
+   <title>Solder Exception Handling - Introduction</title>
 
    <para>
       Exceptions are a fact of life. As developers, we need to be prepared to deal with them in the most graceful manner
-      possible. Seam Catch provides a simple, yet robust foundation for modules and/or applications to establish a
-      customized exception handling process. By employing a delegation model, Catch allows exceptions to be addressed in
+      possible. Solder's exception handling framework provides a simple, yet robust foundation for modules and/or applications 
+      to establish a customized exception handling process. By employing a delegation model, Solder allows exceptions to be addressed in
       a centralized, extensible and uniform manner. 
    </para>
    
    <para>
-      In this guide, we'll explore the various options you have for handling exceptions using Catch, as well as how
-      framework authors can offer Catch integration.
+      In this guide, we'll explore the various options you have for handling exceptions using Solder, as well as how
+      framework authors can offer Solder exception handling integration.
    </para>
   
    <section id="catch_introduction.how_it_works">
-      <title>How Seam Catch Works</title>
+      <title>How Solder's Exception Handling Works</title>
+      
       <!-- TODO: Include an image as an overview of how this works -->
       <para>
-         Seam Catch is based around the CDI eventing model. While the implementation of exception handlers may not be 
+         Exception handling in Solder is based around the CDI eventing model. While the implementation of exception handlers may not be 
          the same as a CDI event, and the programming model is not exactly the same as specifying a CDI event / 
-         observer, the concepts are very similar. Seam Catch makes use of events for many of it's features. Eventing in
-         is actually the only way to start using Catch.
+         observer, the concepts are very similar. Solder makes use of events for many of its features. Eventing
+         is actually the only way to start using Solder's exception handling.
       </para>
 
       <para>
-         This event is fired either by the application or a Catch integration. Catch then hands the exception off to a 
+         This event is fired either by the application or a Solder exception handling integration. Solder then hands the exception off to a 
          chain of registered handlers, which deal with the exception appropriately. The use of CDI events to connect 
-         exceptions to handlers makes this strategy of exception handling non-invasive and minimally coupled to Catch's 
+         exceptions to handlers makes this strategy of exception handling non-invasive and minimally coupled to the exception handling 
          infrastructure. 
       </para>
          

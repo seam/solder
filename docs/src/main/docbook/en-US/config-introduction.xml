@@ -2,37 +2,22 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="introduction">
-   <title>Seam Config Introduction</title>
+   <title>XML Configuration Introduction</title>
 
    <para>
-      Seam provides a method for configuring CDI beans using alternate metadata sources, such as XML configuration. Currently, the XML provider is the only alternative available. Using a "type-safe" XML
+      Solder provides a method for configuring CDI beans using alternate metadata sources, such as XML configuration. 
+      Currently, the XML provider is the only alternative available. Using a "type-safe" XML      
       syntax, it is possible to add new beans, override existing beans, and add extra configuration to existing beans. 
   </para>
 
    <section>
       <title>Getting Started</title>
-      <para>
-         Simply include the JAR file and the Seam Solder
-         JAR in your project. For Maven projects, that means adding the following dependencies to your pom.xml:
-      </para>
-      <programlisting role="XML"><![CDATA[
-         <dependency>
-            <groupId>org.jboss.seam.config</groupId>
-            <artifactId>seam-config-xml</artifactId>
-            <version>${seam.config.version}</version>
-            <scope>runtime</scope>
-         </dependency>
 
-         <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder</artifactId>
-            <version>${weld.extensions.version}</version>
-         </dependency>]]>
-      </programlisting>
       <para>
-         To take advantage of Seam Config, you need metadata sources in the form of XML files.
+         To take advantage of XML Configuration, you need metadata sources in the form of XML files.
          By default these are discovered from the classpath in the following locations:
       </para>
+      
       <itemizedlist>
          <listitem>
             <literal>/META-INF/beans.xml</literal>
@@ -83,19 +68,17 @@ class BillingDatasource implements Datasource {
 }]]></programlisting>
 
       <para>
-         The <code>Report</code> bean is fairly simple. It has a 
-         filename that tells the report engine where to load the 
-         report definition from, and a datasource that provides 
-         the data used to fill the report. We are going to 
-         configure up multiple <literal>Report</literal>
-         beans via xml.
+         The <code>Report</code> bean is fairly simple. It has a filename that tells the report engine where to load the 
+         report definition from, and a datasource that provides the data used to fill the report. We are going to 
+         configure up multiple <literal>Report</literal> beans via xml.
       </para>
+      
       <example>
       <programlistingco>
          <areaspec>
-            <area id="namepsace-declaration-seam" coords="4" />
-            <area id="namepsace-declaration-reports" coords="5" />
-            <area id="resport-dec" coords="7" />
+            <area id="namespace-declaration-root" coords="4" />
+            <area id="namespace-declaration-reports" coords="5" />
+            <area id="reports-dec" coords="7" />
             <area id="modifies" coords="8" />
             <area id="filename" coords="9" />
             <area id="datasource-qualifier" coords="11" />
@@ -104,6 +87,7 @@ class BillingDatasource implements Datasource {
             <area id="inject" coords="18" />
             <area id="datasource-type" coords="19" />
          </areaspec>
+         
          <programlisting ><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -128,17 +112,16 @@ class BillingDatasource implements Datasource {
 </beans>
     ]]>
          </programlisting>
-         <calloutlist>
          
-            <callout arearefs="namepsace-declaration-seam">
+         <calloutlist>         
+            <callout arearefs="namespace-declaration-root">
                <para>
-                  The namespace <literal>urn:java:ee</literal>
-                  is Seam Config's root namespace. This is where the
+                  The namespace <literal>urn:java:ee</literal> is the XML Config's root namespace. This is where the
                   built-in elements and CDI annotations live.
                </para>
             </callout>
             
-            <callout arearefs="namepsace-declaration-reports">
+            <callout arearefs="namespace-declaration-reports">
                <para>
                   There are now multiple namespaces in the <literal>beans.xml</literal>
                   file. These namespaces correspond to java package names.
@@ -157,7 +140,7 @@ class BillingDatasource implements Datasource {
                </para>
             </callout>
             
-            <callout arearefs="resport-dec">
+            <callout arearefs="reports-dec">
                <para>
                   The <literal>&lt;Report&gt;</literal> declaration configures an 
                   instance of the <code>Report</code> class as a bean.
@@ -240,7 +223,7 @@ class BillingDatasource implements Datasource {
    <section>
       <title>The Princess Rescue Example</title>
       <para>
-         The princess rescue example is a sample web app that uses Seam Config. Run it with the following command:
+         The princess rescue example is a sample web app that uses XML Config. Run it with the following command:
       </para>
       <programlisting>mvn jetty:run</programlisting>
       <para>
