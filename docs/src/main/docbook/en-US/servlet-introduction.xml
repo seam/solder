@@ -17,13 +17,14 @@
 --> 
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
     "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
-<preface id="intro">
+<preface id="solder-servlet-introduction">
     <title>Introduction</title>
+    
     <para>
-        The goal of the Seam Servlet module is to provide portable enhancements to the Servlet API. Features include
+        The goal of Solder's Servlet integration features is to provide portable enhancements to the Servlet API. Features include
         producers for implicit Servlet objects and HTTP request state, propagating Servlet events to the CDI event bus,
-        forwarding uncaught exceptions to the Seam Catch handler chain and binding the BeanManager to a Servlet context
-        attribute for convenient access.
+        forwarding uncaught exceptions to Solder's exception handling chain and binding the <literal>BeanManager</literal> to a 
+        Servlet context attribute for convenient access.
     </para>
 
 <!--

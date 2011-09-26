@@ -17,7 +17,7 @@
   -->
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="catch-introduction">
-   <title>Solder Exception Handling - Introduction</title>
+   <title>Exception Handling - Introduction</title>
 
    <para>
       Exceptions are a fact of life. As developers, we need to be prepared to deal with them in the most graceful manner

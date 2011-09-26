@@ -20,10 +20,10 @@
 <chapter id="injectablerefs">
     <title>Injectable Servlet objects and request state</title>
     <para>
-        Seam Servlet provides producers that expose a wide-range of information available in a Servlet environment (e.g.,
-        implicit objects such as ServletContext and HttpSession and state such as HTTP request parameters) as beans. You
-        access this information by injecting the beans produced. This chapter documents the Servlet objects and request
-        state that Seam Servlet exposes and how to inject them.
+        Solder provides producers that expose a wide-range of information available in a Servlet environment (e.g.,
+        implicit objects such as <literal>ServletContext</literal> and <literal>HttpSession</literal> and state such as 
+        HTTP request parameters) as beans. You access this information by injecting the beans produced. This chapter 
+        documents the Servlet objects and request state that Solder exposes and how to inject them.
     </para>
 
     <section id="injectablerefs.request_param">
@@ -172,7 +172,7 @@ private HttpSession session;]]></programlisting>
         </para>
         <para>
             If you merely want to know whether the <literal>HttpSession</literal> exists, you can instead inject
-            the <literal>HttpSessionStatus</literal> bean that Seam Servlet provides.
+            the <literal>HttpSessionStatus</literal> bean that Solder provides.
         </para>
     </section>
     <section id="injectablerefs.http_session_status">
@@ -274,7 +274,7 @@ private String serverInfo;]]></programlisting>
         <title>@Inject @Principal</title>
         <para>
             The security <literal>Principal</literal> for the current user is made available by CDI as an injectable
-            resource (not provided by Seam Servlet). It can be injected safetly into any CDI bean as follows:
+            resource (not provided by Solder). It can be injected safetly into any CDI bean as follows:
         </para>
         <programlisting role="JAVA"><![CDATA[@Inject
 private Principal principal;]]></programlisting>

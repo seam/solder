@@ -179,9 +179,8 @@ public class MyHandlers {}]]>
          <para>
             <note>
                <para>
-                  The <literal>@HandlesExceptions</literal>
-                  annotation may be deprecated in favor of annotation indexing
-                  done by <ulink url="http://seamframework.org/Seam3/Solder">Seam Solder</ulink>.
+                  The <literal>@HandlesExceptions</literal> annotation may be deprecated in favor of annotation indexing
+                  done by <ulink url="http://seamframework.org/Seam3/Solder">Solder</ulink>.
                </para>
             </note>
          </para>

@@ -33,14 +33,14 @@
         to depend on when you consider all popular deployment environments (think Tomcat and Jetty).
     </para>
     <para>
-        As a simpler alternative, Seam Servlet binds the <literal>BeanManager</literal> to the following servlet context
+        As a simpler alternative, Solder binds the <literal>BeanManager</literal> to the following servlet context
         attribute (whose name is equivalent to the fully-qualified class name of the <literal>BeanManager</literal>
         interface:
     </para>
     <programlisting>javax.enterprise.inject.spi.BeanManager</programlisting>
     <para>
-        Seam Servlet also includes a provider that retrieves the <literal>BeanManager</literal> from this location.
-        Anytime the Seam Servlet module needs a reference to the <literal>BeanManager</literal>, it uses this lookup
+        Solder also includes a provider that retrieves the <literal>BeanManager</literal> from this location.
+        Anytime the Solder module needs a reference to the <literal>BeanManager</literal>, it uses this lookup
         mechanism to ensure that the module works consistently across deployment environments, especially in Servlet
         containers.
     </para>

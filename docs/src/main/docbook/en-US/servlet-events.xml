@@ -20,10 +20,10 @@
 <chapter id="servlet-events">
     <title>Servlet event propagation</title>
     <para>
-        By including the Seam Servlet module in your web application (and performing the necessary <link
+        By including the Solder module in your web application (and performing the necessary <link
         linkend="installation.pre-servlet-3">listener configuration</link> for pre-Servlet 3.0 environments), the servlet
         lifecycle events will be propagated to the CDI event bus so you can observe them using observer methods on CDI
-        beans. Seam Servlet also fires additional lifecycle events not offered by the Servlet API, such as when the
+        beans. Solder also fires additional lifecycle events not offered by the Servlet API, such as when the
         response is initialized and destroyed.
     </para>
 
@@ -36,7 +36,7 @@
             since the <literal>ServletContext</literal> is the only relevant information this event provides).
         </para>
         <para>
-            There are two qualifiers provided in the <literal>org.jboss.seam.servlet.event</literal> package
+            There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the servlet context.
         </para>
@@ -123,9 +123,9 @@ public class SeedDataImporter {
     }
 }]]></programlisting>
         <para>
-            If you'd rather not tie yourself to the Servlet API, you can observe the <literal>org.jboss.seam.servlet.WebApplication</literal>
+            If you'd rather not tie yourself to the Servlet API, you can observe the <literal>org.jboss.solder.servlet.WebApplication</literal>
             rather than the <literal>ServletContext</literal>. <literal>WebApplication</literal> is a informational object
-            provided by Seam Servlet that holds select information about the <literal>ServletContext</literal> such as the
+            provided by Solder that holds select information about the <literal>ServletContext</literal> such as the
             application name, context path, server info and start time.
         </para>
         <para>
@@ -206,7 +206,7 @@ public class SeedDataImporter {
             since the <literal>ServletRequest</literal> is the only relevant information this event provides).
         </para>
         <para>
-            There are two qualifiers provided in the <literal>org.jboss.seam.servlet.event</literal> package
+            There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the servlet request and a secondary qualifier to filter events by servlet path
             (<literal>@Path</literal>).
@@ -307,12 +307,12 @@ public class SeedDataImporter {
     <section id="events.servlet_response_lifecycle_events">
         <title>Servlet response lifecycle events</title> 
         <para>
-            The Servlet API does not provide a listener for accessing the lifecycle of a response. Therefore, Seam Servlet
+            The Servlet API does not provide a listener for accessing the lifecycle of a response. Therefore, Solder
             simulates a response lifecycle listener using CDI events. The event object fired is a
             <literal>javax.servlet.ServletResponse</literal>.
         </para>
         <para>
-            There are two qualifiers provided in the <literal>org.jboss.seam.servlet.event</literal> package
+            There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the servlet response and a secondary qualifier to filter events by servlet path
             (<literal>@Path</literal>).
@@ -420,13 +420,13 @@ public class SeedDataImporter {
         <title>Servlet request context lifecycle events</title> 
         <para>
             Rather than having to observe the request and response as separate events, or include the request object as an
-            parameter on a response observer, it would be convenient to be able to observe them as a pair. That's why Seam
-            Servlet fires an synthetic lifecycle event for the wrapper type <literal>ServletRequestContext</literal>. The
+            parameter on a response observer, it would be convenient to be able to observe them as a pair. That's why Solder 
+            fires an synthetic lifecycle event for the wrapper type <literal>ServletRequestContext</literal>. The
             <literal>ServletRequestContext</literal> holds the <literal>ServletRequest</literal> and the
             <literal>ServletResponse</literal> objects, and also provides access to the <literal>ServletContext</literal>.
         </para>
         <para>
-            There are two qualifiers provided in the <literal>org.jboss.seam.servlet.event</literal> package
+            There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the servlet request context and a secondary qualifier to filter events by servlet path
             (<literal>@Path</literal>).
@@ -532,7 +532,7 @@ public class SeedDataImporter {
             relevant information this event provides).
         </para>
         <para>
-            There are two qualifiers provided in the <literal>org.jboss.seam.servlet.event</literal> package
+            There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the session.
         </para>
@@ -600,7 +600,7 @@ public class SeedDataImporter {
             relevant information this event provides).
         </para>
         <para>
-            There are two qualifiers provided in the <literal>org.jboss.seam.servlet.event</literal> package
+            There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@DidActivate</literal> and <literal>@WillPassivate</literal>) that can be used to observe a specific
             lifecycle phase of the session.
         </para>
@@ -649,7 +649,7 @@ public class SeedDataImporter {
 }]]></programlisting>
 
         <para>
-            If you are interested in only a particular one, use a qualifer
+            If you are interested in only one particular event, use a qualifer:
         </para>
 
         <programlisting role="JAVA"><![CDATA[public void observeSessionCreated(@Observes @WillPassivate HttpSession session) {
