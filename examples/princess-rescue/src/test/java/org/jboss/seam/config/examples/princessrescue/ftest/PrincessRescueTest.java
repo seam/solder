@@ -1,24 +1,33 @@
 package org.jboss.seam.config.examples.princessrescue.ftest;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.jboss.test.selenium.AbstractTestCase;
-import org.jboss.test.selenium.locator.IdLocator;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import static org.jboss.test.selenium.guard.request.RequestTypeGuardFactory.*;
-import static org.jboss.test.selenium.locator.LocatorFactory.id;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import org.jboss.arquillian.ajocado.framework.AjaxSelenium;
+import org.jboss.arquillian.ajocado.locator.IdLocator;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.importer.ZipImporter;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import static org.jboss.arquillian.ajocado.locator.LocatorFactory.id;
+import static org.jboss.arquillian.ajocado.Ajocado.waitForHttp;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Functional test for the PrincessRescue example
  *
  * @author Ondrej Skutka
  */
-public class PrincessRescueTest extends AbstractTestCase {
+@RunWith(Arquillian.class)
+public class PrincessRescueTest {
     private static final String MSG_INTRO = "The princess has been kidnaped by a dragon, and you are the only one who can save her. Armed only with your trusty bow you bravely head into the dragon's lair, who know what horrors you will encounter, some say the caves are even home to the dreaded Wumpus.";
     private static final String MSG_ENTRANCE = "You enter the dungeon, with you bow in your hand and your heart in your mouth.";
 
@@ -41,6 +50,9 @@ public class PrincessRescueTest extends AbstractTestCase {
 
     private static final String MAIN_PAGE = "/home.jsf";
     private IdLocator NEW_GAME_BUTTON = id("bv:next");
+    
+    public static final String ARCHIVE_NAME = "config-princess-rescue.war";
+    public static final String BUILD_DIRECTORY = "target";
 
     protected enum Direction {
         NORTH, SOUTH, WEST, EAST
@@ -49,13 +61,25 @@ public class PrincessRescueTest extends AbstractTestCase {
     protected enum Action {
         MOVE, SHOT
     }
+    
+    @ArquillianResource
+    URL contextPath;
+    
+    @Drone
+    AjaxSelenium selenium;
+    
+    @Deployment(testable = false)
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(ZipImporter.class, ARCHIVE_NAME).importFrom(new File(BUILD_DIRECTORY + '/' + ARCHIVE_NAME))
+                .as(WebArchive.class);
+    }
 
-    @BeforeMethod
-    void startNewGame() throws MalformedURLException {
+    @Before
+    public void startNewGame() throws MalformedURLException {
         selenium.setSpeed(300);
         selenium.open(new URL(contextPath.toString() + MAIN_PAGE));
         ensureTextPresent(MSG_INTRO);
-        waitHttp(selenium).click(NEW_GAME_BUTTON);
+        waitForHttp(selenium).click(NEW_GAME_BUTTON);
         ensureTextPresent(MSG_ENTRANCE);
     }
 
@@ -64,12 +88,12 @@ public class PrincessRescueTest extends AbstractTestCase {
      */
     @Test
     public void findPrincess() {
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
         ensureTextPresent(MSG_NEAR_DWARF);
         ensureTextPresent(MSG_NEAR_PIT);
 
         // Take a look at the dwarf
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.WEST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.WEST));
         ensureTextPresent(MSG_DWARF);
         for (Action action : Action.values()) {
             assertTrue(selenium.isEditable(getLocator(action, Direction.EAST)));
@@ -79,43 +103,43 @@ public class PrincessRescueTest extends AbstractTestCase {
         }
 
         // We can still hear the dwarf singing
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_NEAR_DWARF);
         ensureTextPresent(MSG_NEAR_PIT);
 
         // Kill the drunkard
-        waitHttp(selenium).click(getLocator(Action.SHOT, Direction.WEST));
+        waitForHttp(selenium).click(getLocator(Action.SHOT, Direction.WEST));
         ensureTextPresent(MSG_SHOT_DWARF);
 
         // Bury the evidence
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.WEST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.WEST));
         ensureTextPresent(MSG_DEAD_DWARF);
 
         // No more bad singer
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
-        assertFalse(selenium.isTextPresent(MSG_NEAR_DWARF), "Expected the dwarf to be dead already.");
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        assertFalse("Expected the dwarf to be dead already.",selenium.isTextPresent(MSG_NEAR_DWARF));
         ensureTextPresent(MSG_NEAR_PIT);
 
         // Now for the princess!
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
         ensureTextPresent(MSG_NEAR_BATS);
         ensureTextPresent(MSG_NEAR_PIT);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_BATS);
         ensureTextPresent(MSG_NEAR_PIT);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_NEAR_BATS);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_NEAR_DRAGON);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
         ensureTextPresent(MSG_NEAR_PRINCESS);
 
         // Happy end
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_PRINCESS);
         ensureButtonsDisabled();
     }
@@ -125,25 +149,25 @@ public class PrincessRescueTest extends AbstractTestCase {
      */
     @Test
     public void dieHeroically() {
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
         ensureTextPresent(MSG_NEAR_DWARF);
         ensureTextPresent(MSG_NEAR_PIT);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
         ensureTextPresent(MSG_NEAR_BATS);
         ensureTextPresent(MSG_NEAR_PIT);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_BATS);
         ensureTextPresent(MSG_NEAR_PIT);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_NEAR_BATS);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_NEAR_DRAGON);
 
-        waitHttp(selenium).click(getLocator(Action.SHOT, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.SHOT, Direction.EAST));
         ensureTextPresent(MSG_SHOT_DRAGON);
         ensureButtonsDisabled();
     }
@@ -153,11 +177,11 @@ public class PrincessRescueTest extends AbstractTestCase {
      */
     @Test
     public void dieImpressively() {
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
         ensureTextPresent(MSG_NEAR_DWARF);
         ensureTextPresent(MSG_NEAR_PIT);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.EAST));
         ensureTextPresent(MSG_PIT);
         ensureButtonsDisabled();
     }
@@ -167,19 +191,19 @@ public class PrincessRescueTest extends AbstractTestCase {
      */
     @Test
     public void quitEarly() {
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
         ensureTextPresent(MSG_NEAR_DWARF);
         ensureTextPresent(MSG_NEAR_PIT);
 
-        waitHttp(selenium).click(getLocator(Action.SHOT, Direction.WEST));
+        waitForHttp(selenium).click(getLocator(Action.SHOT, Direction.WEST));
         ensureTextPresent(MSG_SHOT_DWARF);
 
-        waitHttp(selenium).click(NEW_GAME_BUTTON);
+        waitForHttp(selenium).click(NEW_GAME_BUTTON);
         ensureTextPresent(MSG_INTRO);
-        waitHttp(selenium).click(NEW_GAME_BUTTON);
+        waitForHttp(selenium).click(NEW_GAME_BUTTON);
         ensureTextPresent(MSG_ENTRANCE);
 
-        waitHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
+        waitForHttp(selenium).click(getLocator(Action.MOVE, Direction.NORTH));
         ensureTextPresent(MSG_NEAR_DWARF);
         ensureTextPresent(MSG_NEAR_PIT);
     }
@@ -199,7 +223,7 @@ public class PrincessRescueTest extends AbstractTestCase {
      * Ensures that the specified text is present on the page. Fails if not.
      */
     private void ensureTextPresent(String text) {
-        assertTrue(selenium.isTextPresent(text), "Expected the following text to be present: \"" + text + "\"");
+        assertTrue("Expected the following text to be present: \"" + text + "\"",selenium.isTextPresent(text));
     }
 
     /**

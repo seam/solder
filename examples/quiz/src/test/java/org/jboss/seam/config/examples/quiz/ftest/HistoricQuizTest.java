@@ -25,7 +25,6 @@ public class HistoricQuizTest extends AbstractQuizTest {
     private static final String SECOND_QUESTION = "2) John F. Kennedy was assassinated in ";
     private static final String THIRD_QUESTION = "3) What was the first capital of ancient Egypt?";
     
-    
     @Before
     public void start() {
         selenium.setSpeed(300);

@@ -12,11 +12,15 @@ import org.jboss.seam.international.status.Messages;
  */
 public class GeographicQuiz implements Quiz, Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5627554823035070515L;
     private List<Question> questions;
     private int score = 0;
     //getting zeroth element from questions list
     private int questionNumber = 0;
-    private int selectedAnswer;
+    private Integer selectedAnswer;
     private Messages messages;
 
     public void setScore(int score) {
@@ -39,12 +43,16 @@ public class GeographicQuiz implements Quiz, Serializable {
         }
     }
 
-    public int getSelectedAnswer() {
+    public Integer getSelectedAnswer() {
         return selectedAnswer;
     }
 
-    public void setSelectedAnswer(int selectedAnswer) {
-        this.selectedAnswer = selectedAnswer;
+    public void setSelectedAnswer(Integer selectedAnswer) {
+        if(selectedAnswer != null){
+            this.selectedAnswer = selectedAnswer;
+        }else{
+            this.selectedAnswer = 0;
+        }
     }
 
     public List<Question> getQuestions() {
