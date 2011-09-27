@@ -9,6 +9,11 @@ import java.io.Serializable;
  */
 public class QuizManager implements Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7683924919459973725L;
+
     private HistoricQuiz historicQuiz;
     
     private Quiz geographicQuiz;

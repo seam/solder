@@ -11,12 +11,13 @@ import javax.enterprise.inject.Instance;
  */
 public class Question implements Serializable{
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3063381809681190828L;
     private String questionText;
-    
     private Instance<Answer> answers;
-    
     private int id;
-  
     private boolean saved=false;
   
     /**

@@ -13,10 +13,14 @@ import org.jboss.seam.international.status.Messages;
  */
 public class HistoricQuiz implements Quiz, Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1210534575764915486L;
     private int score = 0;
     private Instance<Question> questions;
     private int questionNumber = 1;
-    private int selectedAnswer;
+    private Integer selectedAnswer;
     private Messages messages;
 
     public HistoricQuiz() {
@@ -31,12 +35,16 @@ public class HistoricQuiz implements Quiz, Serializable {
         return getActualQuestion() != null;
     }
 
-    public int getSelectedAnswer() {
+    public Integer getSelectedAnswer() {
         return selectedAnswer;
     }
 
-    public void setSelectedAnswer(int selectedAnswer) {
-        this.selectedAnswer = selectedAnswer;
+    public void setSelectedAnswer(Integer selectedAnswer) {
+        if (selectedAnswer != null) {
+            this.selectedAnswer = selectedAnswer;
+        } else {
+            this.selectedAnswer = 0;
+        }
     }
 
     public Question getActualQuestion() {
@@ -78,10 +86,10 @@ public class HistoricQuiz implements Quiz, Serializable {
         } else {
             messages.info("Wrong answer!");
         }
-       
+
         getActualQuestion().setSaved(true);
         setSelectedAnswer(0);
-        
+
     }
 
     public void nextQuestion() {
@@ -94,7 +102,7 @@ public class HistoricQuiz implements Quiz, Serializable {
         questionNumber = 1;
         score = 0;
         selectedAnswer = 0;
-        for(Question q : questions){
+        for (Question q : questions) {
             q.setSaved(false);
         }
     }

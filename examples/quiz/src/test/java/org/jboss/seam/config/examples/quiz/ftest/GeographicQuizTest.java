@@ -1,25 +1,13 @@
 package org.jboss.seam.config.examples.quiz.ftest;
 
 import static org.jboss.arquillian.ajocado.Ajocado.waitForHttp;
-import static org.jboss.arquillian.ajocado.locator.LocatorFactory.jq;
 import static org.jboss.arquillian.ajocado.locator.LocatorFactory.xp;
 import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.net.URL;
-
 import junit.framework.Assert;
 
-import org.jboss.arquillian.ajocado.framework.AjaxSelenium;
 import org.jboss.arquillian.ajocado.locator.JQueryLocator;
 import org.jboss.arquillian.ajocado.locator.XPathLocator;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.importer.ZipImporter;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +26,6 @@ public class GeographicQuizTest extends AbstractQuizTest {
     private static final String SECOND_QUESTION = "2) What country has the largest population in the world?";
     private static final String THIRD_QUESTION = "3) What is the largest country in the world?";
     
-   
     @Before
     public void start() {
         selenium.setSpeed(300);
