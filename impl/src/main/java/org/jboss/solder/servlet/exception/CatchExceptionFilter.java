@@ -26,7 +26,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.exception.control.ExceptionToCatch;
 import org.jboss.solder.beanManager.BeanManagerAware;
 import org.jboss.solder.beanManager.BeanManagerUnavailableException;

@@ -28,6 +28,8 @@ import javax.enterprise.inject.spi.BeanManager;
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 public class BeanManagerUnavailableException extends RuntimeException {
+    private static final long serialVersionUID = 1435183932012902556L;
+    
     private List<BeanManagerProvider> providers;
 
     public BeanManagerUnavailableException(List<BeanManagerProvider> providers) {

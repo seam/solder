@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.resourceLoader.ResourceLoader;
 
 /**

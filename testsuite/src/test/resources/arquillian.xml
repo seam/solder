@@ -36,7 +36,9 @@
     </container>
 
     <container qualifier="glassfish-embedded-3.1">
+      <configuration>
         <property name="bindHttpPort">7171</property>
+      </configuration>
     </container>
 
     <container qualifier="glassfish-remote-3.1">

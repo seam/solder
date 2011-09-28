@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.logging.Loggers;
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.logging.internal.BasicLogger;
 
 /**

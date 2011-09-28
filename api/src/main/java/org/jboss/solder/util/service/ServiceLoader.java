@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 
 /**
  * This class handles looking up service providers on the class path. It

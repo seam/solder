@@ -20,8 +20,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.jboss.logging.Logger;
-import org.jboss.logging.MessageLogger;
+import org.jboss.solder.logging.Logger;
+import org.jboss.solder.logging.MessageLogger;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

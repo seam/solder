@@ -52,7 +52,7 @@ import javax.enterprise.inject.spi.ProcessObserverMethod;
 import javax.enterprise.inject.spi.ProcessProducerField;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.bean.Beans;
 import org.jboss.solder.bean.defaultbean.DefaultBean;
 import org.jboss.solder.literal.DefaultLiteral;

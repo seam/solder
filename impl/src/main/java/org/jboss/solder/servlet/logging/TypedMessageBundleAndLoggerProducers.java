@@ -23,11 +23,11 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.logging.Category;
-import org.jboss.logging.TypedCategory;
+import org.jboss.solder.logging.Category;
+import org.jboss.solder.logging.TypedCategory;
 import org.jboss.solder.messages.Locale;
 
-import static org.jboss.logging.Logger.getMessageLogger;
+import static org.jboss.solder.logging.Logger.getMessageLogger;
 import static org.jboss.solder.messages.Messages.getBundle;
 import static org.jboss.solder.reflection.Reflections.getRawType;
 import static org.jboss.solder.util.Locales.toLocale;

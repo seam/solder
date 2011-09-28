@@ -94,13 +94,13 @@
  *    &#64;Inject Logger log;
  * </pre>
  *
- * @see org.jboss.seam.logging.Log
- * @see org.jboss.seam.logging.Category
- * @see org.jboss.seam.logging.TypedCategory
- * @see org.jboss.seam.logging.Suffix
+ * @see org.jboss.solder.logging.seam.logging.Log
+ * @see org.jboss.solder.logging.seam.logging.Category
+ * @see org.jboss.solder.logging.seam.logging.TypedCategory
+ * @see org.jboss.solder.logging.seam.logging.Suffix
  * @see org.jboss.solder.messages.Cause
  * @see org.jboss.solder.messages.Message
  * @see org.jboss.solder.messages.Locale
  * @see org.jboss.solder.messages.Formatter
  */
-package org.jboss.logging;
+package org.jboss.solder.logging;

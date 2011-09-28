@@ -22,9 +22,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.jboss.logging.Logger.Level;
-import org.jboss.logging.Log;
-import org.jboss.logging.MessageLogger;
+import org.jboss.solder.logging.Logger.Level;
+import org.jboss.solder.logging.Log;
+import org.jboss.solder.logging.MessageLogger;
 import org.jboss.solder.messages.Message;
 
 /**

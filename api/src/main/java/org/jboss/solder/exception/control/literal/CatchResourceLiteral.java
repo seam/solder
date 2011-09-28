@@ -26,6 +26,8 @@ import org.jboss.solder.exception.control.CatchResource;
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  */
 public class CatchResourceLiteral extends AnnotationLiteral<CatchResource> implements CatchResource {
+    private static final long serialVersionUID = 6883247605552338316L;
+    
     public static final CatchResource INSTANCE = new CatchResourceLiteral();
 
     private CatchResourceLiteral() {

@@ -28,7 +28,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Qualifier;
 import javax.interceptor.InterceptorBinding;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.config.xml.core.BeanResult;
 import org.jboss.solder.config.xml.core.BeanResultType;
 import org.jboss.solder.config.xml.core.XmlResult;

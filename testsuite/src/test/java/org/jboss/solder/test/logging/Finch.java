@@ -18,8 +18,8 @@ package org.jboss.solder.test.logging;
 
 import javax.inject.Inject;
 
-import org.jboss.logging.Category;
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
+import org.jboss.solder.logging.Category;
 
 public class Finch {
     @Inject

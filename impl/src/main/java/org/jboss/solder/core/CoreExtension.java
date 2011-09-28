@@ -39,7 +39,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.inject.Named;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.core.Exact;
 import org.jboss.solder.core.FullyQualified;
 import org.jboss.solder.core.Requires;

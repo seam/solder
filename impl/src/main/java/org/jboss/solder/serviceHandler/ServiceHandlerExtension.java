@@ -29,7 +29,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.bean.BeanBuilder;
 import org.jboss.solder.reflection.Reflections;
 import org.jboss.solder.serviceHandler.ServiceHandlerType;

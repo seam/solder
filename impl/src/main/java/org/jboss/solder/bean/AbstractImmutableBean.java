@@ -28,7 +28,7 @@ import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.literal.DefaultLiteral;
 import org.jboss.solder.util.collections.Arrays2;
 

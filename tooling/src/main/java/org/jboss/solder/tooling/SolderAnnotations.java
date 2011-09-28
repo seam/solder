@@ -22,9 +22,9 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import org.jboss.logging.Annotations;
-import org.jboss.logging.Log;
-import org.jboss.logging.Logger;
-import org.jboss.logging.MessageLogger;
+import org.jboss.solder.logging.Logger;
+import org.jboss.solder.logging.Log;
+import org.jboss.solder.logging.MessageLogger;
 import org.jboss.solder.messages.Cause;
 import org.jboss.solder.messages.Formatter;
 import org.jboss.solder.messages.Message;

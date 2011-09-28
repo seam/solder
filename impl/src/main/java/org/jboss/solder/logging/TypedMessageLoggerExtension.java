@@ -30,7 +30,6 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessProducerMethod;
 
-import org.jboss.logging.MessageLogger;
 import org.jboss.solder.bean.NarrowingBeanBuilder;
 
 /**

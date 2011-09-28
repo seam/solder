@@ -19,7 +19,7 @@ package org.jboss.solder.servlet.event;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.beanManager.BeanManagerAware;
 import org.jboss.solder.beanManager.BeanManagerUnavailableException;
 import org.jboss.solder.servlet.WebApplication;

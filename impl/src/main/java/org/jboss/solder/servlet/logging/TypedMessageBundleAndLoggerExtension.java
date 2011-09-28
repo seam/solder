@@ -32,7 +32,7 @@ import javax.enterprise.inject.spi.ProcessProducerMethod;
 
 import org.jboss.solder.bean.NarrowingBeanBuilder;
 import org.jboss.solder.literal.MessageBundleLiteral;
-import org.jboss.logging.MessageLogger;
+import org.jboss.solder.logging.MessageLogger;
 import org.jboss.solder.messages.MessageBundle;
 
 /**

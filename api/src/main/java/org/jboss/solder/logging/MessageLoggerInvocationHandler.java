@@ -15,12 +15,13 @@
  * limitations under the License.
  */
 
-package org.jboss.logging;
+package org.jboss.solder.logging;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.messages.Message;
 import org.jboss.solder.messages.MessageBundleInvocationHandler;
 

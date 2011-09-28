@@ -15,31 +15,29 @@
  * limitations under the License.
  */
 
-package org.jboss.logging;
+package org.jboss.solder.logging;
 
-import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.solder.messages.Message;
+import org.jboss.solder.messages.MessageBundle;
 
 /**
- * A typed logger method. Indicates that this method will log the associated {@link Message} to the logger system, as
- * opposed to being a simple message lookup.
+ * Signify that an interface is a typed logger interface.  A message logger interface may optionally extend other message logger
+ * interfaces and message bundle interfaces (see {@link MessageBundle}, as well as the {@link org.jboss.logging.BasicLogger} interface.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@Documented
-public @interface Log {
+@Target(ElementType.TYPE)
+public @interface MessageLogger {
 
     /**
-     * The log level at which this message should be logged.  Defaults to {@code INFO}.
+     * Get the project code for messages that have an associated code.
      *
-     * @return the log level
+     * @return the project code
      */
-    Logger.Level level() default Logger.Level.INFO;
+    String projectCode() default "";
 }

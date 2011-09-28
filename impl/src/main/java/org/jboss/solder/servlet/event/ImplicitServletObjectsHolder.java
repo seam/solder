@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.jboss.logging.Category;
+import org.jboss.solder.logging.Category;
 import org.jboss.solder.servlet.ServletRequestContext;
 import org.jboss.solder.servlet.beanManager.ServletContextAttributeProvider;
 import org.jboss.solder.servlet.http.HttpServletRequestContext;
