@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.fieldset">
+
+    <test:Knight>
+
+        <test:sword>
+            <value>
+                <test:Sword type="sharp"/>
+            </value>
+        </test:sword>
+
+        <test:horse>
+            <value>
+                <test:Horse>
+                    <test:name>
+                        <value>billy</value>
+                    </test:name>
+                    <test:shoe>
+                        <Inject/>
+                    </test:shoe>
+                </test:Horse>
+            </value>
+        </test:horse>
+
+    </test:Knight>
+
+</beans>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.fieldset">
+    <test:ELValueBean>
+        <replaces/>
+        <test:array>
+            <value>#{elValue}</value>
+        </test:array>
+        <test:list>
+            <value>#{elValue}</value>
+        </test:list>
+        <test:map>
+            <entry>
+                <key>#{elValue}</key>
+                <value>#{elValue}</value>
+            </entry>
+        </test:map>
+    </test:ELValueBean>
+
+</beans>

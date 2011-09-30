@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.injection">
+
+
+    <test:ProducerQualifier>
+        <Qualifier/>
+    </test:ProducerQualifier>
+
+    <test:ProducerBean>
+        <replaces/>
+        <test:value>
+            <Produces/>
+            <test:ProducerQualifier/>
+            <value>hello world</value>
+        </test:value>
+    </test:ProducerBean>
+
+    <test:RecieverBean>
+        <replaces/>
+        <test:value>
+            <test:ProducerQualifier/>
+            <Inject/>
+        </test:value>
+    </test:RecieverBean>
+
+</beans>

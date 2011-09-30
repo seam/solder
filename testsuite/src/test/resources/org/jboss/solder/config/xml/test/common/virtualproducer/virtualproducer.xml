@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.virtualproducer">
+
+    <String>
+        <Produces/>
+        <test:VirtualProducerQualifier/>
+        <value>Hello World</value>
+    </String>
+
+</beans>

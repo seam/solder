@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:s="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.interceptor">
+
+    <test:InterceptedBean>
+        <replaces/>
+        <test:method>
+            <test:Binding/>
+        </test:method>
+    </test:InterceptedBean>
+    
+    <test:Binding>
+        <s:InterceptorBinding/>
+    </test:Binding>
+
+    <test:InterceptorBean>
+        <s:replaces/>
+        <s:Interceptor/>
+        <test:Binding/>
+        <test:myMethod>
+            <s:AroundInvoke/>
+        </test:myMethod>
+    </test:InterceptorBean>
+
+</beans>
