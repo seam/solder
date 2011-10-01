@@ -3,15 +3,15 @@
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
-      <groupId>org.jboss.seam.solder</groupId>
-      <artifactId>seam-solder-parent</artifactId>
+      <groupId>org.jboss.solder</groupId>
+      <artifactId>solder-parent</artifactId>
       <version>3.1.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
-   <artifactId>seam-solder-distribution</artifactId>
-   <name>Seam Solder Distribution</name>
-   <description>Builds the Seam Solder release distribution</description>
+   <artifactId>solder-distribution</artifactId>
+   <name>Solder Distribution</name>
+   <description>Builds the Solder release distribution</description>
    <packaging>pom</packaging>
 
    <properties>
@@ -20,63 +20,63 @@
 
    <dependencies>
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-logging</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-logging</artifactId>
          <optional>true</optional>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-tooling</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-tooling</artifactId>
          <optional>true</optional>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-api</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-api</artifactId>
          <optional>true</optional>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-impl</artifactId>
          <optional>true</optional>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-api</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-api</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
          <optional>true</optional>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-impl</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
          <optional>true</optional>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-tooling</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-tooling</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
          <optional>true</optional>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-api</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-api</artifactId>
          <version>${project.version}</version>
          <classifier>javadoc</classifier>
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-reference-guide</artifactId>
+         <groupId>org.jboss.solder</groupId>
+         <artifactId>solder-reference-guide</artifactId>
          <version>${project.version}</version>
          <type>war</type>
          <optional>true</optional>
@@ -85,7 +85,7 @@
    </dependencies>
 
    <build>
-      <finalName>seam-solder</finalName>
+      <finalName>solder</finalName>
       <plugins>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
