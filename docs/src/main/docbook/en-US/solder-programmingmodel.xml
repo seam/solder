@@ -111,7 +111,7 @@ import org.jboss.seam.solder.core.Veto;</programlisting>
             For example:
          </para>
          
-         <programlisting role="JAVA">@Requires(EntityManager.class)
+         <programlisting role="JAVA">@Requires("javax.persistence.EntityManager")
 class EntityManagerProducer {
    
    @Produces

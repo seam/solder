@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  JBoss, Home of Professional Open Source
+  Copyright 2010, Red Hat Middleware LLC, and individual contributors
+  by the @authors tag. See the copyright.txt in the distribution for a
+  full listing of individual contributors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--> 
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="exception-handling">
+    <title>Servlet Exception Handling Integration</title>
+    <para>
+        Solder provides a simple, yet robust foundation for modules and/or applications to establish a customized exception 
+        handling process. Solder's Servlet integration ties into the exception handling model by forwarding all unhandled Servlet
+        exceptions to the exception handling framework so that they can be handled in a centralized, extensible and uniform manner.
+    </para>
+    <section id="background">
+        <title>Background</title>
+        
+        <para>
+            The Servlet API is extremely weak when it comes to handling exceptions. You are limited to handling exceptions
+            using the built-in, declarative controls provided in <literal>web.xml</literal>. Those controls give you two options:
+        </para>
+        
+        <itemizedlist>
+            <listitem>send an HTTP status code</listitem>
+            <listitem>forward to an error page (servlet path)</listitem>
+        </itemizedlist>
+        
+        <para>
+          To make matters more painful, you are required to configure these exception mappings in <literal>web.xml</literal>. It's really
+          a dinosaur left over from the past. In general, the Servlet specification seems to be pretty non-chalant about
+          exceptions, telling you to "handle them appropriately." But how?
+        </para>
+        
+        <para>
+            That's where the exception handling integration in comes in. Solder's exception handling framework traps all unhandled
+            exceptions (those that bubble outside of the Servlet and any filters) and forwards them on to Solder. 
+            Exception handlers are free to handle the exception anyway they like, either programmatically or via
+            a declarative mechanism.
+        </para>
+        <para>
+            If a exception handler registered with Solder handles the exception, then the integration closes the response
+            without raising any additional exceptions. If the exception is still unhandled after Solder finishes processing
+            it, then the integration allows it to pass through to the normal Servlet exception handler.
+        </para>
+    </section>
+    <section id="defining">
+        <title>Defining a exception handler for a web request</title> 
+        <para>
+            You can define an exception handler for a web request using the normal syntax of a Solder exception handler.
+            Let's catch any exception that bubbles to the top and respond with a 500 error.
+        </para>
+        <programlisting role="JAVA"><![CDATA[@HandlesExceptions
+public class ExceptionHandlers {
+    void handleAll(@Handles CaughtException<Throwable> caught, HttpServletResponse response) {
+        response.sendError(500, "You've been caught by Catch!"); 
+    }
+}]]></programlisting>
+        <para>
+            That's all there is to it! If you only want this handler to be used for exceptions raised by a web request
+            (excluding web service requests like JAX-RS), then you can add the <literal>@WebRequest</literal> qualifier to
+            the handler:
+        </para>
+        <programlisting role="JAVA"><![CDATA[@HandlesExceptions
+public class ExceptionHandlers {
+    void handleAll(@Handles @WebRequest
+            CaughtException<Throwable> caught, HttpServletResponse response) {
+        response.sendError(500, "You've been caught by Solder!"); 
+    }
+}]]></programlisting>
+        <note>
+            <para>
+                Currently, <literal>@WebRequest</literal> is required to catch exceptions initiated by the Servlet
+                integration because of a bug in Solder.
+            </para>
+        </note>
+        <para>
+            Let's consider another example. When the custom <literal>AccountNotFound</literal> exception is thrown,
+            we'll send a 404 response using this handler.
+        </para>
+        <programlisting role="JAVA"><![CDATA[void handleAccountNotFound(@Handles @WebRequest
+        CaughtException<AccountNotFound> caught, HttpServletResponse response) {
+    response.sendError(404, "Account not found: " + caught.getException().getAccountId()); 
+}]]></programlisting>
+
+    </section>
+<!--
+vim:et:ts=4:sw=4:tw=128
+-->
+</chapter>

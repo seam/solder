@@ -10,18 +10,42 @@
          <firstname>Pete</firstname>
          <surname>Muir</surname>
       </author>
+      
       <author>
          <firstname>Stuart</firstname>
          <surname>Douglas</surname>
       </author>
+      
       <author>
          <firstname>Dan</firstname>
          <surname>Allen</surname>
       </author>
+      
       <author>
          <firstname>John</firstname>
          <surname>Ament</surname>
       </author>
+      
+      <author>
+         <firstname>Shane</firstname>
+         <surname>Bryzak</surname>
+      </author>
+      
+      <author>
+         <firstname>Jason</firstname>
+         <surname>Porter</surname>
+      </author>
+      
+      <author>
+         <firstname>Lincoln</firstname>
+         <surname>Baxter III</surname>
+      </author>
+
+      <author>
+         <firstname>Nicklas</firstname>
+         <surname>Karlsson</surname>
+      </author>
+         
    
    </authorgroup>
 <!--

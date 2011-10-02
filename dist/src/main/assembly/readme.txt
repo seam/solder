@@ -1,5 +1,5 @@
 
- Seam Solder
+ Solder
  ${project.version}
 
  What is it?
@@ -29,10 +29,10 @@
  This distribution, as a whole, is licensed under the terms of the Apache
  Software License, Version 2.0 (ASL).
 
- Seam Solder URLs
+ Solder URLs
  ================
 
- Seam Solder:           http://sfwk.org/Seam3/Solder
+ Solder:                http://sfwk.org/Seam3/Solder
  Seam 3 project:        http://sfwk.org/Seam3
  Downloads:             http://sfwk.org/Seam3/DistributionDownloads
  Forums:                http://sfwk.org/Community/Seam3Users

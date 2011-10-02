@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  JBoss, Home of Professional Open Source
+  Copyright 2010, Red Hat Middleware LLC, and individual contributors
+  by the @authors tag. See the copyright.txt in the distribution for a
+  full listing of individual contributors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--> 
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="servlet-installation">
+	<title>Installation</title>
+	   
+    <section id="installation.pre-servlet-3">
+        <title>Pre-Servlet 3.0 configuration</title>
+        <para>
+            <emphasis>If you are using Java EE 5 or some other Servlet 2.5 container</emphasis>, then you need to manually
+            register several Servlet components in your application's web.xml to activate the features provided by this
+            module:
+	    </para>
+	    <programlisting role="XML"><![CDATA[<listener>
+    <listener-class>org.jboss.solder.servlet.event.ServletEventBridgeListener</listener-class>
+</listener>
+
+<servlet>
+    <servlet-name>Servlet Event Bridge Servlet</servlet-name>
+    <servlet-class>org.jboss.solder.servlet.event.ServletEventBridgeServlet</servlet-class>
+    <!-- Make load-on-startup large enough to be initialized last (thus destroyed first) -->
+    <load-on-startup>99999</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+   <servlet-name>Servlet Event Bridge Servlet</servlet-name>
+   <url-pattern>/*</url-pattern>
+</servlet-mapping>
+
+<filter>
+   <filter-name>Exception Filter</filter-name>
+   <filter-class>org.jboss.solder.servlet.exception.CatchExceptionFilter</filter-class>
+</filter>
+
+<filter-mapping>
+    <filter-name>Exception Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<filter>
+    <filter-name>Servlet Event Bridge Filter</filter-name>
+    <filter-class>org.jboss.solder.servlet.event.ServletEventBridgeFilter</filter-class>
+</filter>
+
+<filter-mapping>
+    <filter-name>Servlet Event Bridge Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>]]></programlisting>
+    </section>
+
+    <warning>
+        <para>
+            In order for the Servlet event bridge to properly fire the <literal>ServletContext</literal> initialized event, the CDI
+            runtime must be started at the time the Servlet listener is invoked. This ordering is guaranteed in a
+            compliant Java EE 6 environment. If you are using a CDI implementation in a Servlet environment (e.g., Weld
+            Servlet), and it relies on a Servlet listener to bootstrap, that listener must be registered
+            <emphasis>before</emphasis> any Servlet listener in <literal>web.xml</literal>.
+      </para>
+    </warning>
+
+    <para>
+        You're now ready to dive into the Servlet enhancements provided for you by Solder!
+    </para>
+<!--
+vim:et:ts=4:sw=4:tw=128
+-->
+</chapter>

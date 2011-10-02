@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  JBoss, Home of Professional Open Source
+  Copyright [2010], Red Hat, Inc., and individual contributors
+  by the @authors tag. See the copyright.txt in the distribution for a
+  full listing of individual contributors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="catch-introduction">
+   <title>Exception Handling - Introduction</title>
+
+   <para>
+      Exceptions are a fact of life. As developers, we need to be prepared to deal with them in the most graceful manner
+      possible. Solder's exception handling framework provides a simple, yet robust foundation for modules and/or applications 
+      to establish a customized exception handling process. By employing a delegation model, Solder allows exceptions to be addressed in
+      a centralized, extensible and uniform manner. 
+   </para>
+   
+   <para>
+      In this guide, we'll explore the various options you have for handling exceptions using Solder, as well as how
+      framework authors can offer Solder exception handling integration.
+   </para>
+  
+   <section id="catch_introduction.how_it_works">
+      <title>How Solder's Exception Handling Works</title>
+      
+      <!-- TODO: Include an image as an overview of how this works -->
+      <para>
+         Exception handling in Solder is based around the CDI eventing model. While the implementation of exception handlers may not be 
+         the same as a CDI event, and the programming model is not exactly the same as specifying a CDI event / 
+         observer, the concepts are very similar. Solder makes use of events for many of its features. Eventing
+         is actually the only way to start using Solder's exception handling.
+      </para>
+
+      <para>
+         This event is fired either by the application or a Solder exception handling integration. Solder then hands the exception off to a 
+         chain of registered handlers, which deal with the exception appropriately. The use of CDI events to connect 
+         exceptions to handlers makes this strategy of exception handling non-invasive and minimally coupled to the exception handling 
+         infrastructure. 
+      </para>
+         
+      <para>
+         The exception handling process remains mostly transparent to the developer. In most cases, you register an
+         exception handler simply by annotating a handler method. Alternatively, you can handle an exception
+         programmatically, just as you would observe an event in CDI.
+      </para>
+
+      <para>
+         There are other events that are fired during the exception handling process that will allow great customization
+         of the exception, stack trace, and status. This allows the application developer to have the most control
+         possible while still following a defined workflow. These events and other advanced usages will be covered in
+         the next chapter.
+      </para>
+   </section>
+
+   <!--
+   vim:et:ts=3:sw=3:tw=120
+   -->
+</chapter>

@@ -19,16 +19,15 @@
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
-      <groupId>org.jboss.seam.solder</groupId>
-      <artifactId>seam-solder-parent</artifactId>
+      <groupId>org.jboss.solder</groupId>
+      <artifactId>solder-parent</artifactId>
       <version>3.1.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
-   <groupId>org.jboss.seam.solder</groupId>
-   <artifactId>seam-solder-reference-guide</artifactId>
+   <artifactId>solder-reference-guide</artifactId>
    <packaging>jdocbook</packaging>
-   <name>Seam Solder Reference Guide</name>
+   <name>Solder Reference Guide</name>
 
    <properties>
       <pdf.name>${project.artifactId}.pdf</pdf.name>

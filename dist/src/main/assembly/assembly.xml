@@ -48,14 +48,14 @@
          <outputDirectory>artifacts</outputDirectory>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.solder:seam-solder-api</include>
-            <include>org.jboss.seam.solder:seam-solder</include>
-            <include>org.jboss.seam.solder:seam-solder-tooling</include>
-            <include>org.jboss.seam.solder:seam-solder-logging</include>
+            <include>org.jboss.solder:solder-api</include>
+            <include>org.jboss.solder:solder-impl</include>
+            <include>org.jboss.solder:solder-tooling</include>
+            <include>org.jboss.solder:solder-logging</include>
          </includes>
          <excludes>
-            <exclude>org.jboss.seam.solder:*:jar:javadoc</exclude>
-            <exclude>org.jboss.seam.solder:*:jar:sources</exclude>
+            <exclude>org.jboss.solder:*:jar:javadoc</exclude>
+            <exclude>org.jboss.solder:*:jar:sources</exclude>
          </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
@@ -66,7 +66,7 @@
          <useProjectArtifact>false</useProjectArtifact>
          <useTransitiveDependencies>true</useTransitiveDependencies>
          <excludes>
-            <exclude>org.jboss.seam.solder:*</exclude>
+            <exclude>org.jboss.solder:*</exclude>
          </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
@@ -77,9 +77,9 @@
          <unpack>true</unpack>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.solder:seam-solder-api:jar:javadoc</include>
-            <include>org.jboss.seam.solder:seam-solder-tooling:jar:javadoc</include>
-            <include>org.jboss.seam.solder:seam-solder-logging:jar:javadoc</include>
+            <include>org.jboss.solder:solder-api:jar:javadoc</include>
+            <include>org.jboss.solder:solder-tooling:jar:javadoc</include>
+            <include>org.jboss.solder:solder-logging:jar:javadoc</include>
          </includes>
          <unpackOptions>
             <excludes>
@@ -94,7 +94,7 @@
          <unpack>true</unpack>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.solder:seam-solder-reference-guide</include>
+            <include>org.jboss.solder:solder-reference-guide</include>
          </includes>
          <unpackOptions>
             <excludes>
@@ -109,10 +109,10 @@
          <unpack>true</unpack>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.solder:seam-solder-api:*:sources</include>
-            <include>org.jboss.seam.solder:seam-solder:*:sources</include>
-            <include>org.jboss.seam.solder:seam-solder-logging:*:sources</include>
-            <include>org.jboss.seam.solder:seam-solder-tooling:*:sources</include>
+            <include>org.jboss.solder:solder-api:*:sources</include>
+            <include>org.jboss.solder:solder-impl:*:sources</include>
+            <include>org.jboss.solder:solder-logging:*:sources</include>
+            <include>org.jboss.solder:solder-tooling:*:sources</include>
          </includes>
          <unpackOptions>
             <excludes>
