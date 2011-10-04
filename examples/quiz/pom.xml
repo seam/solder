@@ -4,24 +4,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.seam.config</groupId>
-        <artifactId>seam-config-parent</artifactId>
+        <groupId>org.jboss.solder</groupId>
+        <artifactId>solder-parent</artifactId>
         <version>3.1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>seam-config-example-quiz</artifactId>
+    <artifactId>solder-example-quiz</artifactId>
     <packaging>war</packaging>
 
-    <name>Seam Config Example: Quiz Example</name>
-
+    <name>Solder Example: Quiz Example</name>
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.jboss.seam.config</groupId>
-            <artifactId>seam-config-xml</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces</artifactId>
@@ -48,8 +43,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder</artifactId>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-impl</artifactId>
             <scope>runtime</scope>
         </dependency>
 

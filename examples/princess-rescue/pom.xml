@@ -3,16 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.seam.config</groupId>
-        <artifactId>seam-config-parent</artifactId>
+        <groupId>org.jboss.solder</groupId>
+        <artifactId>solder-parent</artifactId>
         <version>3.1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>seam-config-example-princess-rescue</artifactId>
+    <artifactId>solder-example-princess-rescue</artifactId>
     <packaging>war</packaging>
 
-    <name>Seam Config Example: Princess Rescue (XML)</name>
+    <name>Solder Example: Princess Rescue (XML)</name>
 
     <properties>
         <jboss.home>${env.JBOSS_HOME}</jboss.home>
@@ -20,11 +20,6 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.jboss.seam.config</groupId>
-            <artifactId>seam-config-xml</artifactId>
-        </dependency>
 
         <!-- Common to JEE and Servlet containers -->
         <dependency>
@@ -40,8 +35,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder</artifactId>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-impl</artifactId>
             <scope>runtime</scope>
         </dependency>
 
