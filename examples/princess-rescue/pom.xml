@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.seam.config</groupId>
-        <artifactId>seam-config-parent</artifactId>
+        <groupId>org.jboss.solder</groupId>
+        <artifactId>solder-parent</artifactId>
         <version>3.1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
@@ -14,17 +14,7 @@
 
     <name>Seam Config Example: Princess Rescue (XML)</name>
 
-    <properties>
-        <jboss.home>${env.JBOSS_HOME}</jboss.home>
-        <jboss.domain>default</jboss.domain>
-    </properties>
-
     <dependencies>
-
-        <dependency>
-            <groupId>org.jboss.seam.config</groupId>
-            <artifactId>seam-config-xml</artifactId>
-        </dependency>
 
         <!-- Common to JEE and Servlet containers -->
         <dependency>
@@ -38,11 +28,11 @@
             <artifactId>jboss-annotations-api_1.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-
+        
         <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-impl</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Functional test dependencies -->
@@ -84,6 +74,13 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
+            </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-war-plugin</artifactId>
+               <configuration>
+                  <webXml>${basedir}/src/main/jbossas-resources/web.xml</webXml>
+               </configuration>
             </plugin>
         </plugins>
     </build>
@@ -227,35 +224,9 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>javaee</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <webXml>${basedir}/src/main/jbossas-resources/web.xml</webXml>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>jboss-maven-plugin</artifactId>
-                        <configuration>
-                            <jbossHome>${jboss.home}</jbossHome>
-                            <serverName>${jboss.domain}</serverName>
-                            <fileNames>
-                                <fileName>${project.build.directory}/princess-rescue.war</fileName>
-                            </fileNames>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+        
         <profile>
             <id>jetty</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <dependencies>
                 <!-- JSF 2.0 API -->
                 <dependency>
