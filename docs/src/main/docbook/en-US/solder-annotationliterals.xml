@@ -25,7 +25,7 @@
    <para>
       Seam Solder provides a complete set of <literal>AnnotationLiteral</literal> classes cooresponding to the
       annotation types defined in the CDI (JSR-299) and Injection (JSR-330) specifications. These literals are located
-      in the <literal>org.jboss.seam.solder.literal</literal> package.
+      in the <literal>org.jboss.solder.literal</literal> package.
    </para>
    
    <para>

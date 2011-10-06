@@ -38,42 +38,31 @@
          If you are using <ulink url="http://maven.apache.org/">Maven</ulink> as your build tool, first make sure you
          have configured your build to use the <ulink
          url="http://community.jboss.org/wiki/MavenGettingStarted-Users">JBoss Community repository</ulink>, where you
-         can find all the Seam artifacts. Then, add the following single dependency to your pom.xml file to get started
-         using Seam Solder:
+	   can find all the Seam artifacts. Then, add the following dependencies to your <literal>pom.xml</literal>
+	   file to get started using Seam Solder:
 	   </para>
 	   <programlisting role="XML"><![CDATA[<dependency>
-   <groupId>org.jboss.seam.solder</groupId>
-   <artifactId>seam-solder</artifactId>
-   <version>${seam.solder.version}</version>
-</dependency>]]></programlisting>
-      <para>
-         This artifact includes the combined API and implementation.
-	   </para>
+   <groupId>org.jboss.solder</groupId>
+   <artifactId>solder-api</artifactId>
+   <version>${solder.version}</version>
+   <scope>compile</scope>
+</dependency>
+
+<dependency>
+   <groupId>org.jboss.solder</groupId>
+   <artifactId>solder-impl</artifactId>
+   <version>${solder.version}</version>
+   <scope>runtime</scope>
+</dependency>]]></programlisting>	   
 	   <tip>
 	   	<para>
-            Substitute the expression ${seam.solder.version} with the most recent or appropriate version of Seam Solder.
+            Substitute the expression ${solder.version} with the most recent or appropriate version of Seam Solder.
             Alternatively, you can create a <ulink
             href="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
             user-defined property</ulink> to satisfy this substitution so you can centrally manage the version.
          </para>
 	   </tip>
-      <para>
-         To be more strict, you can use the API at compile time and only include the implementation at runtime. This
-         protects you from inadvertantly depending on an implementation class.
-      </para>
-	   <programlisting role="XML"><![CDATA[<dependency>
-   <groupId>org.jboss.seam.solder</groupId>
-   <artifactId>seam-solder-api</artifactId>
-   <version>${seam.solder.version}</version>
-   <scope>compile</scope>
-</dependency>
-
-<dependency>
-   <groupId>org.jboss.seam.solder</groupId>
-   <artifactId>seam-solder-impl</artifactId>
-   <version>${seam.solder.version}</version>
-   <scope>runtime</scope>
-</dependency>]]></programlisting>
+      
 	   <para>
          In a Servlet 3.0 or Java EE 6 environment, <emphasis>your configuration is now complete!</emphasis>
       </para>

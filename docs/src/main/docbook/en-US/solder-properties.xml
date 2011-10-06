@@ -302,7 +302,7 @@
       
          <para>
             To create your own property criteria, simply implement the 
-            <code>org.jboss.seam.solder.properties.query.PropertyCriteria</code> interface, which declares the 
+            <code>org.jboss.solder.properties.query.PropertyCriteria</code> interface, which declares the 
             two methods <code>fieldMatches()</code> and <code>methodMatches</code>. In the following example, our 
             custom criteria implementation can be used to locate whole number properties:
          </para>

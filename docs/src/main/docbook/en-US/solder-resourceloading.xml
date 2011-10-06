@@ -94,7 +94,7 @@
 
       <para>
          And then register it as a service by placing the fully qualified class name of the implementation in a file
-         called <code>META-INF/services/org.jboss.seam.solder.resourceLoader.ResourceLoader</code>.
+         called <code>META-INF/services/org.jboss.solder.resourceLoader.ResourceLoader</code>.
       </para>
    </section>
 
