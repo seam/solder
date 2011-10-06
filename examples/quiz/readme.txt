@@ -1,6 +1,6 @@
 To run the example with embedded jetty:
 
-mvn jetty:run
+mvn jetty:run -Pjetty
 
 Then navigate to:
 
