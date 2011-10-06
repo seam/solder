@@ -37,7 +37,7 @@ import org.jboss.solder.config.xml.parser.SaxNode;
 public class RootNamespaceElementResolver implements NamespaceElementResolver {
 
     private final CompositeNamespaceElementResolver delegate;
-    static final String[] namspaces = {"java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor", "org.jboss.seam.config.xml.annotations.internal", "org.jboss.solder.core", "org.jboss.solder.unwraps", "org.jboss.solder.resourceLoader"};
+    static final String[] namspaces = {"java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor", "org.jboss.solder.config.xml.annotations.internal", "org.jboss.solder.core", "org.jboss.solder.unwraps", "org.jboss.solder.resourceLoader"};
 
     public RootNamespaceElementResolver() {
         delegate = new CompositeNamespaceElementResolver(namspaces);
