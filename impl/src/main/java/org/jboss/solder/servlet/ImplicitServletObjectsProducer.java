@@ -24,6 +24,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.servlet.event.ImplicitServletObjectsHolder;
 
 /**
@@ -32,6 +33,7 @@ import org.jboss.solder.servlet.event.ImplicitServletObjectsHolder;
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
+@Requires("javax.servlet.Servlet")
 public class ImplicitServletObjectsProducer {
     @Inject
     private ImplicitServletObjectsHolder holder;

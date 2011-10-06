@@ -43,6 +43,7 @@ import javax.enterprise.inject.spi.ProcessProducerMethod;
 import javax.servlet.http.Cookie;
 
 import org.jboss.solder.bean.NarrowingBeanBuilder;
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.literal.AnyLiteral;
 import org.jboss.solder.literal.DefaultLiteral;
 import org.jboss.solder.messages.Messages;
@@ -65,6 +66,7 @@ import org.jboss.solder.servlet.support.ServletMessages;
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
+@Requires("javax.servlet.Servlet")
 public class ServletExtension implements Extension {
     private transient ServletMessages messages = Messages.getBundle(ServletMessages.class);
 

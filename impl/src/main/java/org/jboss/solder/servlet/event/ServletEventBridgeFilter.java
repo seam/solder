@@ -26,6 +26,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.servlet.ServletRequestContext;
 import org.jboss.solder.servlet.event.ImplicitServletObjectsHolder.InternalServletResponseEvent;
 import org.jboss.solder.servlet.event.literal.DestroyedLiteral;
@@ -50,6 +51,7 @@ import org.jboss.solder.servlet.http.HttpServletRequestContext;
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
+@Requires("javax.servlet.Servlet")
 public class ServletEventBridgeFilter extends AbstractServletEventBridge implements Filter {
     public void init(FilterConfig config) throws ServletException {
     }

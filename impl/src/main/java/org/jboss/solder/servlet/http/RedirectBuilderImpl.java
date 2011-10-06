@@ -29,10 +29,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.solder.core.Requires;
+
 /**
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 // todo support switching to https/http
+@Requires("javax.servlet.Servlet")
 public class RedirectBuilderImpl implements RedirectBuilder {
     @Inject
     private HttpServletRequest request;

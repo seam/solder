@@ -4,11 +4,13 @@ import javax.enterprise.event.Observes;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.servlet.event.Initialized;
 
 /**
  * @author Dan Allen
  */
+@Requires("javax.servlet.Servlet")
 public class CharacterEncodingConfig {
     private String encoding;
 

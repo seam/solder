@@ -20,6 +20,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.servlet.ServletContext;
 
 import org.jboss.solder.beanManager.BeanManagerProvider;
+import org.jboss.solder.core.Requires;
 
 /**
  * A BeanManager provider for the Servlet Context attribute "javax.enterprise.inject.spi.BeanManager"
@@ -27,6 +28,7 @@ import org.jboss.solder.beanManager.BeanManagerProvider;
  * @author Nicklas Karlsson
  * @see org.jboss.solder.servlet.ImplicitServletObjectsProducer
  */
+@Requires("javax.servlet.Servlet")
 public class ServletContextAttributeProvider implements BeanManagerProvider {
     private static ThreadLocal<ServletContext> servletContext = new ThreadLocal<ServletContext>() {
         @Override
