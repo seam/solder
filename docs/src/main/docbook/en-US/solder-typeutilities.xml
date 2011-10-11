@@ -33,7 +33,8 @@
       </para>
     <programlisting role="JAVA"><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
         .readFromType(type, true) /* readFromType can read from an AnnotatedType or a class */
-        .addToClass(ModelLiteral.INSTANCE); /* add the @Model annotation */]]></programlisting>
+        .addToClass(ModelLiteral.INSTANCE); /* add the @Model annotation */
+        .create()]]></programlisting>
     <para>
          Here we create a new builder, and initialize it using an existing <code>AnnotatedType</code>. We can then
          add or remove annotations from the class, and its members. When we have finished modifying the type, we call
@@ -68,9 +69,9 @@
 
             public void redefine(RedefinitionContext<A> ctx) {
                 ctx.getAnnotationBuilder().remove(Unique.class);
-            }
-
-        });
+            } 
+        })
+        .create();
 AnnotatedType redefinedType = builder.create();]]></programlisting>
     <para>
          No doubt, this is a key blade in Solder&apos;s army knife arsenal of tools. You can quite effectively change the

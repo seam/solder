@@ -41,7 +41,7 @@
   <programlisting role="JAVA"><![CDATA[public class WicketIntegration extends BeanManagerAware {
 
    public WicketManager getWicketManager() {
-      Bean<?> bean = getBeanManager().getBean(Instance.class);
+      Bean<?> bean = getBeanManager().getBeans(IRequestListener.class);
       ... // and so on to lookup the bean
    }
    

@@ -216,7 +216,7 @@ package com.acme</programlisting>
       
 @FullyQualified @Named
 public class NamedBean {
-   public String getAge()
+   public int getAge()
    {
       return 5;
    }

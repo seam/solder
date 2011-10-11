@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,53 +16,44 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-defaultbeans">
-   <title>Default Beans</title>
-  
-   <para>
+  <title>Default Beans</title>
+  <para>
       Suppose you have a situation where you want to provide a default implementation of a particular service and allow
       the user to override it as needed. Although this may sound like a job for an alternative, they have some 
       restrictions that may make them undesirable in this situation. If you were to use an alternative it would require
       an entry in every <code>beans.xml</code> file in an application.
-   </para> 
-      
-   <para>
+   </para>
+  <para>
       Developers consuming the extension will have to open up the any jar file which references the default bean, and 
       edit the <code>beans.xml</code> file within, in order to override the service. This is where default beans come 
       in.
    </para>
-   
-   <para>
+  <para>
       Default beans allow you to create a default bean with a specified type and set of qualifiers. If no other bean is 
       installed that has the same type and qualifiers, then the default bean will be installed. 
    </para>
-   
-   <para>
-      Let's take a real world example - a module that allows you to evaluate EL (something that Seam Solder 
+  <para>
+      Let&apos;s take a real world example - a module that allows you to evaluate EL (something that Seam Solder 
       provides!). If JSF is available we want to use the <code>FunctionMapper</code> provided by the JSF implementation
       to resolve functions, otherwise we just want to use a a default <code>FunctionMapper</code> implementation that 
       does nothing. We can achieve this as follows:
    </para>
-   
-   <programlisting role="JAVA">@DefaultBean(type = FunctionMapper.class)
+  <programlisting role="JAVA">@DefaultBean(FunctionMapper.class)
 @Mapper
 class FunctionMapperImpl extends FunctionMapper {
 
    @Override
-   Method resolveFunction(String prefix, String localName) {
+   public Method resolveFunction(String prefix, String localName) {
       return null;
    }
 
 }</programlisting>
- 
-   <para>
+  <para>
       And in the JSF module:
    </para>
-   
-   <programlisting role="JAVA">class FunctionMapperProvider {
+  <programlisting role="JAVA">class FunctionMapperProvider {
    
    @Produces
    @Mapper
@@ -70,18 +61,15 @@ class FunctionMapperImpl extends FunctionMapper {
       return FacesContext.getCurrentInstance().getELContext().getFunctionMapper();
    }
 }</programlisting>
-      
-   <para>
+  <para>
       If <code>FunctionMapperProvider</code> is present then it will be used by default, otherwise the default 
       <code>FunctionMapperImpl</code> is used.
    </para>
-   
-   <para>
+  <para>
       A producer method or producer field may be defined to be a default producer by placing the
       <code>@DefaultBean</code> annotation on the producer. For example:
    </para>
-   
-   <programlisting role="JAVA">class CacheManager {
+  <programlisting role="JAVA">class CacheManager {
    
    @DefaultBean(Cache.class)
    Cache getCache() {
@@ -89,12 +77,10 @@ class FunctionMapperImpl extends FunctionMapper {
    }
      
 }</programlisting>
-   
-   <para>
+  <para>
       Any producer methods or producer fields declared on a default managed bean are automatically registered as default
       producers, with <code>Method.getGenericReturnType()</code> or <code>Field.getGenericType()</code> determining the
       type of the default producer. The default producer type can be overridden by specifying <code>@DefaultBean</code> 
       on the producer method or field. 
    </para>
-   
 </chapter>

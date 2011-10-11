@@ -178,7 +178,7 @@ class DurableQueueConfiguration extends MessageSystemConfiguration {
 @GenericType(MessageSystemConfiguration.class)
 @interface ACMEQueue {
 
-   String name();
+   String value();
    
 }</programlisting>
     <para>
@@ -232,7 +232,7 @@ class QueueManager {
       inject an object which exposes the policy the dispatcher will use when queuing messages. The client can then
       tweak the policy should they wish.
    </para>
-    <programlisting role="JAVA">@Generic(ACMEQueue.class)
+    <programlisting role="JAVA">@Generic
 class MessageManager {
 
    @Inject @Generic
