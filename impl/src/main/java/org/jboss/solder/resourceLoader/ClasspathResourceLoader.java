@@ -49,7 +49,7 @@ class ClasspathResourceLoader implements ResourceLoader {
         else {
             InputStream stream = ResourceProducer.class.getResourceAsStream(strippedName);
             if (stream != null) {
-                log.trace("Loaded resource from Seam classloader: " + strippedName);
+                log.trace("Loaded resource from Solder classloader: " + strippedName);
                 return stream;
             }
         }
@@ -71,7 +71,7 @@ class ClasspathResourceLoader implements ResourceLoader {
         else {
             URL url = ResourceProducer.class.getResource(strippedName);
             if (url != null) {
-                log.trace("Loaded resource from Seam classloader: " + strippedName);
+                log.trace("Loaded resource from Solder classloader: " + strippedName);
                 return url;
             }
         }

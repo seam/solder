@@ -78,7 +78,7 @@ public class XmlConfigExtension implements Extension {
      * This is the entry point for the extension
      */
     public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager) {
-        log.info("Seam Config XML provider starting...");
+        log.info("Solder Config XML provider starting...");
         List<Class<? extends XmlDocumentProvider>> providers = getDocumentProviders();
         for (Class<? extends XmlDocumentProvider> cl : providers) {
             try {

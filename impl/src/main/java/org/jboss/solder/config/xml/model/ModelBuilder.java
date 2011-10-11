@@ -137,7 +137,7 @@ public class ModelBuilder {
     protected XmlItem resolveNode(SaxNode node, XmlItem parent, Map<String, NamespaceElementResolver> resolvers, BeanManager manager) {
         NamespaceElementResolver resolver = resolveNamepsace(node.getNamespaceUri(), resolvers);
         if (resolver == null) {
-            log.warnf("Seam Config could not resolve XML namspace for: {}", node.getNamespaceUri());
+            log.warnf("Solder Config could not resolve XML namspace for: {}", node.getNamespaceUri());
             return null;
         }
         XmlItem ret = resolver.getItemForNamespace(node, parent);
