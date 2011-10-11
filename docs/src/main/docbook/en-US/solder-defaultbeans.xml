@@ -81,14 +81,14 @@ class FunctionMapperImpl extends FunctionMapper {
       <code>@DefaultBean</code> annotation on the producer. For example:
    </para>
    
-   <programlisting role="JAVA">class CacheManager {<abbrev>
+   <programlisting role="JAVA">class CacheManager {
    
    @DefaultBean(Cache.class)
    Cache getCache() {
       ...
    }
      
-}</abbrev></programlisting>
+}</programlisting>
    
    <para>
       Any producer methods or producer fields declared on a default managed bean are automatically registered as default

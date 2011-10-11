@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -14,105 +14,100 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+--><!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="servlet-events">
-    <title>Servlet event propagation</title>
-    <para>
-        By including the Solder module in your web application (and performing the necessary <link
-        linkend="installation.pre-servlet-3">listener configuration</link> for pre-Servlet 3.0 environments), the servlet
+  <title>Servlet event propagation</title>
+  <para>
+        By including the Solder module in your web application (and performing the necessary <link linkend="installation.pre-servlet-3">listener configuration</link> for pre-Servlet 3.0 environments), the servlet
         lifecycle events will be propagated to the CDI event bus so you can observe them using observer methods on CDI
         beans. Solder also fires additional lifecycle events not offered by the Servlet API, such as when the
         response is initialized and destroyed.
     </para>
-
-    <section id="events.servlet_context_lifecycle_events">
-        <title>Servlet context lifecycle events</title> 
-        <para>
+  <section id="events.servlet_context_lifecycle_events">
+    <title>Servlet context lifecycle events</title>
+    <para>
             This category of events corresponds to the event receivers on the
             <literal>javax.servlet.ServletContextListener</literal> interface. The event propagated is a
             <literal>javax.servlet.ServletContext</literal> (not a <literal>javax.servlet.ServletContextEvent</literal>,
             since the <literal>ServletContext</literal> is the only relevant information this event provides).
         </para>
-        <para>
+    <para>
             There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the servlet context.
         </para>
-        <para>
+    <para>
             The servlet context lifecycle events are documented in the table below.
         </para>
-        <para>
+    <para>
             <informaltable>
-                <tgroup cols="3">
-                    <colspec colnum="1" colwidth="1*" />
-                    <colspec colnum="2" colwidth="1*" />
-                    <colspec colnum="3" colwidth="2*" />
-                    <thead>
-                        <row>
-                            <entry>Qualifier</entry>
-                            <entry>Type</entry>
-                            <entry>Description</entry>
-                        </row>
-                    </thead>
-                    <tbody>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>javax.servlet.ServletContext</entry>
-                            <entry>The servlet context is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>javax.servlet.ServletContext</entry>
-                            <entry>The servlet context is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>javax.servlet.ServletContext</entry>
-                            <entry>The servlet context is destroyed</entry>
-                        </row>
-                    </tbody>
-                </tgroup>
-            </informaltable>
+        <tgroup cols="3">
+          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="2" colwidth="1*"/>
+          <colspec colnum="3" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Qualifier</entry>
+              <entry>Type</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>javax.servlet.ServletContext</entry>
+              <entry>The servlet context is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>javax.servlet.ServletContext</entry>
+              <entry>The servlet context is initialized</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>javax.servlet.ServletContext</entry>
+              <entry>The servlet context is destroyed</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
         </para>
-        <para>
+    <para>
             If you want to listen to both lifecycle events, leave out the qualifiers on the observer method:
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeServletContext(@Observes ServletContext ctx) {
+    <programlisting role="JAVA"><![CDATA[public void observeServletContext(@Observes ServletContext ctx) {
     System.out.println(ctx.getServletContextName() + " initialized or destroyed");
 }]]></programlisting>
-        <para>
-            If you are interested in only a particular lifecycle phase, use one of the provided qualifers:
+    <para>
+            If you are interested in only a particular lifecycle phase, use one of the provided qualifiers:
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeServletContextInitialized(@Observes @Initialized ServletContext ctx) {
+    <programlisting role="JAVA"><![CDATA[public void observeServletContextInitialized(@Observes @Initialized ServletContext ctx) {
     System.out.println(ctx.getServletContextName() + " initialized");
 }]]></programlisting>
-        <para>
+    <para>
             As with all CDI observers, the name of the method is insignificant.
         </para>
-        <para>
+    <para>
             These events are fired using a built-in servlet context listener. The CDI environment will be active when these
             events are fired (including when Weld is used in a Servlet container). The listener is configured to come
             before listeners in other extensions, so the initialized event is fired before other servlet context listeners
             are notified and the destroyed event is fired after other servlet context listeners are notified. However, this
             order cannot be not guaranteed if another extension library is also configured to be ordered before others.
         </para>
-    </section>
-
-    <section id="events.application_initialization">
-        <title>Application initialization</title>
-        <para>
+  </section>
+  <section id="events.application_initialization">
+    <title>Application initialization</title>
+    <para>
             The servlet context initialized event described in the previous section provides an ideal opportunity to
-            perform startup logic <emphasis>as an alterative to using an EJB 3.1 startup singleton</emphasis>. Even better,
+            perform startup logic <emphasis>as an alternative to using an EJB 3.1 startup singleton</emphasis>. Even better,
             you can configure the bean to be destroyed immediately following the initialization routine by leaving it as
             dependent scoped (dependent-scoped observers only live for the duration of the observe method invocation).
         </para>
-        <para>
-            Here's an example of entering seed data into the database in a development environment (as indicated by a
+    <para>
+            Here&apos;s an example of entering seed data into the database in a development environment (as indicated by a
             stereotype annotation named <literal>@Development</literal>).
         </para>
-        <programlisting role="JAVA"><![CDATA[@Stateless
+    <programlisting role="JAVA"><![CDATA[@Stateless
 @Development
 public class SeedDataImporter {
     @PersistenceContext
@@ -122,282 +117,280 @@ public class SeedDataImporter {
         em.persist(new Product(1, "Black Hole", 100.0));
     }
 }]]></programlisting>
-        <para>
-            If you'd rather not tie yourself to the Servlet API, you can observe the <literal>org.jboss.solder.servlet.WebApplication</literal>
+    <para>
+            If you&apos;d rather not tie yourself to the Servlet API, you can observe the <literal>org.jboss.solder.servlet.WebApplication</literal>
             rather than the <literal>ServletContext</literal>. <literal>WebApplication</literal> is a informational object
             provided by Solder that holds select information about the <literal>ServletContext</literal> such as the
             application name, context path, server info and start time.
         </para>
-        <para>
+    <para>
             The web application lifecycle events are documented in the table below.
         </para>
-        <para>
+    <para>
             <informaltable>
-                <tgroup cols="3">
-                    <colspec colnum="1" colwidth="1*" />
-                    <colspec colnum="2" colwidth="1*" />
-                    <colspec colnum="3" colwidth="2*" />
-                    <thead>
-                        <row>
-                            <entry>Qualifier</entry>
-                            <entry>Type</entry>
-                            <entry>Description</entry>
-                        </row>
-                    </thead>
-                    <tbody>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>WebApplication</entry>
-                            <entry>The web application is initialized, started or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>WebApplication</entry>
-                            <entry>The web application is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Started</entry>
-                            <entry>WebApplication</entry>
-                            <entry>The web application is started (ready)</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>WebApplication</entry>
-                            <entry>The web application is destroyed</entry>
-                        </row>
-                    </tbody>
-                </tgroup>
-            </informaltable>
+        <tgroup cols="3">
+          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="2" colwidth="1*"/>
+          <colspec colnum="3" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Qualifier</entry>
+              <entry>Type</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>WebApplication</entry>
+              <entry>The web application is initialized, started or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>WebApplication</entry>
+              <entry>The web application is initialized</entry>
+            </row>
+            <row>
+              <entry>@Started</entry>
+              <entry>WebApplication</entry>
+              <entry>The web application is started (ready)</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>WebApplication</entry>
+              <entry>The web application is destroyed</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
         </para>
-        <para>
-            Here's the equivalent of receiving the servlet context initialized event without coupling to the Servlet API:
+    <para>
+            Here&apos;s the equivalent of receiving the servlet context initialized event without coupling to the Servlet API:
         </para>
-        <programlisting role="JAVA"><![CDATA[public void loadData(@Observes @Initialized WebApplication webapp) {
+    <programlisting role="JAVA"><![CDATA[public void loadData(@Observes @Initialized WebApplication webapp) {
     System.out.println(webapp.getName() + " initialized at " + new Date(webapp.getStartTime()));
 }]]></programlisting>
-        <para>
+    <para>
             If you want to perform initialization as late as possible, after all other initialization of the application
             is complete, you can observe the <literal>WebApplication</literal> event qualified with
             <literal>@Started</literal>.
         </para>
-        <programlisting role="JAVA"><![CDATA[public void onStartup(@Observes @Started WebApplication webapp) {
+    <programlisting role="JAVA"><![CDATA[public void onStartup(@Observes @Started WebApplication webapp) {
     System.out.println("Application at " + webapp.getContextPath() + " ready to handle requests");
 }]]></programlisting>
-        <para>
+    <para>
             The <literal>@Started</literal> event is fired in the init method of a built-in Servlet with a load-on-startup
             value of 99999.
         </para>
-        <para>
+    <para>
             You can also use <literal>WebApplication</literal> with the <literal>@Destroyed</literal> qualifier to be
             notified when the web application is stopped. This event is fired by the aforementioned built-in Servlet during
-            it's destroy method, so likely it should fire when the application is first released.
+            it&apos;s destroy method, so likely it should fire when the application is first released.
         </para>
-        <programlisting role="JAVA"><![CDATA[public void onShutdown(@Observes @Destroyed WebApplication webapp) {
+    <programlisting role="JAVA"><![CDATA[public void onShutdown(@Observes @Destroyed WebApplication webapp) {
     System.out.println("Application at " + webapp.getContextPath() + " no longer handling requests");
 }]]></programlisting>
-    </section>
-
-    <section id="events.servlet_request_lifecycle_events">
-        <title>Servlet request lifecycle events</title> 
-        <para>
+  </section>
+  <section id="events.servlet_request_lifecycle_events">
+    <title>Servlet request lifecycle events</title>
+    <para>
             This category of events corresponds to the event receivers on the
             <literal>javax.servlet.ServletRequestListener</literal> interface. The event propagated is a
             <literal>javax.servlet.ServletRequest</literal> (not a <literal>javax.servlet.ServletRequestEvent</literal>,
             since the <literal>ServletRequest</literal> is the only relevant information this event provides).
         </para>
-        <para>
+    <para>
             There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the servlet request and a secondary qualifier to filter events by servlet path
             (<literal>@Path</literal>).
         </para>
-        <para>
+    <para>
             The servlet request lifecycle events are documented in the table below.
         </para>
-        <para>
+    <para>
             <informaltable>
-                <tgroup cols="3">
-                    <colspec colnum="1" colwidth="1*" />
-                    <colspec colnum="2" colwidth="1*" />
-                    <colspec colnum="3" colwidth="2*" />
-                    <thead>
-                        <row>
-                            <entry>Qualifier</entry>
-                            <entry>Type</entry>
-                            <entry>Description</entry>
-                        </row>
-                    </thead>
-                    <tbody>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>javax.servlet.ServletRequest</entry>
-                            <entry>A servlet request is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>javax.servlet.ServletRequest</entry>
-                            <entry>A servlet request is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>javax.servlet.ServletRequest</entry>
-                            <entry>A servlet request is destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>javax.servlet.http.HttpServletRequest</entry>
-                            <entry>An HTTP servlet request is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>javax.servlet.http.HttpServletRequest</entry>
-                            <entry>An HTTP servlet request is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>javax.servlet.http.HttpServletRequest</entry>
-                            <entry>An HTTP servlet request is destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Path(PATH)</entry>
-                            <entry>javax.servlet.http.HttpServletRequest</entry>
-                            <entry>Selects HTTP request with servlet path matching PATH (drop leading slash)</entry>
-                        </row>
-                    </tbody>
-                </tgroup>
-            </informaltable>
+        <tgroup cols="3">
+          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="2" colwidth="1*"/>
+          <colspec colnum="3" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Qualifier</entry>
+              <entry>Type</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>javax.servlet.ServletRequest</entry>
+              <entry>A servlet request is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>javax.servlet.ServletRequest</entry>
+              <entry>A servlet request is initialized</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>javax.servlet.ServletRequest</entry>
+              <entry>A servlet request is destroyed</entry>
+            </row>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>javax.servlet.http.HttpServletRequest</entry>
+              <entry>An HTTP servlet request is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>javax.servlet.http.HttpServletRequest</entry>
+              <entry>An HTTP servlet request is initialized</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>javax.servlet.http.HttpServletRequest</entry>
+              <entry>An HTTP servlet request is destroyed</entry>
+            </row>
+            <row>
+              <entry>@Path(PATH)</entry>
+              <entry>javax.servlet.http.HttpServletRequest</entry>
+              <entry>Selects HTTP request with servlet path matching PATH (drop leading slash)</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
         </para>
-        <para>
+    <para>
             If you want to listen to both lifecycle events, leave out the qualifiers on the observer: 
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeRequest(@Observes ServletRequest request) {
+    <programlisting role="JAVA"><![CDATA[public void observeRequest(@Observes ServletRequest request) {
     // Do something with the servlet "request" object
 }]]></programlisting>
-        <para>
-            If you are interested in only a particular lifecycle phase, use a qualifer:
+    <para>
+            If you are interested in only a particular lifecycle phase, use a qualifier:
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeRequestInitialized(@Observes @Initialized ServletRequest request) {
+    <programlisting role="JAVA"><![CDATA[public void observeRequestInitialized(@Observes @Initialized ServletRequest request) {
     // Do something with the servlet "request" object upon initialization
 }]]></programlisting>
-        <para>
+    <para>
             You can also listen specifically for a <literal>javax.servlet.http.HttpServletRequest</literal>
             simply by changing the expected event type.
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeRequestInitialized(@Observes @Initialized HttpServletRequest request) {
+    <programlisting role="JAVA"><![CDATA[public void observeRequestInitialized(@Observes @Initialized HttpServletRequest request) {
     // Do something with the HTTP servlet "request" object upon initialization
 }]]></programlisting>
-        <para>
+    <para>
             You can associate an observer with a particular servlet request path (exact match, no leading slash). 
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeRequestInitialized(@Observes @Initialized @Path("offer") HttpServletRequest request) {
+    <programlisting role="JAVA"><![CDATA[public void observeRequestInitialized(@Observes @Initialized @Path("offer") HttpServletRequest request) {
     // Do something with the HTTP servlet "request" object upon initialization
     // only when servlet path /offer is requested
 }]]></programlisting>
-        <para>
+    <para>
             As with all CDI observers, the name of the method is insignificant.
         </para>
-        <para>
+    <para>
             These events are fired using a built-in servlet request listener. The listener is configured to come before
             listeners in other extensions, so the initialized event is fired before other servlet request listeners are
             notified and the destroyed event is fired after other servlet request listeners are notified. However, this
             order cannot be not guaranteed if another extension library is also configured to be ordered before others.
         </para>
-    </section>
-
-    <section id="events.servlet_response_lifecycle_events">
-        <title>Servlet response lifecycle events</title> 
-        <para>
+  </section>
+  <section id="events.servlet_response_lifecycle_events">
+    <title>Servlet response lifecycle events</title>
+    <para>
             The Servlet API does not provide a listener for accessing the lifecycle of a response. Therefore, Solder
             simulates a response lifecycle listener using CDI events. The event object fired is a
             <literal>javax.servlet.ServletResponse</literal>.
         </para>
-        <para>
+    <para>
             There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the servlet response and a secondary qualifier to filter events by servlet path
             (<literal>@Path</literal>).
         </para>
-        <para>
+    <para>
             The servlet response lifecycle events are documented in the table below.
         </para>
-        <para>
+    <para>
             <informaltable>
-                <tgroup cols="3">
-                    <colspec colnum="1" colwidth="1*" />
-                    <colspec colnum="2" colwidth="1*" />
-                    <colspec colnum="3" colwidth="2*" />
-                    <thead>
-                        <row>
-                            <entry>Qualifier</entry>
-                            <entry>Type</entry>
-                            <entry>Description</entry>
-                        </row>
-                    </thead>
-                    <tbody>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>javax.servlet.ServletResponse</entry>
-                            <entry>A servlet response is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>javax.servlet.ServletResponse</entry>
-                            <entry>A servlet response is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>javax.servlet.ServletResponse</entry>
-                            <entry>A servlet response is destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>javax.servlet.http.HttpServletResponse</entry>
-                            <entry>An HTTP servlet response is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>javax.servlet.http.HttpServletResponse</entry>
-                            <entry>An HTTP servlet response is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>javax.servlet.http.HttpServletResponse</entry>
-                            <entry>An HTTP servlet response is destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Path(PATH)</entry>
-                            <entry>javax.servlet.http.HttpServletResponse</entry>
-                            <entry>Selects HTTP response with servlet path matching PATH (drop leading slash)</entry>
-                        </row>
-                    </tbody>
-                </tgroup>
-            </informaltable>
+        <tgroup cols="3">
+          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="2" colwidth="1*"/>
+          <colspec colnum="3" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Qualifier</entry>
+              <entry>Type</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>javax.servlet.ServletResponse</entry>
+              <entry>A servlet response is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>javax.servlet.ServletResponse</entry>
+              <entry>A servlet response is initialized</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>javax.servlet.ServletResponse</entry>
+              <entry>A servlet response is destroyed</entry>
+            </row>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>javax.servlet.http.HttpServletResponse</entry>
+              <entry>An HTTP servlet response is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>javax.servlet.http.HttpServletResponse</entry>
+              <entry>An HTTP servlet response is initialized</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>javax.servlet.http.HttpServletResponse</entry>
+              <entry>An HTTP servlet response is destroyed</entry>
+            </row>
+            <row>
+              <entry>@Path(PATH)</entry>
+              <entry>javax.servlet.http.HttpServletResponse</entry>
+              <entry>Selects HTTP response with servlet path matching PATH (drop leading slash)</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
         </para>
-        <para>
+    <para>
             If you want to listen to both lifecycle events, leave out the qualifiers. 
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeResponse(@Observes ServletResponse response) {
+    <programlisting role="JAVA"><![CDATA[public void observeResponse(@Observes ServletResponse response) {
     // Do something with the servlet "response" object
 }]]></programlisting>
-        <para>
-            If you are interested in only a particular one, use a qualifer
+    <para>
+            If you are interested in only a particular one, use a qualifier
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeResponseInitialized(@Observes @Initialized ServletResponse response) {
+    <programlisting role="JAVA"><![CDATA[public void observeResponseInitialized(@Observes @Initialized ServletResponse response) {
     // Do something with the servlet "response" object upon initialization
 }]]></programlisting>
-        <para>
+    <para>
             You can also listen specifically for a <literal>javax.servlet.http.HttpServletResponse</literal>
             simply by changing the expected event type.
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeResponseInitialized(@Observes @Initialized HttpServletResponse response) {
+    <programlisting role="JAVA"><![CDATA[public void observeResponseInitialized(@Observes @Initialized HttpServletResponse response) {
     // Do something with the HTTP servlet "response" object upon initialization
 }]]></programlisting>
-        <para>
+    <para>
             If you need access to the <literal>ServletRequest</literal> and/or the <literal>ServletContext</literal>
-            objects at the same time, you can simply add them as parameters to the observer methods. For instance, let's
+            objects at the same time, you can simply add them as parameters to the observer methods. For instance, let&apos;s
             assume you want to manually set the character encoding of the request and response.
         </para>
-        <programlisting role="JAVA"><![CDATA[public void setupEncoding(@Observes @Initialized ServletResponse res, ServletRequest req) throws Exception {
+    <programlisting role="JAVA"><![CDATA[public void setupEncoding(@Observes @Initialized ServletResponse res, ServletRequest req) throws Exception {
     if (this.override || req.getCharacterEncoding() == null) {
         req.setCharacterEncoding(encoding);
         if (override) {
@@ -405,92 +398,91 @@ public class SeedDataImporter {
         }
     }
 }]]></programlisting>
-        <para>
+    <para>
             As with all CDI observers, the name of the method is insignificant.
         </para>
-        <tip>
-            <para>
+    <tip>
+      <para>
                 If the response is committed by one of the observers, the request will not be sent to the target Servlet and
                 the filter chain is skipped.
             </para>
-        </tip>
-    </section>
-
-    <section id="events.servlet_request_context_lifecycle_events">
-        <title>Servlet request context lifecycle events</title> 
-        <para>
+    </tip>
+  </section>
+  <section id="events.servlet_request_context_lifecycle_events">
+    <title>Servlet request context lifecycle events</title>
+    <para>
             Rather than having to observe the request and response as separate events, or include the request object as an
-            parameter on a response observer, it would be convenient to be able to observe them as a pair. That's why Solder 
+            parameter on a response observer, it would be convenient to be able to observe them as a pair. That&apos;s why Solder 
             fires an synthetic lifecycle event for the wrapper type <literal>ServletRequestContext</literal>. The
             <literal>ServletRequestContext</literal> holds the <literal>ServletRequest</literal> and the
             <literal>ServletResponse</literal> objects, and also provides access to the <literal>ServletContext</literal>.
         </para>
-        <para>
+    <para>
             There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the servlet request context and a secondary qualifier to filter events by servlet path
             (<literal>@Path</literal>).
         </para>
-        <para>
+    <para>
             The servlet request context lifecycle events are documented in the table below.
         </para>
-        <para>
+    <para>
             <informaltable>
-                <tgroup cols="3">
-                    <colspec colnum="1" colwidth="1*" />
-                    <colspec colnum="2" colwidth="1*" />
-                    <colspec colnum="3" colwidth="2*" />
-                    <thead>
-                        <row>
-                            <entry>Qualifier</entry>
-                            <entry>Type</entry>
-                            <entry>Description</entry>
-                        </row>
-                    </thead>
-                    <tbody>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>ServletRequestContext</entry>
-                            <entry>A request is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>ServletRequestContext</entry>
-                            <entry>A request is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>ServletRequestContext</entry>
-                            <entry>A request is destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>HttpServletRequestContext</entry>
-                            <entry>An HTTP request is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>HttpServletRequestContext</entry>
-                            <entry>An HTTP request is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>HttpServletRequestContext</entry>
-                            <entry>An HTTP request is destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Path(PATH)</entry>
-                            <entry>HttpServletRequestContext</entry>
-                            <entry>Selects HTTP request with servlet path matching PATH (drop leading slash)</entry>
-                        </row>
-                    </tbody>
-                </tgroup>
-            </informaltable>
+        <tgroup cols="3">
+          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="2" colwidth="1*"/>
+          <colspec colnum="3" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Qualifier</entry>
+              <entry>Type</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>ServletRequestContext</entry>
+              <entry>A request is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>ServletRequestContext</entry>
+              <entry>A request is initialized</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>ServletRequestContext</entry>
+              <entry>A request is destroyed</entry>
+            </row>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>HttpServletRequestContext</entry>
+              <entry>An HTTP request is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>HttpServletRequestContext</entry>
+              <entry>An HTTP request is initialized</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>HttpServletRequestContext</entry>
+              <entry>An HTTP request is destroyed</entry>
+            </row>
+            <row>
+              <entry>@Path(PATH)</entry>
+              <entry>HttpServletRequestContext</entry>
+              <entry>Selects HTTP request with servlet path matching PATH (drop leading slash)</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
         </para>
-        <para>
-            Let's revisit the character encoding observer and examine how it can be simplified by this event:
+    <para>
+            Let&apos;s revisit the character encoding observer and examine how it can be simplified by this event:
         </para>
-        <programlisting role="JAVA"><![CDATA[public void setupEncoding(@Observes @Initialized ServletRequestContext ctx) throws Exception {
+    <programlisting role="JAVA"><![CDATA[public void setupEncoding(@Observes @Initialized ServletRequestContext ctx) throws Exception {
     if (this.override || ctx.getRequest().getCharacterEncoding() == null) {
         ctx.getRequest().setCharacterEncoding(encoding);
         if (override) {
@@ -498,168 +490,164 @@ public class SeedDataImporter {
         }
     }
 }]]></programlisting>
-        <para>
+    <para>
             You can also observe the <literal>HttpServletRequestContext</literal> to be notified only on HTTP requests.
         </para>
-        <tip>
-            <para>
+    <tip>
+      <para>
                 If the response is committed by one of the observers, the request will not be sent to the target Servlet and
                 the filter chain is skipped.
             </para>
-        </tip>
-        <para>
+    </tip>
+    <para>
             Since observers that have access to the response can commit it, an <literal>HttpServletRequestContext</literal>
-            observer that receives the initialized event can effectively work as a filter or even a Servlet. Let's consider
+            observer that receives the initialized event can effectively work as a filter or even a Servlet. Let&apos;s consider
             a primitive welcome page filter that redirects visitors to the start page:
         </para>
-        <programlisting role="JAVA"><![CDATA[public void redirectToStartPage(@Observes @Path("") @Initialized HttpServletRequestContext ctx)
+    <programlisting role="JAVA"><![CDATA[public void redirectToStartPage(@Observes @Path("") @Initialized HttpServletRequestContext ctx)
         throws Exception {
     String startPage = ctx.getResponse().encodeRedirectURL(ctx.getContextPath() + "/start.jsf");
     ctx.getResponse().sendRedirect(startPage);
 }]]></programlisting>
-        <para>
+    <para>
             Now you never have to write a Servlet listener, Servlet or Filter again!
         </para>
-    </section>
-    
-    <section id="events.session_lifecycle_events">
-        <title>Session lifecycle events</title> 
-        <para>
+  </section>
+  <section id="events.session_lifecycle_events">
+    <title>Session lifecycle events</title>
+    <para>
             This category of events corresponds to the event receivers on the
             <literal>javax.servlet.http.HttpSessionListener</literal> interface. The event propagated is a
             <literal>javax.servlet.http.HttpSession</literal> (not a
             <literal>javax.servlet.http.HttpSessionEvent</literal>, since the <literal>HttpSession</literal> is the only
             relevant information this event provides).
         </para>
-        <para>
+    <para>
             There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@Initialized</literal> and <literal>@Destroyed</literal>) that can be used to observe a specific
             lifecycle phase of the session.
         </para>
-        <para>
+    <para>
             The session lifecycle events are documented in the table below.
         </para>
-        <para>
+    <para>
             <informaltable>
-                <tgroup cols="3">
-                    <colspec colnum="1" colwidth="1*" />
-                    <colspec colnum="2" colwidth="1*" />
-                    <colspec colnum="3" colwidth="2*" />
-                    <thead>
-                        <row>
-                            <entry>Qualifier</entry>
-                            <entry>Type</entry>
-                            <entry>Description</entry>
-                        </row>
-                    </thead>
-                    <tbody>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>javax.servlet.http.HttpSession</entry>
-                            <entry>The session is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@Initialized</entry>
-                            <entry>javax.servlet.http.HttpSession</entry>
-                            <entry>The session is initialized</entry>
-                        </row>
-                        <row>
-                            <entry>@Destroyed</entry>
-                            <entry>javax.servlet.http.HttpSession</entry>
-                            <entry>The session is destroyed</entry>
-                        </row>
-                    </tbody>
-                </tgroup>
-            </informaltable>
+        <tgroup cols="3">
+          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="2" colwidth="1*"/>
+          <colspec colnum="3" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Qualifier</entry>
+              <entry>Type</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>javax.servlet.http.HttpSession</entry>
+              <entry>The session is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@Initialized</entry>
+              <entry>javax.servlet.http.HttpSession</entry>
+              <entry>The session is initialized</entry>
+            </row>
+            <row>
+              <entry>@Destroyed</entry>
+              <entry>javax.servlet.http.HttpSession</entry>
+              <entry>The session is destroyed</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
         </para>
-        <para>
+    <para>
             If you want to listen to both lifecycle events, leave out the qualifiers. Note that omitting all qualifiers
             will observe all events with a <literal>HttpSession</literal> as event object.
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeSession(@Observes HttpSession session) {
+    <programlisting role="JAVA"><![CDATA[public void observeSession(@Observes HttpSession session) {
     // Do something with the "session" object
 }]]></programlisting>
-        <para>
-            If you are interested in only a particular one, use a qualifer
+    <para>
+            If you are interested in only a particular one, use a qualifier
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeSessionInitialized(@Observes @Initialized HttpSession session) {
+    <programlisting role="JAVA"><![CDATA[public void observeSessionInitialized(@Observes @Initialized HttpSession session) {
     // Do something with the "session" object upon being initialized
 }]]></programlisting>
-        <para>
+    <para>
             As with all CDI observers, the name of the method is insignificant.
         </para>
-    </section>
-
-    <section id="events.session_activation_events">
-        <title>Session activation events</title> 
-        <para>
+  </section>
+  <section id="events.session_activation_events">
+    <title>Session activation events</title>
+    <para>
             This category of events corresponds to the event receivers on the
             <literal>javax.servlet.http.HttpSessionActivationListener</literal> interface. The event propagated is a
             <literal>javax.servlet.http.HttpSession</literal> (not a
             <literal>javax.servlet.http.HttpSessionEvent</literal>, since the <literal>HttpSession</literal> is the only
             relevant information this event provides).
         </para>
-        <para>
+    <para>
             There are two qualifiers provided in the <literal>org.jboss.solder.servlet.event</literal> package
             (<literal>@DidActivate</literal> and <literal>@WillPassivate</literal>) that can be used to observe a specific
             lifecycle phase of the session.
         </para>
-        <para>
+    <para>
             The session activation events are documented in the table below.
         </para>
-        <para>
+    <para>
             <informaltable>
-                <tgroup cols="3">
-                    <colspec colnum="1" colwidth="1*" />
-                    <colspec colnum="2" colwidth="1*" />
-                    <colspec colnum="3" colwidth="2*" />
-                    <thead>
-                        <row>
-                            <entry>Qualifier</entry>
-                            <entry>Type</entry>
-                            <entry>Description</entry>
-                        </row>
-                    </thead>
-                    <tbody>
-                        <row>
-                            <entry>@Default (optional)</entry>
-                            <entry>javax.servlet.http.HttpSession</entry>
-                            <entry>The session is initialized or destroyed</entry>
-                        </row>
-                        <row>
-                            <entry>@DidActivate</entry>
-                            <entry>javax.servlet.http.HttpSession</entry>
-                            <entry>The session is activated</entry>
-                        </row>
-                        <row>
-                            <entry>@WillPassivate</entry>
-                            <entry>javax.servlet.http.HttpSession</entry>
-                            <entry>The session will passivate</entry>
-                        </row>
-                    </tbody>
-                </tgroup>
-            </informaltable>
+        <tgroup cols="3">
+          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="2" colwidth="1*"/>
+          <colspec colnum="3" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Qualifier</entry>
+              <entry>Type</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>@Default (optional)</entry>
+              <entry>javax.servlet.http.HttpSession</entry>
+              <entry>The session is initialized or destroyed</entry>
+            </row>
+            <row>
+              <entry>@DidActivate</entry>
+              <entry>javax.servlet.http.HttpSession</entry>
+              <entry>The session is activated</entry>
+            </row>
+            <row>
+              <entry>@WillPassivate</entry>
+              <entry>javax.servlet.http.HttpSession</entry>
+              <entry>The session will passivate</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
         </para>
-        <para>
+    <para>
             If you want to listen to both lifecycle events, leave out the qualifiers. Note that omitting all qualifiers will
             observe all events with a <literal>HttpSession</literal> as event object.
         </para>
-        <programlisting role="JAVA"><![CDATA[public void observeSession(@Observes HttpSession session) {
+    <programlisting role="JAVA"><![CDATA[public void observeSession(@Observes HttpSession session) {
     // Do something with the "session" object
 }]]></programlisting>
-
-        <para>
-            If you are interested in only one particular event, use a qualifer:
+    <para>
+            If you are interested in only one particular event, use a qualifier:
         </para>
-
-        <programlisting role="JAVA"><![CDATA[public void observeSessionCreated(@Observes @WillPassivate HttpSession session) {
+    <programlisting role="JAVA"><![CDATA[public void observeSessionCreated(@Observes @WillPassivate HttpSession session) {
     // Do something with the "session" object when it's being passivated
 }]]></programlisting>
-        <para>
+    <para>
             As with all CDI observers, the name of the method is insignificant.
         </para>
-    </section>    
-    <!--
+  </section>
+<!--
     <section id="events.asynchronous_events">
         <title>Servlet context attribute events</title> 
         <para>
@@ -718,8 +706,6 @@ public class SeedDataImporter {
             The name of the observer method is insignificant.
         </para>
     </section>
-    -->
-<!--
+    --><!--
 vim:et:ts=4:sw=4:tw=128
--->
-</chapter>
+--></chapter>

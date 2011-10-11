@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,45 +16,37 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-unwraps">
-   <title>Unwrapping Producer Methods</title>
-   
-   <para>
-      Unwrapping producer methods allow you to create injectable objects that have "self-managed"" lifecycles, and are 
+  <title>Unwrapping Producer Methods</title>
+  <para>
+      Unwrapping producer methods allow you to create injectable objects that have &quot;self-managed&quot;&quot; lifecycles, and are 
       particularly useful if you have need a bean whose lifecycle does not exactly match one of the lifecycle of one of
       the existing scopes. The lifecycle of the bean is are managed by the bean that defines the producer method, and 
       changes to the unwrapped object are immediately visible to all clients.
    </para>
-   
-   <para>
+  <para>
       You can declare a method to be an unwrapping producer method by annotating it <code>@Unwraps</code>. The return 
-      type of the managed producer must be proxyable (see Section 5.4.1 of the CDI specification, "Unproxyable bean 
-      types"). Every time a method is called on unwrapped object the invocation is forwarded to the result of calling
+      type of the managed producer must be proxyable (see <ulink url="http://docs.jboss.org/cdi/spec/1.0/html/injectionelresolution.html#unproxyable">Section 5.4.1 of the CDI specification, &quot;Unproxyable bean 
+        types&quot;</ulink>). Every time a method is called on unwrapped object the invocation is forwarded to the result of calling
       the unwrapping producer method - the unwrapped object.
    </para>
-   
-   <important>
-      <para>
+  <important>
+    <para>
          Seam Solder implements this by injecting a proxy rather than the original object. Every invocation on the
          injected proxy will cause the unwrapping producer method to be invoked to obtain the instance on which to 
          invoke the method called. Seam Solder will then invoke the method on unwrapped instance. 
       </para>
-      
-      <para>
+    <para>
          Because of this, it is very important the producer method is lightweight.
       </para>
-   </important>
-   
-   <para>
+  </important>
+  <para>
       For example consider a permission manager (that manages the current permission), and a security manager (that 
       checks the current permission level). Any changes to permission in the permission manager are immediately visible
       to the security manager. 
    </para>
-   
-   <programlisting role="JAVA">@SessionScoped
+  <programlisting role="JAVA">@SessionScoped
 class PermissionManager {
    
    Permission permission;
@@ -68,30 +60,26 @@ class PermissionManager {
       return this.permission;
    }
 }</programlisting>
-
-<programlisting role="JAVA">@SessionScoped
+  <programlisting role="JAVA">@SessionScoped
 class SecurityManager {
    
    @Inject @Current
    Permission permission;
   
    boolean checkAdminPermission() {
-      return permission.getName().equals("admin");
+      return permission.getName().equals(&quot;admin&quot;);
    }
 
 }</programlisting>
-
-   <para>
+  <para>
       When <code>permission.getName()</code> is called, the unwrapped Permission forwards the invocation of 
       <code>getName()</code> to the result of calling <code>PermissionManager.getPermission()</code>.
    </para>
-
-   <para>
+  <para>
       For example you could raise the permission level before performing a sensitive operation, and then lower it again 
       afterwards:
    </para>
-   
-   <programlisting role="JAVA">public class SomeSensitiveOperation {
+  <programlisting role="JAVA">public class SomeSensitiveOperation {
    
    @Inject
    PermissionManager permissionManager;
@@ -106,10 +94,8 @@ class SecurityManager {
    }
 
 }</programlisting>
-
-   <para>
-      Unwrapping producer methods can have parameters injected, including <code>InjectionPoint</code> (which repreents)
+  <para>
+      Unwrapping producer methods can have parameters injected, including <code>InjectionPoint</code> (which represents)
       the calling method.
    </para>
-   
 </chapter>

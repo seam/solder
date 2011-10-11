@@ -73,8 +73,8 @@ public class NonManagedClass {
   </tip>
   <para>
         Under the covers, these classes look for the <literal>BeanManager</literal> in the servlet context attribute
-        covered in this section, amongst other available strategies. Refer to 
-        <xref linkend="solder-beanmanagerprovider" /> for information on how to leverage the servlet
+        covered in this section, among other available strategies. Refer to 
+        <xref linkend="solder-beanmanagerprovider"/> for information on how to leverage the servlet
         context attribute provider to access the <literal>BeanManager</literal> from outside the CDI environment.
     </para>
 <!--

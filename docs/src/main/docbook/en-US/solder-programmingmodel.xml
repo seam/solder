@@ -129,7 +129,7 @@ class EntityManagerProducer {
          
          <note>
             <para>
-               The <code>ProcessAnnotatedType</code> container lifecycle event will be called for vetoed types.
+               The <code>ProcessAnnotatedType</code> container lifecycle event will be called for required types.
             </para>
          </note>
          
@@ -198,7 +198,7 @@ package com.acme</programlisting>
       <para>
          According to the CDI standard, the <code>@Named</code> annotation assigns a name to a bean equal to the value
          specified in the <code>@Named</code> annotation or, if a value is not provided, the simple name of the bean class.
-         This behavior aligns is with the needs of most application developers. However, framework writers should avoid
+         This behavior aligns with the needs of most application developers. However, framework writers should avoid
          trampling on the "root" bean namespace. Instead, frameworks should specify qualified names for built-in components.
          The motivation is the same as qualifying Java types. The <code>@FullyQualified</code> provides this facility without
          sacrificing type-safety.

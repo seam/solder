@@ -1,133 +1,120 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="introduction">
-   <title>XML Configuration Introduction</title>
-
-   <para>
+  <title>XML Configuration Introduction</title>
+  <para>
       Solder provides a method for configuring CDI beans using alternate metadata sources, such as XML configuration. 
-      Currently, the XML provider is the only alternative available. Using a "type-safe" XML      
+      Currently, the XML provider is the only alternative available. Using a &quot;type-safe&quot; XML      
       syntax, it is possible to add new beans, override existing beans, and add extra configuration to existing beans. 
    </para>
-
-   <section>
-      <title>Getting Started</title>
-
-      <para>
+  <section>
+    <title>Getting Started</title>
+    <para>
          To take advantage of XML Configuration, you need metadata sources in the form of XML files.
          By default these are discovered from the classpath in the following locations:
       </para>
-      
-      <itemizedlist>
-         <listitem>
-            <para><literal>/META-INF/beans.xml</literal></para>
-         </listitem>
-         <listitem>
-            <para><literal>/META-INF/seam-beans.xml</literal></para>
-         </listitem>
-      </itemizedlist>
-
-      <para>
+    <itemizedlist>
+      <listitem>
+        <para><literal>/META-INF/beans.xml</literal></para>
+      </listitem>
+      <listitem>
+        <para><literal>/META-INF/seam-beans.xml</literal></para>
+      </listitem>
+    </itemizedlist>
+    <para>
          The <literal>beans.xml</literal> file is the preferred way of 
          configuring beans via XML; however some CDI implementations will not allow this, so
          <literal>seam-beans.xml</literal> is provided as an alternative.
       </para>
-
-      <para>
+    <para>
          Here is a simple example. The following class represents a report:
       </para>
-      <programlisting role="JAVA"><![CDATA[class Report {
-	String filename;
-	
-	@Inject
-	Datasource datasource;
-	
-	//getters and setters
+    <programlisting role="JAVA"><![CDATA[class Report {
+ String filename;
+ 
+ @Inject
+ Datasource datasource;
+ 
+ //getters and setters
 }]]></programlisting>
-
-      <para>
+    <para>
          And the following support classes:
       </para>
-      <programlisting role="JAVA"><![CDATA[interface Datasource {
-	public Data getData();
+    <programlisting role="JAVA"><![CDATA[interface Datasource {
+ public Data getData();
 }
 
 @SalesQualifier
 class SalesDatasource implements Datasource {
   public Data getData()
   {
-  	//return sales data
+   //return sales data
   }
 }
 
 class BillingDatasource implements Datasource {
   public Data getData()
   {
-  	//return billing data
+   //return billing data
   }
 }]]></programlisting>
-
-      <para>
+    <para>
          The <code>Report</code> bean is fairly simple. It has a filename that tells the report engine where to load the 
          report definition from, and a datasource that provides the data used to fill the report. We are going to 
          configure up multiple <literal>Report</literal> beans via xml.
       </para>
-      
-      <programlistingco>
-         <areaspec>
-            <area id="namespace-declaration-root" coords="4" />
-            <area id="namespace-declaration-reports" coords="5" />
-            <area id="reports-dec" coords="7" />
-            <area id="modifies" coords="8" />
-            <area id="filename" coords="9" />
-            <area id="datasource-qualifier" coords="11" />
-            <area id="filename-short" coords="15" />
-            <area id="replaces" coords="16" />
-            <area id="inject" coords="18" />
-            <area id="datasource-type" coords="19" />
-         </areaspec>
-         
-         <programlisting role="XML"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+    <programlistingco>
+      <areaspec>
+        <area coords="4" id="namespace-declaration-root"/>
+        <area coords="5" id="namespace-declaration-reports"/>
+        <area coords="7" id="reports-dec"/>
+        <area coords="8" id="modifies"/>
+        <area coords="9" id="filename"/>
+        <area coords="11" id="datasource-qualifier"/>
+        <area coords="15" id="filename-short"/>
+        <area coords="16" id="replaces"/>
+        <area coords="18" id="inject"/>
+        <area coords="19" id="datasource-type"/>
+      </areaspec>
+      <programlisting role="XML"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:s="urn:java:ee" 
        xmlns:r="urn:java:org.example.reports">
 
- 	<r:Report>
- 		<s:modifies/>
- 		<r:filename>sales.jrxml<r:filename>
- 		<r:datasource>
- 			<r:SalesQualifier/>
- 		</r:datasource>
-  	</r:Report>
-  	
- 	<r:Report filename="billing.jrxml">
- 		<s:replaces/>
- 		<r:datasource>
- 			<s:Inject/>
- 			<s:Exact>org.example.reports.BillingDatasource</s:Exact>
- 		</r:datasource>
-  	</r:Report>  	
+  <r:Report>
+   <s:modifies/>
+   <r:filename>sales.jrxml<r:filename>
+   <r:datasource>
+    <r:SalesQualifier/>
+   </r:datasource>
+   </r:Report>
+   
+  <r:Report filename="billing.jrxml">
+   <s:replaces/>
+   <r:datasource>
+    <s:Inject/>
+    <s:Exact>org.example.reports.BillingDatasource</s:Exact>
+   </r:datasource>
+   </r:Report>   
 </beans>]]></programlisting>
-         
-         <calloutlist>         
-            <callout arearefs="namespace-declaration-root">
-               <para>
-                  The namespace <literal>urn:java:ee</literal> is the XML Config's root namespace. This is where the
+      <calloutlist>
+        <callout arearefs="namespace-declaration-root">
+          <para>
+                  The namespace <literal>urn:java:ee</literal> is the XML Config&apos;s root namespace. This is where the
                   built-in elements and CDI annotations live.
                </para>
-            </callout>
-            
-            <callout arearefs="namespace-declaration-reports">
-               <para>
+        </callout>
+        <callout arearefs="namespace-declaration-reports">
+          <para>
                   There are now multiple namespaces in the <literal>beans.xml</literal>
                   file. These namespaces correspond to java package names.
                </para>
-               <para>
+          <para>
                   The namespace <literal>urn:java:org.example.reports</literal>
                   corresponds to the package <literal>org.example.reports</literal>,
                   where the reporting classes live. Multiple java packages can be aggregated
-                  into a single namespace declaration by seperating the package names
+                  into a single namespace declaration by separating the package names
                   with colons, e.g. 
                   <literal>urn:java:org.example.reports:org.example.model</literal>.
                   The namespaces are searched in the order they are specified in the xml 
@@ -135,17 +122,15 @@ class BillingDatasource implements Datasource {
                   the first one listed will be resolved. For more information see
                   <link linkend="xml-provider.namespaces">Namespaces</link>.
                </para>
-            </callout>
-            
-            <callout arearefs="reports-dec">
-               <para>
+        </callout>
+        <callout arearefs="reports-dec">
+          <para>
                   The <literal>&lt;Report&gt;</literal> declaration configures an 
                   instance of the <code>Report</code> class as a bean.
                </para>
-            </callout>
-            
-            <callout arearefs="modifies">
-               <para>
+        </callout>
+        <callout arearefs="modifies">
+          <para>
                   Beans installed using <literal>&lt;s:modifies&gt;</literal>
                   read annotations from the existing class, and merge them with 
                   the annotations defined via xml. In addition, if a bean is 
@@ -153,13 +138,11 @@ class BillingDatasource implements Datasource {
                   it prevents the original class being installed as a bean. It 
                   is also possible to add new beans and replace beans altogether.
                   For more information see 
-                  <link linkend="xml-provider.installing-beans">Adding, modifying and
-                  replacing beans</link>.  
+                  <link linkend="xml-provider.installing-beans">Adding, modifying and replacing beans</link>.  
                </para>
-            </callout>
-            
-            <callout arearefs="filename">
-               <para>
+        </callout>
+        <callout arearefs="filename">
+          <para>
                   The <literal>&lt;r:filename&gt;</literal> element sets the 
                   initial value of the filename field. For more information on how
                   methods and fields are resolved see 
@@ -167,68 +150,58 @@ class BillingDatasource implements Datasource {
                   and 
                   <link linkend="xml-provider.configuring-fields">Configuring Fields</link>.
                </para>
-            </callout>
-            
-            <callout arearefs="datasource-qualifier">
-               <para>
+        </callout>
+        <callout arearefs="datasource-qualifier">
+          <para>
                   The <literal>&lt;r:SalesQualifier&gt;</literal> element applies 
                   the <literal>@SalesQualifier</literal> to the 
                   <literal>datasource</literal> field. As the field already has an
                   <literal>@Inject</literal> on the class definition this will cause 
                   the <literal>SalesDatasource</literal> bean to be injected.
                </para>
-            </callout>
-            
-            <callout arearefs="filename-short">
-               <para>
+        </callout>
+        <callout arearefs="filename-short">
+          <para>
                   This is the shorthand syntax for setting a field value.
                </para>
-            </callout>
-            
-            <callout arearefs="replaces">
-               <para>
+        </callout>
+        <callout arearefs="replaces">
+          <para>
                   Beans installed using <literal>&lt;s:replaces&gt;</literal>
                   do not read annotations from the existing class. In addition, if 
                   a bean is installed with <literal>&lt;s:replaces&gt;</literal>
                   it prevents the original class being installed as a bean.
                </para>
-            </callout>
-            
-            <callout arearefs="inject">
-               <para>
+        </callout>
+        <callout arearefs="inject">
+          <para>
                   The <literal>&lt;s:Inject&gt;</literal> element is needed as this 
                   bean was installed with <literal>&lt;s:replaces&gt;</literal>,
                   so annotations are not read from the class definition.
                </para>
-            </callout>
-            
-            <callout arearefs="datasource-type">
-               <para>
+        </callout>
+        <callout arearefs="datasource-type">
+          <para>
                   The <literal>&lt;s:Exact&gt;</literal> annotation restricts the 
-                  type of bean that is availible for injection without using 
+                  type of bean that is available for injection without using 
                   qualifiers. In this case <literal>BillingDatasource</literal>
                   will be injected. This is provided as part of weld-extensions.
                </para>
-            </callout>
-
-         </calloutlist>
-      </programlistingco>
-   </section>
-
-   <section>
-      <title>The Princess Rescue Example</title>
-      <para>
+        </callout>
+      </calloutlist>
+    </programlistingco>
+  </section>
+  <section>
+    <title>The Princess Rescue Example</title>
+    <para>
          The princess rescue example is a sample web app that uses XML Config. Run it with the following command:
       </para>
-
-      <programlisting>mvn jetty:run</programlisting>
-
-      <para>
+    <programlisting>mvn jetty:run</programlisting>
+    <para>
          And then navigate to <literal>http://localhost:9090/princess-rescue</literal>. The XML configuration for the example
          is in <literal>src/main/resources/META-INF/seam-beans.xml</literal>.
       </para>
-   </section>
-   <!--
+  </section>
+<!--
 vim:et:ts=3:sw=3:tw=120
--->
-</chapter>
+--></chapter>

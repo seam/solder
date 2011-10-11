@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,76 +16,134 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-annotationliterals">
-   <title>Annotation Literals</title>
-      
-   <para>
-      Seam Solder provides a complete set of <literal>AnnotationLiteral</literal> classes cooresponding to the
+  <title>Annotation Literals</title>
+  <para>
+      Seam Solder provides a complete set of <literal>AnnotationLiteral</literal> classes corresponding to the
       annotation types defined in the CDI (JSR-299) and Injection (JSR-330) specifications. These literals are located
       in the <literal>org.jboss.solder.literal</literal> package.
    </para>
-   
-   <para>
-      For any annotation that does not define an attribute, its cooresponding <literal>AnnotationLiteral</literal>
+  <para>
+      For any annotation that does not define an attribute, its corresponding <literal>AnnotationLiteral</literal>
       contains a static <literal>INSTANCE</literal> member. You should use this static member whenever you need a
       reference to an annotation instance rather than creating a new instance explicitly.
    </para>
-
-   <programlisting role="JAVA"><![CDATA[new AnnotatedTypeBuilder<X>().readFromType(type).addToClass(NamedLiteral.INSTANCE);]]></programlisting>
-   
-   <para>
+  <programlisting role="JAVA"><![CDATA[new AnnotatedTypeBuilder<X>().readFromType(type).addToClass(NamedLiteral.INSTANCE);]]></programlisting>
+  <para>
       Literals are provided for the following annotations from <emphasis>Context and Dependency Injection</emphasis>
       (including annotations from <emphasis>Dependency Injection for Java</emphasis>):
    </para>
-   
-   <itemizedlist>
-     <listitem><para><code>@Alternative</code></para></listitem>
-     <listitem><para><code>@Any</code></para></listitem>
-     <listitem><para><code>@ApplicationScoped</code></para></listitem>
-     <listitem><para><code>@ConversationScoped</code></para></listitem>
-     <listitem><para><code>@Decorator</code></para></listitem>
-     <listitem><para><code>@Default</code></para></listitem>
-     <listitem><para><code>@Delegate</code></para></listitem>
-     <listitem><para><code>@Dependent</code></para></listitem>
-     <listitem><para><code>@Disposes</code></para></listitem>
-     <listitem><para><code>@Inject</code></para></listitem>
-     <listitem><para><code>@Model</code></para></listitem>
-     <listitem><para><code>@Named</code></para></listitem>
-     <listitem><para><code>@New</code></para></listitem>
-     <listitem><para><code>@Nonbinding</code></para></listitem>
-     <listitem><para><code>@NormalScope</code></para></listitem>
-     <listitem><para><code>@Observes</code></para></listitem>
-     <listitem><para><code>@Produces</code></para></listitem>
-     <listitem><para><code>@RequestScoped</code></para></listitem>
-     <listitem><para><code>@SessionScoped</code></para></listitem>
-     <listitem><para><code>@Specializes</code></para></listitem>
-     <listitem><para><code>@Stereotype</code></para></listitem>
-     <listitem><para><code>@Typed</code></para></listitem>
-   </itemizedlist>
-   
-   <para>
+  <itemizedlist>
+    <listitem>
+      <para><code>@Alternative</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Any</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@ApplicationScoped</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@ConversationScoped</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Decorator</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Default</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Delegate</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Dependent</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Disposes</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Inject</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Model</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Named</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@New</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Nonbinding</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@NormalScope</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Observes</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Produces</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@RequestScoped</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@SessionScoped</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Specializes</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Stereotype</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Typed</code></para>
+    </listitem>
+  </itemizedlist>
+  <para>
       Literals are also provided for the following annotations from <emphasis>Seam Solder</emphasis>:
    </para>
-   
-   <itemizedlist>
-     <listitem><para><code>@Client</code></para></listitem>
-     <listitem><para><code>@DefaultBean</code></para></listitem>
-     <listitem><para><code>@Exact</code></para></listitem>
-     <listitem><para><code>@Generic</code></para></listitem>
-     <listitem><para><code>@GenericType</code></para></listitem>
-     <listitem><para><code>@Mapper</code></para></listitem>
-     <listitem><para><code>@MessageBundle</code></para></listitem>
-     <listitem><para><code>@Requires</code></para></listitem>
-     <listitem><para><code>@Resolver</code></para></listitem>
-     <listitem><para><code>@Resource</code></para></listitem>
-     <listitem><para><code>@Unwraps</code></para></listitem>
-     <listitem><para><code>@Veto</code></para></listitem>
-   </itemizedlist>
-
-   <para>
-      For more information about these annotations, consult the cooresponding API documentation.
+  <itemizedlist>
+    <listitem>
+      <para><code>@Client</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@DefaultBean</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Exact</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Generic</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@GenericType</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Mapper</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@MessageBundle</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Requires</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Resolver</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Resource</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Unwraps</code></para>
+    </listitem>
+    <listitem>
+      <para><code>@Veto</code></para>
+    </listitem>
+  </itemizedlist>
+  <para>
+      For more information about these annotations, consult the corresponding API documentation.
    </para>
 </chapter>
