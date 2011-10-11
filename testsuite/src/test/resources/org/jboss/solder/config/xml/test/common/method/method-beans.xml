@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee" xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.method">
+
+
+    <test:Qualifier1>
+        <Qualifier/>
+    </test:Qualifier1>
+
+    <test:Qualifier2>
+        <Qualifier/>
+    </test:Qualifier2>
+
+    <test:Qualifier3>
+        <Qualifier/>
+    </test:Qualifier3>
+
+    <test:MethodBean>
+        <test:method>
+            <Produces/>
+        </test:method>
+
+        <test:method>
+            <Produces/>
+            <test:Qualifier1/>
+            <parameters>
+                <test:MethodValueBean>
+                    <test:Qualifier2/>
+                </test:MethodValueBean>
+            </parameters>
+        </test:method>
+
+        <test:method>
+            <Produces/>
+            <test:Qualifier1/>
+            <parameters>
+                <array dimensions="2">
+                    <test:Qualifier2/>
+                    <test:MethodValueBean/>
+                </array>
+            </parameters>
+        </test:method>
+
+        <test:method>
+            <Produces/>
+            <test:Qualifier2/>
+            <parameters>
+                <Instance>
+                    <test:Qualifier2/>
+                </Instance>
+            </parameters>
+        </test:method>
+        <test:method>
+            <Produces/>
+            <test:Qualifier3/>
+            <parameters>
+                <Instance>
+                    <test:Qualifier2/>
+                </Instance>
+                <Instance>
+                    <test:Qualifier2/>
+                </Instance>
+            </parameters>
+        </test:method>
+    </test:MethodBean>
+
+    <test:MethodTarget>
+        <replaces/>
+        <test:value1>
+            <Inject/>
+        </test:value1>
+        <test:value2>
+            <Inject/>
+            <test:Qualifier1/>
+        </test:value2>
+        <test:value3>
+            <Inject/>
+            <test:Qualifier2/>
+        </test:value3>
+        <test:longValue>
+            <Inject/>
+            <test:Qualifier1/>
+        </test:longValue>
+    </test:MethodTarget>
+
+    <test:MethodValueBean>
+        <test:Qualifier2/>
+    </test:MethodValueBean>
+</beans>

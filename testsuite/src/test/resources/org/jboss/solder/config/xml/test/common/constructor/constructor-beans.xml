@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.constructor">
+
+    <test:ValueProvider>
+        <test:value>
+            <Produces/>
+            <value>10</value>
+        </test:value>
+    </test:ValueProvider>
+
+    <test:ConstructedBean>
+        <replaces/>
+        <parameters>
+            <int/>
+        </parameters>
+    </test:ConstructedBean>
+
+</beans>

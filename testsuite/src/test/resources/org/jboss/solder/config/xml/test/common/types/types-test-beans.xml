@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.types">
+
+
+    <test:TypeInjectedClass>
+        <replaces/>
+        <test:value>
+            <Inject/>
+            <Exact>org.jboss.solder.config.xml.test.common.types.AllowedType</Exact>
+        </test:value>
+        <test:create>
+            <Inject/>
+            <parameters>
+                <test:SomeInterface>
+                    <Exact>org.jboss.solder.config.xml.test.common.types.RestrictedType</Exact>
+                </test:SomeInterface>
+            </parameters>
+        </test:create>
+    </test:TypeInjectedClass>
+
+</beans>

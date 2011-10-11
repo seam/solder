@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.method">
+
+
+    <test:Qualifier1>
+        <Qualifier/>
+    </test:Qualifier1>
+
+    <test:Qualifier2>
+        <Qualifier/>
+    </test:Qualifier2>
+
+    <test:PrimitiveBean>
+        <test:add>
+            <Produces/>
+            <test:Qualifier1/>
+            <parameters>
+                <int/>
+            </parameters>
+        </test:add>
+        <test:add>
+            <Produces/>
+            <test:Qualifier2/>
+            <parameters>
+                <array>
+                    <int/>
+                </array>
+            </parameters>
+        </test:add>
+    </test:PrimitiveBean>
+
+    <test:PrimitiveValueProducer>
+        <test:value>
+            <Produces/>
+        </test:value>
+
+        <test:value2>
+            <Produces/>
+        </test:value2>
+    </test:PrimitiveValueProducer>
+
+</beans>

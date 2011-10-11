@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:s="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.stereotype"
+       xmlns:int="urn:java:org.jboss.solder.config.xml.test.common.interceptor">    
+
+    <test:Stereotype1>
+        <Stereotype/>
+        <int:Binding/>
+    </test:Stereotype1>
+    
+    <int:Binding>
+        <s:InterceptorBinding/>
+    </int:Binding>
+
+    <int:InterceptorBean>
+        <s:replaces/>
+        <s:Interceptor/>
+        <int:Binding/>
+        <int:myMethod>
+            <s:AroundInvoke/>
+        </int:myMethod>
+    </int:InterceptorBean>
+
+    <int:InterceptedBean>
+        <replaces/>
+        <test:Stereotype1/>
+    </int:InterceptedBean>
+
+</beans>
