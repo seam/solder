@@ -696,7 +696,7 @@ public class SeedDataImporter {
     // Do something with the "asynchronous" event object
 }]]></programlisting>
         <para>
-            If you are interested in only a particular type, use a type qualifer
+            If you are interested in only a particular type, use a type qualifier
         </para>
         <programlisting role="JAVA"><![CDATA[public void observeAsyncronousRequestTimedOut(@Observes @Timeout AsyncEvent e)
 {
