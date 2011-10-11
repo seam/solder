@@ -40,13 +40,13 @@
       
          <itemizedlist>
             <listitem>
-               the managed bean, decorator, interceptor or session bean defined by the type
+               <para>the managed bean, decorator, interceptor or session bean defined by the type</para>
             </listitem>
             <listitem>
-               any producer methods or producer fields defined on the type
+               <para>any producer methods or producer fields defined on the type</para>
             </listitem>
             <listitem>
-               any observer methods defined on the type
+               <para>any observer methods defined on the type</para>
             </listitem>
          </itemizedlist>
          
@@ -90,13 +90,13 @@ import org.jboss.solder.core.Veto;</programlisting>
          
          <itemizedlist>
             <listitem>
-               the managed bean, decorator, interceptor or session bean defined by the type
+               <para>the managed bean, decorator, interceptor or session bean defined by the type</para>
             </listitem>
             <listitem>
-               any producer methods or producer fields defined on the type
+              <para>any producer methods or producer fields defined on the type</para>
             </listitem>
             <listitem>
-               any observer methods defined on the type
+               <para>any observer methods defined on the type</para>
             </listitem>
          </itemizedlist>
          

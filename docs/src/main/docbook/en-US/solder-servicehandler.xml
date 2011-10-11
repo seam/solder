@@ -74,17 +74,23 @@
 
    <note>
       <itemizedlist>
-      <listitem>
-         The invocation handler is similar to an interceptor. It must have an <code>@AroundInvoke</code> method that 
-         returns and object and takes an <code>InvocationContext</code> as an argument.
-      </listitem>
-      <listitem>
-         Do not call <code>InvocationContext.proceed()</code> as there is no method to proceed to.
-      </listitem>
-      <listitem>
-         Injection is available into the handler class, however the handler is not a bean definition, so observer 
-         methods, producer fields and producer methods defined on the handler will not be registered.
-      </listitem>
+        <listitem>
+          <para>
+            The invocation handler is similar to an interceptor. It must have an <code>@AroundInvoke</code> method that 
+            returns and object and takes an <code>InvocationContext</code> as an argument.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Do not call <code>InvocationContext.proceed()</code> as there is no method to proceed to.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Injection is available into the handler class, however the handler is not a bean definition, so observer 
+            methods, producer fields and producer methods defined on the handler will not be registered.
+          </para>
+        </listitem>
       </itemizedlist>
    </note>
 

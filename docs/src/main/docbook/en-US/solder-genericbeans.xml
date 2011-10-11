@@ -39,19 +39,19 @@
    <variablelist>
       <varlistentry>
          <term><code>MessageQueue</code></term>
-         <listitem>The message queue, onto which messages can be placed, and acted upon by ACME Messaging</listitem>
+         <listitem><para>The message queue, onto which messages can be placed, and acted upon by ACME Messaging</para></listitem>
       </varlistentry>
       <varlistentry>
          <term><code>MessageDispatcher</code></term>
-         <listitem>The dispatcher, responsible for placing messages created by the user onto the queue</listitem>
+         <listitem><para>The dispatcher, responsible for placing messages created by the user onto the queue</para></listitem>
       </varlistentry>
       <varlistentry>
          <term><code>DispatcherPolicy</code></term>
-         <listitem>The dispatcher policy, which can be used to tweak the dispatch policy by the client</listitem>
+         <listitem><para>The dispatcher policy, which can be used to tweak the dispatch policy by the client</para></listitem>
       </varlistentry>
       <varlistentry>
          <term><code>MessageSystemConfiguration</code></term>
-         <listitem>The messaging system configuration</listitem>
+         <listitem><para>The messaging system configuration</para></listitem>
       </varlistentry>
    </variablelist>  
       

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -14,73 +14,69 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+--><!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="beanmanager">
-    <title>Retrieving the BeanManager from the servlet context</title>
-    <para>
+  <title>Retrieving the BeanManager from the servlet context</title>
+  <para>
         Typically, the <literal>BeanManager</literal> is obtained using some form of injection. However, there are
         scenarios where the code being executed is outside of a managed bean environment and you need a way in. In these
-        cases, it's necessary to lookup the <literal>BeanManager</literal> from a well-known location.
+        cases, it&apos;s necessary to lookup the <literal>BeanManager</literal> from a well-known location.
     </para>
-    <warning>
-        <para>In general, you should isolate external <literal>BeanManager</literal> lookups to integration code.</para>
-    </warning>
-    <para>
+  <warning>
+    <para>In general, you should isolate external <literal>BeanManager</literal> lookups to integration code.</para>
+  </warning>
+  <para>
         The standard mechanism for locating the <literal>BeanManager</literal> from outside a managed bean environment, as
-        defined by the JSR-299 specification, is to look it up in JNDI. However, JNDI isn't the most convenient technology
+        defined by the JSR-299 specification, is to look it up in JNDI. However, JNDI isn&apos;t the most convenient technology
         to depend on when you consider all popular deployment environments (think Tomcat and Jetty).
     </para>
-    <para>
+  <para>
         As a simpler alternative, Solder binds the <literal>BeanManager</literal> to the following servlet context
         attribute (whose name is equivalent to the fully-qualified class name of the <literal>BeanManager</literal>
         interface:
     </para>
-    <programlisting>javax.enterprise.inject.spi.BeanManager</programlisting>
-    <para>
+  <programlisting>javax.enterprise.inject.spi.BeanManager</programlisting>
+  <para>
         Solder also includes a provider that retrieves the <literal>BeanManager</literal> from this location.
         Anytime the Solder module needs a reference to the <literal>BeanManager</literal>, it uses this lookup
         mechanism to ensure that the module works consistently across deployment environments, especially in Servlet
         containers.
     </para>
-    <para>
+  <para>
         You can retrieve the <literal>BeanManager</literal> in the same way. If you want to hide the lookup, you can
         extend the <literal>BeanManagerAware</literal> class and retrieve the <literal>BeanManager</literal> from the the
         method <literal>getBeanManager()</literal>, as shown here:
     </para>
-    <programlisting role="JAVA"><![CDATA[
+  <programlisting role="JAVA"><![CDATA[
 public class NonManagedClass extends BeanManagerAware {
     public void fireEvent() {
         getBeanManager().fireEvent("Send me to a managed bean");
     }
 }]]>
     </programlisting>
-    <para>
+  <para>
         Alternatively, you can retrieve the <literal>BeanManager</literal> from the method
         <literal>getBeanManager()</literal> on the <literal>BeanManagerLocator</literal> class, as shown here:
     </para>
-    <programlisting role="JAVA"><![CDATA[
+  <programlisting role="JAVA"><![CDATA[
 public class NonManagedClass {
     public void fireEvent() {
         new BeanManagerLocator().getBeanManager().fireEvent("Send me to a managed bean");
     }
 }]]>
     </programlisting>
-    <tip>
-        <para>
+  <tip>
+    <para>
             The best way to transfer execution of the current context to the managed bean environment is to send an event
             to an observer bean, as this example above suggests.
         </para>
-    </tip>
-    <para>
+  </tip>
+  <para>
         Under the covers, these classes look for the <literal>BeanManager</literal> in the servlet context attribute
-        covered in this section, amongst other available strategies. Refer to the <ulink
-        href="http://docs.jboss.org/seam/3/solder/latest/reference/en-US/html/beanmanagerprovider.html">BeanManager
-        provider</ulink> chapter of the Seam Solder reference guide for information on how to leverage the servlet
+        covered in this section, amongst other available strategies. Refer to 
+        <xref linkend="solder-beanmanagerprovider" /> for information on how to leverage the servlet
         context attribute provider to access the <literal>BeanManager</literal> from outside the CDI environment.
     </para>
 <!--
 vim:et:ts=4:sw=4:tw=128
--->
-</chapter>
+--></chapter>

@@ -42,28 +42,28 @@
    </para>
    
    <itemizedlist>
-      <listitem><code>@Alternative</code></listitem>
-      <listitem><code>@Any</code></listitem>
-      <listitem><code>@ApplicationScoped</code></listitem>
-      <listitem><code>@ConversationScoped</code></listitem>
-      <listitem><code>@Decorator</code></listitem>
-      <listitem><code>@Default</code></listitem>
-      <listitem><code>@Delegate</code></listitem>
-      <listitem><code>@Dependent</code></listitem>
-      <listitem><code>@Disposes</code></listitem>
-      <listitem><code>@Inject</code></listitem>
-      <listitem><code>@Model</code></listitem>
-      <listitem><code>@Named</code></listitem>
-      <listitem><code>@New</code></listitem>
-      <listitem><code>@Nonbinding</code></listitem>
-      <listitem><code>@NormalScope</code></listitem>
-      <listitem><code>@Observes</code></listitem>
-      <listitem><code>@Produces</code></listitem>
-      <listitem><code>@RequestScoped</code></listitem>
-      <listitem><code>@SessionScoped</code></listitem>
-      <listitem><code>@Specializes</code></listitem>
-      <listitem><code>@Stereotype</code></listitem>
-      <listitem><code>@Typed</code></listitem>
+     <listitem><para><code>@Alternative</code></para></listitem>
+     <listitem><para><code>@Any</code></para></listitem>
+     <listitem><para><code>@ApplicationScoped</code></para></listitem>
+     <listitem><para><code>@ConversationScoped</code></para></listitem>
+     <listitem><para><code>@Decorator</code></para></listitem>
+     <listitem><para><code>@Default</code></para></listitem>
+     <listitem><para><code>@Delegate</code></para></listitem>
+     <listitem><para><code>@Dependent</code></para></listitem>
+     <listitem><para><code>@Disposes</code></para></listitem>
+     <listitem><para><code>@Inject</code></para></listitem>
+     <listitem><para><code>@Model</code></para></listitem>
+     <listitem><para><code>@Named</code></para></listitem>
+     <listitem><para><code>@New</code></para></listitem>
+     <listitem><para><code>@Nonbinding</code></para></listitem>
+     <listitem><para><code>@NormalScope</code></para></listitem>
+     <listitem><para><code>@Observes</code></para></listitem>
+     <listitem><para><code>@Produces</code></para></listitem>
+     <listitem><para><code>@RequestScoped</code></para></listitem>
+     <listitem><para><code>@SessionScoped</code></para></listitem>
+     <listitem><para><code>@Specializes</code></para></listitem>
+     <listitem><para><code>@Stereotype</code></para></listitem>
+     <listitem><para><code>@Typed</code></para></listitem>
    </itemizedlist>
    
    <para>
@@ -71,18 +71,18 @@
    </para>
    
    <itemizedlist>
-      <listitem><code>@Client</code></listitem>
-      <listitem><code>@DefaultBean</code></listitem>
-      <listitem><code>@Exact</code></listitem>
-      <listitem><code>@Generic</code></listitem>
-      <listitem><code>@GenericType</code></listitem>
-      <listitem><code>@Mapper</code></listitem>
-      <listitem><code>@MessageBundle</code></listitem>
-      <listitem><code>@Requires</code></listitem>
-      <listitem><code>@Resolver</code></listitem>
-      <listitem><code>@Resource</code></listitem>
-      <listitem><code>@Unwraps</code></listitem>
-      <listitem><code>@Veto</code></listitem>
+     <listitem><para><code>@Client</code></para></listitem>
+     <listitem><para><code>@DefaultBean</code></para></listitem>
+     <listitem><para><code>@Exact</code></para></listitem>
+     <listitem><para><code>@Generic</code></para></listitem>
+     <listitem><para><code>@GenericType</code></para></listitem>
+     <listitem><para><code>@Mapper</code></para></listitem>
+     <listitem><para><code>@MessageBundle</code></para></listitem>
+     <listitem><para><code>@Requires</code></para></listitem>
+     <listitem><para><code>@Resolver</code></para></listitem>
+     <listitem><para><code>@Resource</code></para></listitem>
+     <listitem><para><code>@Unwraps</code></para></listitem>
+     <listitem><para><code>@Veto</code></para></listitem>
    </itemizedlist>
 
    <para>

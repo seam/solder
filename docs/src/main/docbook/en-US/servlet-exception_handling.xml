@@ -33,8 +33,8 @@
         </para>
         
         <itemizedlist>
-            <listitem>send an HTTP status code</listitem>
-            <listitem>forward to an error page (servlet path)</listitem>
+            <listitem><para>send an HTTP status code</para></listitem>
+            <listitem><para>forward to an error page (servlet path)</para></listitem>
         </itemizedlist>
         
         <para>

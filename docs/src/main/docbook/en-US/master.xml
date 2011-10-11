@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,69 +16,56 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
-<book lang="en" xmlns:xi="http://www.w3.org/2001/XInclude">
-
-   <xi:include href="solder-book_info.xml"  />
-
-   <toc/>
-        
-   <xi:include href="solder-preface.xml"/>
-   <xi:include href="solder-gettingstarted.xml"/>
-
-   <part id="part1">
-      
-      <title>Extensions and Utilities for Developers</title>
-      <xi:include href="solder-programmingmodel.xml"/>
-      <xi:include href="solder-annotationliterals.xml"/>
-      <xi:include href="solder-elextensions.xml"/>
-      <xi:include href="solder-resourceloading.xml"/>
-      <xi:include href="solder-logging.xml"/>
-   </part>
-   
-   <part id="part2">
-      <title>Utilities for Framework Authors</title>
-      <xi:include href="solder-typeutilities.xml"/>
-      <xi:include href="solder-beanmanagerprovider.xml"/>
-      <xi:include href="solder-beanutilities.xml"/>
-      <xi:include href="solder-properties.xml"/>
-   </part>
-   
-   <part id="part3">
-      <title>Configuration Extensions for Framework Authors</title>
-      <xi:include href="solder-unwraps.xml"/>
-      <xi:include href="solder-defaultbeans.xml"/>
-      <xi:include href="solder-genericbeans.xml"/>
-      <xi:include href="solder-servicehandler.xml"/>
-   </part>
-   
-   <part id="part4">
-      <title>XML Configuration</title>
-      <xi:include href="config-introduction.xml"/>  
-      <xi:include href="config-xml-provider.xml"/>
-   </part>
-   
-   <part id="part5">
-      <title>Exception Handling Framework</title>
-      <xi:include href="catch-introduction.xml"/>
-      <xi:include href="catch-client_usage.xml"/>
-      <xi:include href="catch-advanced_usage.xml"/>
-      <xi:include href="catch-integration.xml"/>
-      <xi:include href="catch-glossary.xml"/>
-   </part>
-   
-   <part id="part6">
-      <title>Servlet API Integration</title>
-      <xi:include href="servlet-introduction.xml"/>
-      <xi:include href="servlet-installation.xml"/>
-      <xi:include href="servlet-events.xml"/>
-      <xi:include href="servlet-injectable_refs.xml"/>
-      <xi:include href="servlet-exception_handling.xml" />
-      <xi:include href="servlet-beanmanager.xml"/>
-   </part>
-
-   <toc/>
-   
+--><!-- This document was created with Syntext Serna Free. -->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [ ]>
+<book xmlns:xi="http://www.w3.org/2001/XInclude" lang="en">
+  <xi:include href="solder-book_info.xml"/>
+  <toc/>
+  <xi:include href="solder-preface.xml"/>
+  <xi:include href="solder-gettingstarted.xml"/>
+  <part id="part1">
+    <title>Extensions and Utilities for Developers</title>
+    <xi:include href="solder-programmingmodel.xml"/>
+    <xi:include href="solder-annotationliterals.xml"/>
+    <xi:include href="solder-elextensions.xml"/>
+    <xi:include href="solder-resourceloading.xml"/>
+    <xi:include href="solder-logging.xml"/>
+  </part>
+  <part id="part2">
+    <title>Utilities for Framework Authors</title>
+    <xi:include href="solder-typeutilities.xml"/>
+    <xi:include href="solder-beanmanagerprovider.xml"/>
+    <xi:include href="solder-beanutilities.xml"/>
+    <xi:include href="solder-properties.xml"/>
+  </part>
+  <part id="part3">
+    <title>Configuration Extensions for Framework Authors</title>
+    <xi:include href="solder-unwraps.xml"/>
+    <xi:include href="solder-defaultbeans.xml"/>
+    <xi:include href="solder-genericbeans.xml"/>
+    <xi:include href="solder-servicehandler.xml"/>
+  </part>
+  <part id="part4">
+    <title>XML Configuration</title>
+    <xi:include href="config-introduction.xml"/>
+    <xi:include href="config-xml-provider.xml"/>
+  </part>
+  <part id="part5">
+    <title>Exception Handling Framework</title>
+    <xi:include href="catch-introduction.xml"/>
+    <xi:include href="catch-client_usage.xml"/>
+    <xi:include href="catch-advanced_usage.xml"/>
+    <xi:include href="catch-integration.xml"/>
+    <xi:include href="catch-glossary.xml"/>
+  </part>
+  <part id="part6">
+    <title>Servlet API Integration</title>
+    <xi:include href="servlet-introduction.xml"/>
+    <xi:include href="servlet-installation.xml"/>
+    <xi:include href="servlet-events.xml"/>
+    <xi:include href="servlet-injectable_refs.xml"/>
+    <xi:include href="servlet-exception_handling.xml"/>
+    <xi:include href="servlet-beanmanager.xml"/>
+  </part>
+  <toc/>
 </book>

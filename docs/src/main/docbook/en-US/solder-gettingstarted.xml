@@ -58,7 +58,7 @@
 	   	<para>
             Substitute the expression ${solder.version} with the most recent or appropriate version of Seam Solder.
             Alternatively, you can create a <ulink
-            href="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
+            url="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
             user-defined property</ulink> to satisfy this substitution so you can centrally manage the version.
          </para>
 	   </tip>
@@ -76,19 +76,19 @@
       
       <itemizedlist>
          <listitem>
-            <code>javax.enterprise:cdi-api</code> (provided by Java EE 6)
+            <para><code>javax.enterprise:cdi-api</code> (provided by Java EE 6)</para>
          </listitem>
          <listitem>
-            <code>javax.inject:javax:inject</code> (provided by Java EE 6)
+            <para><code>javax.inject:javax:inject</code> (provided by Java EE 6)</para>
          </listitem>
          <listitem>
-            <code>javax.annotation:jsr250-api</code> (provided by Java EE 6)
+            <para><code>javax.annotation:jsr250-api</code> (provided by Java EE 6)</para>
          </listitem>
          <listitem>
-            <code>javax.interceptor:interceptor-api</code> (provided by Java EE 6)
+            <para><code>javax.interceptor:interceptor-api</code> (provided by Java EE 6)</para>
          </listitem>
          <listitem>
-            <code>javax.el:el-api</code> (provided by Java EE 6)
+            <para><code>javax.el:el-api</code> (provided by Java EE 6)</para>
          </listitem>
       </itemizedlist>
       
@@ -116,18 +116,18 @@
       <variablelist>
          <varlistentry>
             <term><code>org.javassist:javassist</code></term>
-            <listitem>Service Handlers, Unwrapping Producer Methods</listitem>
+            <listitem><para>Service Handlers, Unwrapping Producer Methods</para></listitem>
          </varlistentry>
          <varlistentry>
             <term><code>javax.servlet:servlet-api</code></term>
-            <listitem>Accessing resources from the Servlet Context</listitem>
+            <listitem><para>Accessing resources from the Servlet Context</para></listitem>
          </varlistentry>
       </variablelist>
+      <para>
+         In addition, a logger implementation (SLF4J, Log4J, JBoss Log Manager or the JDK core logging facility) is
+         required. Refer to <xref linkend="solder-logging"/> for more information about how logging is handled in Solder.
+      </para>
    </section>
-   <para>
-      In addition, a logger implementation (SLF4J, Log4J, JBoss Log Manager or the JDK core logging facility) is
-      required. Refer to <xref linkend="solder-logging"/> for more information about how logging is handled in Solder.
-   </para>
    <section id="gettingstarted.pre-servlet-3">
       <title>Pre-Servlet 3.0 configuration</title>
       <para>
@@ -142,11 +142,11 @@
          This registration happens automatically in a Servlet 3.0 environment through the use of a
          /META-INF/web-fragment.xml included in the Solder implementation.
       </para>
-   </section>
 
-   <para>
-      You're all setup. It's time to dive into all the useful stuff that Seam Solder provides!
-   </para>
+      <para>
+         You're all setup. It's time to dive into all the useful stuff that Seam Solder provides!
+      </para>
+   </section>
    
 <!--
 vim:et:ts=3:sw=3:tw=120

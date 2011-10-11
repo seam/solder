@@ -67,10 +67,10 @@ log.debug("I'm using JBoss Logging.");]]></programlisting>
       </para>
 
       <itemizedlist>
-         <listitem>JBoss LogManager</listitem>
-         <listitem>Log4J</listitem>
-         <listitem>SLF4J</listitem>
-         <listitem>JDK logging</listitem>
+         <listitem><para>JBoss LogManager</para></listitem>
+         <listitem><para>Log4J</para></listitem>
+         <listitem><para>SLF4J</para></listitem>
+         <listitem><para>JDK logging</para></listitem>
       </itemizedlist>
 
       <para>
@@ -139,34 +139,38 @@ public interface CelebritySightingLog {
 
       <itemizedlist>
          <listitem>
-            An abstraction over common logging backends and frameworks (such as JDK Logging, log4j and slf4j)
+            <para>An abstraction over common logging backends and frameworks (such as JDK Logging, log4j and slf4j)</para>
          </listitem>
          <listitem>
-            Injectable loggers and message bundles
+            <para>Injectable loggers and message bundles</para>
          </listitem>
          <listitem>
-            Innovative, typed message loggers and message bundles defined using interfaces
+            <para>Innovative, typed message loggers and message bundles defined using interfaces</para>
          </listitem>
          <listitem>
-            Build time tooling to generate typed loggers for production<!--, and runtime generation of typed loggers for
-            development-->
+            <para>
+               Build time tooling to generate typed loggers for production<!--, and runtime generation of typed loggers for
+               development-->
+            </para>
          </listitem>
          <listitem>
-            Full support for internationalization and localization:
-            <itemizedlist>
-              <listitem>
-                  Developers work with interfaces and annotations only
-               </listitem>
-               <listitem>
-                  Translators work with message bundles in properties files
-               </listitem>
-            </itemizedlist>
+            <para>
+               Full support for internationalization and localization:
+               <itemizedlist>
+                 <listitem>
+                     <para>Developers work with interfaces and annotations only</para>
+                  </listitem>
+                  <listitem>
+                     <para>Translators work with message bundles in properties files</para>
+                  </listitem>
+               </itemizedlist>
+            </para>
          </listitem>
          <listitem>
-            Access to the "Mapped Diagonostic Context" (MDC) and/or the "Nested Diagonostic Context" (NDC) (if the underlying logger supports it)
+            <para>Access to the "Mapped Diagonostic Context" (MDC) and/or the "Nested Diagonostic Context" (NDC) (if the underlying logger supports it)</para>
          </listitem>
          <listitem>
-            Serializable loggers for use in contextual components
+            <para>Serializable loggers for use in contextual components</para>
          </listitem>
       </itemizedlist>
 
@@ -428,8 +432,8 @@ public interface TrainMessages {
          </para>
 
          <itemizedlist>
-            <listitem>Set the Java compliance to 1.6 (or better)</listitem>
-            <listitem>Add the Solder tooling library to the build classpath</listitem>
+            <listitem><para>Set the Java compliance to 1.6 (or better)</para></listitem>
+            <listitem><para>Add the Solder tooling library to the build classpath</para></listitem>
          </itemizedlist>
 
          <warning>
