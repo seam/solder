@@ -28,7 +28,7 @@ import org.jboss.solder.bean.defaultbean.DefaultBean;
  * </p>
  * <p/>
  * <p>
- * Other Seam modules (such as the Faces Module) may install a bean that
+ * Other modules (such as the Faces Module) may install a bean that
  * overrides this and provides variable mapping.
  * </p>
  *

@@ -37,7 +37,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </p>
  * <p/>
  * <p>
- * Seam Solder will inject a {@link FunctionMapper} and
+ * Solder will inject a {@link FunctionMapper} and
  * {@link VariableMapper} for each instantiation of an {@link ELContext} (and
  * hence for each instantiation of {@link Expressions}); any overrides of these
  * beans should ensure that obtaining the bean instance is a lightweight

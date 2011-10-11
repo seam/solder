@@ -1,4 +1,4 @@
-package org.jboss.seam.config.examples.quiz.ftest;
+package org.jboss.solder.config.examples.quiz.ftest;
 
 import static org.jboss.arquillian.ajocado.Ajocado.waitForHttp;
 import static org.jboss.arquillian.ajocado.locator.LocatorFactory.xp;

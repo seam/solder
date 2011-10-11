@@ -22,7 +22,7 @@ import org.jboss.solder.messages.Message;
 import org.jboss.solder.messages.MessageBundle;
 
 /**
- * Type-safe exception messages for the Seam Servlet module
+ * Type-safe exception messages for the Solder Servlet module
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */

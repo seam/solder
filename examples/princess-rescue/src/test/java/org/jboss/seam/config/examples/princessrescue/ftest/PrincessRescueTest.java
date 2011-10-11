@@ -1,4 +1,4 @@
-package org.jboss.seam.config.examples.princessrescue.ftest;
+package org.jboss.solder.config.examples.princessrescue.ftest;
 
 import java.io.File;
 import java.net.MalformedURLException;

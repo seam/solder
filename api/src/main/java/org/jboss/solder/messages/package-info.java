@@ -16,12 +16,12 @@
  */
 
 /**
- * Seam Solder provides injectable typed message bundles (suitable for
+ * Solder provides injectable typed message bundles (suitable for
  * internationalization and localization)
  *
  * <p>
  * Often times you need to access a localized message. For example, you need to
- * localize an exception message.  Seam Solder let's you retrieve this message
+ * localize an exception message.  Solder let's you retrieve this message
  * from a typed message logger to avoid having to use hard-coded string
  * messages.
  * </p>

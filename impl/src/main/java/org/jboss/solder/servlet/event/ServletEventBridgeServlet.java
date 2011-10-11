@@ -52,6 +52,6 @@ public class ServletEventBridgeServlet extends AbstractServletEventBridge implem
     }
 
     public String getServletInfo() {
-        return "Seam Servlet module WebApplication event publisher";
+        return "Solder Servlet module WebApplication event publisher";
     }
 }

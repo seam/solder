@@ -16,7 +16,7 @@
  */
 
 /**
- * Seam Solder integrates with JBoss Logging 3 to provide injectable native
+ * Solder integrates with JBoss Logging 3 to provide injectable native
  * loggers or typed message loggers (suitable for internationalization and
  * localization) while still offering a choice of logging backend
  *
@@ -94,10 +94,10 @@
  *    &#64;Inject Logger log;
  * </pre>
  *
- * @see org.jboss.solder.logging.seam.logging.Log
- * @see org.jboss.solder.logging.seam.logging.Category
- * @see org.jboss.solder.logging.seam.logging.TypedCategory
- * @see org.jboss.solder.logging.seam.logging.Suffix
+ * @see org.jboss.solder.logging.Log
+ * @see org.jboss.solder.logging.Category
+ * @see org.jboss.solder.logging.TypedCategory
+ * @see org.jboss.solder.logging..Suffix
  * @see org.jboss.solder.messages.Cause
  * @see org.jboss.solder.messages.Message
  * @see org.jboss.solder.messages.Locale

@@ -35,7 +35,7 @@ import org.jboss.solder.servlet.literal.WebRequestLiteral;
 import org.jboss.solder.servlet.support.ServletLogger;
 
 /**
- * A bridge that forwards unhandled exceptions to the Seam exception handling facility (Seam Catch).
+ * A bridge that forwards unhandled exceptions to the Solder exception handling facility (Solder Catch).
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */

@@ -28,7 +28,7 @@ import org.jboss.solder.util.Sortable;
  * </p>
  * <p/>
  * <p>
- * Seam Solder comes with a resource loader which uses the classpath to
+ * Solder comes with a resource loader which uses the classpath to
  * locate resources, and a resource loader that uses the
  * {@link javax.servlet.ServletContext} (if available).
  * </p>

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.config.examples.princessrescue;
+package org.jboss.solder.config.examples.princessrescue;
 
 public enum RoomType {
     NORMAL, MONSTER, GAMEOVER;

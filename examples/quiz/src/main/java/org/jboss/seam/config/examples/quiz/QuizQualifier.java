@@ -1,4 +1,4 @@
-package org.jboss.seam.config.examples.quiz;
+package org.jboss.solder.config.examples.quiz;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
