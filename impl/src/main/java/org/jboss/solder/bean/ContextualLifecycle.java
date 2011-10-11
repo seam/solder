@@ -28,7 +28,7 @@ import javax.enterprise.inject.spi.Bean;
  */
 public interface ContextualLifecycle<T> {
     /**
-     * Callback invoked by a Seam Solder created bean when
+     * Callback invoked by a Solder created bean when
      * {@link Bean#create(CreationalContext)} is called.
      *
      * @param bean              the bean initiating the callback
@@ -37,7 +37,7 @@ public interface ContextualLifecycle<T> {
     public T create(Bean<T> bean, CreationalContext<T> creationalContext);
 
     /**
-     * Callback invoked by a Seam Solder created bean when
+     * Callback invoked by a Solder created bean when
      * {@link Bean#destroy(Object, CreationalContext)} is called.
      *
      * @param bean              the bean initiating the callback

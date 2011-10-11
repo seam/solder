@@ -39,17 +39,17 @@
  * </pre>
  *
  * <p>
- * By default Seam Solder will only resolve beans from CDI, and provides no function or variable mapping.
+ * By default Solder will only resolve beans from CDI, and provides no function or variable mapping.
  * </p>
  *
  * <p>
- * If you integrating Seam Solder into an environment that provides a source of beans for EL resolution, you can
+ * If you integrating Solder into an environment that provides a source of beans for EL resolution, you can
  * register an {@link javax.el.ELResolver} by creating a bean of type {@link javax.el.ELResolver} with the qualifier
  * &#64;{@link org.jboss.solder.el.Resolver}.
  * </p>
  *
  * <p>
- * If you integrating Seam Solder into an environment that provides a function or variable mapper, you can also
+ * If you integrating Solder into an environment that provides a function or variable mapper, you can also
  * provide an alternative {@link javax.el.FunctionMapper} or {@link javax.el.VariableMapper}. Simply create a bean
  * exposing your alternative implementation with the qualifier &#64;{@link org.jboss.solder.el.Mapper}.
  * </p>

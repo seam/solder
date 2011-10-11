@@ -1,4 +1,4 @@
-package org.jboss.seam.config.examples.quiz;
+package org.jboss.solder.config.examples.quiz;
 
 /**
  * Quiz interface defines key methods.

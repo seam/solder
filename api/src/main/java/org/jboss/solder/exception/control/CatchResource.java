@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * Used to qualify a resource needed for handling an exception within Seam Catch.
+ * Used to qualify a resource needed for handling an exception within Solder Catch.
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */

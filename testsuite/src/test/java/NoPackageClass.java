@@ -1,7 +1,7 @@
 import org.jboss.solder.test.core.CoreTest;
 
 /**
- * Used by {@link CoreTest} to verify that Seam Solder does not fail with NPE when
+ * Used by {@link CoreTest} to verify that Solder does not fail with NPE when
  * a BDA contains a no-package class.
  *
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>

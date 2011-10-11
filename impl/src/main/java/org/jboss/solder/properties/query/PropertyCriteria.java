@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
  * </p>
  * <p/>
  * <p>
- * Seam Solder provides a number of property queries (
+ * Solder provides a number of property queries (
  * {@link TypedPropertyCriteria}, {@link NamedPropertyCriteria} and
  * {@link AnnotatedPropertyCriteria}), or you can create a custom query by
  * implementing this interface.

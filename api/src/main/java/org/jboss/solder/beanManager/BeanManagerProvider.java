@@ -28,7 +28,7 @@ import org.jboss.solder.util.Sortable;
  * </p>
  * <p/>
  * <p>
- * Seam Solder provides a number of built in providers, including:
+ * Solder provides a number of built in providers, including:
  * </p>
  * <p/>
  * <ul>
