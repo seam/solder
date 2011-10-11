@@ -62,22 +62,22 @@
     <filter-name>Servlet Event Bridge Filter</filter-name>
     <url-pattern>/*</url-pattern>
 </filter-mapping>]]></programlisting>
-    </section>
 
-    <warning>
+        <warning>
+            <para>
+                In order for the Servlet event bridge to properly fire the <literal>ServletContext</literal> initialized event, the CDI
+                runtime must be started at the time the Servlet listener is invoked. This ordering is guaranteed in a
+                compliant Java EE 6 environment. If you are using a CDI implementation in a Servlet environment (e.g., Weld
+                Servlet), and it relies on a Servlet listener to bootstrap, that listener must be registered
+                <emphasis>before</emphasis> any Servlet listener in <literal>web.xml</literal>.
+          </para>
+        </warning>
+
         <para>
-            In order for the Servlet event bridge to properly fire the <literal>ServletContext</literal> initialized event, the CDI
-            runtime must be started at the time the Servlet listener is invoked. This ordering is guaranteed in a
-            compliant Java EE 6 environment. If you are using a CDI implementation in a Servlet environment (e.g., Weld
-            Servlet), and it relies on a Servlet listener to bootstrap, that listener must be registered
-            <emphasis>before</emphasis> any Servlet listener in <literal>web.xml</literal>.
-      </para>
-    </warning>
-
-    <para>
-        You're now ready to dive into the Servlet enhancements provided for you by Solder!
-    </para>
+            You're now ready to dive into the Servlet enhancements provided for you by Solder!
+        </para>
+    </section>
+</chapter>
 <!--
 vim:et:ts=4:sw=4:tw=128
 -->
-</chapter>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,101 +16,102 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-genericbeans">
-   <title>Generic Beans</title>
-      
-   <para>
-      Many common services and API's require the use of more than just one class. When exposing these services via CDI,
+  <title>Generic Beans</title>
+  <para>
+      Many common services and API&apos;s require the use of more than just one class. When exposing these services via CDI,
       it would be time consuming and error prone to force the end developer to provide producers for all the different 
       classes required. Generic beans provide a solution, allowing a framework author to provide a set of related 
       beans, one for each single configuration point defined by the end developer. The configuration points specifies 
       the qualifiers which are inherited by all beans in the set.
    </para>
-   
-   <para>
-      To illustrate the use of generic beans, we'll use the following example. Imagine we are writing an extension to 
-      integrate our custom messaging solution "ACME Messaging" with CDI. The ACME Messaging API for sending messages 
+  <para>
+      To illustrate the use of generic beans, we&apos;ll use the following example. Imagine we are writing an extension to 
+      integrate our custom messaging solution &quot;ACME Messaging&quot; with CDI. The ACME Messaging API for sending messages 
       consists of several interfaces:
    </para>
-      
-   <variablelist>
-      <varlistentry>
-         <term><code>MessageQueue</code></term>
-         <listitem>The message queue, onto which messages can be placed, and acted upon by ACME Messaging</listitem>
-      </varlistentry>
-      <varlistentry>
-         <term><code>MessageDispatcher</code></term>
-         <listitem>The dispatcher, responsible for placing messages created by the user onto the queue</listitem>
-      </varlistentry>
-      <varlistentry>
-         <term><code>DispatcherPolicy</code></term>
-         <listitem>The dispatcher policy, which can be used to tweak the dispatch policy by the client</listitem>
-      </varlistentry>
-      <varlistentry>
-         <term><code>MessageSystemConfiguration</code></term>
-         <listitem>The messaging system configuration</listitem>
-      </varlistentry>
-   </variablelist>  
-      
-   <para>
-      We want to be able to create as many <code>MessageQueue</code> configurations's as they need, however we do not 
+  <variablelist>
+    <varlistentry>
+      <term>
+        <code>MessageQueue</code>
+      </term>
+      <listitem>
+        <para>The message queue, onto which messages can be placed, and acted upon by ACME Messaging</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <code>MessageDispatcher</code>
+      </term>
+      <listitem>
+        <para>The dispatcher, responsible for placing messages created by the user onto the queue</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <code>DispatcherPolicy</code>
+      </term>
+      <listitem>
+        <para>The dispatcher policy, which can be used to tweak the dispatch policy by the client</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+        <code>MessageSystemConfiguration</code>
+      </term>
+      <listitem>
+        <para>The messaging system configuration</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>
+      We want to be able to create as many <code>MessageQueue</code> configurations as they need, however we do not 
       want to have to declare each producer and the associated plumbing for every queue. Generic beans are an ideal 
       solution to this problem.
    </para>
-   
-   
-   <section>
-      <title>Using generic beans</title>
-      
-      <para>
-         Before we take a look at creating generic beans, let's see how we will use them.
+  <section>
+    <title>Using generic beans</title>
+    <para>
+         Before we take a look at creating generic beans, let&apos;s see how we will use them.
       </para>
-      
-      <para>
+    <para>
          Generic beans are configured via producer methods and fields. We want to create two queues to interact with 
          ACME Messaging, a default queue that is installed with qualifier <code>@Default</code> and a durable queue that
          has qualifier <code>@Durable</code>:
       </para>
-         
-      <programlisting role="JAVA">class MyMessageQueues {
+    <programlisting role="JAVA">class MyMessageQueues {
    
    @Produces
-   @ACMEQueue("defaultQueue")
+   @ACMEQueue(&quot;defaultQueue&quot;)
    MessageSystemConfiguration defaultQueue = new MessageSystemConfiguration();
    
    @Produces @Durable @ConversationScoped
-   @ACMEQueue("durableQueue")
+   @ACMEQueue(&quot;durableQueue&quot;)
    MessageSystemConfiguration producerDefaultQueue() {
       MessageSystemConfiguration config = new MessageSystemConfiguration();
       config.setDurable(true);
       return config;
    }
 }</programlisting>
-   
-      <para>
+    <para>
          Looking first at the default queue, in addition to the <code>@Produces</code> annotation, the generic 
          configuration annotation <code>ACMEQueue</code>, is used, which defines this to be a generic configuration 
          point for ACME messaging (and cause a whole set of beans to be created, exposing for example the dispatcher).
          The generic configuration annotation specifies the queue name, and the value of the producer field defines the
-         messaging system's configuration (in this case we use all the defaults). As no qualifier is placed on the
+         messaging system&apos;s configuration (in this case we use all the defaults). As no qualifier is placed on the
          definition, <code>@Default</code> qualifier is inherited by all beans in the set.
       </para>
-   
-      <para>
+    <para>
          The durable queue is defined as a producer method (as we want to alter the configuration of the queue before
          having Seam Solder use it). Additionally, it specifies that the generic beans created (that allow for 
          their scope to be overridden) should be placed in the conversation scope. Finally, it specifies that the 
          generic beans created should inherit the qualifier <code>@Durable</code>.
       </para>
-      
-      <para>
+    <para>
          We can now inject our generic beans as normal, using the qualifiers specified on the configuration point:
-      </para> 
-          
-      <programlisting role="JAVA"><![CDATA[class MessageLogger {
+      </para>
+    <programlisting role="JAVA"><![CDATA[class MessageLogger {
   
    @Inject
    MessageDispatcher dispatcher;
@@ -124,8 +125,7 @@
    }
   
 }]]></programlisting>
-
-      <programlisting role="JAVA">class DurableMessageLogger {
+    <programlisting role="JAVA">class DurableMessageLogger {
   
    @Inject @Durable
    MessageDispatcher dispatcher;
@@ -143,16 +143,14 @@
    void logMessage(Payload payload) {
       ...
    }
-}</programlisting>     
-   
-   <para>
+}</programlisting>
+    <para>
       It is also possible to configure generic beans using beans by sub-classing the configuration type, or installing
       another bean of the configuration type through the SPI (e.g. using Seam XML). For example to configure a durable
       queue via sub-classing:
-   </para> 
-   
-   <programlisting role="JAVA">@Durable @ConversationScoped
-@ACMEQueue("durableQueue")
+   </para>
+    <programlisting role="JAVA">@Durable @ConversationScoped
+@ACMEQueue(&quot;durableQueue&quot;)
 class DurableQueueConfiguration extends MessageSystemConfiguration {
       
    public DurableQueueConfiguration()
@@ -160,48 +158,39 @@ class DurableQueueConfiguration extends MessageSystemConfiguration {
       this.durable = true;
    }
 }</programlisting>
-
-   <para>
+    <para>
       And the same thing via Seam XML:
    </para>
-   
-   <programlisting role="XML"><![CDATA[<my:MessageSystemConfiguration>
+    <programlisting role="XML"><![CDATA[<my:MessageSystemConfiguration>
    <my:Durable/>
    <s:ConversationScoped/>
    <my:ACMEQueue>durableQueue</my:ACMEQueue>
    <my:durable>true</my:durable>
 </my:MessageSystemConfiguration>]]></programlisting>
-
-   </section>
-      
-   <section>
-      <title>Defining Generic Beans</title>
-      
-      <para>
-         Having seen how we use the generic beans, let's look at how to define them. We start by creating the generic 
+  </section>
+  <section>
+    <title>Defining Generic Beans</title>
+    <para>
+         Having seen how we use the generic beans, let&apos;s look at how to define them. We start by creating the generic 
          configuration annotation:
       </para>
-
-      <programlisting role="JAVA">@Retention(RUNTIME)
+    <programlisting role="JAVA">@Retention(RUNTIME)
 @GenericType(MessageSystemConfiguration.class)
 @interface ACMEQueue {
 
    String name();
    
 }</programlisting>
-
-      <para>
+    <para>
          The generic configuration annotation a defines the generic configuration type (in this case 
          <code>MessageSystemConfiguration</code>); the type produced by the generic configuration point must be of this 
          type. Additionally it defines the member <code>name</code>, used to provide the queue name. 
       </para>
-
-      <para>
+    <para>
          Next, we define the queue manager bean. The manager has one producer method, which creates the queue from the
          configuration:
-      </para>      
-
-      <programlisting role="JAVA">@GenericConfiguration(ACMEQueue.class) @ApplyScope
+      </para>
+    <programlisting role="JAVA">@GenericConfiguration(ACMEQueue.class) @ApplyScope
 class QueueManager {
 
    @Inject @Generic
@@ -222,33 +211,28 @@ class QueueManager {
       return factory.createMessageQueue(config.name());
    }
 }</programlisting>
-
-   <para>
+    <para>
       The bean is declared to be a generic bean for the <code>@ACMEQueue</code> generic configuration type annotation
       by placing the <code>@GenericConfiguration</code> annotation on the class. We can inject the generic configuration
       type using the <code>@Generic</code> qualifier, as well the annotation used to define the queue.
    </para>
-   
-   <para>
+    <para>
       Placing the <code>@ApplyScope</code> annotation on the bean causes it to inherit the scope from the generic 
-      configuration point. As creating the queue factory is a heavy operation we don't want to do it more than 
+      configuration point. As creating the queue factory is a heavy operation we don&apos;t want to do it more than 
       necessary.
    </para>
-   
-   <para>
+    <para>
       Having created the <code>MessageQueueFactory</code>, we can then expose the queue, obtaining its name from the
       generic configuration annotation. Additionally, we define the scope of the producer method to be inherited from 
       the generic configuration point by placing the annotation <code>@ApplyScope</code> on the producer method. The 
       producer method automatically inherits the qualifiers specified by the generic configuration point.
    </para>
-   
-   <para>
+    <para>
       Finally we define the message manager, which exposes the message dispatcher, as well as allowing the client to
-      inject an object which exposes the policy the dispatcher will use when enqueing messages. The client can then
+      inject an object which exposes the policy the dispatcher will use when queuing messages. The client can then
       tweak the policy should they wish.
    </para>
-
-      <programlisting role="JAVA">@Generic(ACMEQueue.class)
+    <programlisting role="JAVA">@Generic(ACMEQueue.class)
 class MessageManager {
 
    @Inject @Generic
@@ -265,7 +249,5 @@ class MessageManager {
    }   
    
 }</programlisting>
-
-   </section>
-   
+  </section>
 </chapter>
