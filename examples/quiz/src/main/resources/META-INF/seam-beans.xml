@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:s="urn:java:ee" 
-    xmlns:q="urn:java:org.jboss.seam.config.examples.quiz"
+    xmlns:q="urn:java:org.jboss.solder.config.examples.quiz"
     xsi:schemaLocation="
       http://java.sun.com/xml/ns/javaee
       http://docs.jboss.org/cdi/beans_1_0.xsd">
@@ -17,7 +17,7 @@
      <q:geographicQuiz>
         <s:Inject/>
         <q:QuizQualifier value="geoQuiz"/>
-	    <s:Exact>org.jboss.seam.config.examples.quiz.GeographicQuiz</s:Exact>        
+	    <s:Exact>org.jboss.solder.config.examples.quiz.GeographicQuiz</s:Exact>        
      </q:geographicQuiz>
       <q:historicQuiz> 
         <s:Inject/>

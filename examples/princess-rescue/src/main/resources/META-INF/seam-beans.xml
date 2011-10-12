@@ -2,7 +2,7 @@
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:s="urn:java:ee"
-       xmlns:p="urn:java:org.jboss.seam.config.examples.princessrescue"
+       xmlns:p="urn:java:org.jboss.solder.config.examples.princessrescue"
        xsi:schemaLocation="
       http://java.sun.com/xml/ns/javaee
       http://docs.jboss.org/cdi/beans_1_0.xsd">
