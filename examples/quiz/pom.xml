@@ -10,10 +10,10 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>seam-config-example-quiz</artifactId>
+    <artifactId>solder-config-example-quiz</artifactId>
     <packaging>war</packaging>
 
-    <name>Seam Config Example: Quiz Example</name>
+    <name>Solder Config Example: Quiz Example</name>
 
 
     <dependencies>

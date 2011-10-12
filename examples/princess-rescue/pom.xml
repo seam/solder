@@ -9,10 +9,10 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>seam-config-example-princess-rescue</artifactId>
+    <artifactId>solder-config-example-princess-rescue</artifactId>
     <packaging>war</packaging>
 
-    <name>Seam Config Example: Princess Rescue (XML)</name>
+    <name>Solder Config Example: Princess Rescue (XML)</name>
 
     <dependencies>
 
