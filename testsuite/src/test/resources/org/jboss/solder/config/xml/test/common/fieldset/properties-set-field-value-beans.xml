@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.fieldset">
+    <test:PropertiesFieldValue>
+        <replaces/>
+        <test:properties1>
+            <entry>
+                <key>1</key>
+                <value>hello</value>
+            </entry>
+            <entry>
+                <key>2</key>
+                <value>world</value>
+            </entry>
+        </test:properties1>
+        <test:properties2>
+            <e>
+                <k>key1</k>
+                <v>Value 1</v>
+            </e>
+            <e>
+                <k>key2</k>
+                <v>Value 2</v>
+            </e>
+        </test:properties2>
+
+    </test:PropertiesFieldValue>
+
+</beans>

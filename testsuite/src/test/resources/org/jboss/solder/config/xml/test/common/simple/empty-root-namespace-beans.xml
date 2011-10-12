@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:s="urn:java:ee" xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.simple">
+
+    <test:Bean1>
+        <s:replaces/>
+        <test:bean2>
+            <s:Inject/>
+        </test:bean2>
+
+        <test:pcMethod>
+            <s:PostConstruct/>
+        </test:pcMethod>
+
+        <test:value>
+            <s:Produces/>
+        </test:value>
+    </test:Bean1>
+
+    <test:Bean2>
+        <s:replaces/>
+        <test:produceBean3>
+            <s:Produces/>
+            <s:parameters/>
+        </test:produceBean3>
+        <test:produceBean3>test value</test:produceBean3>
+    </test:Bean2>
+
+    <test:OverriddenBean>
+        <s:replaces/>
+        <s:Named>someBean</s:Named>
+    </test:OverriddenBean>
+
+    <test:ExtendedBean>
+        <s:modifies/>
+        <test:ExtendedQualifier2/>
+    </test:ExtendedBean>
+
+    <test:ScopeOverrideBean>
+        <s:modifies/>
+        <s:ApplicationScoped/>
+    </test:ScopeOverrideBean>
+</beans>

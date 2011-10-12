@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.fieldset">
+
+    <test:FieldValueBean>
+        <replaces/>
+        <test:init>
+            <Inject/>
+        </test:init>
+        <test:ivalue>10</test:ivalue>
+        <test:stringValue>hello world</test:stringValue>
+        <test:enumValue>A</test:enumValue>
+        <test:fvalue>0</test:fvalue>
+        <test:dvalue>0</test:dvalue>
+        <test:bvalue>true</test:bvalue>
+        <test:lvalue>23</test:lvalue>
+        <test:svalue>4</test:svalue>
+        <test:bigDecimalValue>10</test:bigDecimalValue>
+        <test:noField>7</test:noField>
+        <test:elValue>
+            <value>#{elValue}</value>
+        </test:elValue>
+        <test:elInnerTextValue>#{elValue}</test:elInnerTextValue>
+    </test:FieldValueBean>
+
+    <test:FieldValueBean ivalue="10" stringValue="hello world" enumValue="A" fvalue="0" dvalue="0" bvalue="true"
+                         lvalue="23" svalue="4" bigDecimalValue="10" noField="7">
+        <replaces/>
+        <test:init>
+            <Inject/>
+        </test:init>
+        <test:FieldsetQualifier/>
+    </test:FieldValueBean>
+</beans>

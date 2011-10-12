@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.fieldset">
+    <test:ArrayFieldValue>
+        <replaces/>
+        <test:iarray>
+            <value>1</value>
+            <value>2</value>
+        </test:iarray>
+        <test:carray>
+            <value>java.lang.Integer</value>
+            <value>java.lang.Long</value>
+        </test:carray>
+        <test:sarray>
+            <value>hello</value>
+            <value>world</value>
+        </test:sarray>
+    </test:ArrayFieldValue>
+
+</beans>

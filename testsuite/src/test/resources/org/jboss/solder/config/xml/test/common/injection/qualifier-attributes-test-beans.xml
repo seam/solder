@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.injection">
+
+    <test:OtherQualifier>
+        <Qualifier/>
+    </test:OtherQualifier>
+
+    <test:QualifiedBean1>
+        <test:OtherQualifier value1="AA" value2="1">A</test:OtherQualifier>
+    </test:QualifiedBean1>
+
+    <test:QualifiedBean2>
+        <test:OtherQualifier value1="BB" value2="2" value="B"/>
+    </test:QualifiedBean2>
+
+    <test:QualifierTestBean>
+        <replaces/>
+        <test:bean1>
+            <test:OtherQualifier value1="AA" value2="1" value="A"/>
+            <Inject/>
+        </test:bean1>
+        <test:bean2>
+            <test:OtherQualifier value1="BB" value2="2">B</test:OtherQualifier>
+            <Inject/>
+        </test:bean2>
+    </test:QualifierTestBean>
+
+</beans>

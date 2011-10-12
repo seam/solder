@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.fieldset">
+
+    <test:CollectionFieldValue>
+        <replaces/>
+        <test:iset>
+            <value>1</value>
+            <value>2</value>
+        </test:iset>
+        <test:clist>
+            <value>java.lang.Integer</value>
+            <value>java.lang.Long</value>
+        </test:clist>
+        <test:sset>
+            <value>2</value>
+            <value>1</value>
+        </test:sset>
+    </test:CollectionFieldValue>
+
+</beans>
