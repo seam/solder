@@ -41,7 +41,7 @@ public class ExceptionHandledInterceptor {
      *         will be 0 for int, short, long, float and false for boolean.
      */
     @AroundInvoke
-    public Object passExceptionsToSolderCatch(final InvocationContext ctx) {
+    public Object passExceptionsToSolderCatch(final InvocationContext ctx) throws Exception {
         try {
             ctx.proceed();
         } catch (final Throwable e) {

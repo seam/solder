@@ -21,7 +21,7 @@ import javax.interceptor.InvocationContext;
 
 public class EchoServiceHandler {
     @AroundInvoke
-    public Object invoke(InvocationContext ctx) {
+    public Object invoke(InvocationContext ctx) throws Exception {
         return ctx.getMethod().getName().toString();
     }
 }
