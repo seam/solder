@@ -19,6 +19,7 @@ package org.jboss.solder.exception.control;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 import org.jboss.solder.exception.control.ExceptionHandled;
@@ -27,6 +28,7 @@ import org.jboss.solder.exception.control.ExceptionToCatch;
 /**
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  */
+@Interceptor
 @ExceptionHandled
 public class ExceptionHandledInterceptor {
 
