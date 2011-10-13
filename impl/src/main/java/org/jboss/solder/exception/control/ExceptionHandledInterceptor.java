@@ -22,9 +22,6 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
-import org.jboss.solder.exception.control.ExceptionHandled;
-import org.jboss.solder.exception.control.ExceptionToCatch;
-
 /**
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  */
@@ -50,9 +47,13 @@ public class ExceptionHandledInterceptor {
             bm.fireEvent(new ExceptionToCatch(e));
         }
 
-        if (ctx.getMethod().getReturnType().equals(Integer.TYPE) || ctx.getMethod().getReturnType().equals(Short.TYPE) || ctx.getMethod().getReturnType().equals(Long.TYPE)
-                || ctx.getMethod().getReturnType().equals(Float.TYPE))
+        if (ctx.getMethod().getReturnType().equals(Integer.TYPE) || ctx.getMethod().getReturnType().equals(Short.TYPE)
+                || ctx.getMethod().getReturnType().equals(Long.TYPE) || ctx.getMethod().getReturnType().equals(Float.TYPE)
+                || ctx.getMethod().getReturnType().equals(Byte.TYPE) || ctx.getMethod().getReturnType().equals(Double.TYPE))
             return 0;
+
+        if (ctx.getMethod().getReturnType().equals(Character.TYPE))
+            return '\u0000';
 
         if (ctx.getMethod().getReturnType().equals(Boolean.TYPE))
             return false;

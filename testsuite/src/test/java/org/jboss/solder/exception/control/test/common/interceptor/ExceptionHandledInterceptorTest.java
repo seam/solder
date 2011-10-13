@@ -16,13 +16,10 @@
  */
 package org.jboss.solder.exception.control.test.common.interceptor;
 
-import static org.junit.Assert.assertEquals;
-
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -39,6 +36,8 @@ import org.jboss.solder.reflection.annotated.ParameterValueRedefiner;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for ExceptionHandledInterceptor.
@@ -81,7 +80,6 @@ public class ExceptionHandledInterceptorTest {
     }
 
     @Test
-    @Ignore // SOLDER-291
     public void testDefaultValuesReturnedByHandledMethod(PrimitiveValues values) {
         assertEquals(0, values.getByte());
         assertEquals(0, values.getShort());
