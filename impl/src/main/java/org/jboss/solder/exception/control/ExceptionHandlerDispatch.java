@@ -31,11 +31,6 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Named;
 
-import org.jboss.solder.exception.control.CaughtException;
-import org.jboss.solder.exception.control.ExceptionStack;
-import org.jboss.solder.exception.control.ExceptionToCatch;
-import org.jboss.solder.exception.control.HandlerMethod;
-import org.jboss.solder.exception.control.TraversalMode;
 import org.jboss.solder.exception.control.extension.CatchExtension;
 
 /**

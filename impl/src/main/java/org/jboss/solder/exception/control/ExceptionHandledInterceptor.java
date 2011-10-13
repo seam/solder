@@ -16,6 +16,7 @@
  */
 package org.jboss.solder.exception.control;
 
+import javax.enterprise.event.ObserverException;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
@@ -40,11 +41,16 @@ public class ExceptionHandledInterceptor {
      *         will be 0 for int, short, long, float and false for boolean.
      */
     @AroundInvoke
-    public Object passExceptionsToSolderCatch(final InvocationContext ctx) throws Exception {
+    public Object passExceptionsToSolderCatch(final InvocationContext ctx) throws Throwable {
         try {
             ctx.proceed();
         } catch (final Throwable e) {
-            bm.fireEvent(new ExceptionToCatch(e));
+            try {
+                bm.fireEvent(new ExceptionToCatch(e));
+            } catch (Exception ex) {
+                if (ex.getClass().equals(ObserverException.class))
+                    throw ex.getCause();
+            }
         }
 
         if (ctx.getMethod().getReturnType().equals(Integer.TYPE) || ctx.getMethod().getReturnType().equals(Short.TYPE)

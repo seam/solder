@@ -33,7 +33,6 @@ import org.jboss.solder.literal.AnyLiteral;
 import org.jboss.solder.reflection.AnnotationInspector;
 import org.jboss.solder.reflection.annotated.InjectableMethod;
 import org.jboss.solder.reflection.annotated.ParameterValueRedefiner;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -68,7 +67,6 @@ public class ExceptionHandledInterceptorTest {
     }
 
     @Test
-    @Ignore // SOLDER-290
     public void testExceptionRethrownWhenNoExceptionHandlerAvailable() {
         try {
             ping.ping();
