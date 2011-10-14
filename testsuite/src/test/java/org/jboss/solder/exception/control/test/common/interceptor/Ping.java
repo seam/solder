@@ -25,4 +25,10 @@ public class Ping {
     {
         throw new CheckedException();
     }
+    
+    @ExceptionHandled
+    public void pong() throws ClassNotFoundException
+    {
+        throw new ClassNotFoundException();
+    }
 }

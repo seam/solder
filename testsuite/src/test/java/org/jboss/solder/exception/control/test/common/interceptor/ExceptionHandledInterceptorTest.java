@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for ExceptionHandledInterceptor.
- *
+ * 
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  */
 @RunWith(Arquillian.class)
@@ -45,8 +45,13 @@ public class ExceptionHandledInterceptorTest {
     }
 
     @Test(expected = CheckedException.class)
-    public void testExceptionRethrownWhenNoExceptionHandlerAvailable() throws Exception {
+    public void testRethrownExceptionNotWrapped() throws Exception {
         ping.ping();
+    }
+
+    @Test(expected = ClassNotFoundException.class)
+    public void testExceptionRethrownWhenNoExceptionHandlerAvailable() throws Exception {
+        ping.pong();
     }
 
     @Test
