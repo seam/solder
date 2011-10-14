@@ -166,6 +166,7 @@ public class ExceptionHandlerDispatch {
 
             if (!eventException.isHandled() && throwException == null) {
                 log.noHandlersFound(eventException.getException());
+                throw eventException.getException();
             }
 
             if (throwException != null) {

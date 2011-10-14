@@ -112,6 +112,11 @@ public class InventoryActions {
          exception handler is a method on a CDI bean that is invoked to handle a specific type of exception. Within that
          method, you can implement any logic necessary to handle or respond to the exception.
       </para>
+      <note>
+         <para>
+            If there are no exception handlers for an exception, the exception is rethrown.
+         </para>
+      </note>
 <!-- TODO: Do we really want to say they're scoped? They tyically aren't, and AFAIK, we're not taking scope into
       consideration. -->    <para>
          Given that exception handler beans are CDI beans, they can make use of dependency injection, be scoped, have
