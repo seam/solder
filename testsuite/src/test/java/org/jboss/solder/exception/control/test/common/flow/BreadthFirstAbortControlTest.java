@@ -33,9 +33,9 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class BreadthFirstAbortControlTest {
-    @Deployment
+    @Deployment(name = "BreadthFirstAbortControlTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("breadthFirstAbortControl.jar")
+        return BaseWebArchive.createBase("breadthFirstAbortControl")
                 .addClasses(AbortingBreadthFirstHandler.class);
     }
 

@@ -33,9 +33,9 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class DepthAbortControlTest {
-    @Deployment
+    @Deployment(name = "DepthAbortControlTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("depthAbortControl.jar")
+        return BaseWebArchive.createBase("depthAbortControl")
                 .addClasses(AbortingDepthHandler.class);
     }
 

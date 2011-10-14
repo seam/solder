@@ -16,23 +16,12 @@
  */
 package org.jboss.solder.exception.control.test.common.interceptor;
 
-import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
-import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.solder.bean.Beans;
-import org.jboss.solder.bean.ImmutableInjectionPoint;
-import org.jboss.solder.exception.control.CaughtException;
-import org.jboss.solder.exception.control.extension.CatchExtension;
-import org.jboss.solder.literal.AnyLiteral;
-import org.jboss.solder.reflection.AnnotationInspector;
-import org.jboss.solder.reflection.annotated.InjectableMethod;
-import org.jboss.solder.reflection.annotated.ParameterValueRedefiner;
+import org.jboss.solder.exception.control.test.common.BaseWebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,8 +29,8 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for ExceptionHandledInterceptor.
- * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  *
+ * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  */
 @RunWith(Arquillian.class)
 public class ExceptionHandledInterceptorTest {
@@ -49,32 +38,15 @@ public class ExceptionHandledInterceptorTest {
     @Inject
     private Ping ping;
 
-    private static JavaArchive baseDeploymentWithoutBeanDescriptor() {
-        return ShrinkWrap
-                .create(JavaArchive.class, "interceptor-test.jar")
-                .addPackage(CaughtException.class.getPackage())
-                .addClass(CatchExtension.class)
-                .addAsServiceProvider(Extension.class, CatchExtension.class)
-                // Solder classes used in Catch
-                .addClasses(Beans.class, ImmutableInjectionPoint.class, AnyLiteral.class, InjectableMethod.class,
-                        ParameterValueRedefiner.class).addPackage(AnnotationInspector.class.getPackage());
-    }
-
-    @Deployment
+    @Deployment(name = "ExceptionHandledInterceptorTest")
     public static Archive<?> createTestArchive() {
-        return baseDeploymentWithoutBeanDescriptor().addPackage(ExceptionHandledInterceptorTest.class.getPackage())
-                .addAsManifestResource("org/jboss/solder/exception/control/test/common/interceptor/beans.xml", "beans.xml");
+        return BaseWebArchive.createBase(false).addPackage(ExceptionHandledInterceptorTest.class.getPackage())
+                .addAsWebInfResource("org/jboss/solder/exception/control/test/common/interceptor/beans.xml", "beans.xml");
     }
 
-    @Test
-    public void testExceptionRethrownWhenNoExceptionHandlerAvailable() {
-        try {
-            ping.ping();
-            Assert.fail("expected exception not thrown");
-        } catch (CheckedException expected) {
-        } catch (Throwable e) {
-            Assert.fail("unexpected exception thrown: " + e);
-        }
+    @Test(expected = CheckedException.class)
+    public void testExceptionRethrownWhenNoExceptionHandlerAvailable() throws Exception {
+        ping.ping();
     }
 
     @Test

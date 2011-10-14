@@ -32,6 +32,8 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Named;
 
 import org.jboss.solder.exception.control.extension.CatchExtension;
+import org.jboss.solder.exception.control.log.ExceptionHandlerDispatcherLog;
+import org.jboss.solder.logging.Logger;
 
 /**
  * Observer of {@link ExceptionToCatch} events and handler dispatcher. All handlers are invoked from this class.  This
@@ -40,6 +42,9 @@ import org.jboss.solder.exception.control.extension.CatchExtension;
 public class ExceptionHandlerDispatch {
     private ExceptionToCatch exceptionToCatch;
     private ExceptionStack exceptionStack;
+
+    private final ExceptionHandlerDispatcherLog log = Logger.getMessageLogger(ExceptionHandlerDispatcherLog.class,
+            ExceptionHandlerDispatcherLog.class.getPackage().getName());
 
     /**
      * Observes the event, finds the correct exception handler(s) and invokes them.
@@ -53,6 +58,8 @@ public class ExceptionHandlerDispatch {
     @SuppressWarnings({"unchecked", "MethodWithMultipleLoops", "ThrowableResultOfMethodCallIgnored"})
     public void executeHandlers(@Observes @Any ExceptionToCatch eventException, final BeanManager bm,
                                 CatchExtension extension, Event<ExceptionStack> stackEvent) throws Throwable {
+        log.enteringExceptionHandlerDispatcher(eventException.getException());
+
         CreationalContext<Object> ctx = null;
         this.exceptionToCatch = eventException;
 
@@ -78,9 +85,13 @@ public class ExceptionHandlerDispatch {
 
                 for (HandlerMethod<?> handler : breadthFirstHandlerMethods) {
                     if (!processedHandlers.contains(handler)) {
+                        log.notifyingHandler(handler);
+
                         @SuppressWarnings("rawtypes")
                         final CaughtException breadthFirstEvent = new CaughtException(stack, true, eventException.isHandled());
                         handler.notify(breadthFirstEvent, bm);
+
+                        log.returnFromHandler(handler, breadthFirstEvent.getFlow().name());
 
                         if (!breadthFirstEvent.isUnmute()) {
                             processedHandlers.add(handler);
@@ -117,9 +128,13 @@ public class ExceptionHandlerDispatch {
 
                 for (HandlerMethod<?> handler : depthFirstHandlerMethods) {
                     if (!processedHandlers.contains(handler)) {
+                        log.notifyingHandler(handler);
+
                         @SuppressWarnings("rawtypes")
                         final CaughtException depthFirstEvent = new CaughtException(stack, false, eventException.isHandled());
                         handler.notify(depthFirstEvent, bm);
+
+                        log.returnFromHandler(handler, depthFirstEvent.getFlow().name());
 
                         if (!depthFirstEvent.isUnmute()) {
                             processedHandlers.add(handler);
@@ -149,6 +164,10 @@ public class ExceptionHandlerDispatch {
                 this.exceptionStack.dropCause();
             }
 
+            if (!eventException.isHandled() && throwException == null) {
+                log.noHandlersFound(eventException.getException());
+            }
+
             if (throwException != null) {
                 throw throwException;
             }
@@ -157,6 +176,8 @@ public class ExceptionHandlerDispatch {
                 ctx.release();
             }
         }
+
+        log.endingExceptionHandlerDispatcher(exceptionToCatch.getException());
     }
 
     @Produces

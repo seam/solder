@@ -32,9 +32,9 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Arquillian.class)
 public class UnMuteHandlerTest {
-    @Deployment
+    @Deployment(name = "UnMuteHandlerTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("unMuteHandler.jar")
+        return BaseWebArchive.createBase("unMuteHandler")
                 .addClasses(UnMuteHandler.class);
     }
 

@@ -44,9 +44,9 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(Arquillian.class)
 public class HandlerComparatorTest {
-    @Deployment
+    @Deployment(name = "HandlerComparatorTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("handlerComparator.jar")
+        return BaseWebArchive.createBase("handlerComparator")
                 .addClasses(ExtensionExceptionHandler.class, Account.class,
                         org.jboss.solder.exception.control.test.common.extension.Arquillian.class, CatchQualifier.class);
     }

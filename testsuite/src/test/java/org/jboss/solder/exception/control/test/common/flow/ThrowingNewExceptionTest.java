@@ -34,9 +34,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 public class ThrowingNewExceptionTest {
-    @Deployment
+    @Deployment(name = "ThrowingNewExceptionTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("throwingNewException.jar")
+        return BaseWebArchive.createBase("throwingNewException")
                 .addClasses(ThrowingNewHandler.class);
     }
 

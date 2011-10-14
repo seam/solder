@@ -33,9 +33,9 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class HandledExceptionHandlerTest {
-    @Deployment
+    @Deployment(name = "HandledExceptionHandlerTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("handledExceptionHandler.jar")
+        return BaseWebArchive.createBase("handledExceptionHandler")
                 .addClasses(ExceptionHandledHandler.class);
     }
 

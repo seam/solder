@@ -32,9 +32,9 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Arquillian.class)
 public class ProceedCauseHandlerTest {
-    @Deployment
+    @Deployment(name = "ProceedCauseHandlerTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("proceedCauseHandler.jar")
+        return BaseWebArchive.createBase("proceedCauseHandler")
                 .addClasses(ProceedCauseHandler.class);
     }
 
