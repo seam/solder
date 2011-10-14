@@ -48,6 +48,15 @@
          This is the typical way of using Solder to handle exceptions. Of course, it doesn't stop the application
          developer from firing their own <literal>ExceptionToCatch</literal> within a catch block.
       </para>
+
+      <tip>
+         <para>
+            The integration should check to see if the exception was handled and rethrow the exception if it was not
+            handled. It should also wrap the firing of the event in a try catch, and unwrap any exceptions that are
+            thrown. This exception should be <literal>javax.enterprise.event.ObserverException</literal> and should
+            wrap the exception that should be rethrown.
+         </para>
+      </tip>
    </section>
 
    <section id="integration.built-in">

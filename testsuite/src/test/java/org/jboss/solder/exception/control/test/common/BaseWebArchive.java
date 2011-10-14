@@ -16,45 +16,19 @@
  */
 package org.jboss.solder.exception.control.test.common;
 
-import javax.enterprise.inject.spi.Extension;
-
-import org.jboss.solder.exception.control.CaughtException;
-import org.jboss.solder.exception.control.extension.CatchExtension;
-import org.jboss.solder.bean.Beans;
-import org.jboss.solder.bean.ImmutableInjectionPoint;
-import org.jboss.solder.literal.AnyLiteral;
-import org.jboss.solder.reflection.AnnotationInspector;
-import org.jboss.solder.reflection.annotated.InjectableMethod;
-import org.jboss.solder.reflection.annotated.ParameterValueRedefiner;
-import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.solder.test.util.Deployments;
 
 /**
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  */
 public final class BaseWebArchive {
 
-    public synchronized static JavaArchive createBase(final String name) {
+    public synchronized static WebArchive createBase(final boolean includeEmptyBeansXml) {
+        return Deployments.baseDeployment(includeEmptyBeansXml);
+    }
 
-        return ShrinkWrap.create(JavaArchive.class, name)
-                .addPackage(CaughtException.class.getPackage())
-                .addClass(CatchExtension.class)
-                .addAsServiceProvider(Extension.class, CatchExtension.class)
-                // Solder classes used in Catch
-                .addClasses(Beans.class, ImmutableInjectionPoint.class, AnyLiteral.class,
-                        InjectableMethod.class, ParameterValueRedefiner.class)
-                .addPackage(AnnotationInspector.class.getPackage())
-                // Logging in AS7
-                .addAsManifestResource(new StringAsset("<jboss-deployment-structure>\n" +
-                        "  <deployment>\n" +
-                        "    <dependencies>\n" +
-                        "      <module name=\"org.jboss.logmanager\" />\n" +
-                        "    </dependencies>\n" +
-                        "  </deployment>\n" +
-                        "</jboss-deployment-structure>"), "jboss-deployment-structure.xml")
-                .addAsManifestResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"));
+    public synchronized static WebArchive createBase(final String name) {
+        return Deployments.baseDeployment(true);
     }
 }
