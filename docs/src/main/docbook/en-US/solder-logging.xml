@@ -256,7 +256,7 @@ log.dieselTrainsSpotted(7);</programlisting>
       </para>
     <programlisting role="JAVA">import javax.inject.Inject;
 
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 
 public class LogService {
     @Inject
@@ -428,7 +428,7 @@ TrainMessages_$bundle.java</programlisting>
             a French version of <literal>TrainMessages</literal>, we would have to create the following properties file
             in the same package as the interface:
          </para>
-      <programlisting>TrainMessages_fr.i18n.properties</programlisting>
+      <programlisting>TrainMessages.i18n_fr.properties</programlisting>
       <para>
             Then populate it with the translations (Note the property key is the method name):
          </para>
