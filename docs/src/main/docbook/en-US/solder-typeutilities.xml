@@ -20,14 +20,14 @@
 <chapter id="solder-annotationutilities">
   <title>Annotation and AnnotatedType Utilities</title>
   <para>
-      Seam Solder provides a number of utility classes that make working with annotations and
+      Solder provides a number of utility classes that make working with annotations and
       <code>AnnotatedType</code>s easier. This chapter walks you through each utility, and gives you some ideas about
       how to use it. For more detail, take a look at the JavaDoc on each class.
    </para>
   <section>
     <title>Annotated Type Builder</title>
     <para>
-         Seam Solder provides an <code>AnnotatedType</code> implementation that should be suitable for the needs of most
+         Solder provides an <code>AnnotatedType</code> implementation that should be suitable for the needs of most
          portable extensions. The <code>AnnotatedType</code> is created from <code>AnnotatedTypeBuilder</code>,
          typically in an extension&apos;s observer method, as follows:
       </para>
@@ -82,7 +82,7 @@ AnnotatedType redefinedType = builder.create();]]></programlisting>
     <title>Annotation Instance Provider</title>
     <para>
          Sometimes you may need an annotation instance for an annotation whose type is not known at development time.
-         Seam Solder provides a <code>AnnotationInstanceProvider</code> class that can create an
+         Solder provides a <code>AnnotationInstanceProvider</code> class that can create an
          <code>AnnotationLiteral</code> instance for any annotation at runtime. Annotation attributes
          are passed in via a <code>Map&lt;String,Object&gt;</code>. For example given the follow annotation:
       </para>
@@ -194,7 +194,7 @@ Synthetic synthetic2 = provider.get();]]></programlisting>
   <section>
     <title>Reflection Utilities</title>
     <para>
-         Seam Solder comes with a number miscellaneous reflection utilities; these extend JDK reflection, and some
+         Solder comes with a number miscellaneous reflection utilities; these extend JDK reflection, and some
          also work on CDI&apos;s Annotated metadata. See the javadoc on <code>Reflections</code> for more.
       </para>
     <para>

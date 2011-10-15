@@ -20,7 +20,7 @@
 <chapter id="solder-annotationliterals">
   <title>Annotation Literals</title>
   <para>
-      Seam Solder provides a complete set of <literal>AnnotationLiteral</literal> classes corresponding to the
+      Solder provides a complete set of <literal>AnnotationLiteral</literal> classes corresponding to the
       annotation types defined in the CDI (JSR-299) and Injection (JSR-330) specifications. These literals are located
       in the <literal>org.jboss.solder.literal</literal> package.
    </para>
@@ -103,7 +103,7 @@
     </listitem>
   </itemizedlist>
   <para>
-      Literals are also provided for the following annotations from <emphasis>Seam Solder</emphasis>:
+      Literals are also provided for the following annotations from <emphasis>Solder</emphasis>:
    </para>
   <itemizedlist>
     <listitem>

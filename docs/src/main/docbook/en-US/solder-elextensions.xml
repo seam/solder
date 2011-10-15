@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,26 +16,34 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-elextensions">
-   <title>Evaluating Unified EL</title>
-   
-   <para>
-      Seam Solder provides a method to evaluate EL that is not dependent on JSF or JSP, a facility sadly missing in
+  <title>Evaluating Unified EL</title>
+  <para>
+      Solder provides a method to evaluate EL that is not dependent on JSF or JSP, a facility sadly missing in
       Java EE. To use it inject <code>Expressions</code> into your bean. You can evaluate value expressions, or method
-      expressions. The Seam Solder API provides type inference for you. For example: 
+      expressions. The Solder API provides type inference for you. For example:
    </para>
-   
-   <programlisting role="JAVA">class FruitBowl {
+  <programlisting role="JAVA">class FruitBowl {
    
    @Inject Expressions expressions;
   
    public void run() {
-      String fruitName = expressions.evaluateValueExpression("#{fruitBowl.fruitName}");
-      Apple fruit = expressions.evaluateMethodExpression("#{fruitBown.getFruit}");
+      String fruitName = expressions.evaluateValueExpression(&quot;#{fruitBowl.fruitName}&quot;);
+      Apple fruit = expressions.evaluateMethodExpression(&quot;#{fruitBown.getFruit}&quot;);
    }
 }</programlisting>
-   
+
+  <!-- TODO:  There are many more qualifiers available in impl, which IMO should probably be pulled out
+              and put into api, and documented here to help create composite EL resolvers
+  -->
+  <section id="solder-elextensions.resolver">
+    <title>@Resolver</title>
+
+    <para>
+      Solder also contains a qualifier to ease registration of <literal>javax.el.ELResolver</literal> instances.
+      The <literal>@Resolver</literal> will register any <literal>javax.el.ELResolver</literal> annotated with
+      <literal>@Resolver</literal> with the application wide <literal>javax.el.ELResolver</literal>.
+    </para>
+  </section>
 </chapter>

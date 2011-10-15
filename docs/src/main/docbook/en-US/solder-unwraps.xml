@@ -27,15 +27,14 @@
    </para>
   <para>
       You can declare a method to be an unwrapping producer method by annotating it <code>@Unwraps</code>. The return 
-      type of the managed producer must be proxyable (see <ulink url="http://docs.jboss.org/cdi/spec/1.0/html/injectionelresolution.html#unproxyable">Section 5.4.1 of the CDI specification, &quot;Unproxyable bean 
-        types&quot;</ulink>). Every time a method is called on unwrapped object the invocation is forwarded to the result of calling
+      type of the managed producer must be proxyable (see <ulink url="http://docs.jboss.org/cdi/spec/1.0/html/injectionelresolution.html#unproxyable">Section 5.4.1 of the CDI specification, &quot;Unproxyable bean types&quot;</ulink>). Every time a method is called on unwrapped object the invocation is forwarded to the result of calling
       the unwrapping producer method - the unwrapped object.
    </para>
   <important>
     <para>
-         Seam Solder implements this by injecting a proxy rather than the original object. Every invocation on the
+         Solder implements this by injecting a proxy rather than the original object. Every invocation on the
          injected proxy will cause the unwrapping producer method to be invoked to obtain the instance on which to 
-         invoke the method called. Seam Solder will then invoke the method on unwrapped instance. 
+         invoke the method called. Solder will then invoke the method on unwrapped instance.
       </para>
     <para>
          Because of this, it is very important the producer method is lightweight.

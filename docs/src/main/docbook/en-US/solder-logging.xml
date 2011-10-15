@@ -20,7 +20,7 @@
 <chapter id="solder-logging">
   <title>Logging, redesigned</title>
   <para>
-      Seam Solder brings a fresh perspective to the ancient art of logging. Rather than just giving you an injectable
+      Solder brings a fresh perspective to the ancient art of logging. Rather than just giving you an injectable
       version of the same old logging APIs, Solder goes the extra mile by embracing the type-safety of CDI and
       eliminating brittle, boilerplate logging statements. The best part is, no matter how you decide to roll it out,
       you still get to keep your logging engine of choice (for the logging wars will never end!).
@@ -188,7 +188,7 @@ public interface TrainSpotterLog {
       </para>
     <note>
       <para>
-            Make sure you are using the annotations from Seam Solder (<literal>org.jboss.solder.messages</literal>
+            Make sure you are using the annotations from Solder (<literal>org.jboss.solder.messages</literal>
             and <literal>org.jboss.solder.logging</literal> packages only).
          </para>
     </note>
@@ -282,7 +282,7 @@ public class LogService {
     <title>Typed message bundles</title>
     <para>
          Often times you need to access a localized message. For example, you need to localize an exception message.
-         Seam Solder let&apos;s you retrieve this message from a typed message logger to avoid having to use hard-coded
+         Solder let&apos;s you retrieve this message from a typed message logger to avoid having to use hard-coded
          string messages.
       </para>
     <para>
