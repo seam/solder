@@ -67,11 +67,10 @@
         .readFromType(type, true)
         .redefine(Unique.class, new AnnotationRedefiner<Unique>() {
 
-            public void redefine(RedefinitionContext<A> ctx) {
+            public void redefine(RedefinitionContext<Unqiue> ctx) {
                 ctx.getAnnotationBuilder().remove(Unique.class);
             } 
-        })
-        .create();
+        });
 AnnotatedType redefinedType = builder.create();]]></programlisting>
     <para>
          No doubt, this is a key blade in Solder&apos;s army knife arsenal of tools. You can quite effectively change the
@@ -133,7 +132,7 @@ MultipleMembers an = provider.get(MultipleMembers.class, values);]]></programlis
          The Annotation Inspector allows you to easily discover annotations which are meta-annotated. For example:
       </para>
     <programlisting role="JAVA"><![CDATA[/* Discover all annotations on type which are meta-annotated @Constraint */
-Set<Annotation> constraints = AnnotationInspector.getAnnotations(type, Constraint.class, beanManager);
+Set<Annotation> constraints = AnnotationInspector.getAnnotations(type, Constraint.class);
 
 /* Load the annotation instance for @FacesValidator the annotation may declared on the type, */
 /* or, if the type has any stereotypes, on the stereotypes */
