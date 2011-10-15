@@ -80,7 +80,7 @@ log.debug("I'm using JBoss Logging.");]]></programlisting>
 // log a message formatted using printf-style substitutions
 log.infof("My name is %s.", "David");
 // log a message formatted using MessageFormat-style substitutions
-log.errorv("The license for Seam is the {0}", "APL");]]></programlisting>
+log.errorv("The license for Solder is the {0}", "APL");]]></programlisting>
     <para>
          The most significant and distinguishing feature of JBoss Logging is support for typed loggers. A typed logger
          is an interface that defines methods which serve as logging operations. When a method is invoked on one of
