@@ -20,9 +20,9 @@
 <chapter id="solder-unwraps">
   <title>Unwrapping Producer Methods</title>
   <para>
-      Unwrapping producer methods allow you to create injectable objects that have &quot;self-managed&quot;&quot; lifecycles, and are 
-      particularly useful if you have need a bean whose lifecycle does not exactly match one of the lifecycle of one of
-      the existing scopes. The lifecycle of the bean is are managed by the bean that defines the producer method, and 
+      Unwrapping producer methods allow you to create injectable objects that have &quot;self-managed&quot; lifecycles, and are 
+      particularly useful if you have need a bean whose lifecycle does not exactly match one of the lifecycles of one of
+      the existing scopes. The lifecycle of the bean is  managed by the bean that defines the producer method, and 
       changes to the unwrapped object are immediately visible to all clients.
    </para>
   <para>
