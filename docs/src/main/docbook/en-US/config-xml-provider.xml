@@ -99,13 +99,13 @@
         <para><literal>javax.interceptor</literal></para>
       </listitem>
       <listitem>
-        <para><literal>org.jboss.weld.extensions.core</literal></para>
+        <para><literal>org.jboss.solder.core</literal></para>
       </listitem>
       <listitem>
-        <para><literal>org.jboss.weld.extensions.unwraps</literal></para>
+        <para><literal>org.jboss.solder.unwraps</literal></para>
       </listitem>
       <listitem>
-        <para><literal>org.jboss.weld.extensions.resourceLoader</literal></para>
+        <para><literal>org.jboss.solder.resourceLoader</literal></para>
       </listitem>
     </itemizedlist>
     <para>
@@ -145,6 +145,12 @@
          XML takes precedence. This has almost the same effect as modifying an existing 
          bean, except it is possible to install multiple beans that modify the same class.
       </para>
+      <note>
+        <para>
+          Config ignores beans that have the <code>@Veto</code> annotation when using
+          <literal>&lt;replaces&gt;</literal> and <literal>&lt;modifies&gt;</literal>.
+        </para>
+      </note>
     <programlisting role="XML"><![CDATA[<my:Report>
  <s:modifies>
  <my:NewQualifier/>
