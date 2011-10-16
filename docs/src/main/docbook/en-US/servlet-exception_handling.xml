@@ -81,8 +81,8 @@ public class ExceptionHandlers {
 }]]></programlisting>
         <note>
             <para>
-                Currently, <literal>@WebRequest</literal> is required to catch exceptions initiated by the Servlet
-                integration because of a bug in Solder.
+                <literal>@WebRequest</literal> may be added to limit handlers to only catch exceptions initiated by 
+                the Servlet integration.
             </para>
         </note>
         <para>
