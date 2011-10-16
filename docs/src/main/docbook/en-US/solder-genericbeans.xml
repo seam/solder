@@ -146,7 +146,7 @@
 }</programlisting>
     <para>
       It is also possible to configure generic beans using beans by sub-classing the configuration type, or installing
-      another bean of the configuration type through the SPI (e.g. using Seam XML). For example to configure a durable
+      another bean of the configuration type through the SPI (e.g. using Solder Config). For example to configure a durable
       queue via sub-classing:
    </para>
     <programlisting role="JAVA">@Durable @ConversationScoped
@@ -159,7 +159,7 @@ class DurableQueueConfiguration extends MessageSystemConfiguration {
    }
 }</programlisting>
     <para>
-      And the same thing via Seam XML:
+      And the same thing via Solder Config:
    </para>
     <programlisting role="XML"><![CDATA[<my:MessageSystemConfiguration>
    <my:Durable/>
