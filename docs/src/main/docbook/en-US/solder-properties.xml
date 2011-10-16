@@ -148,6 +148,31 @@
                      </para>
             </entry>
           </row>
+          <row>
+            <entry>
+              <para>
+                <code>Member getMember();</code>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                Get the class member which retrieves the property (i.e. field or getter).
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <code>
+                void setAccessible
+              </code>
+            </entry>
+            <entry>
+              <para>
+                Sets the <code>Member</code> to be accessible to changes. Should be performed within a 
+                <code>PriviledgedAction</code> to work correctly with Security Managers.
+              </para>
+            </entry>
+          </row>
         </tbody>
       </tgroup>
     </table>
