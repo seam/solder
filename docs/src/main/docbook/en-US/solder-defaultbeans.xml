@@ -35,7 +35,7 @@
       installed that has the same type and qualifiers, then the default bean will be installed. 
    </para>
   <para>
-      Let&apos;s take a real world example - a module that allows you to evaluate EL (something that Seam Solder 
+      Let&apos;s take a real world example - a module that allows you to evaluate EL (something that Solder
       provides!). If JSF is available we want to use the <code>FunctionMapper</code> provided by the JSF implementation
       to resolve functions, otherwise we just want to use a a default <code>FunctionMapper</code> implementation that 
       does nothing. We can achieve this as follows:

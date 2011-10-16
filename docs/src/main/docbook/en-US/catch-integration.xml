@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright [2010], Red Hat, Inc., and individual contributors
@@ -14,91 +14,79 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+  --><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="catch-integration">
-   <title>Exception Handling - Framework Integration</title>
-
-   <para>
-      Integration of Solder's exception handling with other frameworks consists of one main step, and two other optional (but highly
+  <title>Exception Handling - Framework Integration</title>
+  <para>
+      Integration of Solder&apos;s exception handling with other frameworks consists of one main step, and two other optional (but highly
       encouraged) steps:
    </para>
-
-   <itemizedlist>
-      <listitem><para>creating and firing an <literal>ExceptionToCatch</literal></para></listitem>
-      <listitem><para>adding any default handlers and qualifiers with annotation literals (optional)</para></listitem>
-      <listitem><para>supporting ServiceHandlers for creating exception handlers</para></listitem>
-   </itemizedlist>
-
-   <section id="integration.exceptiontocatchevent">
-      <title>Creating and Firing an ExceptionToCatch event</title>
-
-      <para>
+  <itemizedlist>
+    <listitem>
+      <para>creating and firing an <literal>ExceptionToCatch</literal></para>
+    </listitem>
+    <listitem>
+      <para>adding any default handlers and qualifiers with annotation literals (optional)</para>
+    </listitem>
+    <listitem>
+      <para>supporting ServiceHandlers for creating exception handlers</para>
+    </listitem>
+  </itemizedlist>
+  <section id="integration.exceptiontocatchevent">
+    <title>Creating and Firing an ExceptionToCatch event</title>
+    <para>
          An <literal>ExceptionToCatch</literal> is constructed by passing a <literal>Throwable</literal> and
          optionally qualifiers for handlers. Firing the event is done via CDI events (either straight from the
          <literal>BeanManager</literal> or injecting a <literal>Event&lt;ExceptionToCatch&gt;</literal>
          and calling fire).
       </para>
-
-      <para>
+    <para>
          To ease the burden on the application developers, the integration should tie into the exception handling
-         mechanism of the integrating framework, if any exist. By tying into the framework's exception handling,
-         any uncaught exceptions should be routed through Solder's exception handling system and allow handlers to be invoked.
-         This is the typical way of using Solder to handle exceptions. Of course, it doesn't stop the application
+         mechanism of the integrating framework, if any exist. By tying into the framework&apos;s exception handling,
+         any uncaught exceptions should be routed through Solder&apos;s exception handling system and allow handlers to be invoked.
+         This is the typical way of using Solder to handle exceptions. Of course, it doesn&apos;t stop the application
          developer from firing their own <literal>ExceptionToCatch</literal> within a catch block.
       </para>
-
-      <tip>
-         <para>
+    <tip>
+      <para>
             The integration should check to see if the exception was handled and rethrow the exception if it was not
             handled. It should also wrap the firing of the event in a try catch, and unwrap any exceptions that are
             thrown. This exception should be <literal>javax.enterprise.event.ObserverException</literal> and should
             wrap the exception that should be rethrown.
          </para>
-      </tip>
-   </section>
-
-   <section id="integration.built-in">
-      <title>Default Handlers and Qualifiers</title>
-
-      <section id="integration.default_handlers">
-         <title>Default Handlers</title>
-
-         <para>
-            An integration with Solder can define it's own handlers to always be used. It's recommended that any
+    </tip>
+  </section>
+  <section id="integration.built-in">
+    <title>Default Handlers and Qualifiers</title>
+    <section id="integration.default_handlers">
+      <title>Default Handlers</title>
+      <para>
+            An integration with Solder can define it&apos;s own handlers to always be used. It&apos;s recommended that any
             built-in handler from an integration have a very low precedence, be a handler for as generic an
             exception as is suitable (i.e. Seam Persistence could have a built-in handler for PersistenceExceptions to
             rollback a transaction, etc), and make use of qualifiers specific for the integration. This helps limit any
             collisions with handlers the application developer may create.
          </para>
-
-      </section>
-
-      <section id="integration.qualifiers">
-         <title>Qualifiers</title>
-
-         <para>
+    </section>
+    <section id="integration.qualifiers">
+      <title>Qualifiers</title>
+      <para>
             Solder supports qualifiers for the <literal>CaughtException</literal>. To add qualifiers to be used when
             notifying handlers, the qualifiers must be added to the <literal>ExceptionToCatch</literal> instance via the 
             constructor (please see API docs for more info). Qualifiers for integrations should be used to avoid 
             collisions in the application error handling both when defining handlers and when firing events from 
             the integration.
          </para>
-      </section>
-
-   </section>
-
-   <section id="integration.servicehandlers">
-      <title>Supporting ServiceHandlers</title>
-
-      <para> 
-        <ulink url="http://docs.jboss.org/seam/3/solder/latest/reference/en-US/html_single/#servicehandler">
-          ServiceHandlers</ulink> make for a very easy and concise way to define exception handlers.
-        The following example comes from the jaxrs example in the distribution: 
+    </section>
+  </section>
+  <section id="integration.servicehandlers">
+    <title>Supporting ServiceHandlers</title>
+    <para> 
+       <link linkend="solder-servicehandler">ServiceHandlers</link>
+        make for a very easy and concise way to define exception handlers.
+        The following example is a possible usage of ServiceHandlers within a JAX-RS application: 
       </para>
-
-      <programlisting role="JAVA"><![CDATA[@HandlesExceptions
+    <programlisting role="JAVA"><![CDATA[@HandlesExceptions
 @ExceptionResponseService
 public interface DeclarativeRestExceptionHandlers
 {
@@ -110,8 +98,7 @@ public interface DeclarativeRestExceptionHandlers
    void onInvalidIdentifier(@Handles @RestRequest CaughtException<IllegalArgumentException> e);
 }]]>
       </programlisting>
-
-      <para>
+    <para>
          All the vital information that would normally be done in the handler method is actually contained in the
          <literal>@SendHttpResponse</literal> annotation. The only thing left is some boiler plate code to setup
          the <literal>Response</literal>. In a jax-rs application (or even in any web application) this approach helps
@@ -119,33 +106,27 @@ public interface DeclarativeRestExceptionHandlers
          be implemented in any Solder integration, however, there may be situations where <literal>ServiceHandler</literal>s 
          simply do not make sense.
       </para>
-
-      <note>
-         <para>
+    <note>
+      <para>
             If ServiceHandlers are implemented make sure to document if any of the methods are called from 
             <literal>CaughtException</literal>, specifically <literal>abort()</literal>, <literal>handled()</literal>
             or <literal>rethrow()</literal>. These methods affect invocation of other handlers (or rethrowing the
             exception in the case of <literal>rethrow()</literal>).
          </para>
-      </note> 
-
-   </section>
-
-   <section id="catch-integration-programatic-registration">
-      <title>Programmatic Handler Registration</title>
-
-      <para>
+    </note>
+  </section>
+  <section id="catch-integration-programatic-registration">
+    <title>Programmatic Handler Registration</title>
+    <para>
          Handlers can be registered programatically at runtime instead of solely at deploy time. This done very simply
          by injecting <literal>HandlerMethodContainer</literal> and calling <literal>registerHandlerMethod(HandlerMethod)</literal>.
       </para>
-
-      <para>
+    <para>
          <literal>HandlerMethod</literal> has been relaxed in this version as well, and is not tied directly to Java. It
          is therefore feasible handlers written using other JVM based languages could be easily registered and
          participate in exception handling.
       </para>
-   </section>
-   <!--
+  </section>
+<!--
    vim:et:ts=3:sw=3:tw=120
-   -->
-</chapter>
+   --></chapter>

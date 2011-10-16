@@ -162,7 +162,7 @@ public class MyHandlers {}]]>
             <note>
           <para>
                   The <literal>@HandlesExceptions</literal> annotation may be deprecated in favor of annotation indexing
-                  done by <ulink url="http://seamframework.org/Seam3/Solder">Solder</ulink>.
+                  at a later date.
                </para>
         </note>
          </para>
@@ -176,7 +176,7 @@ public class MyHandlers {}]]>
          </para>
       <para>
             Let&apos;s look at an example. The following method is invoked for every exception that Solder processes and
-            prints the exception message to stout. (<literal>Throwable</literal> is the base exception type in Java and
+            prints the exception message to stdout. (<literal>Throwable</literal> is the base exception type in Java and
             thus represents all exceptions).
          </para>
       <programlistingco>

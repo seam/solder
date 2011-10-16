@@ -148,6 +148,31 @@
                      </para>
             </entry>
           </row>
+          <row>
+            <entry>
+              <para>
+                <code>Member getMember();</code>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                Get the class member which retrieves the property (i.e. field or getter).
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <code>
+                void setAccessible
+              </code>
+            </entry>
+            <entry>
+              <para>
+                Sets the <code>Member</code> to be accessible to changes. Should be performed within a 
+                <code>PriviledgedAction</code> to work correctly with Security Managers.
+              </para>
+            </entry>
+          </row>
         </tbody>
       </tgroup>
     </table>
@@ -191,7 +216,7 @@
   <section>
     <title>Property Criteria</title>
     <para>
-         Once you have created the <code>PropertyQuery</code> instance, you can add search criteria.  Seam Solder
+         Once you have created the <code>PropertyQuery</code> instance, you can add search criteria.  Solder
          provides three built-in criteria types, and it is very easy to add your own.  A criteria is added to a query via the
          <code>addCriteria()</code> method.  This method returns an instance of the <code>PropertyQuery</code>,
          so multiple <code>addCriteria()</code> invocations can be stacked.

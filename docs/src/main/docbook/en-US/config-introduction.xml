@@ -88,7 +88,7 @@ class BillingDatasource implements Datasource {
    <r:datasource>
     <r:SalesQualifier/>
    </r:datasource>
-   </r:Report>
+  </r:Report>
    
   <r:Report filename="billing.jrxml">
    <s:replaces/>
@@ -196,7 +196,7 @@ class BillingDatasource implements Datasource {
     <para>
          The princess rescue example is a sample web app that uses XML Config. Run it with the following command:
       </para>
-    <programlisting>mvn jetty:run</programlisting>
+    <programlisting>mvn -Pjetty jetty:run</programlisting>
     <para>
          And then navigate to <literal>http://localhost:9090/princess-rescue</literal>. The XML configuration for the example
          is in <literal>src/main/resources/META-INF/seam-beans.xml</literal>.

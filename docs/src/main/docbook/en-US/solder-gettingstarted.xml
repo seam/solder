@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,32 +16,26 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-gettingstarted">
-   <title>Getting Started</title>
-
-   <para>
-      Getting started with Seam Solder is easy. All you need to do is put the API and implementation JARs on the classpath
-      of your CDI application. The features provided by Seam Solder will be enabled automatically.
+  <title>Getting Started</title>
+  <para>
+      Getting started with  Solder is easy. All you need to do is put the API and implementation JARs on the classpath
+      of your CDI application. The features provided by  Solder will be enabled automatically.
    </para>
-   
-   <para>
+  <para>
       Some additional configuration, covered at the end of this chapter, is required if you are using a pre-Servlet 3.0
       environment.
    </para>
-
-   <section id="installation.maven-dependencies">
-      <title>Maven dependency configuration</title>
-      <para>
+  <section id="installation.maven-dependencies">
+    <title>Maven dependency configuration</title>
+    <para>
          If you are using <ulink url="http://maven.apache.org/">Maven</ulink> as your build tool, first make sure you
-         have configured your build to use the <ulink
-         url="http://community.jboss.org/wiki/MavenGettingStarted-Users">JBoss Community repository</ulink>, where you
-	   can find all the Seam artifacts. Then, add the following dependencies to your <literal>pom.xml</literal>
-	   file to get started using Seam Solder:
-	   </para>
-	   <programlisting role="XML"><![CDATA[<dependency>
+         have configured your build to use the <ulink url="http://community.jboss.org/wiki/MavenGettingStarted-Users">JBoss Community repository</ulink>, where you
+    can find all the Seam artifacts. Then, add the following dependencies to your <literal>pom.xml</literal>
+    file to get started using  Solder:
+    </para>
+    <programlisting role="XML"><![CDATA[<dependency>
    <groupId>org.jboss.solder</groupId>
    <artifactId>solder-api</artifactId>
    <version>${solder.version}</version>
@@ -53,102 +47,97 @@
    <artifactId>solder-impl</artifactId>
    <version>${solder.version}</version>
    <scope>runtime</scope>
-</dependency>]]></programlisting>	   
-	   <tip>
-	   	<para>
-            Substitute the expression ${solder.version} with the most recent or appropriate version of Seam Solder.
-            Alternatively, you can create a <ulink
-            url="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
-            user-defined property</ulink> to satisfy this substitution so you can centrally manage the version.
+</dependency>]]></programlisting>
+    <tip>
+      <para>
+            Substitute the expression ${solder.version} with the most recent or appropriate version of  Solder.
+            Alternatively, you can create a <ulink url="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven user-defined property</ulink> to satisfy this substitution so you can centrally manage the version.
          </para>
-	   </tip>
-      
-	   <para>
+    </tip>
+    <para>
          In a Servlet 3.0 or Java EE 6 environment, <emphasis>your configuration is now complete!</emphasis>
       </para>
-   </section>
-   
-   <section id="gettingstarted.dependencies">
-      <title>Transitive dependencies</title>
-      <para>
-         Most of Seam Solder has very few dependencies, only one of which is not provided by Java EE 6:
+  </section>
+  <section id="gettingstarted.dependencies">
+    <title>Transitive dependencies</title>
+    <para>
+         Most of  Solder has very few dependencies, only one of which is not provided by Java EE 6:
       </para>
-      
-      <itemizedlist>
-         <listitem>
-            <para><code>javax.enterprise:cdi-api</code> (provided by Java EE 6)</para>
-         </listitem>
-         <listitem>
-            <para><code>javax.inject:javax:inject</code> (provided by Java EE 6)</para>
-         </listitem>
-         <listitem>
-            <para><code>javax.annotation:jsr250-api</code> (provided by Java EE 6)</para>
-         </listitem>
-         <listitem>
-            <para><code>javax.interceptor:interceptor-api</code> (provided by Java EE 6)</para>
-         </listitem>
-         <listitem>
-            <para><code>javax.el:el-api</code> (provided by Java EE 6)</para>
-         </listitem>
-      </itemizedlist>
-      
-      <tip>
-         <para>
-            The POM for Seam Solder specifies the versions required. If you are using Maven 3, you can easily import
+    <itemizedlist>
+      <listitem>
+        <para><code>javax.enterprise:cdi-api</code> (provided by Java EE 6)</para>
+      </listitem>
+      <listitem>
+        <para><code>javax.inject:javax:inject</code> (provided by Java EE 6)</para>
+      </listitem>
+      <listitem>
+        <para><code>javax.annotation:jsr250-api</code> (provided by Java EE 6)</para>
+      </listitem>
+      <listitem>
+        <para><code>javax.interceptor:interceptor-api</code> (provided by Java EE 6)</para>
+      </listitem>
+      <listitem>
+        <para><code>javax.el:el-api</code> (provided by Java EE 6)</para>
+      </listitem>
+    </itemizedlist>
+    <tip>
+      <para>
+            The POM for  Solder specifies the versions required. If you are using Maven 3, you can easily import
             the <code>dependencyManagement</code> into your POM by declaring the following in your 
             <code>depdendencyManagement</code> section:
          </para>
-         
-         <programlisting role="XML"><![CDATA[<dependency>
-   <groupId>org.jboss.seam.solder</groupId>
-   <artifactId>seam-solder-parent</artifactId>
-   <version>${seam.solder.version}</version>
+      <programlisting role="XML"><![CDATA[<dependency>
+   <groupId>org.jboss.solder</groupId>
+   <artifactId>seam-solder-impl</artifactId>
+   <version>${solder.version}</version>
    <type>pom</type>
    <scope>import</scope>
 </dependency>]]></programlisting>
-      </tip>
-      
-      <para>
-         Some features of Seam Solder require additional dependencies (which are declared optional, so will not be 
+    </tip>
+    <para>
+         Some features of Solder require additional dependencies (which are declared optional, so will not be
          added as transitive dependencies):
       </para>
-      
-      <variablelist>
-         <varlistentry>
-            <term><code>org.javassist:javassist</code></term>
-            <listitem><para>Service Handlers, Unwrapping Producer Methods</para></listitem>
-         </varlistentry>
-         <varlistentry>
-            <term><code>javax.servlet:servlet-api</code></term>
-            <listitem><para>Accessing resources from the Servlet Context</para></listitem>
-         </varlistentry>
-      </variablelist>
-      <para>
+    <variablelist>
+      <varlistentry>
+        <term>
+          <code>org.javassist:javassist</code>
+        </term>
+        <listitem>
+          <para>Service Handlers, Unwrapping Producer Methods</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+          <code>javax.servlet:servlet-api</code>
+        </term>
+        <listitem>
+          <para>Accessing resources from the Servlet Context</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
          In addition, a logger implementation (SLF4J, Log4J, JBoss Log Manager or the JDK core logging facility) is
          required. Refer to <xref linkend="solder-logging"/> for more information about how logging is handled in Solder.
       </para>
-   </section>
-   <section id="gettingstarted.pre-servlet-3">
-      <title>Pre-Servlet 3.0 configuration</title>
-      <para>
+  </section>
+  <section id="gettingstarted.pre-servlet-3">
+    <title>Pre-Servlet 3.0 configuration</title>
+    <para>
          <emphasis>If you are using Java EE 5 or some other Servlet 2.5 container</emphasis>, then you need to manually
-         register a Servlet component in your application's web.xml to access resources from the Servlet Context.
-	   </para>
-	   <programlisting role="XML"><![CDATA[<listener>
-   <listener-class>org.jboss.seam.solder.resourceLoader.servlet.ResourceListener</listener-class>
+         register a Servlet component in your application&apos;s web.xml to access resources from the Servlet Context.
+    </para>
+    <programlisting role="XML"><![CDATA[<listener>
+   <listener-class>org.jboss.solder.resourceLoader.servlet.ResourceListener</listener-class>
 </listener>]]></programlisting>
-
-      <para>
+    <para>
          This registration happens automatically in a Servlet 3.0 environment through the use of a
          /META-INF/web-fragment.xml included in the Solder implementation.
       </para>
-
-      <para>
-         You're all setup. It's time to dive into all the useful stuff that Seam Solder provides!
+    <para>
+         You&apos;re all setup. It&apos;s time to dive into all the useful stuff that Solder provides!
       </para>
-   </section>
-   
+  </section>
 <!--
 vim:et:ts=3:sw=3:tw=120
--->
-</chapter>
+--></chapter>
