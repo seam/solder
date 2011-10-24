@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,55 +16,46 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-beanmanagerprovider">
-   <title>Obtaining a reference to the BeanManager</title>
-
-   <para>
+  <title>Obtaining a reference to the BeanManager</title>
+  <para>
       When developing a framework that builds on CDI, you may need to obtain the <code>BeanManager</code> for the 
-      application, can't simply inject it as you are not working in an object managed by the container. The CDI
-      specification allows lookup of <code>java:comp/BeanManager</code> in JNDI, however some environments don't support
-      binding to this location (e.g. servlet containers such as Tomcat and Jetty) and some environments don't support
+      application, you can&apos;t simply inject it as you are not working in an object managed by the container. The CDI
+      specification allows lookup of <code>java:comp/BeanManager</code> in JNDI, however, some environments don&apos;t support
+      binding to this location (e.g. servlet containers such as Tomcat and Jetty) and some environments don&apos;t support
       JNDI (e.g. the Weld SE container). For this reason, most framework developers will prefer to avoid a direct JNDI
       lookup.
    </para>
-   
-   <para>
+  <para>
       Often it is possible to pass the correct <code>BeanManager</code> to the object in which you require it, for
       example via a context object. For example, you might be able to place the <code>BeanManager</code> in the
       <code>ServletContext</code>, and retrieve it at a later date. 
    </para>
-   
-   <para>
+  <para>
       On some occasions however there is no suitable context to use, and in this case, you can take advantage of the
-      abstraction over <code>BeanManager</code> lookup provided by Seam Solder. To lookup up a 
+      abstraction over <code>BeanManager</code> lookup provided by Solder. To lookup up a 
       <code>BeanManager</code>, you can extend the abstract <code>BeanManagerAware</code> class, and call 
       <code>getBeanManager()</code>:
    </para>
-   
-   <programlisting role="JAVA"><![CDATA[public class WicketIntegration extends BeanManagerAware {
+  <programlisting role="JAVA"><![CDATA[public class WicketIntegration extends BeanManagerAware {
 
    public WicketManager getWicketManager() {
-      Bean<?> bean = getBeanManager().getBean(Instance.class);
+      Bean<?> bean = getBeanManager().getBeans(IRequestListener.class);
       ... // and so on to lookup the bean
    }
    
 }]]></programlisting>
-
-   <para>
+  <para>
       The benefit here is that <code>BeanManagerAware</code> class will first look to see if its
-      <code>BeanManager</code> injection point was satisified before consulting the providers. Thus, if injection
+      <code>BeanManager</code> injection point was satisfied before consulting the providers. Thus, if injection
       becomes available to the class in the future, it will automatically start the more efficient approach.
    </para>
-
-   <para>
+  <para>
       Occasionally you will be working in an existing class hierarchy, in which case you can use the accessor on
       <code>BeanManagerLocator</code>. For example:
    </para>
-   
-   <programlisting role="JAVA">public class ResourceServlet extends HttpServlet {
+  <programlisting role="JAVA">public class ResourceServlet extends HttpServlet {
 
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
          throws ServletException, IOException {
@@ -72,14 +63,12 @@
       ...
    }
 }</programlisting>
-
-   <para>
+  <para>
       If this lookup fails to resolve a <code>BeanManager</code>, the <code>BeanManagerUnavailableException</code>, a
       runtime exception, will be thrown. If you want to perform conditional logic based on whether the
       <code>BeanManager</code> is available, you can use this check:
    </para>
-
-   <programlisting role="JAVA">public class ResourceServlet extends HttpServlet {
+  <programlisting role="JAVA">public class ResourceServlet extends HttpServlet {
 
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
          throws ServletException, IOException {
@@ -93,13 +82,11 @@
       }
    }
 }</programlisting>
-
-   <para>
-      However, keep in mind that you can inject into Servlets in Java EE 6!! So it's very likely the lookup isn't
+  <para>
+      However, keep in mind that you can inject into Servlets in Java EE 6!! So it&apos;s very likely the lookup isn&apos;t
       necessary, and you can just do this:
    </para>
-
-   <programlisting role="JAVA">public class ResourceServlet extends HttpServlet {
+  <programlisting role="JAVA">public class ResourceServlet extends HttpServlet {
 
    @Inject
    private BeanManager beanManager;
@@ -111,5 +98,4 @@
 }</programlisting>
 <!--
 vim:et:ts=3:sw=3:tw=120
--->
-</chapter>
+--></chapter>

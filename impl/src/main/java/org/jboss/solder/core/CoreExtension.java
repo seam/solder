@@ -72,7 +72,7 @@ public class CoreExtension implements Extension {
 
     void beforeBeanDiscovery(@Observes final BeforeBeanDiscovery bbd) {
         VersionLoggerUtil.logVersionInformation(this.getClass(),
-                "Seam Solder %s (build id: %s)",
+                "Solder %s (build id: %s)",
                 "org.jboss.solder.Version");
     }
 
@@ -214,8 +214,8 @@ public class CoreExtension implements Extension {
     private void failIfWeldExtensionsDetected(BeanManager beanManager) {
         for (Iterator<Bean<?>> extensions = beanManager.getBeans(Extension.class).iterator(); extensions.hasNext();) {
             if (extensions.next().getBeanClass().getName().equals("org.jboss.weld.extensions.core.CoreExtension")) {
-                throw new IllegalStateException("Both Weld Extensions and Seam Solder libraries detected on the classpath. " +
-                        "If you're migrating to Seam Solder, please remove Weld Extensions from the deployment.");
+                throw new IllegalStateException("Both Weld Extensions and Solder libraries detected on the classpath. " +
+                        "If you're migrating to Solder, please remove Weld Extensions from the deployment.");
             }
         }
     }

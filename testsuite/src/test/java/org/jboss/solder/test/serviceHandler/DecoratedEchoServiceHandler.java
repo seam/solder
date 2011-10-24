@@ -26,7 +26,7 @@ public class DecoratedEchoServiceHandler {
     private EchoDecorator decorator;
 
     @AroundInvoke
-    public Object invoke(InvocationContext ctx) {
+    public Object invoke(InvocationContext ctx) throws Exception {
         return decorator.decorate(ctx.getMethod().getName().toString());
     }
 }

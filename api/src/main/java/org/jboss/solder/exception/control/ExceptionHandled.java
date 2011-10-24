@@ -25,11 +25,11 @@ import javax.interceptor.InterceptorBinding;
 
 /**
  * Interceptor annotation to wrap a method, or each method of a class, in a try / catch which will pass all exceptions
- * to Seam Catch. The preferred way to use Catch is still going to be to inject an <code>Event<ExceptionToCatch></code>
+ * to Solder Catch. The preferred way to use Catch is still going to be to inject an <code>Event<ExceptionToCatch></code>
  * and manually fire the event, this interceptor is added here as another option, however, there is no control over
  * qualifiers being added for the handlers. Also use of this interceptor may result in odd behavior of the application
  * based on returns of the interceptor when exceptions occur, please see the implementation of this interceptor for more detail
- * (org.jboss.seam.ecxeption.control.ExceptionHandledInterceptor).
+ * (org.jboss.solder.ecxeption.control.ExceptionHandledInterceptor).
  *
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  */

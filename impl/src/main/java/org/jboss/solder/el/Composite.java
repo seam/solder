@@ -38,7 +38,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </p>
  * <p/>
  * <p>
- * By default, Seam Solder provides access to CDI beans.
+ * By default, Solder provides access to CDI beans.
  * </p>
  *
  * @author Stuart Douglas

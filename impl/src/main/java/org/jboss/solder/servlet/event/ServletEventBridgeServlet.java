@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.servlet.WebApplication;
 import org.jboss.solder.servlet.event.literal.DestroyedLiteral;
 import org.jboss.solder.servlet.event.literal.StartedLiteral;
@@ -20,6 +21,7 @@ import org.jboss.solder.servlet.event.literal.StartedLiteral;
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
+@Requires("javax.servlet.Servlet")
 public class ServletEventBridgeServlet extends AbstractServletEventBridge implements Servlet {
     private transient ServletConfig config;
 
@@ -50,6 +52,6 @@ public class ServletEventBridgeServlet extends AbstractServletEventBridge implem
     }
 
     public String getServletInfo() {
-        return "Seam Servlet module WebApplication event publisher";
+        return "Solder Servlet module WebApplication event publisher";
     }
 }

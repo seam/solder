@@ -33,8 +33,8 @@
         </para>
         
         <itemizedlist>
-            <listitem>send an HTTP status code</listitem>
-            <listitem>forward to an error page (servlet path)</listitem>
+            <listitem><para>send an HTTP status code</para></listitem>
+            <listitem><para>forward to an error page (servlet path)</para></listitem>
         </itemizedlist>
         
         <para>
@@ -81,8 +81,8 @@ public class ExceptionHandlers {
 }]]></programlisting>
         <note>
             <para>
-                Currently, <literal>@WebRequest</literal> is required to catch exceptions initiated by the Servlet
-                integration because of a bug in Solder.
+                <literal>@WebRequest</literal> may be added to limit handlers to only catch exceptions initiated by 
+                the Servlet integration.
             </para>
         </note>
         <para>

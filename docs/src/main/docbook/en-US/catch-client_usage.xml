@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2011, Red Hat, Inc., and individual contributors
@@ -14,46 +14,43 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-      "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+  --><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="catch-client_usage">
-   <title>Exception Handling - Usage</title>
-
-   <section id="catch-eventing-in">
-      <title>Eventing into the exception handling framework</title>
-
-      <para>
+  <title>Exception Handling - Usage</title>
+  <section id="catch-eventing-in">
+    <title>Eventing into the exception handling framework</title>
+    <para>
          The entire exception handling process starts with an event. This helps keep your application minimally coupled to
          Solder, but also allows for further extension.  Exception handling in Solder is all about letting you take care of 
          exceptions the way that makes the most sense for your application. Events provide this delicate balance.
       </para>
-
-      <para>
+    <para>
          There are three means of firing the event to start the exception handling process:
       </para>
-
-      <itemizedlist>
-         <listitem><para>manual firing of the event</para></listitem>
-         <listitem><para>using an interceptor</para></listitem>
-         <listitem><para>module integration - no code needs to be changed</para></listitem>
-      </itemizedlist>
-
-      <section id="catch_client_usage.manual-event-fire">
-         <title>Manual firing of the event</title>
-         
-         <para>
-            Manually firing an event to use Solder's exception handling is primarily used in your own try/catch blocks. It's very
-            painless and also easy. Let's examine an sample that might exist inside of a simple business logic lookup
+    <itemizedlist>
+      <listitem>
+        <para>manual firing of the event</para>
+      </listitem>
+      <listitem>
+        <para>using an interceptor</para>
+      </listitem>
+      <listitem>
+        <para>module integration - no code needs to be changed</para>
+      </listitem>
+    </itemizedlist>
+    <section id="catch_client_usage.manual-event-fire">
+      <title>Manual firing of the event</title>
+      <para>
+            Manually firing an event to use Solder&apos;s exception handling is primarily used in your own try/catch blocks. It&apos;s very
+            painless and also easy. Let&apos;s examine an sample that might exist inside of a simple business logic lookup
             into an inventory database:
          </para>
-
-         <programlistingco>
-            <areaspec>
-               <area id="event-injection" coords="4"/>
-               <area id="event-fire" coords="12"/>
-            </areaspec>
-            <programlisting role="JAVA"><![CDATA[@Stateless
+      <programlistingco>
+        <areaspec>
+          <area coords="4" id="event-injection"/>
+          <area coords="12" id="event-fire"/>
+        </areaspec>
+        <programlisting role="JAVA"><![CDATA[@Stateless
 public class InventoryActions {
   @PersistenceContext private EntityManager em;
   @Inject private Event<ExceptionToCatch> catchEvent;
@@ -68,146 +65,128 @@ public class InventoryActions {
    }
   }
 }]]>
-            </programlisting> 
-            <calloutlist>
-               <callout arearefs="event-injection">
-                  <para>
+            </programlisting>
+        <calloutlist>
+          <callout arearefs="event-injection">
+            <para>
                      The <literal>Event</literal> of generic type <literal>ExceptionToCatch</literal> is injected into
                      your class for use later within a try/catch block.
                   </para>
-               </callout>
-               <callout arearefs="event-fire"> 
-                  <para>
+          </callout>
+          <callout arearefs="event-fire">
+            <para>
                      The event is fired with a new instance of <literal>ExceptionToCatch</literal> constructed with the
                      exception to be handled.
                   </para>
-               </callout>
-            </calloutlist>
-         </programlistingco>
-      </section>
-    
-      <section id="catch_usage.interceptor">
-         <title>Using the <literal>@ExceptionHandled</literal> Interceptor</title>
-
-         <para>
+          </callout>
+        </calloutlist>
+      </programlistingco>
+    </section>
+    <section id="catch_usage.interceptor">
+      <title>Using the <literal>@ExceptionHandled</literal> Interceptor</title>
+      <para>
             A CDI Interceptor has been added to help with integration of Solder exception handling into your
-            application. It's used just like any interceptor, and must be enabled in the <literal>beans.xml</literal> 
+            application. It&apos;s used just like any interceptor, and must be enabled in the <literal>beans.xml</literal> 
             file for your bean archive. This interceptor can be used at the class or method level.
          </para>
-
-         <para>
+      <para>
             This interceptor is a typical <literal>AroundInvoke</literal> interceptor and is invoked before the method 
             (which in this case merely wraps the call to the intercepted method in a try / catch block). The intercepted method is called
             then, if an exception (actually a <literal>Throwable</literal>) occurs during execution of the intercepted 
             method the exception is passed to Solder (without any qualifiers). Normal flow continues from there, however,
             take not of the following warning:
          </para>
-
-         <warning>
-            <para>
+      <warning>
+        <para>
                Using the interceptor may cause unexpected behavior to methods that call intercepted methods in which an
                exception occurs, please see the 
-            <ulink
-               url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/solder/exception/control/ExceptionHandledInterceptor.html">
-               API docs </ulink> for more information about returns if an exception occurs.
+            <ulink url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/solder/exception/control/ExceptionHandledInterceptor.html"> API docs </ulink> for more information about returns if an exception occurs.
             </para>
-         </warning>
-      </section>
-   </section>
-
-   <section id="client_usage.handlers">
-      <title>Exception handlers</title>
-
-      <para>
-         As an application developer (i.e., an end user of Solder's exception handling), you'll be focused on writing exception handlers. An
+      </warning>
+    </section>
+  </section>
+  <section id="client_usage.handlers">
+    <title>Exception handlers</title>
+    <para>
+         As an application developer (i.e., an end user of Solder&apos;s exception handling), you&apos;ll be focused on writing exception handlers. An
          exception handler is a method on a CDI bean that is invoked to handle a specific type of exception. Within that
          method, you can implement any logic necessary to handle or respond to the exception.
       </para>
-
-      <!-- TODO: Do we really want to say they're scoped? They tyically aren't, and AFAIK, we're not taking scope into
-      consideration. -->
-      <para>
+      <note>
+         <para>
+            If there are no exception handlers for an exception, the exception is rethrown.
+         </para>
+      </note>
+<!-- TODO: Do we really want to say they're scoped? They tyically aren't, and AFAIK, we're not taking scope into
+      consideration. -->    <para>
          Given that exception handler beans are CDI beans, they can make use of dependency injection, be scoped, have
          interceptors or decorators and any other functionality available to CDI beans.
       </para>
-
-      <para>
+    <para>
          Exception handler methods are designed to follow the syntax and semantics of CDI observers, with some special
          purpose exceptions explained in this guide. The advantage of this design is that exception handlers will be
          immediately familiar to you if you are studying or well-versed in CDI.
       </para>
-
-      <para>
-         In this and subsequent chapters, you'll learn how to define an exception handler, explore how and when it gets invoked, modify
+    <para>
+         In this and subsequent chapters, you&apos;ll learn how to define an exception handler, explore how and when it gets invoked, modify
          an exception and a stack trace, and even extend exception handling further through events that are fired during the handling
-         workflow.  We'll begin by covering the two annotations that are used to declare an exception handler,
+         workflow.  We&apos;ll begin by covering the two annotations that are used to declare an exception handler,
          <literal>@HandlesExceptions</literal> and <literal>@Handles</literal>.
       </para>
-   </section>
-
-   <section id="client_usage.annotations">
-      <title>Exception handler annotations</title>
-
-      <para>
+  </section>
+  <section id="client_usage.annotations">
+    <title>Exception handler annotations</title>
+    <para>
          Exception handlers are contained within exception handler beans, which are CDI beans annotated with
          <literal>@HandlesExceptions</literal>. Exception handlers are methods which have a parameter which is an 
          instance of <literal>CaughtException&lt;T extends Throwable&gt;</literal> annotated with the
          <literal>@Handles</literal> annotation.
       </para>
-
-      <section id="client_usage.handles_exceptions">
-         <title>@HandlesExceptions</title>
-
-         <para>
+    <section id="client_usage.handles_exceptions">
+      <title>@HandlesExceptions</title>
+      <para>
             The <literal>@HandlesException</literal> annotation is simply a marker annotation that instructs the Solder
             exception handling CDI extension to scan the bean for handler methods.
          </para>
-
-         <para>
-            Let's designate a CDI bean as an exception handler by annotating it with
+      <para>
+            Let&apos;s designate a CDI bean as an exception handler by annotating it with
             <literal>@HandlesException</literal>.
          </para>
-
-         <programlisting role="JAVA"><![CDATA[@HandlesExceptions
+      <programlisting role="JAVA"><![CDATA[@HandlesExceptions
 public class MyHandlers {}]]>
          </programlisting>
-
-         <para>
-            That's all there is to it. Now we can begin defining exception handling methods on this bean.
+      <para>
+            That&apos;s all there is to it. Now we can begin defining exception handling methods on this bean.
          </para>
-
-         <para>
+      <para>
             <note>
-               <para>
+          <para>
                   The <literal>@HandlesExceptions</literal> annotation may be deprecated in favor of annotation indexing
-                  done by <ulink url="http://seamframework.org/Seam3/Solder">Solder</ulink>.
+                  at a later date.
                </para>
-            </note>
+        </note>
          </para>
-      </section>
-
-      <section id="client_usage.handles">
-         <title>@Handles</title>
-         <para>
+    </section>
+    <section id="client_usage.handles">
+      <title>@Handles</title>
+      <para>
             <literal>@Handles</literal> is a method parameter annotation that designates a method as an exception
             handler. Exception handler methods are registered on beans annotated with
             <literal>@HandlesExceptions</literal>. Solder will discover all such methods at deployment time.
          </para>
-
-         <para>
-            Let's look at an example. The following method is invoked for every exception that Solder processes and
-            prints the exception message to stout. (<literal>Throwable</literal> is the base exception type in Java and
+      <para>
+            Let&apos;s look at an example. The following method is invoked for every exception that Solder processes and
+            prints the exception message to stdout. (<literal>Throwable</literal> is the base exception type in Java and
             thus represents all exceptions).
          </para>
-
-         <programlistingco>
-            <areaspec>
-               <area id="handles-exceptions" coords="1"/>
-               <area id="handles" coords="4"/>
-               <area id="caught-exception-usage" coords="7"/>
-               <area id="markHandled" coords="8"/>
-            </areaspec>
-            <programlisting role="JAVA"><![CDATA[@HandlesExceptions
+      <programlistingco>
+        <areaspec>
+          <area coords="1" id="handles-exceptions"/>
+          <area coords="4" id="handles"/>
+          <area coords="7" id="caught-exception-usage"/>
+          <area coords="8" id="markHandled"/>
+        </areaspec>
+        <programlisting role="JAVA"><![CDATA[@HandlesExceptions
 public class MyHandlers
 {
    void printExceptions(@Handles CaughtException<Throwable> evt)
@@ -218,89 +197,89 @@ public class MyHandlers
    }
 }]]>
             </programlisting>
-            <calloutlist>
-               <callout arearefs="handles-exceptions">
-                  <para>
+        <calloutlist>
+          <callout arearefs="handles-exceptions">
+            <para>
                      The <literal>@HandlesExceptions</literal> annotation signals that this bean contains exception
                      handler methods.
                   </para>
-               </callout>
-               <callout arearefs="handles">
-                  <para>
+          </callout>
+          <callout arearefs="handles">
+            <para>
                      The <literal>@Handles</literal> annotation on the first parameter designates this method as an
                      exception handler (though it is not required to be the first parameter). This parameter must be 
-                     of type <literal>CaughtException&lt;T extends Throwable&gt;</literal>, otherwise it's detected as 
+                     of type <literal>CaughtException&lt;T extends Throwable&gt;</literal>, otherwise it&apos;s detected as 
                      a definition error. The type parameter designates which exception the method should handle. This 
                      method is notified of all exceptions (requested by the base exception type 
                      <literal>Throwable</literal>).
                   </para>
-               </callout>
-               <callout arearefs="caught-exception-usage">
-                  <para>
+          </callout>
+          <callout arearefs="caught-exception-usage">
+            <para>
                      The <literal>CaughtException</literal> instance provides access to information about the exception
-                     and can be used to control exception handling flow. In this case, it's used to read the current
+                     and can be used to control exception handling flow. In this case, it&apos;s used to read the current
                      exception being handled in the exception chain, as returned by
                      <literal>getException()</literal>.
                   </para>
-               </callout>
-               <callout arearefs="markHandled">
-                  <para>
+          </callout>
+          <callout arearefs="markHandled">
+            <para>
                      This handler does not modify the invocation of subsequent handlers, as designated by invoking
                      <literal>markHandled()</literal> on <literal>CaughtException</literal>. As this is the default behavior,
                      this line could be omitted.
                   </para>
-               </callout>
-            </calloutlist>
-         </programlistingco>
-
-         <para>
+          </callout>
+        </calloutlist>
+      </programlistingco>
+      <para>
             The <literal>@Handles</literal> annotation must be placed on a parameter of the method, which must
             be of type <literal>CaughtException&lt;T extends Throwable&gt;</literal>. Handler methods are similar to CDI
             observers and, as such, follow the same principles and guidelines as observers (such as invocation,
             injection of parameters, qualifiers, etc) with the following exceptions:
          </para>
-
-         <itemizedlist>
-            <listitem><para>a parameter of a handler method must be a <literal>CaughtException</literal></para></listitem>
-            <listitem><para>handlers are ordered before they are invoked (invocation order of observers is non-deterministic)</para></listitem>
-            <listitem><para>any handler can prevent subsequent handlers from being invoked</para></listitem>
-         </itemizedlist>
-
-         <para>
+      <itemizedlist>
+        <listitem>
+          <para>a parameter of a handler method must be a <literal>CaughtException</literal></para>
+        </listitem>
+        <listitem>
+          <para>handlers are ordered before they are invoked (invocation order of observers is non-deterministic)</para>
+        </listitem>
+        <listitem>
+          <para>any handler can prevent subsequent handlers from being invoked</para>
+        </listitem>
+      </itemizedlist>
+      <para>
             In addition to designating a method as exception handler, the <literal>@Handles</literal>
             annotation specifies two pieces of information about when the method should be invoked relative to other 
             handler methods:
          </para>
-
-         <itemizedlist>
-            <listitem>
-               <para>
+      <itemizedlist>
+        <listitem>
+          <para>
                   a precedence relative to other handlers for the same exception type. Handlers with higher precedence are
                   invoked before handlers with lower precedence that handle the same exception type. The default
                   precedence (if not specified) is 0.
                </para>
-            </listitem>
-            <listitem>
-               <para>
+        </listitem>
+        <listitem>
+          <para>
                   the type of the traversal mode (i.e., phase) during which the handler is invoked. The default
                   traversal mode (if not specified) is <literal>TraversalMode.DEPTH_FIRST</literal>.
                </para>
-            </listitem>
-         </itemizedlist>
-
-         <para>
-            Let's take a look at more sophisticated example that uses all the features of handlers to log all
+        </listitem>
+      </itemizedlist>
+      <para>
+            Let&apos;s take a look at more sophisticated example that uses all the features of handlers to log all
             exceptions.
          </para>
-
-         <programlistingco>
-            <areaspec>
-               <area id="handles-exceptions-second-example" coords="1"/>
-               <area id="traversal" coords="4"/>
-               <area id="qualifier" coords="5"/>
-               <area id="injection" coords="6"/>
-            </areaspec>
-            <programlisting role="JAVA"><![CDATA[@HandlesExceptions
+      <programlistingco>
+        <areaspec>
+          <area coords="1" id="handles-exceptions-second-example"/>
+          <area coords="4" id="traversal"/>
+          <area coords="5" id="qualifier"/>
+          <area coords="6" id="injection"/>
+        </areaspec>
+        <programlisting role="JAVA"><![CDATA[@HandlesExceptions
 public class MyHandlers
 {
    void logExceptions(@Handles(during = TraversalMode.BREADTH_FIRST)
@@ -311,221 +290,218 @@ public class MyHandlers
    }
 }]]>
             </programlisting>
-            <calloutlist>
-               <callout arearefs="handles-exceptions-second-example">
-                  <para>
+        <calloutlist>
+          <callout arearefs="handles-exceptions-second-example">
+            <para>
                      The
                      <literal>@HandlesExceptions</literal> annotation signals that this bean contains exception
                      handler methods.
                   </para>
-               </callout>
-               <callout arearefs="traversal">
-                  <para>
+          </callout>
+          <callout arearefs="traversal">
+            <para>
                      This handler has a default precedence of 0 (the default value of the precedence attribute on
-                     <literal>@Handles</literal>). It's invoked during the breadth first traversal mode. For more
-                     information on traversal, see the section <xref
-                        linkend="client_usage.handler_ordering.hierarchy_traversal"/>.
+                     <literal>@Handles</literal>). It&apos;s invoked during the breadth first traversal mode. For more
+                     information on traversal, see the section <xref linkend="client_usage.handler_ordering.hierarchy_traversal"/>.
                   </para>
-               </callout>
-               <callout arearefs="qualifier">
-                  <para>
+          </callout>
+          <callout arearefs="qualifier">
+            <para>
                      This handler is qualified with <literal>@WebRequest</literal>. When Solder calculates the handler
                      chain, it filters handlers based on the exception type and qualifiers. This handler will only be
                      invoked for exceptions passed to Solder that carry the <literal>@WebRequest</literal> qualifier.
-                     We'll assume this qualifier distinguishes a web page request from a REST request.
+                     We&apos;ll assume this qualifier distinguishes a web page request from a REST request.
                   </para>
-               </callout>
-               <callout arearefs="injection">
-                  <para>
+          </callout>
+          <callout arearefs="injection">
+            <para>
                      Any additional parameters of a handler method are treated as injection points. These parameters are
                      injected into the handler when it is invoked by Solder. In this case, we are injecting a
                      <literal>Logger</literal> bean that must be defined within the application (or by an extension).
                   </para>
-               </callout>
-            </calloutlist>
-         </programlistingco>
-
-         <para>
+          </callout>
+        </calloutlist>
+      </programlistingco>
+      <para>
             A handler is guaranteed to only be invoked once per exception (automatically muted), unless it re-enables
             itself by invoking the <literal>unmute()</literal> method on the <literal>CaughtException</literal> instance.
          </para>
-
-         <para>
+      <para>
             Handlers must not throw checked exceptions, and should avoid throwing unchecked exceptions. Should a handler
             throw an unchecked exception it will propagate up the stack and all handling done via Solder will cease. Any
             exception that was being handled will be lost.
          </para>
-      </section>
-
-   </section>
-
-
-   <section id="client_usage.exception_stack">
-      <title>Exception chain processing</title>
-
-      <para>
-         When an exception is thrown, chances are it's nested (wrapped) inside other exceptions. (If you've ever
-         examined a server log, you'll appreciate this fact). The collection of exceptions in its entirety is termed an
+    </section>
+  </section>
+  <section id="client_usage.exception_stack">
+    <title>Exception chain processing</title>
+    <para>
+         When an exception is thrown, chances are it&apos;s nested (wrapped) inside other exceptions. (If you&apos;ve ever
+         examined a server log, you&apos;ll appreciate this fact). The collection of exceptions in its entirety is termed an
          exception chain.
       </para>
-
-      <para>
+    <para>
          The outermost exception of an exception chain (e.g., EJBException, ServletException, etc) is probably of
-         little use to exception handlers. That's why Solder doesn't simply pass the exception chain directly to
+         little use to exception handlers. That&apos;s why Solder doesn&apos;t simply pass the exception chain directly to
          the exception handlers. Instead, it intelligently unwraps the chain and treats the root exception cause
          as the primary exception.
       </para>
-
-      <para>
+    <para>
          The first exception handlers to be invoked by Solder are those that match the type of root cause. Thus, instead
          of seeing a vague <literal>EJBException</literal>, your handlers will instead see an meaningful exception such
          as <literal>ConstraintViolationException</literal>.
-         <emphasis>This feature, alone, makes Solder's exception handling a worthwhile tool.</emphasis>
+         <emphasis>This feature, alone, makes Solder&apos;s exception handling a worthwhile tool.</emphasis>
       </para>
-
-      <!-- TODO: a graphic of layers (like rings) would be good here -->
-
-      <para>
+<!-- TODO: a graphic of layers (like rings) would be good here -->    <para>
          Solder continues to work through the exception chain, notifying handlers of each exception in the stack,
          until a handler flags the exception as handled. Once an exception is marked as handled, Solder stops processing
          the exception. If a handler instructed Solder to rethrow the exception (by invoking
          <literal>CaughtException#rethrow()</literal>, Solder will rethrow the exception outside the Solder exception handling
          infrastructure. Otherwise, it simply returns flow control to the caller.
       </para>
-
-      <para>
+    <para>
          Consider a exception chain containing the following nested causes (from outer cause to root cause):
       </para>
-
-      <itemizedlist>
-         <listitem><para>EJBException</para></listitem>
-         <listitem><para>PersistenceException</para></listitem>
-         <listitem><para>SQLGrammarException</para></listitem>
-      </itemizedlist>
-
-      <para>
+    <itemizedlist>
+      <listitem>
+        <para>EJBException</para>
+      </listitem>
+      <listitem>
+        <para>PersistenceException</para>
+      </listitem>
+      <listitem>
+        <para>SQLGrammarException</para>
+      </listitem>
+    </itemizedlist>
+    <para>
          Solder will unwrap this exception and notify handlers in the following order:
       </para>
-
-      <orderedlist>
-         <listitem><para>SQLGrammarException</para></listitem>
-         <listitem><para>PersistenceException</para></listitem>
-         <listitem><para>EJBException</para></listitem>
-      </orderedlist>
-
-      <para>
-         If there's a handler for <literal>PersistenceException</literal>, it will likely prevent the handlers for
+    <orderedlist>
+      <listitem>
+        <para>SQLGrammarException</para>
+      </listitem>
+      <listitem>
+        <para>PersistenceException</para>
+      </listitem>
+      <listitem>
+        <para>EJBException</para>
+      </listitem>
+    </orderedlist>
+    <para>
+         If there&apos;s a handler for <literal>PersistenceException</literal>, it will likely prevent the handlers for
          <literal>EJBException</literal> from being invoked, which is a good thing since what useful information can
          really be obtained from <literal>EJBException</literal>?
       </para>
-
-   </section>
-
-   <section id="client_usage.handler_ordering">
-      <title>Exception handler ordering</title>
-
-      <para>
+  </section>
+  <section id="client_usage.handler_ordering">
+    <title>Exception handler ordering</title>
+    <para>
          While processing one of the causes in the exception chain, Solder has a specific order it uses to invoke
          the handlers, operating on two axes:
       </para>
-
-      <itemizedlist>
-         <listitem><para>traversal of exception type hierarchy</para></listitem>
-         <listitem><para>relative handler precedence</para></listitem>
-      </itemizedlist>
-
-      <para>
-         We'll first address the traversal of the exception type hierarchy, then cover relative handler precedence.
+    <itemizedlist>
+      <listitem>
+        <para>traversal of exception type hierarchy</para>
+      </listitem>
+      <listitem>
+        <para>relative handler precedence</para>
+      </listitem>
+    </itemizedlist>
+    <para>
+         We&apos;ll first address the traversal of the exception type hierarchy, then cover relative handler precedence.
       </para>
-
-      <section id="client_usage.handler_ordering.hierarchy_traversal">
-         <title>Traversal of exception type hierarchy</title>
-
-         <para>
-            Solder doesn't simply invoke handlers that match the exact type of the exception. Instead, it walks up and
+    <section id="client_usage.handler_ordering.hierarchy_traversal">
+      <title>Traversal of exception type hierarchy</title>
+      <para>
+            Solder doesn&apos;t simply invoke handlers that match the exact type of the exception. Instead, it walks up and
             down the type hierarchy of the exception. It first notifies least specific handler in breadth first
-            traversal mode, then gradually works down the type hierarchy towards handlers for the actual exception type,
+            traversal mode, then gradually works down the type hierarchy toward handlers for the actual exception type,
             still in breadth first traversal. Once all breadth first traversal handlers have been invoked, the process
             is reversed for depth first traversal, meaning the most specific handlers are notified first and Solder
             continues walking up the hierarchy tree.
          </para>
-
-         <para>
+      <para>
             There are two modes of this traversal:
          </para>
-
-         <itemizedlist>
-            <listitem><para>BREADTH_FIRST</para></listitem>
-            <listitem><para>DEPTH_FIRST</para></listitem>
-         </itemizedlist>
-
-         <para>
+      <itemizedlist>
+        <listitem>
+          <para>BREADTH_FIRST</para>
+        </listitem>
+        <listitem>
+          <para>DEPTH_FIRST</para>
+        </listitem>
+      </itemizedlist>
+      <para>
             By default, handlers are registered into the DEPTH_FIRST traversal path. That means in most cases, Solder
-            starts with handlers of the actual exception type and works up towards the handler for the least specific
+            starts with handlers of the actual exception type and works up toward the handler for the least specific
             type.
          </para>
-
-         <para>
+      <para>
             However, when a handler is registered to be notified during the BREADTH_FIRST traversal, as in the example
             above, Solder will notify that exception handler before the exception handler for the actual type is
             notified.
          </para>
-
-         <para>
-            Let's consider an example. Assume that Solder is handling the <literal>SocketException</literal>. It will
+      <para>
+            Let&apos;s consider an example. Assume that Solder is handling the <literal>SocketException</literal>. It will
             notify handlers in the following order:
          </para>
-
-         <orderedlist>
-            <listitem><para><literal>Throwable</literal> (BREADTH_FIRST)</para></listitem>
-            <listitem><para><literal>Exception</literal> (BREADTH_FIRST)</para></listitem>
-            <listitem><para><literal>IOException</literal> (BREADTH_FIRST)</para></listitem>
-            <listitem><para><literal>SocketException</literal> (BREADTH_FIRST)</para></listitem>
-            <listitem><para><literal>SocketException</literal> (DEPTH_FIRST)</para></listitem>
-            <listitem><para><literal>IOException</literal> (DEPTH_FIRST)</para></listitem>
-            <listitem><para><literal>Exception</literal> (DEPTH_FIRST)</para></listitem>
-            <listitem><para><literal>Throwable</literal> (DEPTH_FIRST)</para></listitem>
-         </orderedlist>
-
-         <para>
+      <orderedlist>
+        <listitem>
+          <para><literal>Throwable</literal> (BREADTH_FIRST)</para>
+        </listitem>
+        <listitem>
+          <para><literal>Exception</literal> (BREADTH_FIRST)</para>
+        </listitem>
+        <listitem>
+          <para><literal>IOException</literal> (BREADTH_FIRST)</para>
+        </listitem>
+        <listitem>
+          <para><literal>SocketException</literal> (BREADTH_FIRST)</para>
+        </listitem>
+        <listitem>
+          <para><literal>SocketException</literal> (DEPTH_FIRST)</para>
+        </listitem>
+        <listitem>
+          <para><literal>IOException</literal> (DEPTH_FIRST)</para>
+        </listitem>
+        <listitem>
+          <para><literal>Exception</literal> (DEPTH_FIRST)</para>
+        </listitem>
+        <listitem>
+          <para><literal>Throwable</literal> (DEPTH_FIRST)</para>
+        </listitem>
+      </orderedlist>
+      <para>
             The same type traversal occurs for each exception processed in the chain.
          </para>
-
-         <para>
+      <para>
             In order for a handler to be notified of the <literal>IOException</literal> before the <literal>SocketException</literal>, 
             it would have to specify the <literal>BREADTH_FIRST</literal> traversal path explicitly:
          </para>
-
-         <programlisting role="JAVA"><![CDATA[
+      <programlisting role="JAVA"><![CDATA[
 void handleIOException(@Handles(during = TraversalMode.BREADTH_FIRST)
       CaughtException<IOException> evt)
 {
    System.out.println("An I/O exception occurred, but not sure what type yet");
 }]]>
          </programlisting>
-
-         <para>
+      <para>
             <literal>BREADTH_FIRST</literal> handlers are typically used for logging exceptions because they are not likely to be
             short-circuited (and thus always get invoked).
          </para>
-
-      </section>
-
-      <section id="precedence">
-         <title>Handler precedence</title>
-
-         <para>
+    </section>
+    <section id="precedence">
+      <title>Handler precedence</title>
+      <para>
             When Solder finds more than one handler for the same exception type, it orders the handlers by precedence.
             Handlers with higher precedence are executed before handlers with a lower precedence. If Solder detects two
             handlers for the same type with the same precedence, it detects it as an error and throws an exception at
             deployment time.
          </para>
-
-         <para>
-            Let's define two handlers with different precedence:
+      <para>
+            Let&apos;s define two handlers with different precedence:
          </para>
-
-         <programlisting role="JAVA"><![CDATA[
+      <programlisting role="JAVA"><![CDATA[
 void handleIOExceptionFirst(@Handles(precedence = 100) CaughtException<IOException> evt)
 {
    System.out.println("Invoked first");
@@ -536,118 +512,128 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
    System.out.println("Invoked second");
 }]]>
          </programlisting>
-
-         <para>
+      <para>
             The first method is invoked first since it has a higher precedence (100) than the second method, which has
             the default precedence (0).
          </para>
-
-         <para>
+      <para>
             To make specifying precedence values more convenient, Solder provides several built-in constants, available
             on the <literal>Precedence</literal> class:
          </para>
-
-         <itemizedlist>
-            <listitem><para>BUILT_IN = -100</para></listitem>
-            <listitem><para>FRAMEWORK = -50</para></listitem>
-            <listitem><para>DEFAULT = 0</para></listitem>
-            <listitem><para>LOW = 50</para></listitem>
-            <listitem><para>HIGH = 100</para></listitem>
-         </itemizedlist>
-
-         <para>
-            To summarize, here's how Solder determines the order of handlers to invoke (until a handler marks exception as
+      <itemizedlist>
+        <listitem>
+          <para>BUILT_IN = -100</para>
+        </listitem>
+        <listitem>
+          <para>FRAMEWORK = -50</para>
+        </listitem>
+        <listitem>
+          <para>DEFAULT = 0</para>
+        </listitem>
+        <listitem>
+          <para>LOW = 50</para>
+        </listitem>
+        <listitem>
+          <para>HIGH = 100</para>
+        </listitem>
+      </itemizedlist>
+      <para>
+            To summarize, here&apos;s how Solder determines the order of handlers to invoke (until a handler marks exception as
             handled):
          </para>
-
-         <orderedlist>
-            <listitem><para>Unwrap exception stack</para></listitem>
-            <listitem><para>Begin processing root cause</para></listitem>
-            <listitem><para>Find handler for least specific handler marked for BREADTH_FIRST traversal</para></listitem>
-            <listitem><para>If multiple handlers for same type, invoke handlers with higher precedence first</para></listitem>
-            <listitem><para>Find handler for most specific handler marked for DEPTH_FIRST traversal</para></listitem>
-            <listitem><para>If multiple handlers for same type, invoke handlers with higher precedence first</para></listitem>
-            <listitem><para>Continue above steps for each exception in stack</para></listitem>
-         </orderedlist>
-
-      </section> 
-
-   </section>
-
-   <section id="client_usage.api">
-      <title>APIs for exception information and flow control</title>
-
-      <para>
+      <orderedlist>
+        <listitem>
+          <para>Unwrap exception stack</para>
+        </listitem>
+        <listitem>
+          <para>Begin processing root cause</para>
+        </listitem>
+        <listitem>
+          <para>Find handler for least specific handler marked for BREADTH_FIRST traversal</para>
+        </listitem>
+        <listitem>
+          <para>If multiple handlers for same type, invoke handlers with higher precedence first</para>
+        </listitem>
+        <listitem>
+          <para>Find handler for most specific handler marked for DEPTH_FIRST traversal</para>
+        </listitem>
+        <listitem>
+          <para>If multiple handlers for same type, invoke handlers with higher precedence first</para>
+        </listitem>
+        <listitem>
+          <para>Continue above steps for each exception in stack</para>
+        </listitem>
+      </orderedlist>
+    </section>
+  </section>
+  <section id="client_usage.api">
+    <title>APIs for exception information and flow control</title>
+    <para>
          There are two APIs provided by Solder that should be familiar to application developers:
       </para>
-
-      <itemizedlist>
-         <listitem><para><literal>CaughtException</literal></para></listitem>
-         <listitem><para><literal>ExceptionStack</literal></para></listitem>
-      </itemizedlist>
-
-      <section id="client_usage.api.caughtexception">
-         <title>CaughtException</title>
-
-         <para>
+    <itemizedlist>
+      <listitem>
+        <para><literal>CaughtException</literal></para>
+      </listitem>
+      <listitem>
+        <para><literal>ExceptionStack</literal></para>
+      </listitem>
+    </itemizedlist>
+    <section id="client_usage.api.caughtexception">
+      <title>CaughtException</title>
+      <para>
             In addition to providing information about the exception being handled, the
             <literal>CaughtException</literal> object contains methods to control the exception handling process, such
             as rethrowing the exception, aborting the handler chain or unmuting the current handler.
          </para>
-
-         <para>
+      <para>
             Five methods exist on the <literal>CaughtException</literal> object to give flow control to the handler
          </para>
-
-         <itemizedlist>
-            <listitem>
-               <para>
+      <itemizedlist>
+        <listitem>
+          <para>
                   <literal>abort()</literal>
                   - terminate all handling immediately after this handler, does not mark the
                   exception as handled, does not re-throw the exception.
                </para>
-            </listitem>
-            <listitem>
-               <para>
+        </listitem>
+        <listitem>
+          <para>
                   <literal>rethrow()</literal>
                   - continues through all handlers, but once all handlers have been called
                   (assuming another handler does not call abort() or handled()) the initial exception passed to Solder is
                   rethrown. Does not mark the exception as handled.
                </para>
-            </listitem>
-            <listitem>
-               <para>
+        </listitem>
+        <listitem>
+          <para>
                   <literal>handled()</literal>
                   - marks the exception as handled and terminates further handling.
                </para>
-            </listitem>
-            <listitem>
-               <para>
+        </listitem>
+        <listitem>
+          <para>
                   <literal>markHandled()</literal>
                   - default. Marks the exception as handled and proceeds with the rest of the handlers.
                </para>
-            </listitem>
-            <listitem>
-               <para>
+        </listitem>
+        <listitem>
+          <para>
                   <literal>dropCause()</literal>
                   - marks the exception as handled, but proceeds to the next cause in
                   the cause container, without calling other handlers for the current cause.
                </para>
-            </listitem>
-         </itemizedlist>
-
-         <para>
+        </listitem>
+      </itemizedlist>
+      <para>
             Once a handler is invoked it is muted, meaning it will not be run again for that exception chain,
-            unless it's explicitly marked as unmuted via the <literal>unmute()</literal> method on
+            unless it&apos;s explicitly marked as unmuted via the <literal>unmute()</literal> method on
             <literal>CaughtException</literal>.
          </para>
-
-      </section>
-
-      <section id="client_usage.api.stackinfo">
-         <title>ExceptionStack</title>
-
-         <para>
+    </section>
+    <section id="client_usage.api.stackinfo">
+      <title>ExceptionStack</title>
+      <para>
             <literal>ExceptionStack</literal> contains information about the exception causes relative to the current
             exception cause. It is also the source of the exception types the invoked handlers are matched against. It
             is accessed in handlers by calling the method <literal>getExceptionStack()</literal> on the
@@ -655,28 +641,21 @@ void handleIOExceptionSecond(@Handles CaughtException<IOException> evt)
             <ulink url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/solder/exception/control/ExceptionStack.html">API docs</ulink>
             for more information, all methods are fairly self-explanatory.
          </para>
-
-         <tip>
-            <para>This object is mutable and can be modified before any handlers are invoked by an observer:</para>
-
-            <programlisting role="JAVA"><![CDATA[public void modifyStack(@Observes ExceptionStack stack) {
+      <tip>
+        <para>This object is mutable and can be modified before any handlers are invoked by an observer:</para>
+        <programlisting role="JAVA"><![CDATA[public void modifyStack(@Observes ExceptionStack stack) {
   ...
 }]]>
             </programlisting>
-
-            <para>
+        <para>
                Modifying the <literal>ExceptionStack</literal> may be useful to remove exception types that are effectively meaningless
                such as <literal>EJBException</literal>, changing the exception type to something more meaningful such
                as cases like <literal>SQLException</literal>, or wrapping exceptions as custom application exception
                types.
             </para>
-
-         </tip>
-      </section>
-
-   </section>
-
-   <!--
+      </tip>
+    </section>
+  </section>
+<!--
    vim:et:ts=3:sw=3:tw=120
-   -->
-</chapter>
+   --></chapter>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,53 +16,42 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-servicehandler">
-
-   <title>Service Handler</title>
-
-   <para>
+  <title>Service Handler</title>
+  <para>
       The service handler facility allow you to declare interfaces and abstract classes as automatically implemented 
       beans. Any call to an abstract method on the interface or abstract class will be forwarded to the invocation 
       handler for processing.
    </para>
-   
-   <para>
+  <para>
       If you wish to convert some non-type-safe lookup to a type-safe lookup, then service handlers may be useful for
       you, as they allow the end user to map a lookup to a method using domain specific annotations.
    </para>
-   
-   <para>
+  <para>
       We will work through using this facility, taking the example of a service which can execute JPA queries upon
       abstract method calls. First we define the annotation used to mark interfaces as automatically implemented beans.
       We meta-annotate it, defining the invocation handler to use:
    </para>
-   
-      <programlisting role="JAVA">@ServiceHandlerType(QueryHandler.class)
+  <programlisting role="JAVA">@ServiceHandlerType(QueryHandler.class)
 @Retention(RUNTIME)
 @Target({TYPE})
 @interface QueryService {}</programlisting>
-
-   <para>
+  <para>
       We now define an annotation which provides the query to execute:
    </para>
-
-   <programlisting role="JAVA">@Retention(RUNTIME)
+  <programlisting role="JAVA">@Retention(RUNTIME)
 @Target({METHOD})
 @interface Query {
 
    String value();
    
 }</programlisting>
-
-   <para>
+  <para>
       And finally, the invocation handler, which simply takes the query, and executes it using JPA, returning the 
       result:
    </para>
-
-   <programlisting role="JAVA">class QueryHandler {
+  <programlisting role="JAVA">class QueryHandler {
    
    @Inject EntityManager em;
   
@@ -71,37 +60,38 @@
       return em.createQuery(ctx.getMethod().getAnnotation(Query.class).value()).getResultList();
    }
 }</programlisting>
-
-   <note>
-      <itemizedlist>
+  <note>
+    <itemizedlist>
       <listitem>
-         The invocation handler is similar to an interceptor. It must have an <code>@AroundInvoke</code> method that 
-         returns and object and takes an <code>InvocationContext</code> as an argument.
+        <para>
+            The invocation handler is similar to an interceptor. It must have an <code>@AroundInvoke</code> method that 
+            returns and object and takes an <code>InvocationContext</code> as an argument.
+          </para>
       </listitem>
       <listitem>
-         Do not call <code>InvocationContext.proceed()</code> as there is no method to proceed to.
+        <para>
+            Do not call <code>InvocationContext.proceed()</code> as there is no method to proceed to.
+          </para>
       </listitem>
       <listitem>
-         Injection is available into the handler class, however the handler is not a bean definition, so observer 
-         methods, producer fields and producer methods defined on the handler will not be registered.
+        <para>
+            Injection is available into the handler class, however the handler is not a bean definition, so observer 
+            methods, producer fields and producer methods defined on the handler will not be registered.
+          </para>
       </listitem>
-      </itemizedlist>
-   </note>
-
-   <para>Finally, we can define (any number of) interfaces which define our queries:</para>
-
-   <programlisting role="JAVA"><![CDATA[@QueryService
+    </itemizedlist>
+  </note>
+  <para>Finally, we can define (any number of) interfaces which define our queries:</para>
+  <programlisting role="JAVA"><![CDATA[@QueryService
 interface UserQuery {
    
-   @Query("select u from User u");
+   @Query("select u from User u")
    public List<User> getAllUsers();
 }]]></programlisting>
-
-   <para>
+  <para>
       Finally, we can inject the query interface, and call methods, automatically executing the JPA query.
    </para>
-
-   <programlisting role="JAVA"><![CDATA[class UserListManager {
+  <programlisting role="JAVA"><![CDATA[class UserListManager {
    @Inject 
    UserQuery userQuery;
   
@@ -113,7 +103,4 @@ interface UserQuery {
    }
 
 }]]></programlisting>
-
-
-   
 </chapter>

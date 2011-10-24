@@ -60,7 +60,7 @@ import static org.junit.Assert.assertThat;
 public class ExtensionTest {
     @Deployment(name = "defaultExtensionTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("defaultExtension.jar")
+        return BaseWebArchive.createBase("defaultExtension")
                 .addClasses(ExtensionExceptionHandler.class, StereotypedHandler.class,
                         InterceptorAsHandler.class, PretendInterceptorBinding.class, DecoratorAsHandler.class, Account.class);
     }
@@ -68,7 +68,7 @@ public class ExtensionTest {
     @Deployment(name = "BadInjectionPointHandler")
     @ShouldThrowException(DeploymentException.class)
     public static Archive<?> createBadInjectionPointArchive() {
-        return BaseWebArchive.createBase("badInjectionExtension.jar")
+        return BaseWebArchive.createBase("badInjectionExtension")
                 .addClasses(BadInjectionPointHandler.class);
     }
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2011, Red Hat, Inc., and individual contributors
@@ -14,168 +14,145 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-      "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+  --><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="catch-advanced">
-   <title>Exception handling - Advanced Features</title>
-
-   <section id="catch-exception-modification">
-      <title>Exception Modification</title>
-
-      <section id="catch-exception-modification-intro">
-         <title>Introduction</title>
-
-         <para>
+  <title>Exception handling - Advanced Features</title>
+  <section id="catch-exception-modification">
+    <title>Exception Modification</title>
+    <section id="catch-exception-modification-intro">
+      <title>Introduction</title>
+      <para>
             At times it may be useful to change the exception to something a little more specific or meaningful before
             it is sent to handlers. Solder provides the means to make this happen.  A prime use case for this behavior is
             a persistence-related exception coming from the database.  Many times what we get from the database is an
-            error number inside of a <literal>SQLException</literal>, which isn't very helpful.
+            error number inside of a <literal>SQLException</literal>, which isn&apos;t very helpful.
          </para>
-
-      </section>
-
-      <section id="catch-exception-modification-usage">
-         <title>Usage</title>
-
-         <para>
+    </section>
+    <section id="catch-exception-modification-usage">
+      <title>Usage</title>
+      <para>
             Before any handlers are notified of an exception, Solder will raise an event of type
             <literal>ExceptionStack</literal>. This type contains all the exceptions in the chain, and will allow you to
             change the exception elements that will be used to notify handlers using the
             <literal>setCauseElements(Collection)</literal> method. Do not use any of the other methods as they only
             return copies of the chain.
          </para>
-
-         <tip>
-            <para>
+      <tip>
+        <para>
                When changing the exception, it is strongly recommended you keep the same stack trace for the exceptions
                you are changing. If the stack trace is not set then the new exception will not contain any stack
                information save from the time it was created, which is likely to be of little use to any handler.
             </para>
-         </tip>
-      </section>
-   </section>
-
-   <section id="catch-filter">
-      <title>Filtering Stack Traces</title>
-
-      <section id="catch-filter-intro">
-         <title>Introduction</title>
-
-         <para>
-            Stack traces are an everyday occurence for the Java developer, unfortunately the base stack trace isn't very
+      </tip>
+    </section>
+  </section>
+  <section id="catch-filter">
+    <title>Filtering Stack Traces</title>
+    <section id="catch-filter-intro">
+      <title>Introduction</title>
+      <para>
+            Stack traces are an everyday occurrence for the Java developer, unfortunately the base stack trace isn&apos;t very
             helpful and can be difficult to understand and see the root problem. Solder helps make this easier by:
          </para>
-
-         <itemizedlist>
-            <listitem><para>turning the stack upside down and showing the root cause first, and</para></listitem>
-            <listitem><para>allowing the stack trace to be filtered</para></listitem>
-         </itemizedlist>
-
-         <para>
-            The great part about all of this: it's done without a need for CDI! You can use it in a basic Java project,
+      <itemizedlist>
+        <listitem>
+          <para>turning the stack upside down and showing the root cause first, and</para>
+        </listitem>
+        <listitem>
+          <para>allowing the stack trace to be filtered</para>
+        </listitem>
+      </itemizedlist>
+      <para>
+            The great part about all of this: it&apos;s done without a need for CDI! You can use it in a basic Java project,
             just include the Solder jar. There are four classes to be aware of when using filtering
          </para>
-
-         <itemizedlist>
-            <listitem><para>ExceptionStackOutput</para></listitem>
-            <listitem><para>StackFrameFilter</para></listitem>
-            <listitem><para>StackFrameFilterResult</para></listitem>
-            <listitem><para>StackFrame</para></listitem>
-         </itemizedlist>
-
-      </section>
-
-      <section id="catch-filter.exceptionstackoutput">
-         <title>ExceptionStackOutput</title>
-
-         <para>
-            There's not much to this, pass it the exception to print and the filter to use in the constructor and call
+      <itemizedlist>
+        <listitem>
+          <para>ExceptionStackOutput</para>
+        </listitem>
+        <listitem>
+          <para>StackFrameFilter</para>
+        </listitem>
+        <listitem>
+          <para>StackFrameFilterResult</para>
+        </listitem>
+        <listitem>
+          <para>StackFrame</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section id="catch-filter.exceptionstackoutput">
+      <title>ExceptionStackOutput</title>
+      <para>
+            There&apos;s not much to this, pass it the exception to print and the filter to use in the constructor and call
             <literal>printTrace()</literal> which returns a string -- the stack trace (filtered or not). If no filter is
             passed to the constructor, calling <literal>printTrace()</literal> will still unwrap the stack and print the
             root cause first. This can be used in place of<literal>Throwable#printStackTrace()</literal>, provided the
             returned string is actually printed to standard out or standard error.
          </para>
-      </section>
-
-      <section id="catch-filter.stackframefilter">
-         <title>StackFrameFilter</title>
-
-         <para>
+    </section>
+    <section id="catch-filter.stackframefilter">
+      <title>StackFrameFilter</title>
+      <para>
             This is the workhorse interface that will need to be implemented to do any filtering for a stack trace. It only
             has one method:<literal>public StackFrameFilterResult process(StackFrame frame)</literal>. Further below are
             methods on <literal>StackFrame</literal> and<literal>StackFrameFilterResult</literal>. Some examples are
             included below to get an idea what can be done and how to do it.
          </para>
-      </section>
-
-      <section id="catch-filter.stackframefilterresult">
-         <title>StackFrameFilterResult</title>
-
-         <para>
+    </section>
+    <section id="catch-filter.stackframefilterresult">
+      <title>StackFrameFilterResult</title>
+      <para>
             This is a simple enumeration of valid return values for the <literal>process</literal> method. Please see the
             <ulink url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/solder/exception/filter/StackFrameFilterResult.html">API docs</ulink>
             for definitions of each value.
          </para>
-      </section>
-
-      <section id="catch-filter.stackframe">
-         <title>StackFrame</title>
-
-         <para>
+    </section>
+    <section id="catch-filter.stackframe">
+      <title>StackFrame</title>
+      <para>
             This contains methods to help aid in determining what to do in the filter, it also allows you to completely
-            replace the <literal>StackTraceElement</literal> if desired. The four "mark" methods deal with marking a stack
-            trace and are used if "folding" a stack trace is desired, instead of dropping the frame. The <literal>StackFrame</literal>
+            replace the <literal>StackTraceElement</literal> if desired. The four &quot;mark&quot; methods deal with marking a stack
+            trace and are used if &quot;folding&quot; a stack trace is desired, instead of dropping the frame. The <literal>StackFrame</literal>
             will allow for multiple marks to be set. The last method,<literal>getIndex()</literal>, will return the index
             of the <literal>StackTraceElement</literal> from the exception.
          </para>
-
-         <example>
-            <title>Terminate</title>
-            
-            <programlisting role="JAVA"><![CDATA[ @Override
+      <example>
+        <title>Terminate</title>
+        <programlisting role="JAVA"><![CDATA[ @Override
       public StackFrameFilterResult process(StackFrame frame) {
          return StackFrameFilterResult.TERMINATE;
       }]]></programlisting>
-      
-            <para>
+        <para>
                This example will simply show the exception, no stack trace.
             </para>
-         </example>
-
-         <example>
-            <title>Terminate After</title>
-            
-            <programlisting role="JAVA"><![CDATA[@Override
+      </example>
+      <example>
+        <title>Terminate After</title>
+        <programlisting role="JAVA"><![CDATA[@Override
       public StackFrameFilterResult process(StackFrame frame) {
          return StackFrameFilterResult.TERMINATE_AFTER;
       } ]]></programlisting>
-      
-            <para>
+        <para>
                This is similar to the previous example, save the first line of the stack is shown.
             </para>
-         </example>
-
-         <example>
-            <title>Drop Remaining</title>
-            
-            <programlisting role="JAVA"><![CDATA[@Override
+      </example>
+      <example>
+        <title>Drop Remaining</title>
+        <programlisting role="JAVA"><![CDATA[@Override
       public StackFrameFilterResult process(StackFrame frame) {
          if (frame.getIndex() >= 5) {
             return StackFrameFilterResult.DROP_REMAINING;
          }
          return StackFrameFilterResult.INCLUDE;
       }]]></programlisting>
-      
-            <para>
+        <para>
                This filter drops all stack elements after the fifth element.
             </para>
-         </example>
-
-         <example>
-            <title>Folding</title>
-            
-            <programlisting role="JAVA"><![CDATA[@Override
+      </example>
+      <example>
+        <title>Folding</title>
+        <programlisting role="JAVA"><![CDATA[@Override
       public StackFrameFilterResult process(StackFrame frame) {
          if (frame.isMarkSet("reflections.invoke")) {
             if (frame.getStackTraceElement().getClassName().contains("java.lang.reflect")) {
@@ -194,18 +171,15 @@
 
          return StackFrameFilterResult.INCLUDE;
       }]]></programlisting>
-      
-            <para>
-               Certainly the most complicated example, however, this shows a possible way of "folding" a stack trace. In the
+        <para>
+               Certainly the most complicated example, however, this shows a possible way of &quot;folding&quot; a stack trace. In the
                example any internal reflection invocation methods are folded into a single
                <literal>java.lang.reflect.Method.invoke()</literal>
                call, no more internal com.sun calls in the trace.
             </para>
-         </example>
-      </section>
-   </section>
-
-   <!--
+      </example>
+    </section>
+  </section>
+<!--
    vim:et:ts=3:sw=3:tw=120
-   -->
-</chapter>
+   --></chapter>

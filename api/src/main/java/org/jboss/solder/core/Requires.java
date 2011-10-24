@@ -39,7 +39,7 @@ import java.lang.annotation.Target;
  * </p>
  * <p/>
  * <p>
- * Seam Solder will try both the Thread Context ClassLoader, as well as the
+ * Solder will try both the Thread Context ClassLoader, as well as the
  * classloader of the declaring class.
  * </p>
  *

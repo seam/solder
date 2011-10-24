@@ -49,7 +49,7 @@ public class ModifyExceptionStackTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("ModifyExceptionStack.jar")
+        return BaseWebArchive.createBase("ModifyExceptionStack")
                 .addClasses(ModifyExceptionStackTest.class);
     }
 

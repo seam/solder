@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,86 +16,68 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-resourceloading">
-   <title>Resource Loading</title>
-
-   <para>
-      Seam Solder provides an extensible, injectable resource loader. The resource loader can provide URLs or 
+  <title>Resource Loading</title>
+  <para>
+      Solder provides an extensible, injectable resource loader. The resource loader can provide URLs or
       managed input streams. By default the resource loader will look at the classpath, and the servlet context if
       available.
    </para>
-
-   <para>
+  <para>
       If the resource name is known at development time, the resource can be injected, either as a URL or an 
       InputStream:
    </para>
-
-   <programlisting role="JAVA">   @Inject
-   @Resource("WEB-INF/beans.xml")
+  <programlisting role="JAVA">   @Inject
+   @Resource(&quot;WEB-INF/beans.xml&quot;)
    URL beansXml;
 
    @Inject
-   @Resource("WEB-INF/web.xml")
+   @Resource(&quot;WEB-INF/web.xml&quot;)
    InputStream webXml;</programlisting>
-
-   <para>
+  <para>
       If the resource name is not known, the <code>ResourceProvider</code> can be injected, and the resource looked up 
       dynamically:
    </para>
-
-   <programlisting role="JAVA">   @Inject
+  <programlisting role="JAVA">   @Inject
    void readXml(ResourceProvider provider, String fileName) {
       InputStream is = provider.loadResourceStream(fileName);
    }</programlisting>
-   
-   <para>
+  <para>
       If you need access to all resources under a given name known to the resource loader (as opposed to first resource
       loaded), you can inject a collection of resources:
    </para>
-   
-   <programlisting role="JAVA"><![CDATA[   @Inject
+  <programlisting role="JAVA"><![CDATA[   @Inject
    @Resource("WEB-INF/beans.xml")
    Collection<URL> beansXmls;
 
    @Inject
    @Resource("WEB-INF/web.xml")
    Collection<InputStream> webXmls;]]></programlisting>
-
-   <tip>
-      <para>
+  <tip>
+    <para>
          Any input stream injected, or created directly by the <code>ResourceProvider</code> is managed, and will be 
          automatically closed when the bean declaring the injection point of the resource or provider is destroyed. 
       </para>
-   </tip>
-   
-   <para>
+  </tip>
+  <para>
       If the resource is a Properties bundle, you can also inject it as a set of <code>Properties</code>:
    </para>
-   
-   <programlisting role="JAVA"><![CDATA[   @Inject
+  <programlisting role="JAVA"><![CDATA[   @Inject
    @Resource("META-INF/aws.properties")
    Properties awsProperties;]]></programlisting>
-   
-   
-   <section>
-      <title>Extending the Resource Loader</title>
-      
-      <para>
+  <section>
+    <title>Extending the Resource Loader</title>
+    <para>
          If you want to load resources from another location, you can provide an additional resource loader. First,
          create the resource loader implementation:
       </para>
-      
-      <programlisting role="JAVA">class MyResourceLoader implements ResourceLoader {
+    <programlisting role="JAVA">class MyResourceLoader implements ResourceLoader {
    ...
 }</programlisting>
-
-      <para>
+    <para>
          And then register it as a service by placing the fully qualified class name of the implementation in a file
-         called <code>META-INF/services/org.jboss.seam.solder.resourceLoader.ResourceLoader</code>.
+         called <code>META-INF/services/org.jboss.solder.resourceLoader.ResourceLoader</code>.
       </para>
-   </section>
-
+  </section>
 </chapter>

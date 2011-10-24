@@ -28,6 +28,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.reflection.PrimitiveTypes;
 import org.jboss.solder.servlet.ServletExtension;
 
@@ -49,6 +50,7 @@ import org.jboss.solder.servlet.ServletExtension;
  * @see HeaderParam
  * @see DefaultValue
  */
+@Requires("javax.servlet.Servlet")
 public class HeaderParamProducer {
     @Inject
     private HttpServletRequest request;

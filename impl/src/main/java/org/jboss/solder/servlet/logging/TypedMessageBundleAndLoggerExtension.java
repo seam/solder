@@ -48,7 +48,7 @@ public class TypedMessageBundleAndLoggerExtension implements Extension {
     private Bean<Object> loggerProducerBean;
     private Bean<Object> bundleProducerBean;
     private boolean processTypesInModule = false;
-    private static final String MODULE_PACKAGE_PREFIX = "org.jboss.seam.servlet.";
+    private static final String MODULE_PACKAGE_PREFIX = "org.jboss.solder.servlet.";
 
     public TypedMessageBundleAndLoggerExtension() {
         this.messageLoggerTypes = new HashSet<AnnotatedType<?>>();

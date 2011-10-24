@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,163 +16,170 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---> 
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-properties">
-   <title>Properties</title>
-  
-   <para>
+  <title>Properties</title>
+  <para>
       Properties are a convenient way of locating and working with 
       <ulink url="http://en.wikipedia.org/wiki/JavaBean">JavaBean</ulink> properties. They can be used with properties 
       exposed via a getter/setter method, or directly via the field of a bean, providing a uniform interface that allows
       you all properties in the same way. 
    </para>
- 
-   <para>
+  <para>
       Property queries allow you to interrogate a class for properties which match certain criteria.
    </para>
- 
-   <section>
-      <title>Working with properties</title>
-    
-      <para>
+  <section>
+    <title>Working with properties</title>
+    <para>
          The <code>Property&lt;V&gt;</code> interface declares a number of methods for interacting with bean properties.  
          You can use these methods to read or set the property value, and read the property type information. Properties
          may be readonly. 
       </para>
-    
-      <table>
-         <title>Property methods</title>
-
-         <tgroup cols="3">
-            <colspec colnum="1" colwidth="1*" />
-            <colspec colnum="2" colwidth="1*" />
-
-            <thead>
-               <row>
-                  <entry align="center">
-                     <para>Method</para>
-                  </entry>
-                  <entry align="center">
-                     <para>Description</para>
-                  </entry>
-               </row>
-            </thead>
-
-            <tbody>
-               <row>
-                  <entry>
-                     <para>
+    <table>
+      <title>Property methods</title>
+      <tgroup cols="3">
+        <colspec colnum="1" colwidth="1*"/>
+        <colspec colnum="2" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry align="center">
+              <para>Method</para>
+            </entry>
+            <entry align="center">
+              <para>Description</para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <para>
                         <code>String getName();</code>
                      </para>
-                  </entry>
-                  <entry>
-                     <para>
+            </entry>
+            <entry>
+              <para>
                         Returns the name of the property.
                      </para>
-                  </entry>
-               </row>
-          
-               <row>
-                  <entry>
-                     <para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                         <code>Type getBaseType();</code>
                      </para>
-                  </entry>
-                  <entry>
-                     <para>
+            </entry>
+            <entry>
+              <para>
                         Returns the property type.
                      </para>
-                  </entry>
-               </row>
-          
-               <row>
-                  <entry>
-                     <para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                         <code>Class&lt;V&gt; getJavaClass();</code>
                      </para>
-                  </entry>
-                  <entry>
-                     <para>
+            </entry>
+            <entry>
+              <para>
                         Returns the property class.
                      </para>
-                  </entry>
-               </row>
-          
-               <row>
-                  <entry>
-                     <para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                         <code>AnnotatedElement getAnnotatedElement();</code>
                      </para>
-                  </entry>
-                  <entry>
-                     <para>
+            </entry>
+            <entry>
+              <para>
                         Returns the annotated element  -either the <code>Field</code> or
                         <code>Method</code> that the property is based on.
                      </para>
-                  </entry>
-               </row>
-          
-               <row>
-                  <entry>
-                     <para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                         <code>V getValue();</code>
                      </para>
-                  </entry>
-                  <entry>
-                     <para>
+            </entry>
+            <entry>
+              <para>
                         Returns the value of the property.
                      </para>
-                  </entry>
-               </row>
-          
-               <row>
-                  <entry>
-                     <para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                         <code>void setValue(V value);</code>
                      </para>
-                  </entry>    
-                  <entry>
-                     <para>
+            </entry>
+            <entry>
+              <para>
                         Sets the value of the property.
                      </para>
-                  </entry>
-               </row>
-          
-               <row>
-                  <entry>
-                     <para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                         <code>Class&lt;?&gt; getDeclaringClass();</code>
                      </para>
-                  </entry>
-                  <entry>
-                     <para>
+            </entry>
+            <entry>
+              <para>
                         Gets the class declaring the property.
                      </para>
-                  </entry>
-               </row>
-               <row>
-                  <entry>
-                     <para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                         <code>boolean isReadOnly();</code>
                      </para>
-                  </entry>
-                  <entry>
-                     <para>
+            </entry>
+            <entry>
+              <para>
                         Check if the property can be written as well as read.
                      </para>
-                  </entry>
-               </row>
-            </tbody>
-         </tgroup>
-      </table>
-    
-      <para>
-         Given a class with two properties, <code>personName</code> and <code>postcode</code>:'
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <code>Member getMember();</code>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                Get the class member which retrieves the property (i.e. field or getter).
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <code>
+                void setAccessible
+              </code>
+            </entry>
+            <entry>
+              <para>
+                Sets the <code>Member</code> to be accessible to changes. Should be performed within a 
+                <code>PriviledgedAction</code> to work correctly with Security Managers.
+              </para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>
+         Given a class with two properties, <code>personName</code> and <code>postcode</code>:&apos;
       </para>
-    
-      <programlisting role="JAVA">class Person {
+    <programlisting role="JAVA">class Person {
    
    PersonName personName;
    
@@ -187,196 +194,148 @@
    }
    
 }</programlisting>
-
-      <para>
+    <para>
          You can create two properties:
       </para>
-    
-      <programlisting role="JAVA"><![CDATA[   Property<PersonName> personNameProperty = Properties.createProperty(Person.class.getField("personName");
+    <programlisting role="JAVA"><![CDATA[   Property<PersonName> personNameProperty = Properties.createProperty(Person.class.getField("personName"));
    Property<String> postcodeProperty = Properties.createProperty(Person.class.getMethod("getPostcode"));]]></programlisting>
-   </section>
-  
-   <section>
-      <title>Querying for properties</title>
-  
-      <para>
+  </section>
+  <section>
+    <title>Querying for properties</title>
+    <para>
          To create a property query, use the <code>PropertyQueries</code> class to create a new
          <code>PropertyQuery</code> instance:
       </para>
-    
-      <programlisting><![CDATA[
+    <programlisting><![CDATA[
    PropertyQuery<?> query = PropertyQueries.createQuery(Foo.class);]]></programlisting>
-  
-      <para>
+    <para>
          If you know the type of the property that you are querying for, you can specify it via a type parameter:
       </para>
-    
-      <programlisting><![CDATA[   PropertyQuery<String> query = PropertyQueries.<String>createQuery(identityClass);]]></programlisting>
-
-   </section>
-  
-  
-   <section>
-      <title>Property Criteria</title>
-  
-      <para>
-         Once you have created the <code>PropertyQuery</code> instance, you can add search criteria.  Seam Solder
+    <programlisting><![CDATA[   PropertyQuery<String> query = PropertyQueries.<String>createQuery(identityClass);]]></programlisting>
+  </section>
+  <section>
+    <title>Property Criteria</title>
+    <para>
+         Once you have created the <code>PropertyQuery</code> instance, you can add search criteria.  Solder
          provides three built-in criteria types, and it is very easy to add your own.  A criteria is added to a query via the
          <code>addCriteria()</code> method.  This method returns an instance of the <code>PropertyQuery</code>,
          so multiple <code>addCriteria()</code> invocations can be stacked.
-      </para>    
-    
-      <section>
-         <title>AnnotatedPropertyCriteria</title>
-      
-         <para>
+      </para>
+    <section>
+      <title>AnnotatedPropertyCriteria</title>
+      <para>
             This criteria is used to locate bean properties that are annotated with a certain annotation type. For example, take
             the following class:
          </para>
-      
-         <programlisting><![CDATA[
+      <programlisting><![CDATA[
    public class Foo {  
       private String accountNumber;
       private @Scrambled String accountPassword;    
       private String accountName;    
    }]]></programlisting>
-  
-         <para>
+      <para>
             To query for properties of this bean annotated with <code>@Scrambled</code>, you can use an 
             <code>AnnotatedPropertyCriteria</code>, like so:
          </para>
-      
-         <programlisting><![CDATA[   PropertyQuery<String> query = PropertyQueries.<String>createQuery(Foo.class)
+      <programlisting><![CDATA[   PropertyQuery<String> query = PropertyQueries.<String>createQuery(Foo.class)
       .addCriteria(new AnnotatedPropertyCriteria(Scrambled.class));]]></programlisting>
-    
-         <para>
+      <para>
             This query matches the <code>accountPassword</code> property of the <code>Foo</code> bean.
-         </para>    
-    
-      </section>
-    
-      <section>
-         <title>NamedPropertyCriteria</title>
-      
-         <para>
+         </para>
+    </section>
+    <section>
+      <title>NamedPropertyCriteria</title>
+      <para>
             This criteria is used to locate a bean property with a particular name. Take the following class:
          </para>
-      
-         <programlisting><![CDATA[public class Foo {
+      <programlisting><![CDATA[public class Foo {
    public String getBar() {
       return "foobar";
    }
 }]]></programlisting>
-  
-         <para>
-            The following query will locate properties with a name of <code>"bar"</code>:
+      <para>
+            The following query will locate properties with a name of <code>&quot;bar&quot;</code>:
          </para>
-      
-         <programlisting><![CDATA[   PropertyQuery<String> query = PropertyQueries.<String>createQuery(Foo.class)
+      <programlisting><![CDATA[   PropertyQuery<String> query = PropertyQueries.<String>createQuery(Foo.class)
       .addCriteria(new NamedPropertyCriteria("bar"));]]></programlisting>
-      
-      </section>
-  
-      <section>
-         <title>TypedPropertyCriteria</title>
-      
-         <para>
+    </section>
+    <section>
+      <title>TypedPropertyCriteria</title>
+      <para>
             This criteria can be used to locate bean properties with a particular type.
          </para>
-      
-         <programlisting><![CDATA[public class Foo {
+      <programlisting><![CDATA[public class Foo {
    private Bar bar;
 }]]></programlisting>
-
-         <para>
+      <para>
             The following query will locate properties with a type of <code>Bar</code>:
          </para>
-      
-         <programlisting><![CDATA[PropertyQuery<Bar> query = PropertyQueries.<Bar>createQuery(Foo.class)
+      <programlisting><![CDATA[PropertyQuery<Bar> query = PropertyQueries.<Bar>createQuery(Foo.class)
       .addCriteria(new TypedPropertyCriteria(Bar.class));]]></programlisting>
-      
-      </section>
-    
-      <section>
-         <title>Creating a custom property criteria</title>
-      
-         <para>
+    </section>
+    <section>
+      <title>Creating a custom property criteria</title>
+      <para>
             To create your own property criteria, simply implement the 
-            <code>org.jboss.seam.solder.properties.query.PropertyCriteria</code> interface, which declares the 
+            <code>org.jboss.solder.properties.query.PropertyCriteria</code> interface, which declares the 
             two methods <code>fieldMatches()</code> and <code>methodMatches</code>. In the following example, our 
             custom criteria implementation can be used to locate whole number properties:
          </para>
-      
-         <programlisting><![CDATA[public class WholeNumberPropertyCriteria implements PropertyCriteria {
+      <programlisting><![CDATA[public class WholeNumberPropertyCriteria implements PropertyCriteria {
    public boolean fieldMatches(Field f) {
-      return f.getType() == Integer.class || f.getType() == Integer.TYPE.class ||
-             f.getType() == Long.class || f.getType() == Long.TYPE.class ||
+      return f.getType() == Integer.class || f.getType() == Integer.TYPE.getClass() ||
+             f.getType() == Long.class || f.getType() == Long.TYPE.getClass() ||
              f.getType() == BigInteger.class;
    }   
 
-   boolean methodMatches(Method m) {
-      return m.getReturnType() == Integer.class || m.getReturnType() == Integer.TYPE.class ||
-             m.getReturnType() == Long.class || m.getReturnType() == Long.TYPE.class ||
+   public boolean methodMatches(Method m) {
+      return m.getReturnType() == Integer.class || m.getReturnType() == Integer.TYPE.getClass() ||
+             m.getReturnType() == Long.class || m.getReturnType() == Long.TYPE.getClass() ||
              m.getReturnType() == BigInteger.class;
    }
 }]]></programlisting>
-      
-      
-      </section>
-  
-   </section>
-  
-   <section>
-      <title>Fetching the results</title>
-    
-      <para>
+    </section>
+  </section>
+  <section>
+    <title>Fetching the results</title>
+    <para>
          After creating the <code>PropertyQuery</code> and setting the criteria, the query can be executed by invoking
          either the <code>getResultList()</code> or <code>getFirstResult()</code> methods.  The 
          <code>getResultList()</code> method returns a <code>List</code> of <code>Property</code> objects,
          one for each matching property found that matches all the specified criteria:
       </para>
-    
-      <programlisting><![CDATA[   List<Property<String>> results = PropertyQueries.<String>createQuery(Foo.class)
-     .addCriteria(TypedPropertyCriteria(String.class))
+    <programlisting><![CDATA[   List<Property<String>> results = PropertyQueries.<String>createQuery(Foo.class)
+     .addCriteria(new TypedPropertyCriteria(String.class))
      .getResultList();]]></programlisting>
-    
-      <para>
+    <para>
          If no matching properties are found, <code>getResultList()</code> will return an empty <code>List</code>. 
          If you know that the query will return exactly one result, you can use the <code>getFirstResult()</code> method
          instead:
       </para>
-    
-      <programlisting><![CDATA[   Property<String> result = PropertyQueries.<String>createQuery(Foo.class)
-      .addCriteria(NamedPropertyCriteria("bar"))
+    <programlisting><![CDATA[   Property<String> result = PropertyQueries.<String>createQuery(Foo.class)
+      .addCriteria(new NamedPropertyCriteria("bar"))
       .getFirstResult();]]></programlisting>
-  
-      <para>
+    <para>
          If no properties are found, then <code>getFirstResult()</code> will return null.  Alternatively, if more than one
          result is found, then <code>getFirstResult()</code> will return the first property found.
       </para>
-
-      <para>
+    <para>
          Alternatively, if you know that the query will return exactly one result, and you want to assert that assumption is true,
          you can use the <code>getSingleResult()</code> method instead:
       </para>
-
-      <programlisting><![CDATA[   Property<String> result = PropertyQueries.<String>createQuery(Foo.class)
-      .addCriteria(NamedPropertyCriteria("bar"))
+    <programlisting><![CDATA[   Property<String> result = PropertyQueries.<String>createQuery(Foo.class)
+      .addCriteria(new NamedPropertyCriteria("bar"))
       .getSingleResult();]]></programlisting>
-
-      <para>
+    <para>
          If no properties are found, or more than one property is found, then <code>getSingleResult()</code> will throw an
          exception. Otherwise, <code>getSingleResult()</code> will return the sole property found.
       </para>
-      
-      <para>
+    <para>
          Sometimes you may not be interested in read only properties, so <code>getResultList()</code>,<code>getFirstResult()</code> 
          and <code>getSingleResult()</code> have corresponding <code>getWritableResultList()</code>,<code>getWritableFirstResult()</code> 
          and <code>getWritableSingleResult()</code> methods, that will only return properties that are not read-only. This means that
          if there is a field and a getter method that resolve to the same property, instead of getting a read-only <code>MethodProperty</code>
          you will get a writable <code>FieldProperty</code>.
       </para>
-
-   </section>  
-    
+  </section>
 </chapter>

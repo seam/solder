@@ -3,28 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.seam.config</groupId>
-        <artifactId>seam-config-parent</artifactId>
+        <groupId>org.jboss.solder</groupId>
+        <artifactId>solder-parent</artifactId>
         <version>3.1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>seam-config-example-princess-rescue</artifactId>
+    <artifactId>solder-config-example-princess-rescue</artifactId>
     <packaging>war</packaging>
 
-    <name>Seam Config Example: Princess Rescue (XML)</name>
-
-    <properties>
-        <jboss.home>${env.JBOSS_HOME}</jboss.home>
-        <jboss.domain>default</jboss.domain>
-    </properties>
+    <name>Solder Config Example: Princess Rescue (XML)</name>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.jboss.seam.config</groupId>
-            <artifactId>seam-config-xml</artifactId>
-        </dependency>
 
         <!-- Common to JEE and Servlet containers -->
         <dependency>
@@ -38,32 +28,25 @@
             <artifactId>jboss-annotations-api_1.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-
+        
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <classifier>jdk15</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.jboss.solder</groupId>
+            <artifactId>solder-impl</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Functional test dependencies -->
         <dependency>
-            <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-            <artifactId>selenium-java-client-driver</artifactId>
-            <version>${selenium.java.client.version}</version>
-            <scope>test</scope>
+           <groupId>org.jboss.arquillian.ajocado</groupId>
+           <artifactId>arquillian-ajocado-junit</artifactId>
+           <type>pom</type>
+           <scope>test</scope>
         </dependency>
-
+        
         <dependency>
-            <groupId>org.jboss.test</groupId>
-            <artifactId>richfaces-selenium</artifactId>
-            <version>${richfaces.selenium.version}</version>
-            <scope>test</scope>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -92,10 +75,139 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-war-plugin</artifactId>
+               <configuration>
+                  <webXml>${basedir}/src/main/jbossas-resources/web.xml</webXml>
+               </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <profiles>
+      <profile>
+            <id>ftest</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*Test.java</include>
+                            </includes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>verify</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+       </profile>
+        <profile>
+            <id>jbossas-remote-6</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>jbossas-remote-6</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.seam.test</groupId>
+                    <artifactId>jbossas-remote-6</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+       </profile>
+       <profile>
+            <id>jbossas-managed-6</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>jbossas-managed-6</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.seam.test</groupId>
+                    <artifactId>jbossas-managed-6</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+       <profile>
+            <id>jbossas-remote-7</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>jbossas-remote-7</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.seam.test</groupId>
+                    <artifactId>jbossas-remote-7</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+       </profile>
+       <profile>
+            <id>jbossas-managed-7</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>jbossas-managed-7</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.seam.test</groupId>
+                    <artifactId>jbossas-managed-7</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>glassfish-remote-3.1</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>glassfish-remote-3.1</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.seam.test</groupId>
+                    <artifactId>glassfish-remote-3.1</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
         <profile>
             <id>distribution</id>
             <activation>
@@ -112,35 +224,9 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>javaee</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <webXml>${basedir}/src/main/jbossas-resources/web.xml</webXml>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>jboss-maven-plugin</artifactId>
-                        <configuration>
-                            <jbossHome>${jboss.home}</jbossHome>
-                            <serverName>${jboss.domain}</serverName>
-                            <fileNames>
-                                <fileName>${project.build.directory}/princess-rescue.war</fileName>
-                            </fileNames>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+        
         <profile>
             <id>jetty</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <dependencies>
                 <!-- JSF 2.0 API -->
                 <dependency>

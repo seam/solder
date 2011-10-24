@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.logging.Category;
 import org.jboss.solder.servlet.ServletRequestContext;
 import org.jboss.solder.servlet.beanManager.ServletContextAttributeProvider;
@@ -39,6 +40,7 @@ import org.jboss.solder.servlet.support.ServletLogger;
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
+@Requires("javax.servlet.Servlet")
 @ApplicationScoped
 public class ImplicitServletObjectsHolder {
     @Inject

@@ -25,6 +25,7 @@ import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.servlet.WebApplication;
 import org.jboss.solder.servlet.event.ImplicitServletObjectsHolder.InternalHttpSessionEvent;
 import org.jboss.solder.servlet.event.ImplicitServletObjectsHolder.InternalServletContextEvent;
@@ -53,6 +54,7 @@ import org.jboss.solder.servlet.event.literal.WillPassivateLiteral;
  * @author Nicklas Karlsson
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
+@Requires("javax.servlet.Servlet")
 public class ServletEventBridgeListener extends AbstractServletEventBridge implements HttpSessionActivationListener,
         HttpSessionListener, ServletContextListener, ServletRequestListener {
     public void contextInitialized(final ServletContextEvent e) {

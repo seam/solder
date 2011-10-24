@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,91 +16,76 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
--->
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-annotationutilities">
-   <title>Annotation and AnnotatedType Utilities</title>
-
-   <para>
-      Seam Solder provides a number of utilility classes that make working with annotations and
+  <title>Annotation and AnnotatedType Utilities</title>
+  <para>
+      Solder provides a number of utility classes that make working with annotations and
       <code>AnnotatedType</code>s easier. This chapter walks you through each utility, and gives you some ideas about
       how to use it. For more detail, take a look at the JavaDoc on each class.
    </para>
-
-   <section>
-      <title>Annotated Type Builder</title>
-
-      <para>
-         Seam Solder provides an <code>AnnotatedType</code> implementation that should be suitable for the needs of most
+  <section>
+    <title>Annotated Type Builder</title>
+    <para>
+         Solder provides an <code>AnnotatedType</code> implementation that should be suitable for the needs of most
          portable extensions. The <code>AnnotatedType</code> is created from <code>AnnotatedTypeBuilder</code>,
-         typically in an extension's observer method, as follows:
+         typically in an extension&apos;s observer method, as follows:
       </para>
-
-      <programlisting role="JAVA" ><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
+    <programlisting role="JAVA"><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
         .readFromType(type, true) /* readFromType can read from an AnnotatedType or a class */
-        .addToClass(ModelLiteral.INSTANCE); /* add the @Model annotation */]]></programlisting>
-
-      <para>
+        .addToClass(ModelLiteral.INSTANCE); /* add the @Model annotation */
+        .create()]]></programlisting>
+    <para>
          Here we create a new builder, and initialize it using an existing <code>AnnotatedType</code>. We can then
          add or remove annotations from the class, and its members. When we have finished modifying the type, we call
          <code>create()</code> to spit out a new, immutable, <code>AnnotatedType</code>.
       </para>
-
-      <programlisting role="JAVA"><![CDATA[AnnotatedType redefinedType = builder.create();]]></programlisting>
-
-      <para>
+    <programlisting role="JAVA"><![CDATA[AnnotatedType redefinedType = builder.create();]]></programlisting>
+    <para>
          One place this is immensely useful is for replacing the <code>AnnotatedType</code> in an extension that
          observes the <code>ProcessAnnotatedType</code> event:
       </para>
-
-      <programlisting role="JAVA" ><![CDATA[public <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> evt) {
+    <programlisting role="JAVA"><![CDATA[public <X> void processAnnotatedType(@Observes ProcessAnnotatedType<X> evt) {
     AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
             .readFromType(evt.getAnnotatedType(), true)
             .addToClass(ModelLiteral.INSTANCE);
     evt.setAnnotatedType(builder.create());
 }]]></programlisting>
-
-      <para>
+    <para>
         This type is now effectively annotated with <code>@Model</code>, even if the annotation is not present on the
         class definition in the Java source file.
       </para>
-
-      <para>
-        <code>AnnotatedTypeBuilder</code> also allows you to specify a "redefinition", which can be applied to the type,
+    <para>
+        <code>AnnotatedTypeBuilder</code> also allows you to specify a &quot;redefinition&quot;, which can be applied to the type,
         a type of member, or all members. The redefiner will receive a callback for any annotations present which match
         the annotation type for which the redefinition is applied.
       </para>
-      
-      <para>
+    <para>
         For example, to remove the qualifier <code>@Unique</code> from the type and any of its members, use this:
       </para>
-
-      <programlisting role="JAVA" ><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
+    <programlisting role="JAVA"><![CDATA[AnnotatedTypeBuilder builder = new AnnotatedTypeBuilder()
         .readFromType(type, true)
         .redefine(Unique.class, new AnnotationRedefiner<Unique>() {
 
-            public void redefine(RedefinitionContext<A> ctx) {
+            public void redefine(RedefinitionContext<Unqiue> ctx) {
                 ctx.getAnnotationBuilder().remove(Unique.class);
-            }
-
+            } 
         });
 AnnotatedType redefinedType = builder.create();]]></programlisting>
-
-      <para>
-         No doubt, this is a key blade in Solder's army knife arsenal of tools. You can quite effectively change the
+    <para>
+         No doubt, this is a key blade in Solder&apos;s army knife arsenal of tools. You can quite effectively change the
          picture of the type metadata CDI discovers when it scans and processes the classpath of a bean archive.
       </para>
-   </section>
-   <section>
-      <title>Annotation Instance Provider</title>
-      <para>
+  </section>
+  <section>
+    <title>Annotation Instance Provider</title>
+    <para>
          Sometimes you may need an annotation instance for an annotation whose type is not known at development time.
-         Seam Solder provides a <code>AnnotationInstanceProvider</code> class that can create an
+         Solder provides a <code>AnnotationInstanceProvider</code> class that can create an
          <code>AnnotationLiteral</code> instance for any annotation at runtime. Annotation attributes
          are passed in via a <code>Map&lt;String,Object&gt;</code>. For example given the follow annotation:
       </para>
-      <programlisting role="JAVA"><![CDATA[@Retention(RetentionPolicy.RUNTIME)
+    <programlisting role="JAVA"><![CDATA[@Retention(RetentionPolicy.RUNTIME)
 public @interface MultipleMembers {
     int intMember();
 
@@ -120,12 +105,10 @@ public @interface MultipleMembers {
 
     int[] intArrayMember();
 }]]></programlisting>
-
-      <para>
+    <para>
          We can create an annotation instance as follows:
       </para>
-
-      <programlisting role="JAVA"><![CDATA[/* Create a new provider */
+    <programlisting role="JAVA"><![CDATA[/* Create a new provider */
 AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
 
 /* Set the value for each of attributes */
@@ -142,28 +125,24 @@ values.put("intArrayMember", new int[] { 0, 1 });
 
 /* Generate the instance */
 MultipleMembers an = provider.get(MultipleMembers.class, values);]]></programlisting>
-   </section>
-
-   <section>
-      <title>Annotation Inspector</title>
-
-      <para>
+  </section>
+  <section>
+    <title>Annotation Inspector</title>
+    <para>
          The Annotation Inspector allows you to easily discover annotations which are meta-annotated. For example:
       </para>
-
-      <programlisting role="JAVA"><![CDATA[/* Discover all annotations on type which are meta-annotated @Constraint */
-Set<Annotation> constraints = AnnotationInspector.getAnnotations(type, Constraint.class, beanManager);
+    <programlisting role="JAVA"><![CDATA[/* Discover all annotations on type which are meta-annotated @Constraint */
+Set<Annotation> constraints = AnnotationInspector.getAnnotations(type, Constraint.class);
 
 /* Load the annotation instance for @FacesValidator the annotation may declared on the type, */
 /* or, if the type has any stereotypes, on the stereotypes */
 FacesValidator validator = AnnotationInspector.getAnnotation(
         type, FacesValidator.class, true, beanManager);]]></programlisting>
-      <para>
-         The utility methods work correctly on <code>Stereotype</code>s as well.  Let's say you're working with a bean
+    <para>
+         The utility methods work correctly on <code>Stereotype</code>s as well.  Let&apos;s say you&apos;re working with a bean
          that was decorated <code>@Model</code>, running the following example will still show you the underlying <code>@Named</code>
       </para>
-
-      <programlisting role="JAVA"><![CDATA[// assuming you have a class..
+    <programlisting role="JAVA"><![CDATA[// assuming you have a class..
 @Model
 public class User {
     ...
@@ -174,39 +153,33 @@ assert AnnotationInspector.isAnnotationPresent(type, Named.class, beanManager);
 
 // Retrieves the underlying @Named instance on the stereotype
 Named name = AnnotationInspector.getAnnotation(type, Named.class, true, beanManager);]]></programlisting>
-      <para>
+    <para>
          The search algorithm will first check to see if the annotation is present
          directly on the annotated element first, then searches within the stereotype
          annotations on the element.  If you only want to search for <code>Annotation</code>s on
          <code>Stereotype</code>s, then you can use either of the methods
          <code>AnnotationInspector.getAnnotationFromStereotype</code>.
       </para>
-
-      <para>
+    <para>
          There is an overloaded form of <code>isAnnotationPresent</code> and <code>getAnnotation</code> to control
          whether it will search on <code>Stereotype</code>s or not.
          For both of these methods, a search is performed first directly on the element before searching in stereotypes.
       </para>
-
-   </section>
-
-   <section>
-      <title>Synthetic Qualifiers</title>
-
-      <para>
+  </section>
+  <section>
+    <title>Synthetic Qualifiers</title>
+    <para>
          When developing an extension to CDI, it can be useful to detect certain injection points, or bean definitions
          and based on annotations or other metadata, add qualifiers to further disambiguate the injection point or bean
-         definition for the CDI bean resolver. Solder's synthetic qualifers can be used to easily generate and
-         track such qualifers.
+         definition for the CDI bean resolver. Solder&apos;s synthetic qualifiers can be used to easily generate and
+         track such qualifiers.
       </para>
-
-      <para>
+    <para>
          In this example, we will create a synthetic qualifier provider, and use it to create a qualifier. The provider
          will track the qualifier, and if a qualifier is requested again for the same original annotation, the same
          instance will be returned.
       </para>
-
-      <programlisting role="JAVA"><![CDATA[/* Create a provider, giving it a unique namespace */
+    <programlisting role="JAVA"><![CDATA[/* Create a provider, giving it a unique namespace */
 Synthetic.Provider provider = new Synthetic.Provider("com.acme");
 
 /* Get the a synthetic qualifier for the original annotation instance */
@@ -216,32 +189,24 @@ Synthetic synthetic = provider.get(originalAnnotation);
 /* Alternatively, we can "get and forget" */
 
 Synthetic synthetic2 = provider.get();]]></programlisting>
-
-   </section>
-
-   <section>
-      <title>Reflection Utilities</title>
-
-      <para>
-         Seam Solder comes with a number miscellaneous reflection utilities; these extend JDK reflection, and some
-         also work on CDI's Annotated metadata. See the javadoc on <code>Reflections</code> for more.
+  </section>
+  <section>
+    <title>Reflection Utilities</title>
+    <para>
+         Solder comes with a number miscellaneous reflection utilities; these extend JDK reflection, and some
+         also work on CDI&apos;s Annotated metadata. See the javadoc on <code>Reflections</code> for more.
       </para>
-
-      <para>
+    <para>
          Solder also includes a simple utility, <code>PrimitiveTypes</code> for converting between primitive and their
          respective wrapper types, which may be useful when performing data type conversion. Sadly, this is
          functionality which is missing from the JDK.
       </para>
-
-      <para>
+    <para>
          <code>InjectableMethod</code> allows an <code>AnnotatedMethod</code> to be injected with parameter values
          obtained by following the CDI type safe resolution rules, as well as allowing the default parameter values to
          be overridden.
       </para>
-
-   </section>
-
+  </section>
 <!--
 vim:et:ts=3:sw=3:tw=120
--->
-</chapter>
+--></chapter>

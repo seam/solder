@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   JBoss, Home of Professional Open Source
   Copyright 2010, Red Hat Middleware LLC, and individual contributors
@@ -16,367 +16,314 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
--->
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
+--><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-logging">
-   <title>Logging, redesigned</title>
-
-   <para>
-      Seam Solder brings a fresh perspective to the ancient art of logging. Rather than just giving you an injectable
+  <title>Logging, redesigned</title>
+  <para>
+      Solder brings a fresh perspective to the ancient art of logging. Rather than just giving you an injectable
       version of the same old logging APIs, Solder goes the extra mile by embracing the type-safety of CDI and
       eliminating brittle, boilerplate logging statements. The best part is, no matter how you decide to roll it out,
       you still get to keep your logging engine of choice (for the logging wars will never end!).
    </para>
-
-   <section id="jbosslogging">
-      <title>JBoss Logging: The foundation</title>
-
-      <para>
+  <section id="jbosslogging">
+    <title>JBoss Logging: The foundation</title>
+    <para>
          Before talking about Solder Logging, you need to first be introduced to JBoss Logging 3. The reason is, JBoss
-         Logging provides the foundation on which Solder's declarative programming model for logging is built. Plus,
-         we have to convince you that you <emphasis>aren't</emphasis> tied to JBoss AS by using it.
+         Logging provides the foundation on which Solder&apos;s declarative programming model for logging is built. Plus,
+         we have to convince you that you <emphasis>aren&apos;t</emphasis> tied to JBoss AS by using it.
       </para>
-
-      <para>
-         JBoss Logging acts as a logging bridge. If you don't add any other logging libraries to your project, it will
+    <para>
+         JBoss Logging acts as a logging bridge. If you don&apos;t add any other logging libraries to your project, it will
          delegate all logging calls it handles to the logging facility built into the Java platform (commonly referred
-         to as JDK logging). That's nice, because it means your deployment headaches caused by missing logging jars are
-         gone. And you accomplish it all through the use of the <ulink
-         url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/logging/Logger.html">Logger</ulink> type. It has
+         to as JDK logging). That&apos;s nice, because it means your deployment headaches caused by missing logging jars are
+         gone. And you accomplish it all through the use of the <ulink url="http://docs.jboss.org/seam/3/solder/latest/api/org/jboss/logging/Logger.html">Logger</ulink> type. It has
          the usual level-based log methods and complimentary ones that provide formatting.
       </para>
-
-      <para>
-         Here's an example of how you obtain a logger and log a basic message:
+    <para>
+         Here&apos;s an example of how you obtain a logger and log a basic message:
       </para>
-
-      <programlisting role="JAVA"><![CDATA[Logger log = Logger.getLogger(Bean.class);
+    <programlisting role="JAVA"><![CDATA[Logger log = Logger.getLogger(Bean.class);
 // log a plain text method
 log.debug("I'm using JBoss Logging.");]]></programlisting>
-
-      <para>
+    <para>
          If you want to use another logging engine, such as SLF4J or Log4J, you just have to add the native library to
          the deployment. Keep in mind, though, if your application server provides one of these frameworks, it will get
-         choosen instead. On JBoss AS, JBoss Logging will prefer the JBoss LogManager because it's the built-in logging
+         chosen instead. On JBoss AS, JBoss Logging will prefer the JBoss LogManager because it&apos;s the built-in logging
          engine. (We are looking into more sophisticated runtime selection of the logging engine).
       </para>
-
-      <para>
+    <para>
          Here are the providers JBoss Logging supports (and the order in which it looks for them):
       </para>
-
-      <itemizedlist>
-         <listitem>JBoss LogManager</listitem>
-         <listitem>Log4J</listitem>
-         <listitem>SLF4J</listitem>
-         <listitem>JDK logging</listitem>
-      </itemizedlist>
-
-      <para>
-         So you get that JBoss Logging is an abtraction. What else is it good for?
+    <itemizedlist>
+      <listitem>
+        <para>JBoss LogManager</para>
+      </listitem>
+      <listitem>
+        <para>Log4J</para>
+      </listitem>
+      <listitem>
+        <para>SLF4J</para>
+      </listitem>
+      <listitem>
+        <para>JDK logging</para>
+      </listitem>
+    </itemizedlist>
+    <para>
+         So you get that JBoss Logging is an abstraction. What else is it good for?
       </para>
-
-      <para>
+    <para>
          JBoss Logging has a facility for formatting log messages, using either the printf syntax or
          <literal>MessageFormat</literal>. This makes it possible to use positional parameters to build dynamic log
          messages based on contextual information.
       </para>
-
-      <programlisting role="JAVA"><![CDATA[Logger log = Logger.getLogger(Bean.class);
+    <programlisting role="JAVA"><![CDATA[Logger log = Logger.getLogger(Bean.class);
 // log a message formatted using printf-style substitutions
 log.infof("My name is %s.", "David");
 // log a message formatted using MessageFormat-style substitutions
-log.errorv("The license for Seam is the {0}", "APL");]]></programlisting>
-
-      <para>
+log.errorv("The license for Solder is the {0}", "APL");]]></programlisting>
+    <para>
          The most significant and distinguishing feature of JBoss Logging is support for typed loggers. A typed logger
          is an interface that defines methods which serve as logging operations. When a method is invoked on one of
          these interfaces, the message defined in an annotation on the method is interpolated and written to the
          underlying logging engine.
       </para>
-
-      <para>Here's an example of a typed logger:</para>
-
-      <programlisting role="JAVA">import org.jboss.logging.Message;
+    <para>Here&apos;s an example of a typed logger:</para>
+    <programlisting role="JAVA">import org.jboss.logging.Message;
 import org.jboss.logging.LogMessage;
 import org.jboss.logging.MessageLogger;
 
 @MessageLogger
 public interface CelebritySightingLog {
 
-    @LogMessage @Message("Spotted celebrity %s!")
+    @LogMessage @Message(&quot;Spotted celebrity %s!&quot;)
     void spottedCelebrity(String name);
 
 }</programlisting>
-
-      <para>
-         JBoss Logging has is parallel support for typed message bundles, whose methods return a formatted message
-         rather than log it. Combined, these features form the centerpiece of Solder's logging and message bundle
+    <para>
+         JBoss Logging has parallel support for typed message bundles, whose methods return a formatted message
+         rather than log it. Combined, these features form the centerpiece of Solder&apos;s logging and message bundle
          programming model (and a foundation for additional support provided by the Seam international module). After
-         looking at the samples provided so far, don't pull out your IDE just yet. We'll get into the details of typed
+         looking at the samples provided so far, don&apos;t pull out your IDE just yet. We&apos;ll get into the details of typed
          loggers and how to use them in Solder in a later section.
       </para>
-
-      <para>
+    <para>
          There you have it! JBoss Logging is a low-level API that provides logging abstraction, message formatting and
-         internationalization, and typed loggers. <emphasis>But it doesn't tie you to JBoss AS!</emphasis>
+         internationalization, and typed loggers. <emphasis>But it doesn&apos;t tie you to JBoss AS!</emphasis>
       </para>
-
-      <para>
-         With that understanding, we'll now move on to what Solder does to turn this foundation into a programming model
+    <para>
+         With that understanding, we&apos;ll now move on to what Solder does to turn this foundation into a programming model
          and how to use it in your CDI-based application.
       </para>
-
-   </section>
-
-   <section id="features">
-      <title>Solder Logging: Feature set</title>
-
-      <para>
+  </section>
+  <section id="features">
+    <title>Solder Logging: Feature set</title>
+    <para>
          Solder builds on JBoss Logging 3 to provide the following feature set:
       </para>
-
-      <itemizedlist>
-         <listitem>
-            An abstraction over common logging backends and frameworks (such as JDK Logging, log4j and slf4j)
-         </listitem>
-         <listitem>
-            Injectable loggers and message bundles
-         </listitem>
-         <listitem>
-            Innovative, typed message loggers and message bundles defined using interfaces
-         </listitem>
-         <listitem>
-            Build time tooling to generate typed loggers for production<!--, and runtime generation of typed loggers for
-            development-->
-         </listitem>
-         <listitem>
-            Full support for internationalization and localization:
-            <itemizedlist>
-              <listitem>
-                  Developers work with interfaces and annotations only
-               </listitem>
-               <listitem>
-                  Translators work with message bundles in properties files
-               </listitem>
-            </itemizedlist>
-         </listitem>
-         <listitem>
-            Access to the "Mapped Diagonostic Context" (MDC) and/or the "Nested Diagonostic Context" (NDC) (if the underlying logger supports it)
-         </listitem>
-         <listitem>
-            Serializable loggers for use in contextual components
-         </listitem>
-      </itemizedlist>
-
-      <note>
-         <para>
-            Seam's international module builds on this programming model to provide even more features for producing
+    <itemizedlist>
+      <listitem>
+        <para>An abstraction over common logging backends and frameworks (such as JDK Logging, log4j and slf4j)</para>
+      </listitem>
+      <listitem>
+        <para>Injectable loggers and message bundles</para>
+      </listitem>
+      <listitem>
+        <para>Innovative, typed message loggers and message bundles defined using interfaces</para>
+      </listitem>
+      <listitem>
+        <para>
+               Build time tooling to generate typed loggers for production<!--, and runtime generation of typed loggers for
+               development-->
+            </para>
+      </listitem>
+      <listitem>
+        <para>
+               Full support for internationalization and localization:
+               <itemizedlist>
+            <listitem>
+              <para>Developers work with interfaces and annotations only</para>
+            </listitem>
+            <listitem>
+              <para>Translators work with message bundles in properties files</para>
+            </listitem>
+          </itemizedlist>
+            </para>
+      </listitem>
+      <listitem>
+        <para>Access to the &quot;Mapped Diagnostic Context&quot; (MDC) and/or the &quot;Nested Diagnostic Context&quot; (NDC) (if the underlying logger supports it)</para>
+      </listitem>
+      <listitem>
+        <para>Serializable loggers for use in contextual components</para>
+      </listitem>
+    </itemizedlist>
+    <note>
+      <para>
+            Seam&apos;s international module builds on this programming model to provide even more features for producing
             localized message strings.
          </para>
-      </note>
-
-      <para>
-         Without further discussion, let's get into it.
+    </note>
+    <para>
+         Without further discussion, let&apos;s get into it.
       </para>
-   </section>
-
-   <section id="typed-loggers">
-      <title>Typed loggers</title>
-      <para>
+  </section>
+  <section id="typed-loggers">
+    <title>Typed loggers</title>
+    <para>
          To define a typed logger, first create an interface, annotated it, then add methods that will act as log
          operations and configure the message it will print using another annotation:
       </para>
-
-      <programlisting role="JAVA">import org.jboss.seam.solder.messages.Message;
-import org.jboss.seam.solder.logging.Log;
-import org.jboss.seam.solder.logging.MessageLogger;
+    <programlisting role="JAVA">import org.jboss.solder.messages.Message;
+import org.jboss.solder.logging.Log;
+import org.jboss.solder.logging.MessageLogger;
 
 @MessageLogger
 public interface TrainSpotterLog {
 
-    @Log @Message("Spotted %s diesel trains")
+    @Log @Message(&quot;Spotted %s diesel trains&quot;)
     void dieselTrainsSpotted(int number);
 
 }</programlisting>
-
-      <para>
+    <para>
          We have configured the log messages to use printf-style interpolations of parameters (%s).
       </para>
-
-      <note>
-         <para>
-            Make sure you are using the annotations from Seam Solder (<literal>org.jboss.seam.solder.messages</literal>
-            and <literal>org.jboss.seam.solder.logging</literal> packages only).
-         </para>
-      </note>
-
+    <note>
       <para>
+            Make sure you are using the annotations from Solder (<literal>org.jboss.solder.messages</literal>
+            and <literal>org.jboss.solder.logging</literal> packages only).
+         </para>
+    </note>
+    <para>
          You can then inject the typed logger with no further configuration necessary. We use another optional
-         annotation to set the category of the logger to "trains" at the injection point, overriding the default
+         annotation to set the category of the logger to &quot;trains&quot; at the injection point, overriding the default
          category of the fully-qualified class name of the component receiving the injection:
       </para>
-
-      <programlisting role="JAVA">    @Inject @Category("trains")
+    <programlisting role="JAVA">    @Inject @Category(&quot;trains&quot;)
     private TrainSpotterLog log;</programlisting>
-
-      <para>
+    <para>
          We log a message by simply invoking a method of the typed logger interface:
       </para>
-
-      <programlisting role="JAVA">   log.dieselTrainsSpotted(7);</programlisting>
-
-      <para>
+    <programlisting role="JAVA">   log.dieselTrainsSpotted(7);</programlisting>
+    <para>
          The default locale will be used unless overridden. Here we configure the logger to use the UK locale:
       </para>
-
-      <programlisting role="JAVA">    @Inject @Category("trains") @Locale("en_GB")
+    <programlisting role="JAVA">    @Inject @Category(&quot;trains&quot;) @Locale(&quot;en_GB&quot;)
     private TrainSpotterLog log;</programlisting>
-
-      <para>
+    <para>
          You can also log exceptions.
       </para>
-
-      <programlisting role="JAVA">import org.jboss.seam.solder.messages.Message;
-import org.jboss.seam.solder.messages.Cause;
-import org.jboss.seam.solder.logging.Log;
-import org.jboss.seam.solder.logging.MessageLogger;
+    <programlisting role="JAVA">import org.jboss.solder.messages.Message;
+import org.jboss.solder.messages.Cause;
+import org.jboss.solder.logging.Log;
+import org.jboss.solder.logging.MessageLogger;
 
 @MessageLogger
 public interface TrainSpotterLog {
 
-    @Log @Message("Failed to spot train %s")
+    @Log @Message(&quot;Failed to spot train %s&quot;)
     void missedTrain(String trainNumber, @Cause Exception exception);
 
 }</programlisting>
-
-      <para>
+    <para>
          You can then log a message with an exception as follows:
       </para>
-
-      <programlisting role="JAVA">try {
+    <programlisting role="JAVA">try {
     ...
 } catch (Exception e) {
-    log.missedTrain("RH1", e);
+    log.missedTrain(&quot;RH1&quot;, e);
 }</programlisting>
-
-      <para>
+    <para>
          The stacktrace of the exception parameter will be written to the log along with the message.
       </para>
-
-      <para>
+    <para>
          Typed loggers also provide internationalization support. Simply add the <literal>@MessageBundle</literal> annotation to the logger
          interface.
       </para>
-
-      <para>
-         If injecting a typed logger seems to "enterprisy" to you, or you need to get a reference to it from outside of
+    <para>
+         If injecting a typed logger seems too &quot;enterprisy&quot; to you, or you need to get a reference to it from outside of
          CDI, you can use a static accessor method on <literal>Logger</literal>:
       </para>
-
-      <programlisting role="JAVA">TrainSpotterLog log = Logger.getMessageLogger(TrainSpotterLog.class, "trains");
+    <programlisting role="JAVA">TrainSpotterLog log = Logger.getMessageLogger(TrainSpotterLog.class, &quot;trains&quot;);
 log.dieselTrainsSpotted(7);</programlisting>
-
-      <para>
+    <para>
          The injected version is a convenience for those who prefer the declarative style of programming. If you are
          looking for a simpler starting point, you can simply use the <literal>Logger</literal> directly.
       </para>
-   </section>
-   <section id="native-logger">
-      <title>Native logger API</title>
-
-      <para>
-         You can also inject a "plain old" Logger (from the JBoss Logging API):
+  </section>
+  <section id="native-logger">
+    <title>Native logger API</title>
+    <para>
+         You can also inject a &quot;plain old&quot; Logger (from the JBoss Logging API):
       </para>
+    <programlisting role="JAVA">import javax.inject.Inject;
 
-      <programlisting role="JAVA">import javax.inject.Inject;
-
-import org.jboss.logging.Logger;
+import org.jboss.solder.logging.Logger;
 
 public class LogService {
     @Inject
     private Logger log;
 
     public void logMessage() {
-        log.info("Hey sysadmins!");
+        log.info(&quot;Hey sysadmins!&quot;);
     }
 }</programlisting>
-
-      <para>
+    <para>
          Log messages created from this Logger will have a category (logger name) equal to the fully-qualified class name
          of the bean implementation class. You can specify a category explicitly using an annotation.
       </para>
-
-      <programlisting role="JAVA">    @Inject @Category("billing")
+    <programlisting role="JAVA">    @Inject @Category(&quot;billing&quot;)
     private Logger log;</programlisting>
-
-      <para>
+    <para>
          You can also specify a category using a reference to a type:
       </para>
-
-      <programlisting role="JAVA">    @Inject @TypedCategory(BillingService.class)
+    <programlisting role="JAVA">    @Inject @TypedCategory(BillingService.class)
     private Logger log;</programlisting>
-
-   </section>
-
-   <section id="typed-message-bundles">
-      <title>Typed message bundles</title>
-
-      <para>
+  </section>
+  <section id="typed-message-bundles">
+    <title>Typed message bundles</title>
+    <para>
          Often times you need to access a localized message. For example, you need to localize an exception message.
-         Seam Solder let's you retrieve this message from a typed message logger to avoid having to use hard-coded
+         Solder let&apos;s you retrieve this message from a typed message logger to avoid having to use hard-coded
          string messages.
       </para>
-      <para>
+    <para>
          To define a typed message bundle, first create an interface, annotated it, then add methods that will act as
          message retrievers and configure the message to produce using another annotation:
       </para>
-
-      <programlisting role="JAVA">import org.jboss.seam.solder.messages.Message;
-import org.jboss.seam.solder.messages.MessageBundle;
+    <programlisting role="JAVA">import org.jboss.solder.messages.Message;
+import org.jboss.solder.messages.MessageBundle;
 
 @MessageBundle
 public interface TrainMessages {
 
-    @Message("No trains spotted due to %s")
+    @Message(&quot;No trains spotted due to %s&quot;)
     String noTrainsSpotted(String cause);
 
 }</programlisting>
-
-      <para>
+    <para>
          Inject it:
       </para>
-
-      <programlisting role="JAVA">    @Inject @MessageBundle
+    <programlisting role="JAVA">    @Inject @MessageBundle
     private TrainMessages messages;</programlisting>
-
-      <para>
+    <para>
          And use it:
       </para>
-
-      <programlisting role="JAVA">   throw new BadDayException(messages.noTrainsSpotted("leaves on the line"));</programlisting>
-   </section>
-
-   <section id="implementation-classes">
-      <title>Implementation classes</title>
-
-      <para>
-         You may have noticed that throughout this chapter, we've only defined interfaces. Yet, we are injecting and
-         invoking them as though they are concrete classes. So where's the implementation?
+    <programlisting role="JAVA">   throw new BadDayException(messages.noTrainsSpotted(&quot;leaves on the line&quot;));</programlisting>
+  </section>
+  <section id="implementation-classes">
+    <title>Implementation classes</title>
+    <para>
+         You may have noticed that throughout this chapter, we&apos;ve only defined interfaces. Yet, we are injecting and
+         invoking them as though they are concrete classes. So where&apos;s the implementation?
       </para>
-
-      <para>
-         Good news. The typed logger and message bundle implementations are generated automatically! You'll see this
-         strategy used often in Seam 3. It's declarative programming at its finest (or to an extreme, depending on how
+    <para>
+         Good news. The typed logger and message bundle implementations are generated automatically! You&apos;ll see this
+         strategy used often in Seam 3. It&apos;s declarative programming at its finest (or to an extreme, depending on how
          you look at it). Either way, it saves you from a whole bunch of typing.
       </para>
-
-      <para>
-         So <emphasis>how</emphasis> are they generated? Let's find out!
+    <para>
+         So <emphasis>how</emphasis> are they generated? Let&apos;s find out!
       </para>
-
-      <!--
+<!--
       <section id="generating-proxies">
          <title>Enabling generated proxies</title>
 
@@ -407,52 +354,46 @@ public interface TrainMessages {
          </para>
 
       </section>
-      -->
-
-      <section id="generating-classes">
-         <title>Generating the implementation classes</title>
-
-         <para>
-            The first time you need logging in your application, you'll likely start with the more casual approach of
-            using the <literal>Logger</literal> API directly. There's no harm in that, but it's certainly cleaner to use
+      -->    <section id="generating-classes">
+      <title>Generating the implementation classes</title>
+      <para>
+            The first time you need logging in your application, you&apos;ll likely start with the more casual approach of
+            using the <literal>Logger</literal> API directly. There&apos;s no harm in that, but it&apos;s certainly cleaner to use
             the typed loggers, and at the same time leverage the parallel benefits of the typed bundles. So we recommend
             that as your long term strategy.
          </para>
-
-         <para>
-            Once you are ready to move to the the typed loggers and message bundles, you'll need to generate the
+      <para>
+            Once you are ready to move to the the typed loggers and message bundles, you&apos;ll need to generate the
             concrete implementation classes as part of the build. These classes are generated by using an
-            <emphasis>annotation processor</emphasis> that is provided by Solder and based on the <ulink
-            url="https://github.com/jamezp/jboss-logging-tools">JBoss Logging tools project</ulink>. Don't worry,
+            <emphasis>annotation processor</emphasis> that is provided by Solder and based on the <ulink url="https://github.com/jamezp/jboss-logging-tools">JBoss Logging tools project</ulink>. Don&apos;t worry,
             setting it up is a lot simpler than it sounds. You just need to do these two simple steps:
          </para>
-
-         <itemizedlist>
-            <listitem>Set the Java compliance to 1.6 (or better)</listitem>
-            <listitem>Add the Solder tooling library to the build classpath</listitem>
-         </itemizedlist>
-
-         <warning>
-            <para>
-               If you forget to add the annotation processor to your build, you'll get an error when you deploy the
-               application that reports: "Invalid bundle interface (implementation not found)". This error occurs
+      <itemizedlist>
+        <listitem>
+          <para>Set the Java compliance to 1.6 (or better)</para>
+        </listitem>
+        <listitem>
+          <para>Add the Solder tooling library to the build classpath</para>
+        </listitem>
+      </itemizedlist>
+      <warning>
+        <para>
+               If you forget to add the annotation processor to your build, you&apos;ll get an error when you deploy the
+               application that reports: &quot;Invalid bundle interface (implementation not found)&quot;. This error occurs
                because the concrete implementation classes are missing.
             </para>
-         </warning>
-
-         <para>
+      </warning>
+      <para>
             Setting the Java compliance to 1.6 enables any annotation processors on the classpath to be activated during compilation.
          </para>
-
-         <para>
-            If you're using Maven, here's how the configuration in your POM file looks:
+      <para>
+            If you&apos;re using Maven, here&apos;s how the configuration in your POM file looks:
          </para>
-
-         <programlisting role="XML"><![CDATA[<dependencies>
+      <programlisting role="XML"><![CDATA[<dependencies>
     <!-- Annotation processor for generating typed logger and message bundle classes -->
     <dependency>
-        <groupId>org.jboss.seam.solder</groupId>
-        <artifactId>seam-solder-tooling</artifactId>
+        <groupId>org.jboss.solder</groupId>
+        <artifactId>solder-tooling</artifactId>
         <scope>provided</scope>
         <optional>true</optional>
     </dependency>
@@ -470,58 +411,56 @@ public interface TrainMessages {
         </plugin>
     </plugins>
 </build>]]></programlisting>
-         <note>
-            <para>
+      <note>
+        <para>
                In the future, you can expect IDE plugins like JBoss Tools to setup this configuration automatically.
             </para>
-         </note>
-         <para>
+      </note>
+      <para>
             Here are the classes that will be generated for the examples above:
          </para>
-         <programlisting>TrainSpotterLog_$logger.java
+      <programlisting>TrainSpotterLog_$logger.java
 TrainSpotterLog_$logger_en_GB.java
 TrainMessages_$bundle.java</programlisting>
-         <para>
+      <para>
             Classes are generated for each language referenced by an annotation or if there is a .i18n.properties language
             file in the same package as the interface and has the same root name. For instance, if we wanted to generate
             a French version of <literal>TrainMessages</literal>, we would have to create the following properties file
             in the same package as the interface:
          </para>
-         <programlisting>TrainMessages_fr.i18n.properties</programlisting>
-         <para>
+      <programlisting>TrainMessages.i18n_fr.properties</programlisting>
+      <para>
             Then populate it with the translations (Note the property key is the method name):
          </para>
-         <programlisting>noTrainsSpotted=pas de trains repéré en raison de %s</programlisting>
-         <para>
+      <programlisting>noTrainsSpotted=pas de trains repéré en raison de %s</programlisting>
+      <para>
             Now the annotation processor will generate the following class:
          </para>
-         <programlisting>TrainMessages_$bundle_fr.java</programlisting>
-         <para>
-            Now you can add typed loggers and message bundles at will (and you won't have to worry about unsatisified
+      <programlisting>TrainMessages_$bundle_fr.java</programlisting>
+      <para>
+            Now you can add typed loggers and message bundles at will (and you won&apos;t have to worry about unsatisfied
             dependencies).
          </para>
-      </section>
-      <section>
-         <title>Including the implementation classes in Arquillian tests</title>
-         <para>
+    </section>
+    <section>
+      <title>Including the implementation classes in Arquillian tests</title>
+      <para>
             If you are writing an Arquillian test, be sure to include the concrete classes in the ShrinkWrap archive.
-            Otherwise, you may can an exception like:
+            Otherwise, you may receive an exception like:
          </para>
-         <programlisting>Invalid bundle interface org.example.log.AppLog (implementation not found)</programlisting>
-         <para>
+      <programlisting>Invalid bundle interface org.example.log.AppLog (implementation not found)</programlisting>
+      <para>
             The best approach is to put your typed message loggers and bundles in their own package. Then, you include
             the package in the ShrinkWrap archive:
          </para>
-         <programlisting>ShrinkWrap.create(JavaArchive.class, "test.jar")
+      <programlisting>ShrinkWrap.create(JavaArchive.class, &quot;test.jar&quot;)
         .addPackage(AppLog.class.getPackage());</programlisting>
-         <para>
+      <para>
             This strategy will effectively package the interface and the generated implementation class(es) (even though
-            you can't see the generated implementation classes in your source tree).
+            you can&apos;t see the generated implementation classes in your source tree).
          </para>
-
-      </section>
-   </section>
+    </section>
+  </section>
 <!--
 vim:et:ts=3:sw=3:tw=120
--->
-</chapter>
+--></chapter>

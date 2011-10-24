@@ -41,9 +41,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Arquillian.class)
 @HandlesExceptions
 public class EventTest {
-    @Deployment
+    @Deployment(name = "EventTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("eventTest.jar")
+        return BaseWebArchive.createBase("eventTest")
                 .addClasses(EventTest.class, EventQualifier.class, EventQualifierLiteral.class);
     }
 

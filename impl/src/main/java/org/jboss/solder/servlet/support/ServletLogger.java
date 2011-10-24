@@ -22,19 +22,21 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.jboss.solder.core.Requires;
 import org.jboss.solder.logging.Logger.Level;
 import org.jboss.solder.logging.Log;
 import org.jboss.solder.logging.MessageLogger;
 import org.jboss.solder.messages.Message;
 
 /**
- * Type-safe log messages for the Seam Servlet module
+ * Type-safe log messages for the Solder Servlet module
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
+@Requires("javax.servlet.Servlet")
 @MessageLogger
 public interface ServletLogger {
-    static String CATEGORY = "seam-servlet";
+    static String CATEGORY = "solder-servlet";
 
     @Log(level = Level.TRACE)
     @Message("Servlet context initialized: %s")

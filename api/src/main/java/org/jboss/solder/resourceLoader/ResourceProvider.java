@@ -136,7 +136,7 @@ public class ResourceProvider implements Serializable {
      * </p>
      * <p/>
      * <p>
-     * By default, Seam Solder will search:
+     * By default, Solder will search:
      * </p>
      * <p/>
      * <ul>
@@ -204,7 +204,7 @@ public class ResourceProvider implements Serializable {
      * </p>
      * <p/>
      * <p>
-     * By default, Seam Solder will search:
+     * By default, Solder will search:
      * </p>
      * <p/>
      * <ul>
@@ -269,7 +269,7 @@ public class ResourceProvider implements Serializable {
      * </p>
      * <p/>
      * <p>
-     * By default, Seam Solder will search:
+     * By default, Solder will search:
      * </p>
      * <p/>
      * <ul>

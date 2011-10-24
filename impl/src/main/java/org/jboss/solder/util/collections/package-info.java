@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 /**
- * A collection of collection related utilities for Seam Solder
+ * A collection of collection related utilities for Solder
  */
 package org.jboss.solder.util.collections;
 

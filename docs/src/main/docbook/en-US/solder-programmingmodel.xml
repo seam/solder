@@ -23,7 +23,7 @@
    <title>Enhancements to the CDI Programming Model</title>
       
    <para>
-      Seam Solder provides a number enhancements to the CDI programming model which are under trial and may be
+      Solder provides a number enhancements to the CDI programming model which are under trial and may be
       included in later releases of <emphasis>Contexts and Dependency Injection</emphasis>.
    </para>
    
@@ -40,13 +40,13 @@
       
          <itemizedlist>
             <listitem>
-               the managed bean, decorator, interceptor or session bean defined by the type
+               <para>the managed bean, decorator, interceptor or session bean defined by the type</para>
             </listitem>
             <listitem>
-               any producer methods or producer fields defined on the type
+               <para>any producer methods or producer fields defined on the type</para>
             </listitem>
             <listitem>
-               any observer methods defined on the type
+               <para>any observer methods defined on the type</para>
             </listitem>
          </itemizedlist>
          
@@ -69,7 +69,7 @@ class Utilities {
 			<programlisting role="JAVA">@Veto
 package com.example;
 
-import org.jboss.seam.solder.core.Veto;</programlisting>
+import org.jboss.solder.core.Veto;</programlisting>
 		</example>
          
          <note>
@@ -90,13 +90,13 @@ import org.jboss.seam.solder.core.Veto;</programlisting>
          
          <itemizedlist>
             <listitem>
-               the managed bean, decorator, interceptor or session bean defined by the type
+               <para>the managed bean, decorator, interceptor or session bean defined by the type</para>
             </listitem>
             <listitem>
-               any producer methods or producer fields defined on the type
+              <para>any producer methods or producer fields defined on the type</para>
             </listitem>
             <listitem>
-               any observer methods defined on the type
+               <para>any observer methods defined on the type</para>
             </listitem>
          </itemizedlist>
          
@@ -129,7 +129,7 @@ class EntityManagerProducer {
          
          <note>
             <para>
-               The <code>ProcessAnnotatedType</code> container lifecycle event will be called for vetoed types.
+               The <code>ProcessAnnotatedType</code> container lifecycle event will be called for required types.
             </para>
          </note>
          
@@ -172,7 +172,7 @@ class EntityManagerProducer {
       
       <para>
          It is common to want to qualify a bean as belonging to the current client (for example we want to differentiate
-         the default system locale from the current client's locale). Seam Solder provides a built in qualifier,
+         the default system locale from the current client's locale). Solder provides a built in qualifier,
          <code>@Client</code> for this purpose.
       </para>
       
@@ -182,7 +182,7 @@ class EntityManagerProducer {
       <title>Named packages</title>
       
       <para>
-         Seam Solder allows you to annotate the package <code>@Named</code>, which causes every bean defined in the
+         Solder allows you to annotate the package <code>@Named</code>, which causes every bean defined in the
          package to be given its default name. Package annotations are defined in the file 
          <code>package-info.java</code>. For example, to cause any beans defined in <code>com.acme</code> to be given
          their default name:
@@ -198,14 +198,14 @@ package com.acme</programlisting>
       <para>
          According to the CDI standard, the <code>@Named</code> annotation assigns a name to a bean equal to the value
          specified in the <code>@Named</code> annotation or, if a value is not provided, the simple name of the bean class.
-         This behavior aligns is with the needs of most application developers. However, framework writers should avoid
+         This behavior aligns with the needs of most application developers. However, framework writers should avoid
          trampling on the "root" bean namespace. Instead, frameworks should specify qualified names for built-in components.
          The motivation is the same as qualifying Java types. The <code>@FullyQualified</code> provides this facility without
          sacrificing type-safety.
       </para>
       
       <para>
-         Seam Solder allows you to customize the bean name using the complementary <code>@FullyQualified</code>
+         Solder allows you to customize the bean name using the complementary <code>@FullyQualified</code>
          annotation. When the <code>@FullyQualified</code> annotation is added to a <code>@Named</code> bean type, producer
          method or producer field, the standard bean name is prefixed with the name of the Java package in which the bean
          resides, the segments separated by a period. The resulting fully-qualified bean name (FQBN) replaces the standard
@@ -216,7 +216,7 @@ package com.acme</programlisting>
       
 @FullyQualified @Named
 public class NamedBean {
-   public String getAge()
+   public int getAge()
    {
       return 5;
    }

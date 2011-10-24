@@ -31,11 +31,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * <p>
  * Qualifier used to identify a javax.el.ELResolver to register with the
- * application wide javax.el.ELResolver provided by Seam Solder
+ * application wide javax.el.ELResolver provided by Solder
  * </p>
  * <p/>
  * <p>
- * Seam Solder will inject a javax.el.ELResolver for each instantiation of an
+ * Solder will inject a javax.el.ELResolver for each instantiation of an
  * javax.el.ELContext (and hence for each instantiation of {@link Expressions});
  * any overrides of this bean should ensure that obtaining the bean instance is
  * a lightweight operation.

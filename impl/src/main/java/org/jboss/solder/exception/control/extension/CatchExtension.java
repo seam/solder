@@ -42,7 +42,9 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.Interceptor;
 import javax.enterprise.inject.spi.ProcessBean;
 
+import org.jboss.solder.exception.control.log.CatchExtensionLog;
 import org.jboss.solder.literal.AnyLiteral;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.reflection.AnnotationInspector;
 import org.jboss.solder.reflection.HierarchyDiscovery;
 import org.jboss.solder.exception.control.ExceptionHandlerComparator;
@@ -58,6 +60,8 @@ import org.jboss.solder.exception.control.TraversalMode;
 @SuppressWarnings("unchecked")
 public class CatchExtension implements Extension, HandlerMethodContainer {
     private final Map<? super Type, Collection<HandlerMethod<? extends Throwable>>> allHandlers;
+
+    private final CatchExtensionLog log = Logger.getMessageLogger(CatchExtensionLog.class, CatchExtension.class.getPackage().getName());
 
     public CatchExtension() {
         this.allHandlers = new HashMap<Type, Collection<HandlerMethod<? extends Throwable>>>();
@@ -94,6 +98,7 @@ public class CatchExtension implements Extension, HandlerMethodContainer {
                                 String.format("Handler method %s must not throw exceptions", method.getJavaMember())));
                     }
                     final Class<? extends Throwable> exceptionType = (Class<? extends Throwable>) ((ParameterizedType) param.getBaseType()).getActualTypeArguments()[0];
+
                     registerHandlerMethod(new HandlerMethodImpl(method, bm));
                 }
             }
@@ -153,6 +158,7 @@ public class CatchExtension implements Extension, HandlerMethodContainer {
             }
         }
 
+        log.foundHandlers(returningHandlers, exceptionClass, handlerQualifiers, traversalMode);
         return Collections.unmodifiableCollection(returningHandlers);
     }
 
@@ -168,6 +174,7 @@ public class CatchExtension implements Extension, HandlerMethodContainer {
 
     @Override
     public <T extends Throwable> void registerHandlerMethod(HandlerMethod<T> handlerMethod) {
+        log.addingHandler(handlerMethod);
         if (this.allHandlers.containsKey(handlerMethod.getExceptionType())) {
             this.allHandlers.get(handlerMethod.getExceptionType()).add(handlerMethod);
         } else {

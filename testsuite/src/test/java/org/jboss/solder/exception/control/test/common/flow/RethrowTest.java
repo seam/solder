@@ -30,9 +30,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 public class RethrowTest {
-    @Deployment
+    @Deployment(name = "RethrowTest")
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("rethrow.jar")
+        return BaseWebArchive.createBase("rethrow")
                 .addClasses(RethrowHandler.class);
     }
 

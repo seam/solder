@@ -72,8 +72,8 @@ public class ExceptionToCatch implements Serializable {
     }
 
     /**
-     * Test to see if the exception has been handled via Seam Catch.
-     * @return test if the exception has been through Seam Catch handling.
+     * Test to see if the exception has been handled via Solder Catch.
+     * @return test if the exception has been through Solder Catch handling.
      */
     public boolean isHandled() {
         return handled;

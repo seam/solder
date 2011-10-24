@@ -16,17 +16,17 @@
  */
 package org.jboss.solder.exception.control;
 
+import javax.enterprise.event.ObserverException;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
-
-import org.jboss.solder.exception.control.ExceptionHandled;
-import org.jboss.solder.exception.control.ExceptionToCatch;
 
 /**
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>
  */
+@Interceptor
 @ExceptionHandled
 public class ExceptionHandledInterceptor {
 
@@ -41,16 +41,25 @@ public class ExceptionHandledInterceptor {
      *         will be 0 for int, short, long, float and false for boolean.
      */
     @AroundInvoke
-    public Object passExceptionsToSeamCatch(final InvocationContext ctx) {
+    public Object passExceptionsToSolderCatch(final InvocationContext ctx) throws Throwable {
         try {
             ctx.proceed();
         } catch (final Throwable e) {
-            bm.fireEvent(new ExceptionToCatch(e));
+            try {
+                bm.fireEvent(new ExceptionToCatch(e));
+            } catch (Exception ex) {
+                if (ex.getClass().equals(ObserverException.class))
+                    throw ex.getCause();
+            }
         }
 
-        if (ctx.getMethod().getReturnType().equals(Integer.TYPE) || ctx.getMethod().getReturnType().equals(Short.TYPE) || ctx.getMethod().getReturnType().equals(Long.TYPE)
-                || ctx.getMethod().getReturnType().equals(Float.TYPE))
+        if (ctx.getMethod().getReturnType().equals(Integer.TYPE) || ctx.getMethod().getReturnType().equals(Short.TYPE)
+                || ctx.getMethod().getReturnType().equals(Long.TYPE) || ctx.getMethod().getReturnType().equals(Float.TYPE)
+                || ctx.getMethod().getReturnType().equals(Byte.TYPE) || ctx.getMethod().getReturnType().equals(Double.TYPE))
             return 0;
+
+        if (ctx.getMethod().getReturnType().equals(Character.TYPE))
+            return '\u0000';
 
         if (ctx.getMethod().getReturnType().equals(Boolean.TYPE))
             return false;

@@ -33,7 +33,7 @@ public class ExtensionErrorTest {
     @Deployment(name = "weldErrorArchive")
     @ShouldThrowException(DefinitionException.class)
     public static Archive<?> createTestArchive() {
-        return BaseWebArchive.createBase("extensionError.jar")
+        return BaseWebArchive.createBase("extensionError")
                 .addClasses(HandlerWhichThrowsExceptions.class);
     }
 

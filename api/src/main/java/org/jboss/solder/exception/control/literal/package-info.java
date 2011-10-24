@@ -16,6 +16,6 @@
  */
 
 /**
- * Annotation literals for Seam Catch.
+ * Annotation literals for Solder Catch.
  */
 package org.jboss.solder.exception.control.literal;

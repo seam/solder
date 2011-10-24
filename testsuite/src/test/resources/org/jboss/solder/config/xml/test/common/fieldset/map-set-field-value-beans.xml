@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+       xmlns:test="urn:java:org.jboss.solder.config.xml.test.common.fieldset">
+    <test:MapFieldValue>
+        <replaces/>
+        <test:map1>
+            <entry>
+                <key>1</key>
+                <value>hello</value>
+            </entry>
+            <entry>
+                <key>2</key>
+                <value>world</value>
+            </entry>
+        </test:map1>
+        <test:map2>
+            <e>
+                <k>1</k>
+                <v>java.lang.Integer</v>
+            </e>
+            <e>
+                <k>2</k>
+                <v>java.lang.Long</v>
+            </e>
+        </test:map2>
+
+    </test:MapFieldValue>
+
+</beans>
