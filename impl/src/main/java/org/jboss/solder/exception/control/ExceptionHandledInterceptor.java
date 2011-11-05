@@ -43,7 +43,7 @@ public class ExceptionHandledInterceptor {
     @AroundInvoke
     public Object passExceptionsToSolderCatch(final InvocationContext ctx) throws Throwable {
         try {
-            ctx.proceed();
+            return ctx.proceed();
         } catch (final Throwable e) {
             try {
                 bm.fireEvent(new ExceptionToCatch(e));
