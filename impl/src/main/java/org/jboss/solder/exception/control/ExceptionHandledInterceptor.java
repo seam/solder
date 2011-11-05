@@ -42,8 +42,9 @@ public class ExceptionHandledInterceptor {
      */
     @AroundInvoke
     public Object passExceptionsToSolderCatch(final InvocationContext ctx) throws Throwable {
+        Object result = null;
         try {
-            return ctx.proceed();
+            result = ctx.proceed();
         } catch (final Throwable e) {
             try {
                 bm.fireEvent(new ExceptionToCatch(e));
@@ -64,6 +65,6 @@ public class ExceptionHandledInterceptor {
         if (ctx.getMethod().getReturnType().equals(Boolean.TYPE))
             return false;
 
-        return null;
+        return result;
     }
 }
