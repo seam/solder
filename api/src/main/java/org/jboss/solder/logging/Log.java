@@ -17,13 +17,13 @@
 
 package org.jboss.solder.logging;
 
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.solder.logging.Logger;
 import org.jboss.solder.messages.Message;
 
 /**
@@ -32,8 +32,8 @@ import org.jboss.solder.messages.Message;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Retention(RUNTIME)
+@Target(METHOD)
 @Documented
 public @interface Log {
 

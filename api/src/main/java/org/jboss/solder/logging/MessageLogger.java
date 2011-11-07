@@ -17,9 +17,11 @@
 
 package org.jboss.solder.logging;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.jboss.solder.messages.MessageBundle;
@@ -30,14 +32,23 @@ import org.jboss.solder.messages.MessageBundle;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Retention(RUNTIME)
+@Target(TYPE)
+@Documented
 public @interface MessageLogger {
 
     /**
-     * Get the project code for messages that have an associated code.
+     * Get the project code for messages that have an associated code.  If no project code is associated
+     * with this logger, specify {@code ""} (the empty string).
      *
      * @return the project code
      */
     String projectCode() default "";
+
+    /**
+     * The logging class name to use for this message, if any.
+     *
+     * @return the logging class name
+     */
+    Class<?> loggingClass() default Void.class;
 }

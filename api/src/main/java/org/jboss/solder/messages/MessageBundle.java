@@ -17,31 +17,32 @@
 
 package org.jboss.solder.messages;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import javax.inject.Qualifier;
-
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import javax.inject.Qualifier;
 
 /**
  * Signify that an interface is a message bundle interface.
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Qualifier
 @Target({TYPE, METHOD, PARAMETER, FIELD})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RUNTIME)
+@Qualifier
 @Documented
 public @interface MessageBundle {
 
     /**
-     * Get the project code for messages that have an associated code.
+     * Get the project code for messages that have an associated code.  If no project code is associated
+     * with this bundle, specify {@code ""} (the empty string).
      *
      * @return the project code
      */

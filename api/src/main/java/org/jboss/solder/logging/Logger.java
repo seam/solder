@@ -19,10 +19,7 @@ package org.jboss.solder.logging;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
 import java.util.Locale;
-
-import org.jboss.solder.logging.MessageLoggerInvocationHandler;
 
 /**
  * A Logger implementation that forwards all calls to the {@link #delegate()}.
@@ -2061,13 +2058,7 @@ public class Logger implements Serializable {
                 loggerClass = Class.forName(join(type.getName(), "$logger", null, null, null), true, type.getClassLoader())
                         .asSubclass(type);
             } catch (ClassNotFoundException e) {
-                Logger thisLogger = Logger.getLogger(Logger.class);
-                thisLogger
-                        .warn("Generating proxy for type-safe logger "
-                                + type
-                                + ". You should generate a concrete implementation using the jboss-logging-tools annotation processor before deploying to production!!");
-                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type },
-                        new MessageLoggerInvocationHandler(type, category)));
+                throw new IllegalArgumentException("Invalid logger " + type + " (implementation not found)");
             }
         final Constructor<? extends T> constructor;
         try {
