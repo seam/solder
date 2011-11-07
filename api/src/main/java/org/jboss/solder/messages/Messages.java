@@ -18,10 +18,7 @@
 package org.jboss.solder.messages;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Proxy;
 import java.util.Locale;
-
-import org.jboss.solder.logging.Logger;
 
 /**
  * A factory class to produce message bundle implementations.
@@ -85,13 +82,7 @@ public final class Messages {
                 bundleClass = Class.forName(join(type.getName(), "$bundle", null, null, null), true, type.getClassLoader())
                         .asSubclass(type);
             } catch (ClassNotFoundException e) {
-                Logger thisLogger = Logger.getLogger(Logger.class);
-                thisLogger
-                        .warn("Generating proxy for type-safe message "
-                                + type
-                                + ". You should generate a concrete implementation using the jboss-logging-tools annotation processor before deploying to production!!");
-                return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type },
-                        new MessageBundleInvocationHandler(type)));
+                throw new IllegalArgumentException("Invalid bundle " + type + " (implementation not found)");
             }
         final Field field;
         try {

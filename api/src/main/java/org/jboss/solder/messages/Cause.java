@@ -17,9 +17,11 @@
 
 package org.jboss.solder.messages;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.CLASS;
+
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
@@ -27,7 +29,8 @@ import java.lang.annotation.Target;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
+@Retention(CLASS)
+@Target(PARAMETER)
+@Documented
 public @interface Cause {
 }
