@@ -17,13 +17,10 @@
 
 package org.jboss.solder.tooling;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-
-import org.jboss.logging.Loggers;
+import org.jboss.logging.generator.Loggers;
 import org.jboss.solder.logging.Logger;
 import org.jboss.solder.logging.internal.BasicLogger;
+import org.jboss.solder.logging.internal.DelegatingBasicLogger;
 
 /**
  * @author James R. Perkins (jrp) - 20.Feb.2011
@@ -37,13 +34,18 @@ public class SolderLoggers implements Loggers {
     }
 
     @Override
-    public Class<?> basicLoggerClass() {
+    public Class<Logger.Level> logLevelClass() {
+        return Logger.Level.class;
+    }
+
+    @Override
+    public Class<BasicLogger> loggerInterface() {
         return BasicLogger.class;
     }
 
     @Override
-    public List<Method> basicLoggerMethods() {
-        return Arrays.asList(basicLoggerClass().getMethods());
+    public Class<DelegatingBasicLogger> delegatingLogger() {
+        return DelegatingBasicLogger.class;
     }
 
 }

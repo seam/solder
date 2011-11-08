@@ -18,17 +18,17 @@ package org.jboss.solder.tooling;
 
 import java.lang.annotation.Annotation;
 
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-
-import org.jboss.logging.Annotations;
-import org.jboss.solder.logging.Logger;
+import org.jboss.logging.generator.Annotations;
 import org.jboss.solder.logging.Log;
+import org.jboss.solder.logging.LoggingClass;
 import org.jboss.solder.logging.MessageLogger;
 import org.jboss.solder.messages.Cause;
+import org.jboss.solder.messages.Field;
 import org.jboss.solder.messages.Formatter;
 import org.jboss.solder.messages.Message;
 import org.jboss.solder.messages.MessageBundle;
+import org.jboss.solder.messages.Param;
+import org.jboss.solder.messages.Property;
 
 /**
  * @author James R. Perkins (jrp) - 19.Feb.2011
@@ -36,12 +36,16 @@ import org.jboss.solder.messages.MessageBundle;
  */
 public class SolderAnnotations implements Annotations {
 
-    public static final Class<Formatter> FORMAT_WITH_ANNOTATION = Formatter.class;
     public static final Class<Cause> CAUSE_ANNOTATION = Cause.class;
+    public static final Class<Field> FIELD_ANNOTATION = Field.class;
+    public static final Class<Formatter> FORMAT_WITH_ANNOTATION = Formatter.class;
+    public static final Class<LoggingClass> LOGGER_CLASS_ANNOTATION = LoggingClass.class;
+    public static final Class<Log> LOG_MESSAGE_ANNOTATION = Log.class;
     public static final Class<MessageBundle> MESSAGE_BUNDLE_ANNOTATION = MessageBundle.class;
     public static final Class<MessageLogger> MESSAGE_LOGGER_ANNOTATION = MessageLogger.class;
-    public static final Class<Log> LOG_MESSAGE_ANNOTATION = Log.class;
     public static final Class<Message> MESSAGE_ANNOTATION = Message.class;
+    public static final Class<Param> PARAM_ANNOTATION = Param.class;
+    public static final Class<Property> PROPERTY_ANNOTATION = Property.class;
 
     @Override
     public Class<? extends Annotation> cause() {
@@ -49,8 +53,18 @@ public class SolderAnnotations implements Annotations {
     }
 
     @Override
+    public Class<? extends Annotation> field() {
+        return FIELD_ANNOTATION;
+    }
+
+    @Override
     public Class<? extends Annotation> formatWith() {
         return FORMAT_WITH_ANNOTATION;
+    }
+
+    //@Override
+    public Class<? extends Annotation> loggingClass() {
+        return LOGGER_CLASS_ANNOTATION;
     }
 
     @Override
@@ -74,61 +88,12 @@ public class SolderAnnotations implements Annotations {
     }
 
     @Override
-    public FormatType messageFormat(final ExecutableElement method) {
-        FormatType result = null;
-        final Message message = method.getAnnotation(MESSAGE_ANNOTATION);
-        if (message != null) {
-            switch (message.format()) {
-                case MESSAGE_FORMAT:
-                    result = FormatType.MESSAGE_FORMAT;
-                    break;
-                case PRINTF:
-                    result = FormatType.PRINTF;
-                    break;
-            }
-        }
-        return result;
+    public Class<? extends Annotation> param() {
+        return PARAM_ANNOTATION;
     }
 
     @Override
-    public String projectCode(final TypeElement intf) {
-        String result = null;
-        final MessageBundle bundle = intf.getAnnotation(MESSAGE_BUNDLE_ANNOTATION);
-        final MessageLogger logger = intf.getAnnotation(MESSAGE_LOGGER_ANNOTATION);
-        if (bundle != null) {
-            result = bundle.projectCode();
-        } else if (logger != null) {
-            result = logger.projectCode();
-        }
-        return result;
-    }
-
-    @Override
-    public boolean hasMessageId(final ExecutableElement method) {
-        final Message message = method.getAnnotation(MESSAGE_ANNOTATION);
-        return (message == null ? false : (message.id() > Message.NONE));
-    }
-
-    @Override
-    public int messageId(final ExecutableElement method) {
-        final Message message = method.getAnnotation(MESSAGE_ANNOTATION);
-        return (message == null ? Message.NONE : message.id());
-    }
-
-    @Override
-    public String messageValue(final ExecutableElement method) {
-        final Message message = method.getAnnotation(MESSAGE_ANNOTATION);
-        return (message == null ? null : message.value());
-    }
-
-    @Override
-    public String loggerMethod(final ExecutableElement method, final FormatType formatType) {
-        String result = null;
-        final Log logMessage = method.getAnnotation(LOG_MESSAGE_ANNOTATION);
-        if (logMessage != null) {
-            final Logger.Level logLevel = (logMessage.level() == null ? Logger.Level.INFO : logMessage.level());
-            result = String.format("%s%c", logLevel.name().toLowerCase(), formatType.logType());
-        }
-        return result;
+    public Class<? extends Annotation> property() {
+        return PROPERTY_ANNOTATION;
     }
 }
