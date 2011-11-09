@@ -55,6 +55,7 @@ import javax.enterprise.inject.spi.ProcessProducerMethod;
 import org.jboss.solder.logging.Logger;
 import org.jboss.solder.bean.Beans;
 import org.jboss.solder.bean.defaultbean.DefaultBean;
+import org.jboss.solder.literal.AnyLiteral;
 import org.jboss.solder.literal.DefaultLiteral;
 import org.jboss.solder.reflection.HierarchyDiscovery;
 import org.jboss.solder.reflection.Reflections;
@@ -160,9 +161,8 @@ public class DefaultBeanExtension implements Extension {
                     builder.removeFromClass(a.annotationType());
                 }
             }
-            if (qualifiers.isEmpty()) {
-                qualifiers.add(DefaultLiteral.INSTANCE);
-            }
+            postProcessQualifierSet(qualifiers);
+            builder.addToClass(new DefaultBeanInformation.Literal(qualifiers));
             declaringBeanQualifiers = new HashSet<Annotation>(qualifiers);
             declaringBeanSyntheticQualifier = syntheticProvider.get();
             // store the qualifiers for later
@@ -187,9 +187,7 @@ public class DefaultBeanExtension implements Extension {
                             builder.removeFromMethodParameter(m.getJavaMember(), observerParameter.getPosition(), a.annotationType());
                         }
                     }
-                    if (qualifiers.isEmpty()) {
-                        qualifiers.add(DefaultLiteral.INSTANCE);
-                    }
+                    postProcessQualifierSet(observerQualifiers);
                     builder.addToMethodParameter(m.getJavaMember(), observerParameter.getPosition(), declaringBeanSyntheticQualifier);
                     ObserverMethodInfo<?> info = ObserverMethodInfo.of(observerQualifiers, declaringBeanQualifiers, m, declaringBeanSyntheticQualifier);
                     defaultObserverMethodsByBean.put(declaringBeanSyntheticQualifier, info);
@@ -220,9 +218,8 @@ public class DefaultBeanExtension implements Extension {
                         builder.removeFromMethod(m, a.annotationType());
                     }
                 }
-                if (qualifiers.isEmpty()) {
-                    qualifiers.add(DefaultLiteral.INSTANCE);
-                }
+                postProcessQualifierSet(qualifiers);
+                builder.addToMethod(m, new DefaultBeanInformation.Literal(qualifiers));
                 Synthetic syntheticQualifier = producerSyntheticProvider.get();
                 // store the qualifiers for later
                 Type type = null;
@@ -252,9 +249,7 @@ public class DefaultBeanExtension implements Extension {
                                 qualifiers.add(annotation);
                             }
                         }
-                        if(qualifiers.isEmpty()) {
-                            qualifiers.add(DefaultLiteral.INSTANCE);
-                        }
+                        postProcessQualifierSet(qualifiers);
 
                         for (final Synthetic producer : producers) {
                             final DefaultBeanType beanType = beanTypeInformation.get(producer);
@@ -301,9 +296,8 @@ public class DefaultBeanExtension implements Extension {
                         builder.removeFromField(f, a.annotationType());
                     }
                 }
-                if (qualifiers.isEmpty()) {
-                    qualifiers.add(DefaultLiteral.INSTANCE);
-                }
+                postProcessQualifierSet(qualifiers);
+                builder.addToField(f, new DefaultBeanInformation.Literal(qualifiers));
                 Synthetic syntheticQualifier = producerSyntheticProvider.get();
                 // store the qualifiers for later
                 Type type = null;
@@ -700,5 +694,13 @@ public class DefaultBeanExtension implements Extension {
             return qualifiers;
         }
 
+    }
+    
+    private Set<Annotation> postProcessQualifierSet(Set<Annotation> qualifiers) {
+        if (qualifiers.isEmpty()) {
+            qualifiers.add(DefaultLiteral.INSTANCE);
+        }
+        qualifiers.add(AnyLiteral.INSTANCE);
+        return qualifiers;
     }
 }

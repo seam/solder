@@ -60,6 +60,7 @@ import javax.inject.Inject;
 import org.jboss.solder.bean.BeanBuilder;
 import org.jboss.solder.bean.Beans;
 import org.jboss.solder.bean.ContextualLifecycle;
+import org.jboss.solder.bean.defaultbean.DefaultBeanInformation;
 import org.jboss.solder.literal.AnyLiteral;
 import org.jboss.solder.literal.DefaultLiteral;
 import org.jboss.solder.reflection.Synthetic;
@@ -199,6 +200,8 @@ public class GenericBeanExtension implements Extension {
 
     }
 
+    public static final String GENERIC_BEAN_EXTENSION_NAMESPACE = "org.jboss.solder.bean.generic.annotatedMember";
+
     // A map of generic configuration types to generic beans
     // Used to track the generic bean found
     private final SetMultimap<Class<? extends Annotation>, BeanHolder<?>> genericBeans;
@@ -253,7 +256,7 @@ public class GenericBeanExtension implements Extension {
         this.unwrapsMethods = Multimaps.newSetMultimap(new HashMap<Class<? extends Annotation>, Collection<AnnotatedMethod<?>>>(), GenericBeanExtension.<AnnotatedMethod<?>>createHashSetSupplier());
         this.genericBeanQualifier = new Synthetic.SyntheticLiteral("org.jboss.solder.bean.generic.genericQualifier", Long.valueOf(0));
         this.errors = new HashSet<String>();
-        this.annotatedMemberInjectionProvider = new Synthetic.Provider("org.jboss.solder.bean.generic.annotatedMember");
+        this.annotatedMemberInjectionProvider = new Synthetic.Provider(GENERIC_BEAN_EXTENSION_NAMESPACE);
     }
 
     <X> void replaceInjectOnGenericBeans(@Observes ProcessAnnotatedType<X> event) {
@@ -411,13 +414,19 @@ public class GenericBeanExtension implements Extension {
                 if (genericConfigurationPoints.containsKey(genericConfiguration)) {
                     throw new IllegalStateException("Generic configuration " + genericConfiguration + " is defined twice [" + event.getAnnotated() + ", " + genericConfigurationPoints.get(genericConfiguration).getAnnotated() + "]");
                 }
-                // Register the bean for use later
-                Set<Annotation> qualifiers = event.getBean().getQualifiers();
-                Iterator<Annotation> iterator = qualifiers.iterator();
-                while (iterator.hasNext()) {
-                    Annotation qualifier = iterator.next();
-                    if (qualifier.annotationType().equals(Synthetic.class)) {
-                        iterator.remove();
+                Set<Annotation> qualifiers = new HashSet<Annotation>(event.getBean().getQualifiers());
+                // support for @DefaultBean
+                Annotation defaultBeanInformation = event.getAnnotated().getAnnotation(DefaultBeanInformation.class);
+                if (defaultBeanInformation != null && defaultBeanInformation instanceof DefaultBeanInformation.Literal) {
+                    // use the DefaultBeanInformation to obtain original qualifiers
+                    qualifiers = ((DefaultBeanInformation.Literal) defaultBeanInformation).getQualifiers();
+                } else {
+                    for (Iterator<Annotation> iterator = qualifiers.iterator(); iterator.hasNext();) {
+                        Annotation annotation = iterator.next();
+                        if ((annotation instanceof Synthetic)
+                                && GENERIC_BEAN_EXTENSION_NAMESPACE.equals(((Synthetic) annotation).namespace())) {
+                            iterator.remove();
+                        }
                     }
                 }
                 GenericIdentifier identifier = new GenericIdentifier(qualifiers, genericConfiguration);
@@ -567,7 +576,7 @@ public class GenericBeanExtension implements Extension {
 
     @SuppressWarnings("unchecked")
     public Set<Annotation> getQualifiers(BeanManager beanManager, GenericIdentifier identifier, Iterable<Annotation> annotations) {
-        return Beans.getQualifiers(beanManager, genericConfigurationPoints.get(identifier).getAnnotated().getAnnotations(), annotations);
+        return Beans.getQualifiers(beanManager, identifier.getQualifiers(), annotations);
     }
 
     private <X, T> ObserverMethod<T> createGenericObserverMethod(ObserverMethod<T> originalObserverMethod, GenericIdentifier identifier, AnnotatedMethod<X> method, Bean<?> genericBean, BeanManager beanManager) {
