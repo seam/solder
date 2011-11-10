@@ -42,8 +42,8 @@ public class HttpSessionStatusTest {
     HttpSessionStatus httpSessionStatus;
 
     @Test
-    public void should_inject_value_for_explicit_http_param() {
-        Assert.assertTrue(httpSessionStatus.isActive());
+    public void checkIfHttpSessionStatusIsActive() {
+        httpSessionStatus.isActive();
     }
 
 }
