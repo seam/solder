@@ -169,7 +169,7 @@ public interface CelebritySightingLog {
   <section id="typed-loggers">
     <title>Typed loggers</title>
     <para>
-         To define a typed logger, first create an interface, annotated it, then add methods that will act as log
+         To define a typed logger, first create an interface, annotate it, then add methods that will act as log
          operations and configure the message it will print using another annotation:
       </para>
     <programlisting role="JAVA">import org.jboss.solder.messages.Message;
@@ -286,7 +286,7 @@ public class LogService {
          string messages.
       </para>
     <para>
-         To define a typed message bundle, first create an interface, annotated it, then add methods that will act as
+         To define a typed message bundle, first create an interface, annotate it, then add methods that will act as
          message retrievers and configure the message to produce using another annotation:
       </para>
     <programlisting role="JAVA">import org.jboss.solder.messages.Message;

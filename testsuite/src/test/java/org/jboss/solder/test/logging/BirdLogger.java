@@ -19,6 +19,7 @@ package org.jboss.solder.test.logging;
 import org.jboss.solder.logging.Log;
 import org.jboss.solder.logging.MessageLogger;
 import org.jboss.solder.messages.Message;
+import org.jboss.solder.test.messages.BirdMessages;
 
 @MessageLogger
 public interface BirdLogger extends BirdMessages {
