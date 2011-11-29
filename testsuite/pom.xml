@@ -237,11 +237,6 @@
         <profile>
             <id>jacoco</id>
 
-            <properties>
-                <version.jacoco>0.5.3.201107060350</version.jacoco>
-                <version.shrinkwrap_shrinkwrap>1.0.0-beta-6</version.shrinkwrap_shrinkwrap>
-            </properties>
-
             <dependencies>
                 <dependency>
                     <groupId>org.jboss.arquillian.extension</groupId>
@@ -251,28 +246,8 @@
                 <dependency>
                     <groupId>org.jacoco</groupId>
                     <artifactId>org.jacoco.core</artifactId>
-                    <version>${version.jacoco}</version>
                     <scope>provided</scope>
                 </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.shrinkwrap</groupId>
-                    <artifactId>shrinkwrap-api</artifactId>
-                    <version>${version.shrinkwrap_shrinkwrap}</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.shrinkwrap</groupId>
-                    <artifactId>shrinkwrap-impl-base</artifactId>
-                    <version>${version.shrinkwrap_shrinkwrap}</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.shrinkwrap</groupId>
-                    <artifactId>shrinkwrap-spi</artifactId>
-                    <version>${version.shrinkwrap_shrinkwrap}</version>
-                </dependency>
-
             </dependencies>
 
             <build>
@@ -300,7 +275,6 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${version.jacoco}</version>
                         <executions>
                             <execution>
                                 <goals>
