@@ -27,10 +27,7 @@
     </container>
 
     <container qualifier="jbossas-managed-7">
-        <protocol type="jmx-as7">
-            <property name="executionType">REMOTE</property>
-        </protocol>
-        <configuration>
+       <configuration>
             <property name="javaVmArguments">-client -noverify -XX:+UseFastAccessorMethods -Xms64m -Xmx1024m -XX:MaxPermSize=512m</property>
        </configuration>
     </container>

@@ -472,6 +472,7 @@ public class AnnotatedTypeBuilder<X> {
         if (redefinition == null) {
             throw new IllegalArgumentException(messages.parameterMustNotBeNull("redefinition"));
         }
+        redefineAnnotationBuilder(annotationType, redefinition, javaClass, javaClass, typeAnnotations, null);
         for (Entry<Field, AnnotationBuilder> field : fields.entrySet()) {
             redefineAnnotationBuilder(annotationType, redefinition, field.getKey(), field.getKey().getGenericType(), field.getValue(), field.getKey().getName());
         }

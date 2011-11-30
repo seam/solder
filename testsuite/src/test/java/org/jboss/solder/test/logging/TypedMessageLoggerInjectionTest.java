@@ -22,6 +22,7 @@ import javax.enterprise.inject.Instance;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.solder.test.messages.BirdMessages;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -45,7 +46,8 @@ public class TypedMessageLoggerInjectionTest {
     @Deployment(name = "TypedMessageLoggerInjection")
     public static Archive<?> createDeployment() {
         return baseDeployment()
-                .addPackage(TypedMessageLoggerInjectionTest.class.getPackage());
+                .addPackage(TypedMessageLoggerInjectionTest.class.getPackage())
+                .addPackage(BirdMessages.class.getPackage());
     }
 
     @Test
