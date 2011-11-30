@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.solder.servlet.test;
+package org.jboss.solder.servlet.test.jbossas;
 
 import javax.inject.Inject;
 
+import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -31,7 +32,7 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class HttpSessionStatusTest {
 
-    @Deployment
+    @Deployment @OverProtocol("Servlet 3.0")
     public static Archive<?> createDeployment() {
         return Deployments
                 .createMockableBeanWebArchive();
