@@ -70,4 +70,8 @@ public class ClassToIntrospect {
     public Boolean isValid() {
         return false;
     }
+
+    public boolean isValidPrimitiveBoolean() {
+        return false;
+    }
 }

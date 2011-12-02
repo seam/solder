@@ -67,7 +67,7 @@ class MethodPropertyImpl<V> implements MethodProperty<V> {
             propertyNameInAccessorMethod = method.getName().substring(SETTER_METHOD_PREFIX_LENGTH);
             accessorMethodPrefix = SETTER_METHOD_PREFIX;
         } else if (method.getName().startsWith(BOOLEAN_GETTER_METHOD_PREFIX)) {
-            if (method.getReturnType() != Boolean.class || !method.getReturnType().isPrimitive()) {
+            if (method.getReturnType() != Boolean.TYPE || !method.getReturnType().isPrimitive()) {
                 throw new IllegalArgumentException("Invalid accessor method, must return boolean primitive if starts with 'is'. Method: " + method);
             }
             propertyNameInAccessorMethod = method.getName().substring(BOOLEAN_GETTER_METHOD_PREFIX_LENGTH);

@@ -24,7 +24,9 @@ import org.jboss.solder.properties.Property;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -106,5 +108,13 @@ public class PropertyFromMethodTest {
         assertNotNull(p);
         assertEquals("URL", p.getName());
         assertEquals(getter, p.getMember());
+    }
+
+    // SOLDER-298
+    @Test
+    public void testPrimitiveBooleanProperty() throws Exception {
+        Property<Boolean> p = Properties.createProperty(ClassToIntrospect.class.getMethod("isValidPrimitiveBoolean"));
+
+        assertNotNull(p);
     }
 }
