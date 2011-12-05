@@ -65,6 +65,7 @@
     <xi:include href="servlet-injectable_refs.xml"/>
     <xi:include href="servlet-exception_handling.xml"/>
     <xi:include href="servlet-beanmanager.xml"/>
+    <xi:include href="servlet-webxml.xml"/>
   </part>
   <toc/>
 </book>
