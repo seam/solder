@@ -90,10 +90,12 @@ public class CookieParamProducer {
 
     private Cookie getCookie(String cookieName, InjectionPoint ip) {
         Cookie cookie = null;
-        for (Cookie c : request.getCookies()) {
-            if (c.getName().equals(cookieName)) {
-                cookie = c;
-                break;
+        if (request.getCookies() != null) {
+            for (Cookie c : request.getCookies()) {
+                if (c.getName().equals(cookieName)) {
+                    cookie = c;
+                    break;
+                }
             }
         }
 
@@ -109,9 +111,11 @@ public class CookieParamProducer {
 
     private String getCookieValue(String cookieName, InjectionPoint ip) {
         // do we have to do any specific filtering here?
-        for (Cookie c : request.getCookies()) {
-            if (c.getName().equals(cookieName)) {
-                return c.getValue();
+        if (request.getCookies() != null) {
+            for (Cookie c : request.getCookies()) {
+                if (c.getName().equals(cookieName)) {
+                    return c.getValue();
+                }
             }
         }
         return getDefaultValue(ip);
