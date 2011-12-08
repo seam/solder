@@ -10,7 +10,13 @@ For more information, see the [Seam Solder project page](http://seamframework.or
 
 ## Building
 
-   mvn clean install
+   mvn clean install -Pjboss-public-repository
+
+or
+
+  mvn clean install -s settings.xml
+
+The profile is not required if the JBoss Nexus repository is setup in your settings.xml
 
 See the testsuite/readme.md file for information about running the testsuite in various containers.
 
