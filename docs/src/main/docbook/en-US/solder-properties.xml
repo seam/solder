@@ -18,16 +18,18 @@
   limitations under the License.
 --><!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="solder-properties">
-  <title>Properties</title>
+  <title>Property Utilities</title>
   <para>
-      Properties are a convenient way of locating and working with 
+      Solder provides a number of convenient features for querying and working with 
       <ulink url="http://en.wikipedia.org/wiki/JavaBean">JavaBean</ulink> properties. They can be used with properties 
       exposed via a getter/setter method, or directly via the field of a bean, providing a uniform interface that allows
-      you all properties in the same way. 
-   </para>
+      you to work with all properties in the same way. 
+  </para>
+   
   <para>
       Property queries allow you to interrogate a class for properties which match certain criteria.
-   </para>
+  </para>
+  
   <section>
     <title>Working with properties</title>
     <para>
