@@ -32,6 +32,7 @@ import org.jboss.solder.servlet.event.ImplicitServletObjectsHolder;
  * {@link ImplicitServletObjectsHolder}.
  *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
+ * @author Shane Bryzak
  */
 @Requires("javax.servlet.Servlet")
 public class ImplicitServletObjectsProducer {
@@ -58,7 +59,11 @@ public class ImplicitServletObjectsProducer {
 
     @Produces
     @RequestScoped
-    protected ServletResponse getServletResponse() {
+    protected ServletResponse getServletResponse() throws IllegalStateException {
+        if (holder.getServletResponse() == null) {
+            throw new IllegalStateException("Attempted to inject a ServletResponse before it has been initialized.");
+        }
+        
         return holder.getServletResponse();
     }
 

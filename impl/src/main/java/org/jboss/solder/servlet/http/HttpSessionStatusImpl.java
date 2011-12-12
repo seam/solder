@@ -17,6 +17,7 @@
 package org.jboss.solder.servlet.http;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,12 +29,13 @@ import org.jboss.solder.core.Requires;
  *
  * @author Nicklas Karlsson
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
+ * @author Shane Bryzak
  */
 @RequestScoped
 @Requires("javax.servlet.Servlet")
 public class HttpSessionStatusImpl implements HttpSessionStatus {
     @Inject
-    private HttpServletRequest request;
+    private Instance<HttpServletRequest> request;
 
     /**
      * Checks whether there is an active HttpSession associated with the current request.
@@ -41,11 +43,15 @@ public class HttpSessionStatusImpl implements HttpSessionStatus {
      * @return Whether a valid session is associated with this request
      */
     public boolean isActive() {
-        if (!request.isRequestedSessionIdValid()) {
+        try {
+            if (!request.get().isRequestedSessionIdValid()) {
+                return false;
+            }
+    
+            return request.get().getSession(false) != null;
+        } catch (IllegalStateException ex) {
             return false;
         }
-
-        return request.getSession(false) != null;
     }
 
     /**
@@ -55,6 +61,6 @@ public class HttpSessionStatusImpl implements HttpSessionStatus {
      * @return HttpSession The existing session, or a new session if one has not yet been created
      */
     public HttpSession get() {
-        return request.getSession();
+        return request.get().getSession();
     }
 }
