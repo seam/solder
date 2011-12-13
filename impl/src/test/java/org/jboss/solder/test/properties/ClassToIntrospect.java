@@ -24,6 +24,8 @@ public class ClassToIntrospect {
     private String p;
 
     private URL URL;
+	
+	public long primitiveProperty = 0;
 
     public String getName() {
         return name;
@@ -74,4 +76,10 @@ public class ClassToIntrospect {
     public boolean isValidPrimitiveBoolean() {
         return false;
     }
+
+	
+	public long getPrimitiveProperty()
+	{
+		return 0l;
+	}
 }
