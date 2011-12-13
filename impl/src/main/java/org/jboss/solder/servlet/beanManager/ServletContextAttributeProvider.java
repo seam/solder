@@ -42,8 +42,21 @@ public class ServletContextAttributeProvider implements BeanManagerProvider {
     }
 
     public BeanManager getBeanManager() {
+
         if (servletContext.get() != null) {
-            return (BeanManager) servletContext.get().getAttribute(BeanManager.class.getName());
+
+            ServletContext context = servletContext.get();
+
+            // the default attribute for the BeanManager
+            BeanManager beanManager = (BeanManager) context.getAttribute(BeanManager.class.getName());
+
+            // also try an attribute used in early versions of Weld 1.1.x
+            if (beanManager == null) {
+                beanManager = (BeanManager) context.getAttribute("org.jboss.weld.environment.servlet.javax.enterprise.inject.spi.BeanManager");
+            }
+
+            return beanManager;
+
         }
         return null;
     }
