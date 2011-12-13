@@ -16,27 +16,31 @@
  */
 package org.jboss.solder.servlet.test.weld.beanManager;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.HttpServletRequest;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.solder.beanManager.BeanManagerLocator;
 import org.jboss.solder.servlet.ServerInfo;
+import org.jboss.solder.servlet.beanManager.ServletContextAttributeProvider;
 import org.jboss.solder.servlet.event.ServletEventBridgeListener;
 import org.jboss.solder.servlet.test.weld.util.Deployments;
-import org.jboss.solder.beanManager.BeanManagerLocator;
-import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
@@ -76,4 +80,27 @@ public class ServletContextAttributeProviderTest {
         assertTrue(locator.isBeanManagerAvailable());
         assertEquals(manager, locator.getBeanManager());
     }
+
+    @Test
+    public void testBeanManagerLookupFromWorkerThreads() {
+
+        // mock the servlet context and a request
+        ServletContext context = mock(ServletContext.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+
+        // let the ServletEventBridgeListener fire a @Initialized InternalServletRequestEvent
+        listener.requestInitialized(new ServletRequestEvent(context, request));
+
+        // the provider knows about the ServletContext -> the lookup must work
+        ServletContextAttributeProvider provider = new ServletContextAttributeProvider();
+        assertEquals(manager, provider.getBeanManager());
+
+        // let the ServletEventBridgeListener fire a @Destroyed InternalServletRequestEvent
+        listener.requestDestroyed(new ServletRequestEvent(context, request));
+
+        // The ServletContext is not available any more: lookup not possible
+        assertNull(provider.getBeanManager());
+
+    }
+
 }
