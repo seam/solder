@@ -18,6 +18,7 @@ package org.jboss.solder.servlet.test.jbossas.resource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -75,6 +76,16 @@ public class WebResourceLocatorTest {
 
         String text = readFirstLine(stream);
         assertEquals("Some file in WEB-INF directory", text);
+
+    }
+
+    @Test
+    public void loadResourceThatDoesNotExist() {
+
+        WebResourceLocator locator = new WebResourceLocator();
+        InputStream stream = locator.getWebResource("/does-not-exist.txt");
+
+        assertNull(stream);
 
     }
 
