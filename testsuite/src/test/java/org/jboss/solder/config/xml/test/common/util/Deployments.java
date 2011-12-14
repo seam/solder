@@ -60,4 +60,16 @@ public class Deployments {
 
         return archive;
     }
+
+    public static WebArchive baseDeploymentWebInfConfig(Class<?> klass, String xmlFileName) {
+
+        String fileName = klass.getPackage().getName().replace('.', '/') + "/" + xmlFileName;
+
+        WebArchive archive = baseDeployment(klass)
+        // weld-embedded reads it from META-INF/seam-beans.xml, not from WEB-INF/classes/META-INF/seam-beans.xml as it should
+        // so we add it to both locations
+        .addAsWebInfResource(fileName, "seam-beans.xml");
+
+        return archive;
+    }
 }
