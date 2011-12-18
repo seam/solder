@@ -16,11 +16,11 @@
  */
 package org.jboss.solder.config.xml.bootstrap;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -29,6 +29,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.solder.resourceLoader.ResourceLoaderManager;
+import org.jboss.solder.servlet.resource.WebResourceLocator;
 import org.xml.sax.InputSource;
 
 /**
@@ -40,7 +41,7 @@ public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider {
 
     private final ResourceLoaderManager manager = new ResourceLoaderManager();
 
-    static final String[] DEFAULT_RESOURCES = {"META-INF/seam-beans.xml", "META-INF/beans.xml", "WEB-INF/beans.xml", "WEB-INF/seam-beans.xml"};
+    static final String[] DEFAULT_RESOURCES = {"WEB-INF/beans.xml", "WEB-INF/seam-beans.xml", "META-INF/seam-beans.xml", "META-INF/beans.xml"};
 
     final String[] resources;
 
@@ -74,8 +75,16 @@ public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider {
         docs = new ArrayList<URL>();
 
         for (String i : resources) {
-            Collection<URL> e = manager.getResources(i);
-            docs.addAll(e);
+            if (i.contains("WEB-INF")) {
+                final WebResourceLocator wrl = new WebResourceLocator();
+                final URL resourceUrl = wrl.getWebResourceUrl("/" + i);
+
+                if (resourceUrl != null) {
+                    docs.add(wrl.getWebResourceUrl("/" + i));
+                }
+            } else {
+                docs.addAll(manager.getResources(i));
+            }
         }
         iterator = docs.listIterator();
     }
@@ -110,6 +119,9 @@ public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider {
                     if (test.available() == 0) {
                         continue;
                     }
+                } catch (FileNotFoundException e) {
+                    // one of the expected locations didn't exist, move on.
+                    continue;
                 } finally {
                     if (test != null) {
                         test.close();

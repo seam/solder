@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  JBoss, Home of Professional Open Source
+  Copyright 2010, Red Hat Middleware LLC, and individual contributors
+  by the @authors tag. See the copyright.txt in the distribution for a
+  full listing of individual contributors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="webresources">
+  <title>Loading web resources without ServletContext</title>
+  
+  <para>
+    Sometimes developers need to access web application resources from application code. Typically the 
+    <classname>ServletContext</classname> is used to load resources by calling <methodname>getResource()</methodname>. 
+    Unfortunately the <classname>ServletContext</classname> cannot be accessed in all situations. 
+    Especially CDI extensions can be problematic in this regard as they are executed during a stage in the 
+    application startup in which the <classname>ServletContext</classname> may not have been created yet.
+  </para>
+  
+  <para>
+    Solder offers some help in this situation. The class <classname>WebResourceLocator</classname> provides a simple
+    way to obtain resources from the web application. Under the covers this class uses the 
+    <classname>WebResourceLocationProvider</classname> SPI to retrieve the location of the resources. 
+  </para>
+  
+  <para>
+    The following example shows how to use the class:
+  </para>
+
+  <programlisting role="JAVA"><![CDATA[
+WebResourceLocator locator = new WebResourceLocator();
+
+InputStream stream = locator.getWebResource("/WEB-INF/web.xml");
+
+if (stream != null) {
+
+  // parse the input stream
+
+}
+]]>
+  </programlisting>
+  
+  <para>
+    As you can see using the <classname>WebResourceLocator</classname> is very easy. Just create an instance of the
+    class and then use <methodname>getWebResource()</methodname> to retrieve an InputStream.
+  </para>
+  
+  <warning>
+    <para>
+      Please note that you should always prefer to use the standard Servlet API to load resources from the web
+      application if possible. This Solder API is only intended to be used if it is not possible to use the
+      <classname>ServletContext</classname> (like for example in CDI extensions). 
+    </para>
+  </warning>
+
+</chapter>

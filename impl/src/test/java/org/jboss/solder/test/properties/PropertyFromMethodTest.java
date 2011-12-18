@@ -16,16 +16,17 @@
  */
 package org.jboss.solder.test.properties;
 
-import java.lang.reflect.Method;
-import java.net.URL;
-
-import org.jboss.solder.properties.Properties;
-import org.jboss.solder.properties.Property;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Method;
+import java.net.URL;
+
+import org.jboss.solder.properties.MethodProperty;
+import org.jboss.solder.properties.Properties;
+import org.jboss.solder.properties.Property;
+import org.junit.Test;
 
 /**
  * Verify that only valid properties are permitted, as per the JavaBean specification.
@@ -107,4 +108,21 @@ public class PropertyFromMethodTest {
         assertEquals("URL", p.getName());
         assertEquals(getter, p.getMember());
     }
+
+    // SOLDER-298
+    @Test
+    public void testPrimitiveBooleanProperty() throws Exception {
+        Property<Boolean> p = Properties.createProperty(ClassToIntrospect.class.getMethod("isValidPrimitiveBoolean"));
+
+        assertNotNull(p);
+    }
+    
+	@Test
+	public void testAccessingPrimitiveTypedMethodProperty() throws Exception
+	{
+		final Method method = ClassToIntrospect.class.getMethod("getPrimitiveProperty");
+		
+		MethodProperty<Object> propertyUT = Properties.createProperty(method);
+		propertyUT.getValue(new ClassToIntrospect());
+	}
 }

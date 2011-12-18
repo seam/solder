@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jboss.solder</groupId>
         <artifactId>solder-parent</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.2.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -262,6 +262,7 @@
                         <artifactId>build-helper-maven-plugin</artifactId>
                         <executions>
                             <execution>
+                                <id>add-resources</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>add-resource</goal>
@@ -272,7 +273,24 @@
                                             <directory>../impl/target/classes</directory>
                                             <targetPath>.</targetPath>
                                         </resource>
+                                        <resource>
+                                            <directory>../api/target/classes</directory>
+                                            <targetPath>.</targetPath>
+                                        </resource>
                                     </resources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>add-sources</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>add-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>../impl/src/main/java</source>
+                                        <source>../api/src/main/java</source>
+                                    </sources>
                                 </configuration>
                             </execution>
                         </executions>

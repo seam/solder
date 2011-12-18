@@ -36,19 +36,25 @@ import org.jboss.solder.servlet.event.ImplicitServletObjectsHolder;
  * A producer for implicit HTTP Servlet objects, specifically the {@link HttpServletRequest}, {@link HttpServletResponse} and
  * {@link HttpSession}. References are obtained from the {@link ImplicitServletObjectsHolder}.
  * <p/>
- * TODO should probably throw IllegalStateException if accessed outside request
  *
  * @author Nicklas Karlsson
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
+ * @author Shane Bryzak
  */
 @Requires("javax.servlet.Servlet")
 public class ImplicitHttpServletObjectsProducer implements Serializable {
+    private static final long serialVersionUID = 6680938621833824390L;
+    
     @Inject
     private ImplicitServletObjectsHolder holder;
 
     @Produces
     @RequestScoped
     protected HttpSession getHttpSession() {
+        if (holder.getHttpSession() == null) {
+            throw new IllegalStateException("Attempted to inject an HttpSession before it has been initialized.");
+        }  
+        
         return holder.getHttpSession();
     }
 
@@ -63,6 +69,10 @@ public class ImplicitHttpServletObjectsProducer implements Serializable {
     @Typed(HttpServletRequest.class)
     @RequestScoped
     protected HttpServletRequest getHttpServletRequest() {
+        if (holder.getHttpServletRequest() == null) {
+            throw new IllegalStateException("Attempted to inject an HttpServletRequest before it has been initialized.");
+        }        
+        
         return holder.getHttpServletRequest();
     }
 
@@ -70,6 +80,10 @@ public class ImplicitHttpServletObjectsProducer implements Serializable {
     @Typed(HttpServletResponse.class)
     @RequestScoped
     protected HttpServletResponse getHttpServletResponse() {
+        if (holder.getHttpServletResponse() == null) {
+            throw new IllegalStateException("Attempted to inject an HttpServletResponse before it has been initialized.");
+        }        
+        
         return holder.getHttpServletResponse();
     }
 

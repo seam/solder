@@ -18,14 +18,14 @@
  */
 package org.jboss.solder.properties;
 
+import static org.jboss.solder.reflection.Reflections.invokeMethod;
+
 import java.beans.Introspector;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 import org.jboss.solder.reflection.Reflections;
-
-import static org.jboss.solder.reflection.Reflections.invokeMethod;
 
 /**
  * A bean property based on the value represented by a getter/setter method pair
@@ -67,7 +67,7 @@ class MethodPropertyImpl<V> implements MethodProperty<V> {
             propertyNameInAccessorMethod = method.getName().substring(SETTER_METHOD_PREFIX_LENGTH);
             accessorMethodPrefix = SETTER_METHOD_PREFIX;
         } else if (method.getName().startsWith(BOOLEAN_GETTER_METHOD_PREFIX)) {
-            if (method.getReturnType() != Boolean.class || !method.getReturnType().isPrimitive()) {
+            if (method.getReturnType() != Boolean.TYPE || !method.getReturnType().isPrimitive()) {
                 throw new IllegalArgumentException("Invalid accessor method, must return boolean primitive if starts with 'is'. Method: " + method);
             }
             propertyNameInAccessorMethod = method.getName().substring(BOOLEAN_GETTER_METHOD_PREFIX_LENGTH);
@@ -105,11 +105,11 @@ class MethodPropertyImpl<V> implements MethodProperty<V> {
         return getterMethod;
     }
 
-    public V getValue(Object instance) {
+	public V getValue(Object instance) {
         if (getterMethod == null) {
             throw new UnsupportedOperationException("Property " + this.setterMethod.getDeclaringClass() + "." + propertyName + " cannot be read, as there is no getter method.");
         }
-        return getJavaClass().cast(invokeMethod(getterMethod, instance));
+        return Reflections.cast(invokeMethod(getterMethod, instance));
     }
 
     public void setValue(Object instance, V value) {

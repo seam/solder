@@ -72,6 +72,7 @@ public class ImplicitServletObjectsHolder {
     protected void requestInitialized(@Observes @Initialized final InternalServletRequestEvent e) {
         ServletRequest req = e.getServletRequest();
         log.servletRequestInitialized(req);
+        ServletContextAttributeProvider.setServletContext(servletCtx);
         if (req instanceof HttpServletRequest) {
             requestCtx.set(new HttpServletRequestContext(req));
         } else {
@@ -81,6 +82,7 @@ public class ImplicitServletObjectsHolder {
 
     protected void requestDestroyed(@Observes @Destroyed final InternalServletRequestEvent e) {
         log.servletRequestDestroyed(e.getServletRequest());
+        ServletContextAttributeProvider.setServletContext(null);
         requestCtx.set(null);
     }
 
