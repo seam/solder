@@ -39,7 +39,7 @@ import org.jboss.solder.logging.Logger;
  * Observer of {@link ExceptionToCatch} events and handler dispatcher. All handlers are invoked from this class.  This
  * class is immutable.
  */
-public class ExceptionHandlerDispatch {
+public class ExceptionHandlerDispatch implements java.io.Serializable {
     private ExceptionToCatch exceptionToCatch;
     private ExceptionStack exceptionStack;
 
@@ -185,13 +185,13 @@ public class ExceptionHandlerDispatch {
     @ConversationScoped
     @Named("handledException")
     public ExceptionStack getExceptionStack() {
-        return this.exceptionStack;
+        return this.exceptionStack == null ? new ExceptionStack() : this.exceptionStack;
     }
 
     @Produces
     @ConversationScoped
     @Named("caughtException")
     public ExceptionToCatch getExceptionToCatch() {
-        return this.exceptionToCatch;
+        return this.exceptionToCatch == null ? new ExceptionToCatch() : this.exceptionToCatch;
     }
 }
