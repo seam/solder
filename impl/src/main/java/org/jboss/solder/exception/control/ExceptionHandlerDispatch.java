@@ -186,13 +186,13 @@ public class ExceptionHandlerDispatch implements java.io.Serializable {
     @ConversationScoped
     @Named("handledException")
     public ExceptionStack getExceptionStack() {
-        return this.exceptionStack;
+        return this.exceptionStack == null ? new ExceptionStack() : this.exceptionStack;
     }
 
     @Produces
     @ConversationScoped
     @Named("caughtException")
     public ExceptionToCatch getExceptionToCatch() {
-        return this.exceptionToCatch;
+        return this.exceptionToCatch == null ? new ExceptionToCatch() : this.exceptionToCatch;
     }
 }
