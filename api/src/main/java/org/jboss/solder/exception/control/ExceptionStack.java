@@ -138,7 +138,7 @@ public class ExceptionStack implements Serializable {
     }
 
     public Collection<Throwable> getCauseElements() {
-        return Collections.unmodifiableCollection(this.causes);
+        return this.causes == null ? Collections.<Throwable>emptyList() : Collections.unmodifiableCollection(this.causes);
     }
 
     /**
@@ -155,7 +155,8 @@ public class ExceptionStack implements Serializable {
     }
 
     public Collection<Throwable> getRemaining() {
-        return Collections.unmodifiableCollection(this.createThrowableCollectionFrom(this.remaining));
+        return this.remaining == null ? Collections.<Throwable>emptyList() : Collections.unmodifiableCollection(
+            this.createThrowableCollectionFrom(this.remaining));
     }
 
     /**
