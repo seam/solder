@@ -41,7 +41,7 @@ public class ExceptionHandledInterceptor {
      *         will be 0 for int, short, long, float and false for boolean.
      */
     @AroundInvoke
-    public Object passExceptionsToSolderCatch(final InvocationContext ctx) throws Throwable {
+    public Object passExceptionsToSolderCatch(final InvocationContext ctx) throws Exception {
         Object result = null;
         try {
             result = ctx.proceed();
@@ -49,8 +49,15 @@ public class ExceptionHandledInterceptor {
             try {
                 bm.fireEvent(new ExceptionToCatch(e));
             } catch (Exception ex) {
-                if (ex.getClass().equals(ObserverException.class))
-                    throw ex.getCause();
+                if (ex.getClass().equals(ObserverException.class)) {
+                    if (ex.getCause() instanceof Exception) {
+                        throw (Exception) ex.getCause();
+                    } else if (ex.getCause() instanceof Error) {
+                        throw (Error) ex.getCause();
+                    } else {
+                        throw new RuntimeException(ex.getCause());
+                    }
+                }
             }
         }
 
