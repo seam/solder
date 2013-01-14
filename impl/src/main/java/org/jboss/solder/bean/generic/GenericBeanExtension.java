@@ -375,6 +375,11 @@ public class GenericBeanExtension implements Extension {
     }
 
     <T, X> void registerGenericBeanObserverMethod(@Observes ProcessObserverMethod<T, X> event) {
+    	
+    	if (event.getAnnotatedMethod() == null) {
+    		return;
+    	}
+    	
         AnnotatedType<X> declaringType = event.getAnnotatedMethod().getDeclaringType();
         if (declaringType.isAnnotationPresent(GenericConfiguration.class)) {
             AnnotatedMethod<X> method = event.getAnnotatedMethod();
