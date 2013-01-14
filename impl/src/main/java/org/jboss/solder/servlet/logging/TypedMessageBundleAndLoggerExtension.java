@@ -54,8 +54,10 @@ public class TypedMessageBundleAndLoggerExtension implements Extension {
         this.messageLoggerTypes = new HashSet<AnnotatedType<?>>();
         this.messageBundleTypes = new HashSet<AnnotatedType<?>>();
         Package cdi = BeanManager.class.getPackage();
-        processTypesInModule = System.getProperty("glassfish.version") != null && cdi.getImplementationTitle().contains("Weld")
-                && cdi.getImplementationVersion().equals("20110114-1644");
+		String implementationTitle = cdi.getImplementationTitle();
+		if(implementationTitle != null)
+			processTypesInModule = System.getProperty("glassfish.version") != null && implementationTitle.contains("Weld")
+                && implementationTitle.equals("20110114-1644");
     }
 
     void detectInterfaces(@Observes ProcessAnnotatedType<?> event, BeanManager beanManager) {
