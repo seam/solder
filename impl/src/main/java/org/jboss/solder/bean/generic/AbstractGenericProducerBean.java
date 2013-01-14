@@ -72,7 +72,7 @@ abstract class AbstractGenericProducerBean<T> extends AbstractGenericBean<T> {
 
     protected Object getReceiver(CreationalContext<T> creationalContext) {
         Bean<?> declaringBean = getDeclaringBean();
-        return getBeanManager().getReference(declaringBean, declaringBean.getBeanClass(), creationalContext);
+        return getBeanManager().getReference(declaringBean, getDeclaringBeanType(), creationalContext);
     }
 
     protected Bean<?> getDeclaringBean() {

@@ -112,7 +112,7 @@ public class GenericProductTest {
 
         bean = manager.resolve(manager.getBeans(HashMap.class, new FooLiteral(1)));
         ctx = manager.createCreationalContext(bean);
-        manager.getReference(bean, String.class, ctx);
+        manager.getReference(bean, HashMap.class, ctx);
         ctx.release();
         Assert.assertTrue(Garply.isMapDisposerCalled());
     }
