@@ -27,7 +27,7 @@
    <groupId>org.jboss.solder</groupId>
    <artifactId>solder-parent</artifactId>
    <packaging>pom</packaging>
-   <version>3.2.0.Final</version>
+   <version>3.2.1-SNAPSHOT</version>
 
    <name>Solder</name>
    <description>A portable CDI extensions library for developing CDI applications, frameworks or other extensions</description>
