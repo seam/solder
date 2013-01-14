@@ -62,7 +62,7 @@ import java.lang.annotation.Target;
  * @author Dan Allen
  * @see {@link javax.inject.Named}
  */
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PACKAGE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FullyQualified {
