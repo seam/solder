@@ -23,7 +23,7 @@ import java.util.Locale;
 
 /**
  * A Logger implementation that forwards all calls to the {@link #delegate()}.
- * 
+ *
  * @author <a href="http://community.jboss.org/people/kenfinni">Ken Finnigan</a>
  */
 public class Logger implements Serializable {
@@ -45,7 +45,7 @@ public class Logger implements Serializable {
 
     /**
      * Return the name of this logger.
-     * 
+     *
      * @return The name of this logger.
      */
     public String getName() {
@@ -54,7 +54,7 @@ public class Logger implements Serializable {
 
     /**
      * Check to see if the specified level is enabled for this logger.
-     * 
+     *
      * @param level the level
      * @return {@code true} if messages logged at {@link Level#level} may be accepted, {@code false} otherwise
      */
@@ -64,7 +64,7 @@ public class Logger implements Serializable {
 
     /**
      * Check to see if the {@code TRACE} level is enabled for this logger.
-     * 
+     *
      * @return {@code true} if messages logged at {@link Level#TRACE} may be accepted, {@code false} otherwise
      */
     public boolean isTraceEnabled() {
@@ -73,7 +73,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE.
-     * 
+     *
      * @param message the message
      */
     public void trace(Object message) {
@@ -82,7 +82,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of TRACE.
-     * 
+     *
      * @param message the message
      * @param t the throwable
      */
@@ -92,7 +92,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of TRACE and a specific logger class name.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param t the throwable
@@ -103,7 +103,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with parameters and a throwable with a level of TRACE.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param params the message parameters
@@ -115,7 +115,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param params the parameters
      */
@@ -125,7 +125,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -137,7 +137,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -150,7 +150,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -164,7 +164,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param params the parameters
@@ -175,7 +175,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the sole parameter
@@ -188,7 +188,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -202,7 +202,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of TRACE using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -217,42 +217,42 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of TRACE.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
      */
     public void tracef(String format, Object... params) {
-        delegate.tracev(format, params);
+        delegate.tracef(format, params);
     }
 
     /**
      * Issue a formatted log message with a level of TRACE.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
      */
     public void tracef(String format, Object param1) {
         if (delegate.isEnabled(org.jboss.solder.logging.internal.Logger.Level.TRACE)) {
-            delegate.tracev(format, param1);
+            delegate.tracef(format, param1);
         }
     }
 
     /**
      * Issue a formatted log message with a level of TRACE.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
      */
     public void tracef(String format, Object param1, Object param2) {
         if (delegate.isEnabled(org.jboss.solder.logging.internal.Logger.Level.TRACE)) {
-            delegate.tracev(format, param1, param2);
+            delegate.tracef(format, param1, param2);
         }
     }
 
     /**
      * Issue a formatted log message with a level of TRACE.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -260,37 +260,37 @@ public class Logger implements Serializable {
      */
     public void tracef(String format, Object param1, Object param2, Object param3) {
         if (delegate.isEnabled(org.jboss.solder.logging.internal.Logger.Level.TRACE)) {
-            delegate.tracev(format, param1, param2, param3);
+            delegate.tracef(format, param1, param2, param3);
         }
     }
 
     /**
      * Issue a formatted log message with a level of TRACE.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
      */
     public void tracef(Throwable t, String format, Object... params) {
-        delegate.tracev(t, format, params);
+        delegate.tracef(t, format, params);
     }
 
     /**
      * Issue a formatted log message with a level of TRACE.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
      */
     public void tracef(Throwable t, String format, Object param1) {
         if (delegate.isEnabled(org.jboss.solder.logging.internal.Logger.Level.TRACE)) {
-            delegate.tracev(t, format, param1);
+            delegate.tracef(t, format, param1);
         }
     }
 
     /**
      * Issue a formatted log message with a level of TRACE.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -298,13 +298,13 @@ public class Logger implements Serializable {
      */
     public void tracef(Throwable t, String format, Object param1, Object param2) {
         if (delegate.isEnabled(org.jboss.solder.logging.internal.Logger.Level.TRACE)) {
-            delegate.tracev(t, format, param1, param2);
+            delegate.tracef(t, format, param1, param2);
         }
     }
 
     /**
      * Issue a formatted log message with a level of TRACE.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -313,13 +313,13 @@ public class Logger implements Serializable {
      */
     public void tracef(Throwable t, String format, Object param1, Object param2, Object param3) {
         if (delegate.isEnabled(org.jboss.solder.logging.internal.Logger.Level.TRACE)) {
-            delegate.tracev(t, format, param1, param2, param3);
+            delegate.tracef(t, format, param1, param2, param3);
         }
     }
 
     /**
      * Check to see if the {@code DEBUG} level is enabled for this logger.
-     * 
+     *
      * @return {@code true} if messages logged at {@link Level#DEBUG} may be accepted, {@code false} otherwise
      */
     public boolean isDebugEnabled() {
@@ -328,7 +328,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG.
-     * 
+     *
      * @param message the message
      */
     public void debug(Object message) {
@@ -337,7 +337,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of DEBUG.
-     * 
+     *
      * @param message the message
      * @param t the throwable
      */
@@ -347,7 +347,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of DEBUG and a specific logger class name.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param t the throwable
@@ -358,7 +358,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with parameters and a throwable with a level of DEBUG.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param params the message parameters
@@ -370,7 +370,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param params the parameters
      */
@@ -380,7 +380,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -392,7 +392,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -405,7 +405,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -419,7 +419,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param params the parameters
@@ -430,7 +430,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the sole parameter
@@ -443,7 +443,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -457,7 +457,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of DEBUG using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -472,7 +472,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of DEBUG.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
      */
@@ -482,7 +482,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of DEBUG.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
      */
@@ -494,7 +494,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of DEBUG.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -507,7 +507,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of DEBUG.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -521,7 +521,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of DEBUG.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
@@ -532,7 +532,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of DEBUG.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
@@ -545,7 +545,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of DEBUG.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -559,7 +559,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of DEBUG.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -574,7 +574,7 @@ public class Logger implements Serializable {
 
     /**
      * Check to see if the {@code INFO} level is enabled for this logger.
-     * 
+     *
      * @return {@code true} if messages logged at {@link Level#INFO} may be accepted, {@code false} otherwise
      */
     public boolean isInfoEnabled() {
@@ -583,7 +583,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO.
-     * 
+     *
      * @param message the message
      */
     public void info(Object message) {
@@ -592,7 +592,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of INFO.
-     * 
+     *
      * @param message the message
      * @param t the throwable
      */
@@ -602,7 +602,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of INFO and a specific logger class name.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param t the throwable
@@ -613,7 +613,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with parameters and a throwable with a level of INFO.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param params the message parameters
@@ -625,7 +625,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param params the parameters
      */
@@ -635,7 +635,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -647,7 +647,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -660,7 +660,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -674,7 +674,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param params the parameters
@@ -685,7 +685,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the sole parameter
@@ -698,7 +698,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -712,7 +712,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of INFO using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -727,7 +727,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of INFO.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
      */
@@ -737,7 +737,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of INFO.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
      */
@@ -749,7 +749,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of INFO.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -762,7 +762,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of INFO.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -776,7 +776,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of INFO.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
@@ -787,7 +787,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of INFO.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
@@ -800,7 +800,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of INFO.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -814,7 +814,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of INFO.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -829,7 +829,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN.
-     * 
+     *
      * @param message the message
      */
     public void warn(Object message) {
@@ -838,7 +838,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of WARN.
-     * 
+     *
      * @param message the message
      * @param t the throwable
      */
@@ -848,7 +848,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of WARN and a specific logger class name.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param t the throwable
@@ -859,7 +859,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with parameters and a throwable with a level of WARN.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param params the message parameters
@@ -871,7 +871,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param params the parameters
      */
@@ -881,7 +881,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -893,7 +893,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -906,7 +906,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -920,7 +920,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param params the parameters
@@ -931,7 +931,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the sole parameter
@@ -944,7 +944,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -958,7 +958,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of WARN using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -973,7 +973,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of WARN.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
      */
@@ -983,7 +983,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of WARN.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
      */
@@ -995,7 +995,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of WARN.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1008,7 +1008,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of WARN.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1022,7 +1022,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of WARN.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
@@ -1033,7 +1033,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of WARN.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
@@ -1046,7 +1046,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of WARN.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -1060,7 +1060,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of WARN.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -1075,7 +1075,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR.
-     * 
+     *
      * @param message the message
      */
     public void error(Object message) {
@@ -1084,7 +1084,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of ERROR.
-     * 
+     *
      * @param message the message
      * @param t the throwable
      */
@@ -1094,7 +1094,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of ERROR and a specific logger class name.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param t the throwable
@@ -1105,7 +1105,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with parameters and a throwable with a level of ERROR.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param params the message parameters
@@ -1117,7 +1117,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param params the parameters
      */
@@ -1127,7 +1127,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1139,7 +1139,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1152,7 +1152,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1166,7 +1166,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param params the parameters
@@ -1177,7 +1177,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the sole parameter
@@ -1190,7 +1190,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -1204,7 +1204,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of ERROR using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -1219,7 +1219,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of ERROR.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
      */
@@ -1229,7 +1229,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of ERROR.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
      */
@@ -1241,7 +1241,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of ERROR.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1254,7 +1254,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of ERROR.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1268,7 +1268,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of ERROR.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
@@ -1279,7 +1279,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of ERROR.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
@@ -1292,7 +1292,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of ERROR.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -1306,7 +1306,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of ERROR.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -1321,7 +1321,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL.
-     * 
+     *
      * @param message the message
      */
     public void fatal(Object message) {
@@ -1330,7 +1330,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of FATAL.
-     * 
+     *
      * @param message the message
      * @param t the throwable
      */
@@ -1340,7 +1340,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable with a level of FATAL and a specific logger class name.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param t the throwable
@@ -1351,7 +1351,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with parameters and a throwable with a level of FATAL.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param message the message
      * @param params the message parameters
@@ -1363,7 +1363,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param params the parameters
      */
@@ -1373,7 +1373,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the sole parameter
      */
@@ -1385,7 +1385,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1398,7 +1398,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param format the message format string
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1412,7 +1412,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param params the parameters
@@ -1423,7 +1423,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the sole parameter
@@ -1436,7 +1436,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -1450,7 +1450,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with a level of FATAL using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param t the throwable
      * @param format the message format string
      * @param param1 the first parameter
@@ -1465,7 +1465,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of FATAL.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
      */
@@ -1475,7 +1475,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of FATAL.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
      */
@@ -1487,7 +1487,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of FATAL.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1500,7 +1500,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of FATAL.
-     * 
+     *
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
      * @param param2 the second parameter
@@ -1514,7 +1514,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of FATAL.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param params the parameters
@@ -1525,7 +1525,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of FATAL.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the sole parameter
@@ -1538,7 +1538,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of FATAL.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -1552,7 +1552,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message with a level of FATAL.
-     * 
+     *
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
      * @param param1 the first parameter
@@ -1567,7 +1567,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a message at the given level.
-     * 
+     *
      * @param level the level
      * @param message the message
      */
@@ -1577,7 +1577,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable at the given log level.
-     * 
+     *
      * @param level the level
      * @param message the message
      * @param t the throwable
@@ -1588,7 +1588,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message and throwable at the given log level and a specific logger class name.
-     * 
+     *
      * @param level the level
      * @param loggerFqcn the logger class name
      * @param message the message
@@ -1600,7 +1600,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message with parameters and a throwable at the given log level.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param message the message
@@ -1613,7 +1613,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param level the level
      * @param format the message format string
      * @param params the parameters
@@ -1624,7 +1624,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param level the level
      * @param format the message format string
      * @param param1 the sole parameter
@@ -1637,7 +1637,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param level the level
      * @param format the message format string
      * @param param1 the first parameter
@@ -1651,7 +1651,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param level the level
      * @param format the message format string
      * @param param1 the first parameter
@@ -1666,7 +1666,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param level the level
      * @param t the throwable
      * @param format the message format string
@@ -1678,7 +1678,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param level the level
      * @param t the throwable
      * @param format the message format string
@@ -1692,7 +1692,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param level the level
      * @param t the throwable
      * @param format the message format string
@@ -1707,7 +1707,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param level the level
      * @param t the throwable
      * @param format the message format string
@@ -1723,7 +1723,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param t the throwable
@@ -1736,7 +1736,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param t the throwable
@@ -1751,7 +1751,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param t the throwable
@@ -1767,7 +1767,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a log message at the given log level using {@link java.text.MessageFormat}-style formatting.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param t the throwable
@@ -1784,7 +1784,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message at the given log level.
-     * 
+     *
      * @param level the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param params the parameters
@@ -1795,7 +1795,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message at the given log level.
-     * 
+     *
      * @param level the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the sole parameter
@@ -1808,7 +1808,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message at the given log level.
-     * 
+     *
      * @param level the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
@@ -1822,7 +1822,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message at the given log level.
-     * 
+     *
      * @param level the level
      * @param format the format string as per {@link String#format(String, Object...)} or resource bundle key therefor
      * @param param1 the first parameter
@@ -1837,7 +1837,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message at the given log level.
-     * 
+     *
      * @param level the level
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
@@ -1849,7 +1849,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message at the given log level.
-     * 
+     *
      * @param level the level
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
@@ -1863,7 +1863,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message at the given log level.
-     * 
+     *
      * @param level the level
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
@@ -1878,7 +1878,7 @@ public class Logger implements Serializable {
 
     /**
      * Issue a formatted log message at the given log level.
-     * 
+     *
      * @param level the level
      * @param t the throwable
      * @param format the format string, as per {@link String#format(String, Object...)}
@@ -1894,7 +1894,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a message at the given level.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param t the throwable cause
@@ -1909,7 +1909,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a message at the given level.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param t the throwable cause
@@ -1925,7 +1925,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a message at the given level.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param t the throwable cause
@@ -1942,7 +1942,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a message at the given level.
-     * 
+     *
      * @param loggerFqcn the logger class name
      * @param level the level
      * @param t the throwable cause
@@ -1955,9 +1955,9 @@ public class Logger implements Serializable {
 
     /**
      * Get a Logger instance given the logger name.
-     * 
+     *
      * @param name the logger name
-     * 
+     *
      * @return the logger
      */
     public static Logger getLogger(String name) {
@@ -1969,10 +1969,10 @@ public class Logger implements Serializable {
      * <p/>
      * <p>
      * This will include a logger separator between logger name and suffix.
-     * 
+     *
      * @param name the logger name
      * @param suffix a suffix to append to the logger name
-     * 
+     *
      * @return the logger
      */
     public static Logger getLogger(String name, String suffix) {
@@ -1981,9 +1981,9 @@ public class Logger implements Serializable {
 
     /**
      * Get a Logger instance given the name of a class. This simply calls create(clazz.getName()).
-     * 
+     *
      * @param clazz the Class whose name will be used as the logger name
-     * 
+     *
      * @return the logger
      */
     public static Logger getLogger(Class<?> clazz) {
@@ -1995,10 +1995,10 @@ public class Logger implements Serializable {
      * <p/>
      * <p>
      * This will include a logger separator between logger name and suffix
-     * 
+     *
      * @param clazz the Class whose name will be used as the logger name
      * @param suffix a suffix to append to the logger name
-     * 
+     *
      * @return the logger
      */
     public static Logger getLogger(Class<?> clazz, String suffix) {
@@ -2007,7 +2007,7 @@ public class Logger implements Serializable {
 
     /**
      * Get a typed logger which implements the given interface. The current default locale will be used for the new logger.
-     * 
+     *
      * @param type the interface to implement
      * @param category the logger category
      * @param <T> the logger type
@@ -2019,7 +2019,7 @@ public class Logger implements Serializable {
 
     /**
      * Get a typed logger which implements the given interface. The given locale will be used for the new logger.
-     * 
+     *
      * @param type the interface to implement
      * @param category the logger category
      * @param locale the locale for the new logger
