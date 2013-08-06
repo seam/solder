@@ -161,10 +161,13 @@ public class ImplicitServletObjectsHolder {
         }
     }
 
-    static class InternalServletContextEvent {
+    /**
+     * Fixed access modifier for class and contructor to <code>public</code> in order to avoid class loading issues with EAP static modules (java.lang.IllegalAccessError)
+     */
+    public static class InternalServletContextEvent {
         private ServletContext ctx;
 
-        InternalServletContextEvent(ServletContext ctx) {
+        public InternalServletContextEvent(ServletContext ctx) {
             this.ctx = ctx;
         }
 
@@ -173,10 +176,13 @@ public class ImplicitServletObjectsHolder {
         }
     }
 
-    static class InternalServletRequestEvent {
+    /**
+     * Fixed access modifier for class and contructor to <code>public</code> in order to avoid class loading issues with EAP static modules (java.lang.IllegalAccessError)
+     */
+    public static class InternalServletRequestEvent {
         private ServletRequest request;
 
-        InternalServletRequestEvent(ServletRequest request) {
+        public InternalServletRequestEvent(ServletRequest request) {
             this.request = request;
         }
 
@@ -185,10 +191,13 @@ public class ImplicitServletObjectsHolder {
         }
     }
 
-    static class InternalServletResponseEvent {
+    /**
+     * Fixed access modifier for class and contructor to <code>public</code> in order to avoid class loading issues with EAP static modules (java.lang.IllegalAccessError)
+     */
+    public static class InternalServletResponseEvent {
         private ServletResponse response;
 
-        InternalServletResponseEvent(ServletResponse response) {
+        public InternalServletResponseEvent(ServletResponse response) {
             this.response = response;
         }
 
@@ -197,10 +206,13 @@ public class ImplicitServletObjectsHolder {
         }
     }
 
-    static class InternalHttpSessionEvent {
+    /**
+     * Fixed access modifier for class and contructor to <code>public</code> in order to avoid class loading issues with EAP static modules (java.lang.IllegalAccessError)
+     */
+    public static class InternalHttpSessionEvent {
         private HttpSession session;
 
-        InternalHttpSessionEvent(HttpSession session) {
+        public InternalHttpSessionEvent(HttpSession session) {
             this.session = session;
         }
 
