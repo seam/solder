@@ -27,7 +27,7 @@
    <groupId>org.jboss.solder</groupId>
    <artifactId>solder-parent</artifactId>
    <packaging>pom</packaging>
-   <version>3.2.1.Final</version>
+   <version>3.2.2-SNAPSHOT</version>
 
    <name>Solder</name>
    <description>A portable CDI extensions library for developing CDI applications, frameworks or other extensions</description>
@@ -307,7 +307,7 @@
       <connection>scm:git:git://github.com/seam/solder.git</connection>
       <developerConnection>scm:git:git@github.com:seam/solder.git</developerConnection>
       <url>http://github.com/seam/solder</url>
-     <tag>3.2.1.Final</tag>
+     <tag>HEAD</tag>
   </scm>
 
    <issueManagement>
