@@ -20,6 +20,8 @@ package org.jboss.solder.logging;
 import static org.jboss.solder.logging.Logger.getLogger;
 import static org.jboss.solder.reflection.Reflections.getRawType;
 
+import java.io.Serializable;
+
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -33,7 +35,7 @@ import org.jboss.solder.logging.Logger;
  * @author David Allen
  * @author Pete Muir
  */
-class LoggerProducer {
+class LoggerProducer implements Serializable {
     @Produces
     Logger produceLog(InjectionPoint injectionPoint) {
         Annotated annotated = injectionPoint.getAnnotated();
